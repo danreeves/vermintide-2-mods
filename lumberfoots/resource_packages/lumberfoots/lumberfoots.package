@@ -1,0 +1,11 @@
+mod = [
+	"lumberfoots"
+]
+
+package = [
+	"resource_packages/lumberfoots/lumberfoots"
+]
+
+lua = [
+	"scripts/mods/lumberfoots/*"
+]
