@@ -1,0 +1,11 @@
+mod = [
+	"game-stats"
+]
+
+package = [
+	"resource_packages/game-stats/game-stats"
+]
+
+lua = [
+	"scripts/mods/game-stats/*"
+]
