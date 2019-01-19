@@ -4,10 +4,9 @@ local mod = get_mod("game-stats")
 return {
 	name = "Mission Stats",                         -- Readable mod name
 	description = mod:localize("mod_description"),  -- Mod description
-	is_togglable = false,                           -- If the mod can be enabled/disabled
-	is_mutator = false,                             -- If the mod is mutator
+	is_togglable = true,                            -- If the mod can be enabled/disabled
 	options = {
-		widgets = {                             -- Widget settings for the mod options menu
+		widgets = {                                 -- Widget settings for the mod options menu
 			{
 				setting_id = "toggle_hotkey",
 				type = "keybind",
