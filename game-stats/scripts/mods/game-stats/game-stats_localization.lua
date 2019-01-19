@@ -1,12 +1,12 @@
 return {
 	mod_description = {
-		en = "game-stats description"
+		en = "View mission completion stats for each character and more"
 	},
-	example_checkbox_option_name = {
-		en = "Example Checkbox Option"
+	hotkey_title = {
+		en = "Toggle window"
 	},
-	example_checkbox_option_tooltip = {
-		en = "Example Checkbox Option description."
+	hotkey_tooltip = {
+		en = "Select a hotkey to toggle the Mission Stats window open/closed"
 	},
 --[[
 	some_other_text_id = {

@@ -1,4 +1,17 @@
 local mod = get_mod("game-stats")
+local simple_ui = get_mod("SimpleUI")
+
+--[[
+	Simple UI fix
+	The close button is incorrectly positioned.
+	See: https://github.com/Vermintide-Mod-Framework/Grasmann-Mods/pull/11
+--]]
+simple_ui.widgets.window.create_close_button = function(self, name, params)
+	local widget = self:create_widget(name, {5, 0}, {25, 25}, "close_button", "top_right", params)
+	widget:set("text", "X")
+	self:add_widget(widget)
+	return widget
+end
 
 local classes = {
 	"bw_scholar",
@@ -51,7 +64,7 @@ local difficulties = {
 	"harder"
 }
 
-mod:command('missionstats', 'Print mission stats for class', function(class)
+mod:command('missionstatsfor', 'Print mission stats for class', function(class)
 	mod:echo('Mission stats for ' .. class)
 	local player_manager = Managers.player
 	local player = player_manager:local_player()
@@ -71,6 +84,54 @@ mod:command('missionstats', 'Print mission stats for class', function(class)
 	mod:echo("Total completed: " .. total_count)
 end)
 
+mod.create_window = function(self)
+	local native_screen_width, native_screen_height = Application.resolution()
+	local width = 800
+	local height = 600
+	local x = (1920 / 2) - (width / 2)
+	local y = (1080 / 2) - (height / 2)
+	local window = simple_ui:create_window('mission stats', {x, y}, {width, height})
+	window:create_title('title', 'Mission Stats')
+	window:create_close_button('close')
+	window:init()
+
+	window:bring_to_front()
+
+	window._was_closed = false
+	window.before_destroy = function(self)
+		self._was_closed = true
+	end
+
+	self.window = window
+end
+
+mod.destroy_window = function(self)
+	if self.window then
+		self.window:destroy()
+		self.window = nil
+	end
+end
+
+mod.reload_window = function(self)
+	self:destroy_window()
+	self:create_window()
+end
+
+function toggle_window()
+	if mod.window and not mod.window._was_closed then
+		mod:destroy_window()
+	else
+		mod:reload_window()
+	end
+end
+
+mod:command('missionstats', 'Open the Mission Stats window', function()
+	toggle_window()
+end)
+
+mod.toggle_with_hotkey = function()
+	toggle_window()
+end
 
 -- -- -- -- -- -- -- --
 -- DEBUG STUFF AFTER --
