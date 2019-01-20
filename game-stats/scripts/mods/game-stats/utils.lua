@@ -25,4 +25,30 @@ mod.stats_for_class = function(classname)
   return total_wins, difficulty_total_wins, level_total_wins
 end
 
+mod.debug_stats_db = function()
+  local player_manager = Managers.player
+  local player = player_manager:local_player()
+  local stats_id = player:stats_id()
+  local stats_db = player_manager:statistics_db()
+
+  mod:dump(stats_db.statistics, 'statistics_db', 1)
+end
+
+mod.debug_interesting_stats = function(interesting)
+  local player_manager = Managers.player
+  local player = player_manager:local_player()
+  local stats_id = player:stats_id()
+  local stats_db = player_manager:statistics_db()
+
+  mod:echo('-------------')
+  for i, key in pairs(mod['interesting_'..interesting]) do
+    mod:dump(stats_db.statistics[stats_id][key], key, 4)
+  end
+end
+
+mod:command('debug_stats', '[DEBUG]', function(arg)
+  local type = arg or 'numbers'
+  mod.debug_interesting_stats(arg)
+end)
+
 return

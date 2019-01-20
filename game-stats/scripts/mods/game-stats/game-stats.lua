@@ -15,6 +15,7 @@ end
 
 -- Data
 mod:dofile('scripts/mods/game-stats/constants')
+mod:dofile('scripts/mods/game-stats/interesting-stats')
 -- Helper functions
 mod:dofile('scripts/mods/game-stats/utils')
 -- UI logic
