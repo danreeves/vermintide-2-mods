@@ -1,0 +1,11 @@
+mod = [
+	"letterbox-tweaks"
+]
+
+package = [
+	"resource_packages/letterbox-tweaks/letterbox-tweaks"
+]
+
+lua = [
+	"scripts/mods/letterbox-tweaks/*"
+]
