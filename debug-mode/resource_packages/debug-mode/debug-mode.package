@@ -1,0 +1,11 @@
+mod = [
+	"debug-mode"
+]
+
+package = [
+	"resource_packages/debug-mode/debug-mode"
+]
+
+lua = [
+	"scripts/mods/debug-mode/*"
+]
