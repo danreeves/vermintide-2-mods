@@ -7,6 +7,10 @@ local debug_draw_slots = mod:dofile('scripts/mods/debug-mode/draw-slots')
 script_data.force_debug_disabled = false
 script_data.debug_enabled = true
 script_data.disable_debug_draw = false
+Development._hardcoded_dev_params.disable_debug_draw = false
+Development._hardcoded_dev_params.force_debug_disabled = false
+Development._hardcoded_dev_params.show_fps = true
+Development._hardcoded_dev_params.hide_fps = false
 
 -- script_data.debug_key_handler_visible = true
 -- script_data.disable_debug_position_lookup = false
