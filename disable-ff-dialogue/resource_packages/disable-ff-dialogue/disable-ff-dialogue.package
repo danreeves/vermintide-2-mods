@@ -1,0 +1,11 @@
+mod = [
+	"disable-ff-dialogue"
+]
+
+package = [
+	"resource_packages/disable-ff-dialogue/disable-ff-dialogue"
+]
+
+lua = [
+	"scripts/mods/disable-ff-dialogue/*"
+]

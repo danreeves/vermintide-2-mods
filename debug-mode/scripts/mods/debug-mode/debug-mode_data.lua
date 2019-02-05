@@ -2,22 +2,28 @@ local mod = get_mod("debug-mode")
 
 -- Everything here is optional. You can remove unused parts.
 return {
-  name = "debug-mode",                               -- Readable mod name
-  description = mod:localize("mod_description"),  -- Mod description
-  is_togglable = true,                            -- If the mod can be enabled/disabled
-  is_mutator = false,                             -- If the mod is mutator
-  mutator_settings = {},                          -- Extra settings, if it's mutator
+  name = "Debug mode",
+  description = mod:localize("mod_description"),
+  is_togglable = true,
+  is_mutator = false,
+  mutator_settings = {},
   options = {
-    widgets = {                                 -- Widget settings for the mod options menu
+    widgets = {
       {
-        setting_id = "toggle_hotkey",
+        setting_id = "toggle_debug",
         type = "keybind",
-        title = "hotkey_title",
-        tooltip = "hotkey_tooltip",
         default_value = {},
         keybind_trigger = "pressed",
         keybind_type = "function_call",
-        function_name = "toggle_with_hotkey"
+        function_name = "toggle_debug"
+      },
+      {
+        setting_id = "toggle_debug_menu",
+        type = "keybind",
+        default_value = {},
+        keybind_trigger = "pressed",
+        keybind_type = "function_call",
+        function_name = "toggle_debug_menu"
       }
     }
   }

@@ -1,23 +1,17 @@
 return {
   mod_description = {
-    en = "debug-mode description"
+    en = "[UNSTABLE] Re-enable the developer debug menu and utilities"
   },
-  example_checkbox_option_name = {
-    en = "Example Checkbox Option"
+  toggle_debug = {
+    en = "Toggle debug"
   },
-  example_checkbox_option_tooltip = {
-    en = "Example Checkbox Option description."
+  toggle_debug_description = {
+    en = "Toggles the debug state on or off"
   },
-  --[[
-        some_other_text_id = {
-                en = "Translation",        -- English
-                fr = "Translation",        -- French
-                de = "Translation",        -- German
-                es = "Translation",        -- Spanish
-                ru = "Translation",        -- Russian
-                it = "Translation",        -- Italian
-                pl = "Translation",        -- Polish
-                ["br-pt"] = "Translation", -- Portuguese-Brazil
-        },
---]]
+  toggle_debug_menu = {
+    en = "Toggle debug menu"
+  },
+  toggle_debug_menu_description = {
+    en = "Open and close the debug menu"
+  }
 }
