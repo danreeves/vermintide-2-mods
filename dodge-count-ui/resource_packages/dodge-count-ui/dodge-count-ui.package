@@ -1,0 +1,11 @@
+mod = [
+	"dodge-count-ui"
+]
+
+package = [
+	"resource_packages/dodge-count-ui/dodge-count-ui"
+]
+
+lua = [
+	"scripts/mods/dodge-count-ui/*"
+]
