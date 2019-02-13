@@ -2,6 +2,12 @@ return {
   mod_description = {
     en = "Display your dodge count, number of effective dodges, and dodge cooldown",
   },
+  always_on = {
+    en = "Always visible",
+  },
+  always_on_description = {
+    en = "When disabled the UI will disappear when your dodge count is full",
+  },
   offset_x = {
     en = "Offset X",
   },

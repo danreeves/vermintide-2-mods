@@ -7,6 +7,11 @@ return {
   options = {
     widgets = {
       {
+        setting_id = "always_on",
+        type = "checkbox",
+        default_value = true,
+      },
+      {
         setting_id = "offset_x",
         type = "numeric",
         default_value = 1000,

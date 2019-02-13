@@ -1,4 +1,5 @@
 local mod = get_mod("dodge-count-ui")
+local always_on = mod:get("always_on")
 
 local fake_input_service = {
   get = function ()
@@ -45,8 +46,12 @@ local dodge_ui_definition = {
         pass_type = "text",
         text_id = "dodge_text",
         retained_mode = false,
-        content_check_function = function ()
-          return true
+        fade_out_duration = 5,
+        content_check_function = function(content)
+          if always_on then
+            return true
+          end
+          return content.has_dodged
         end
       },
       {
@@ -54,8 +59,8 @@ local dodge_ui_definition = {
         pass_type = "text",
         text_id = "cooldown_text",
         retained_mode = false,
-        content_check_function = function (content)
-          return content.actual_cooldown > 0
+        content_check_function = function(content)
+          return content.has_cooldown
         end
       }
     }
@@ -63,7 +68,8 @@ local dodge_ui_definition = {
   content = {
     dodge_text = "",
     cooldown_text = "",
-    actual_cooldown = 0
+    has_dodged = false,
+    has_cooldown = false,
   },
   style = {
     dodge_text = {
@@ -105,6 +111,7 @@ mod.on_disabled = function()
 end
 
 mod.on_setting_changed = function()
+  always_on = mod:get("always_on")
   if not mod.ui_widget then
     return
   end
@@ -151,7 +158,8 @@ mod:hook_safe(IngameHud, 'update', function()
 
   widget.content.dodge_text = string.format('%i/%u', efficient_dodge_count - current_dodge_count, efficient_dodge_count)
   widget.content.cooldown_text = string.format('%.1fs', cooldown - t)
-  widget.content.actual_cooldown = cooldown - t
+  widget.content.has_dodged = current_dodge_count > 0
+  widget.content.has_cooldown = (cooldown - t) > 0
 
   UIRenderer.begin_pass(ui_renderer, ui_scenegraph, fake_input_service, dt)
   UIRenderer.draw_widget(ui_renderer, widget)
