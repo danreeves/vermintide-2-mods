@@ -1,5 +1,14 @@
 local mod = get_mod("dodge-count-ui")
 
+local function numeric(key, range, default)
+  return {
+    setting_id = "always_on",
+    type = "numeric",
+    range = range,
+    default_value = default or (range[2] - range[1])*0.5,
+  }
+end
+
 return {
   name = "Dodge Count UI",
   description = mod:localize("mod_description"),
