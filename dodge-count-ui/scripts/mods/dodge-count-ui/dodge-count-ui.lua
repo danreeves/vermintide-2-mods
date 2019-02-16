@@ -24,7 +24,7 @@ function DodgeCountUI:init(ingame_ui_context)
   self.input_manager = ingame_ui_context.input_manager
 
   self.render_settings = {
-    alpha_multiplier = 0,
+    alpha_multiplier = 1,
     snap_pixel_positions = true,
   }
 
@@ -33,7 +33,7 @@ end
 
 
 function DodgeCountUI:destroy()
-  -- Noop.
+-- Noop.
 end
 
 
@@ -70,7 +70,7 @@ function DodgeCountUI:update_settings()
   widget_style.cooldown_text.offset[2] = -(offset_y + dodge_count_font_size)
   widget_style.cooldown_text.font_size = cooldown_font_size
 
-  self.widgets_by_name.dodge_text.always_on = mod:get("always_on")
+  self.widgets_by_name.dodge_text.content.always_on = mod:get("always_on")
 end
 
 
