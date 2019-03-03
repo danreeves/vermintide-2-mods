@@ -1,0 +1,11 @@
+mod = [
+	"suicide"
+]
+
+package = [
+	"resource_packages/suicide/suicide"
+]
+
+lua = [
+	"scripts/mods/suicide/*"
+]
