@@ -1,0 +1,11 @@
+mod = [
+	"charged-attack-ui"
+]
+
+package = [
+	"resource_packages/charged-attack-ui/charged-attack-ui"
+]
+
+lua = [
+	"scripts/mods/charged-attack-ui/*"
+]
