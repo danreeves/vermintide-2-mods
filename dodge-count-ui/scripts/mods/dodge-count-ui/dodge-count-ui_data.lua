@@ -14,13 +14,13 @@ return {
       {
         setting_id = "offset_x",
         type = "numeric",
-        default_value = 1000,
+        default_value = 900,
         range = { -2500, 2500 },
       },
       {
         setting_id = "offset_y",
         type = "numeric",
-        default_value = 500,
+        default_value = 430,
         range = { -2500, 2500 },
       },
       {

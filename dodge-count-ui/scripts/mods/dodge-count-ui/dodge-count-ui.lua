@@ -12,7 +12,7 @@ local fake_input_service = {
 
 local scenegraph_definition = {
   root = {
-    is_root = true,
+    scale = "hud_scale_fit",
     size = {
       1920,
       1080
@@ -22,23 +22,11 @@ local scenegraph_definition = {
       0,
       UILayer.hud
     }
-  },
-  screen = {
-    scale = "fit",
-    position = {
-      0,
-      0,
-      UILayer.hud
-    },
-    size = {
-      1920,
-      1080
-    }
-  },
+  }
 }
 
 local dodge_ui_definition = {
-  scenegraph_id = "screen",
+  scenegraph_id = "root",
   element = {
     passes = {
       {
@@ -74,25 +62,25 @@ local dodge_ui_definition = {
   style = {
     dodge_text = {
       font_type = "hell_shark",
-      font_size = 32,
+      font_size = mod:get("dodge_count_font_size"),
       vertical_alignment = "center",
       horizontal_alignment = "center",
       text_color = Colors.get_table("white"),
       offset = {
-        mod:get('offset_x'),
-        -mod:get('offset_y'),
+        mod:get("offset_x"),
+        -mod:get("offset_y"),
         0
       }
     },
     cooldown_text = {
       font_type = "hell_shark",
-      font_size = 32,
+      font_size = mod:get("cooldown_font_size"),
       vertical_alignment = "center",
       horizontal_alignment = "center",
       text_color = Colors.get_table("white"),
       offset = {
-        mod:get('offset_x'),
-        -(mod:get('offset_y') + mod:get('dodge_count_font_size')),
+        mod:get("offset_x"),
+        -(mod:get("offset_y") + mod:get("dodge_count_font_size")),
         0
       }
     },
@@ -104,23 +92,23 @@ local dodge_ui_definition = {
   },
 }
 
-mod.on_disabled = function()
+function mod:on_disabled()
   mod.ui_renderer = nil
   mod.ui_scenegraph = nil
   mod.ui_widget = nil
 end
 
-mod.on_setting_changed = function()
+function mod:on_setting_changed()
   always_on = mod:get("always_on")
   if not mod.ui_widget then
     return
   end
-  mod.ui_widget.style.dodge_text.offset[1] = mod:get('offset_x')
-  mod.ui_widget.style.dodge_text.offset[2] = -mod:get('offset_y')
-  mod.ui_widget.style.dodge_text.font_size = mod:get('dodge_count_font_size')
-  mod.ui_widget.style.cooldown_text.offset[1] = mod:get('offset_x')
-  mod.ui_widget.style.cooldown_text.offset[2] = -(mod:get('offset_y') + mod:get('dodge_count_font_size'))
-  mod.ui_widget.style.cooldown_text.font_size = mod:get('cooldown_font_size')
+  mod.ui_widget.style.dodge_text.offset[1] = mod:get("offset_x")
+  mod.ui_widget.style.dodge_text.offset[2] = -mod:get("offset_y")
+  mod.ui_widget.style.dodge_text.font_size = mod:get("dodge_count_font_size")
+  mod.ui_widget.style.cooldown_text.offset[1] = mod:get("offset_x")
+  mod.ui_widget.style.cooldown_text.offset[2] = -(mod:get("offset_y") + mod:get("dodge_count_font_size"))
+  mod.ui_widget.style.cooldown_text.font_size = mod:get("cooldown_font_size")
 end
 
 function mod:init()
@@ -134,7 +122,13 @@ function mod:init()
   mod.ui_widget = UIWidget.init(dodge_ui_definition)
 end
 
-mod:hook_safe(IngameHud, 'update', function()
+mod:hook_safe(IngameHud, "update", function(self)
+  -- If the EquipmentUI isn't visible or the player is dead
+  -- then let's not show the Dodge Count UI
+  if not self._currently_visible_components.EquipmentUI or self:is_own_player_dead() then
+    return
+  end
+
   local t = Managers.time:time("game")
   local player_unit = Managers.player:local_player().player_unit
   local status_system = ScriptUnit.has_extension(player_unit, "status_system")
@@ -145,9 +139,9 @@ mod:hook_safe(IngameHud, 'update', function()
 
   if not mod.ui_widget then
     mod.init()
-    status_system:get_dodge_item_data()
   end
 
+  status_system:get_dodge_item_data()
   local current_dodge_count = status_system.dodge_cooldown
   local efficient_dodge_count = status_system.dodge_count
   local cooldown = status_system.dodge_cooldown_delay or 0
@@ -156,8 +150,8 @@ mod:hook_safe(IngameHud, 'update', function()
   local ui_renderer = mod.ui_renderer
   local ui_scenegraph = mod.ui_scenegraph
 
-  widget.content.dodge_text = string.format('%i/%u', efficient_dodge_count - current_dodge_count, efficient_dodge_count)
-  widget.content.cooldown_text = string.format('%.1fs', cooldown - t)
+  widget.content.dodge_text = string.format("%i/%u", efficient_dodge_count - current_dodge_count, efficient_dodge_count)
+  widget.content.cooldown_text = string.format("%.1fs", cooldown - t)
   widget.content.has_dodged = current_dodge_count > 0
   widget.content.has_cooldown = (cooldown - t) > 0
 
@@ -165,21 +159,3 @@ mod:hook_safe(IngameHud, 'update', function()
   UIRenderer.draw_widget(ui_renderer, widget)
   UIRenderer.end_pass(ui_renderer)
 end)
-
-local function update_dodge_data()
-  local local_player = Managers.player:local_player()
-  if not local_player then
-    return
-  end
-  local status_system = ScriptUnit.has_extension(local_player.player_unit, "status_system")
-  if status_system then
-    status_system:get_dodge_item_data()
-  end
-end
-
-mod.on_game_state_changed = function(state, state_name)
-  if state == "enter" and state_name == "StateIngame" then
-    update_dodge_data()
-  end
-end
-mod:hook_safe(SimpleInventoryExtension, 'wield', update_dodge_data)
