@@ -6,6 +6,6 @@ frames = {
   shader = "gui:DIFFUSE_MAP"
 
     textures = {
-      diffuse_map = "textures/custom-frames/frames"
+      diffuse_map = "textures/mods/custom-frames/frames"
     }
 }

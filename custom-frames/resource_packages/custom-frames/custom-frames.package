@@ -8,9 +8,9 @@ package = [
 
 lua = [
   "scripts/mods/custom-frames/*"
-  "materials/custom-frames/*"
+  "materials/mods/custom-frames/*"
 ]
 
 materials = [
-  "materials/custom-frames/*"
+  "materials/mods/custom-frames/*"
 ]
