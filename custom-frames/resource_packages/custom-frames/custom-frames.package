@@ -1,0 +1,16 @@
+mod = [
+  "custom-frames"
+]
+
+package = [
+  "resource_packages/custom-frames/custom-frames"
+]
+
+lua = [
+  "scripts/mods/custom-frames/*"
+  "materials/custom-frames/*"
+]
+
+materials = [
+  "materials/custom-frames/*"
+]

@@ -1,0 +1,11 @@
+mod = [
+	"aory-no-boss"
+]
+
+package = [
+	"resource_packages/aory-no-boss/aory-no-boss"
+]
+
+lua = [
+	"scripts/mods/aory-no-boss/*"
+]
