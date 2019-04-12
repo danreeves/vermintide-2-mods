@@ -1,6 +1,33 @@
 local mod = get_mod("dodge-count-ui")
 local always_on = mod:get("always_on")
 
+local SCREEN_WIDTH = 1920
+local SCREEN_HEIGHT = 1080
+
+local function get_x()
+  local x =  mod:get("offset_x")
+  local x_limit = SCREEN_WIDTH / 2
+  local max_x = math.min(mod:get("offset_x"), x_limit)
+  local min_x = math.max(mod:get("offset_x"), -x_limit)
+  if x == 0 then
+    return 0
+  end
+  local clamped_x =  x > 0 and max_x or min_x
+  return clamped_x
+end
+
+local function get_y()
+  local y =  mod:get("offset_y")
+  local y_limit = SCREEN_HEIGHT / 2
+  local max_y = math.min(mod:get("offset_y"), y_limit)
+  local min_y = math.max(mod:get("offset_y"), -y_limit)
+  if y == 0 then
+    return 0
+  end
+  local clamped_y = -(y > 0 and max_y or min_y)
+  return clamped_y
+end
+
 local fake_input_service = {
   get = function ()
     return
@@ -12,7 +39,7 @@ local fake_input_service = {
 
 local scenegraph_definition = {
   root = {
-    scale = "hud_scale_fit",
+    scale = "fit",
     size = {
       1920,
       1080
@@ -67,8 +94,8 @@ local dodge_ui_definition = {
       horizontal_alignment = "center",
       text_color = Colors.get_table("white"),
       offset = {
-        mod:get("offset_x"),
-        -mod:get("offset_y"),
+        get_x(),
+        get_y(),
         0
       }
     },
@@ -79,8 +106,8 @@ local dodge_ui_definition = {
       horizontal_alignment = "center",
       text_color = Colors.get_table("white"),
       offset = {
-        mod:get("offset_x"),
-        -(mod:get("offset_y") + mod:get("dodge_count_font_size")),
+        get_x(),
+        get_y() - mod:get("dodge_count_font_size"),
         0
       }
     },
@@ -103,11 +130,11 @@ function mod:on_setting_changed()
   if not mod.ui_widget then
     return
   end
-  mod.ui_widget.style.dodge_text.offset[1] = mod:get("offset_x")
-  mod.ui_widget.style.dodge_text.offset[2] = -mod:get("offset_y")
+  mod.ui_widget.style.dodge_text.offset[1] = get_x()
+  mod.ui_widget.style.dodge_text.offset[2] = get_y()
   mod.ui_widget.style.dodge_text.font_size = mod:get("dodge_count_font_size")
-  mod.ui_widget.style.cooldown_text.offset[1] = mod:get("offset_x")
-  mod.ui_widget.style.cooldown_text.offset[2] = -(mod:get("offset_y") + mod:get("dodge_count_font_size"))
+  mod.ui_widget.style.cooldown_text.offset[1] = get_x()
+  mod.ui_widget.style.cooldown_text.offset[2] = get_y() - mod:get("dodge_count_font_size")
   mod.ui_widget.style.cooldown_text.font_size = mod:get("cooldown_font_size")
 end
 

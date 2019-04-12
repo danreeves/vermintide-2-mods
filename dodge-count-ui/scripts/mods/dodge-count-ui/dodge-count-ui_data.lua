@@ -15,13 +15,13 @@ return {
         setting_id = "offset_x",
         type = "numeric",
         default_value = 900,
-        range = { -2500, 2500 },
+        range = { -960, 960 },
       },
       {
         setting_id = "offset_y",
         type = "numeric",
         default_value = 430,
-        range = { -2500, 2500 },
+        range = { -540, 540 },
       },
       {
         setting_id = "dodge_count_font_size",
