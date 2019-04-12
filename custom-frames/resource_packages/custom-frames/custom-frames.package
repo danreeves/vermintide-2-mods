@@ -11,6 +11,6 @@ lua = [
   "materials/mods/custom-frames/*"
 ]
 
-materials = [
+material = [
   "materials/mods/custom-frames/*"
 ]
