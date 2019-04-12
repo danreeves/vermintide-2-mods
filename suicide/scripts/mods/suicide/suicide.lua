@@ -14,8 +14,8 @@ mod:command("die", "Kill yourself", function()
     return
   end
 
-  Managers.chat:send_chat_message(1, 1, "Guess I'll die-die...")
   local player_unit = Managers.player:local_player().player_unit
   local death_system = Managers.state.entity:system("death_system")
   death_system:kill_unit(player_unit, {})
+  Managers.chat:send_chat_message(1, 1, "Guess I'll die-die...")
 end)
