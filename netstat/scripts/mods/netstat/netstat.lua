@@ -43,7 +43,18 @@ function NetStatUI:update()
   local local_player = Managers.player:local_player()
   local players = Managers.player:players()
   local ping_history = self.ping_history
+  local widget = self.ui_widget
   local other_players = {}
+
+  -- Reset widget data
+  for i = 4, 1 do
+    widget.content["show_player_" .. i] = false
+    widget.content["player_name_" .. i] = ""
+    widget.content["current_ping_text_" .. i] = ""
+    widget.content["min_ping_text_" .. i] = ""
+    widget.content["max_ping_text_" .. i] = ""
+    widget.content["avg_ping_text_" .. i] = ""
+  end
 
   -- Return early if there is no game session yet
   -- e.g. in a loading screen
@@ -53,7 +64,8 @@ function NetStatUI:update()
 
   -- Get the ping for each player and store it
   for _, player in pairs(players) do
-    if not player.bot_player then
+    local is_bot_player = player.bot_player or not player:is_player_controlled()
+    if not is_bot_player then
       -- Keep track of other players so we can loop over them to
       -- update widget contents later
       if player.game_object_id ~= local_player.game_object_id then
@@ -71,45 +83,29 @@ function NetStatUI:update()
       table.remove(player_ping_history, self.history_kept + 1)
       ping_history[game_object_id] = player_ping_history
     end
+  end
 
-    -- Set the UI contents
-    local widget = self.ui_widget
+  -- Set the UI contents
+  -- Local player is always first
+  widget.content.show_player_1 = not local_player.is_server
+  widget.content.current_ping_text_1 = string.format('%i', ping_history[local_player.game_object_id][1])
+  widget.content.min_ping_text_1 = string.format('%i', math.min(unpack(ping_history[local_player.game_object_id])))
+  widget.content.max_ping_text_1 = string.format('%i', math.max(unpack(ping_history[local_player.game_object_id])))
+  widget.content.avg_ping_text_1 = string.format('%i', avg(ping_history[local_player.game_object_id]))
 
-    -- Reset widget data
-    for i = 4, 1 do
-      widget.content["show_player_" .. i] = false
-      widget.content["player_name_" .. i] = ""
-      widget.content["current_ping_text_" .. i] = ""
-      widget.content["min_ping_text_" .. i] = ""
-      widget.content["max_ping_text_" .. i] = ""
-      widget.content["avg_ping_text_" .. i] = ""
+  -- Set other player contents
+  for i, player in ipairs(other_players) do
+    if i > 3 then
+      -- I don't care about supporting More Characters right now
+      -- I just don't want it to break stuff
+      break
     end
-
-    -- Local player is always first
-    widget.content.show_player_1 = true
-    widget.content.current_ping_text_1 = string.format('%i', ping_history[local_player.game_object_id][1])
-    widget.content.min_ping_text_1 = string.format('%i', math.min(unpack(ping_history[local_player.game_object_id])))
-    widget.content.max_ping_text_1 = string.format('%i', math.max(unpack(ping_history[local_player.game_object_id])))
-    widget.content.avg_ping_text_1 = string.format('%i', avg(ping_history[local_player.game_object_id]))
-
-    widget.content.show_player_2 = false
-    widget.content.show_player_3 = false
-    widget.content.show_player_4 = false
-
-
-    for i, player in ipairs(other_players) do
-      if i > 3 then
-        -- I don't care about supporting More Characters right now
-        -- I just don't want it to break stuff
-        break
-      end
-      widget.content["show_player_" .. i + 1] = true
-      widget.content["player_name_" .. i + 1] = player:name()
-      widget.content["current_ping_text_" .. i + 1] = string.format('%i', ping_history[player.game_object_id][1])
-      widget.content["min_ping_text_" .. i + 1] = string.format('%i', math.min(unpack(ping_history[player.game_object_id])))
-      widget.content["max_ping_text_" .. i + 1] = string.format('%i', math.max(unpack(ping_history[player.game_object_id])))
-      widget.content["avg_ping_text_" .. i + 1] = string.format('%i', avg(ping_history[player.game_object_id]))
-    end
+    widget.content["show_player_" .. i + 1] = ping_history[player.game_object_id][1] ~= 0
+    widget.content["player_name_" .. i + 1] = player:name()
+    widget.content["current_ping_text_" .. i + 1] = string.format('%i', ping_history[player.game_object_id][1])
+    widget.content["min_ping_text_" .. i + 1] = string.format('%i', math.min(unpack(ping_history[player.game_object_id])))
+    widget.content["max_ping_text_" .. i + 1] = string.format('%i', math.max(unpack(ping_history[player.game_object_id])))
+    widget.content["avg_ping_text_" .. i + 1] = string.format('%i', avg(ping_history[player.game_object_id]))
   end
 end
 
@@ -127,6 +123,7 @@ mod.update = function (dt)
   if not mod.netstatui then
     mod.netstatui = NetStatUI:new()
   end
+
   mod.netstatui:update()
   mod.netstatui:draw(dt)
 end

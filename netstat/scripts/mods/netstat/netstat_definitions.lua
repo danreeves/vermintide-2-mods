@@ -141,6 +141,9 @@ local widget_definition = create_widgets({
       name = "avg_title",
       content = "avg"
     },
+    content_check_function = function(content)
+      return content.show_player_1 or content.show_player_2 or content.show_player_3 or content.show_player_4
+    end
   },
   create_row(1),
   create_row(2),
