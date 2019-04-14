@@ -1,5 +1,5 @@
 return {
   mod_description = {
-    en = "netstat description",
+    en = "Displays ping information for the connected players",
   },
 }
