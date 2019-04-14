@@ -1,0 +1,11 @@
+mod = [
+	"netstat"
+]
+
+package = [
+	"resource_packages/netstat/netstat"
+]
+
+lua = [
+	"scripts/mods/netstat/*"
+]
