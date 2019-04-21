@@ -1,0 +1,11 @@
+mod = [
+	"super-vortex"
+]
+
+package = [
+	"resource_packages/super-vortex/super-vortex"
+]
+
+lua = [
+	"scripts/mods/super-vortex/*"
+]
