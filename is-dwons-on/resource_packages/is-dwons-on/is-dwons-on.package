@@ -1,0 +1,11 @@
+mod = [
+	"is-dwons-on"
+]
+
+package = [
+	"resource_packages/is-dwons-on/is-dwons-on"
+]
+
+lua = [
+	"scripts/mods/is-dwons-on/*"
+]
