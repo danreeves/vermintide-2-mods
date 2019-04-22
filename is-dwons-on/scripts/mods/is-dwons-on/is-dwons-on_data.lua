@@ -18,6 +18,12 @@ return {
         default_value = -400,
         range = { -540, 540 },
       },
+      {
+        setting_id = "font_size",
+        type = "numeric",
+        default_value = 32,
+        range = { 0, 160 },
+      },
     }
   }
 }

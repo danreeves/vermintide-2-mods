@@ -52,6 +52,7 @@ function IsDwonsOn:update()
     self:create_ui()
     self.ui_widget.style.mod_text.offset[1] = mod:get("x")
     self.ui_widget.style.mod_text.offset[2] = mod:get("y")
+    self.ui_widget.style.mod_text.font_size = mod:get("font_size")
   end
 
   local dw_active, ons_active = mod:get_status()
@@ -81,4 +82,32 @@ mod:hook_safe(IngameHud, "update", function(self, dt , t)
   end
   self._mod_ui:update()
   self._mod_ui:draw(dt)
+end)
+
+-- COMMANDS
+mod.active = false
+mod:command("dwons", "Toggle Deathwish & Onslaught. Must be host and in the keep.", function()
+  mod.active = not mod.active
+
+  if not deathwish_mod then
+    mod:chat_broadcast("SKIPPING. Deathwish is not installed.")
+  else
+    local deathwish = deathwish_mod:persistent_table("Deathwish")
+    if deathwish.active ~= mod.active then
+      deathwish.toggle()
+    else
+      mod:chat_broadcast(string.format("Deathwish already %s.", mod.active and "ENABLED" or "DISABLED"))
+    end
+  end
+
+  if not onslaught_mod then
+    mod:chat_broadcast("SKIPPING. Onslaught is not installed.")
+  else
+    local onslaught = onslaught_mod:persistent_table("Onslaught")
+    if onslaught.active ~= mod.active then
+      onslaught.toggle()
+    else
+      mod:chat_broadcast(string.format("Onslaught already %s.", mod.active and "ENABLED" or "DISABLED"))
+    end
+  end
 end)
