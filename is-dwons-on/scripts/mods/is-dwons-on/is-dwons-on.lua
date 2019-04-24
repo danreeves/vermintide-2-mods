@@ -32,6 +32,9 @@ function mod:is_at_inn()
   return game_mode:game_mode_key() == "inn"
 end
 
+function mod:is_server()
+  return Managers.player.is_server
+end
 
 local IsDwonsOn = mod:persistent_table("IsDwonsOn_class", class())
 

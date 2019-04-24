@@ -25,7 +25,7 @@ local widget_definition = {
         text_id = "mod_text",
         retained_mode = false,
         content_check_function = function(content)
-          return mod:is_at_inn()
+          return mod:is_at_inn() and mod:is_server()
         end
       },
     },
