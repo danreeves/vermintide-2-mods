@@ -13,6 +13,11 @@ end
 function mod:get_status()
   local dw_enabled = false
   local ons_enabled = false
+
+  if not Managers.player.is_server and mod.rpc_state.host_synced then
+    return mod.rpc_state.dw_enabled, mod.rpc_state.ons_enabled
+  end
+
   if deathwish_mod then
     local deathwish = deathwish_mod:persistent_table("Deathwish")
     dw_enabled = deathwish.active and true or false
@@ -32,8 +37,8 @@ function mod:is_at_inn()
   return game_mode:game_mode_key() == "inn"
 end
 
-function mod:is_server()
-  return Managers.player.is_server
+function mod:is_host_or_host_synced()
+  return Managers.player.is_server or mod.rpc_state.host_synced
 end
 
 local IsDwonsOn = mod:persistent_table("IsDwonsOn_class", class())
@@ -48,29 +53,33 @@ function IsDwonsOn:create_ui()
   local scenegraph_definition = definitions.create_scenegraph_definition(mod:get("x"), mod:get("y"))
   self.ui_scenegraph = UISceneGraph.init_scenegraph(scenegraph_definition)
   self.ui_widget = UIWidget.init(definitions.widget_definition)
+  self:update_style()
   DO_RELOAD = false
+end
+
+function IsDwonsOn:update_style()
+  local font_size = mod:get("font_size")
+  self.ui_widget.style.dw_text.font_size = font_size
+  self.ui_widget.style.ons_text.font_size = font_size
+
+  if mod:get("align_vertically") then
+    local horizontal_alignment = mod:get("horizontal_alignment")
+    self.ui_widget.style.dw_text.vertical_alignment = "bottom"
+    self.ui_widget.style.ons_text.vertical_alignment = "top"
+    self.ui_widget.style.dw_text.horizontal_alignment = horizontal_alignment
+    self.ui_widget.style.ons_text.horizontal_alignment = horizontal_alignment
+  else
+    self.ui_widget.style.dw_text.offset[1] = -(font_size / 4)
+    self.ui_widget.style.ons_text.offset[1] = font_size / 4
+    self.ui_widget.style.dw_text.vertical_alignment = "center"
+    self.ui_widget.style.ons_text.vertical_alignment = "center"
+  end
 end
 
 function IsDwonsOn:update()
   if DO_RELOAD then
     self:create_ui()
-    local font_size = mod:get("font_size")
-    self.ui_widget.style.dw_text.font_size = font_size
-    self.ui_widget.style.ons_text.font_size = font_size
-
-    if mod:get("align_vertically") then
-      local horizontal_alignment = mod:get("horizontal_alignment")
-      self.ui_widget.style.dw_text.vertical_alignment = "bottom"
-      self.ui_widget.style.ons_text.vertical_alignment = "top"
-      self.ui_widget.style.dw_text.horizontal_alignment = horizontal_alignment
-      self.ui_widget.style.ons_text.horizontal_alignment = horizontal_alignment
-    else
-      self.ui_widget.style.dw_text.offset[1] = -(font_size / 4)
-      self.ui_widget.style.ons_text.offset[1] = font_size / 4
-      self.ui_widget.style.dw_text.vertical_alignment = "center"
-      self.ui_widget.style.ons_text.vertical_alignment = "center"
-    end
-
+    self:update_style()
   end
 
   local dw_active, ons_active = mod:get_status()
@@ -104,18 +113,18 @@ mod:hook_safe(IngameHud, "update", function(self, dt , t)
 end)
 
 -- COMMANDS
-mod.active = false
+mod.dwons_active = false
 mod:command("dwons", "Toggle Deathwish & Onslaught. Must be host and in the keep.", function()
-  mod.active = not mod.active
+  mod.dwons_active = not mod.dwons_active
 
   if not deathwish_mod then
     mod:chat_broadcast("SKIPPING. Deathwish is not installed.")
   else
     local deathwish = deathwish_mod:persistent_table("Deathwish")
-    if deathwish.active ~= mod.active then
+    if deathwish.active ~= mod.dwons_active then
       deathwish.toggle()
     else
-      mod:chat_broadcast(string.format("Deathwish already %s.", mod.active and "ENABLED" or "DISABLED"))
+      mod:chat_broadcast(string.format("Deathwish already %s.", mod.dwons_active and "ENABLED" or "DISABLED"))
     end
   end
 
@@ -123,10 +132,84 @@ mod:command("dwons", "Toggle Deathwish & Onslaught. Must be host and in the keep
     mod:chat_broadcast("SKIPPING. Onslaught is not installed.")
   else
     local onslaught = onslaught_mod:persistent_table("Onslaught")
-    if onslaught.active ~= mod.active then
+    if onslaught.active ~= mod.dwons_active then
       onslaught.toggle()
     else
-      mod:chat_broadcast(string.format("Onslaught already %s.", mod.active and "ENABLED" or "DISABLED"))
+      mod:chat_broadcast(string.format("Onslaught already %s.", mod.dwons_active and "ENABLED" or "DISABLED"))
     end
   end
+
+  mod:sync_state()
 end)
+
+-- RPC State
+mod.rpc_state = {
+  dw_enabled = false,
+  ons_enabled = false,
+  host_synced = false
+}
+
+mod:network_register("dwons_state_sync", function(sender, data)
+  mod.rpc_state.host_synced = true
+  mod.rpc_state.dw_enabled = data.dw_enabled
+  mod.rpc_state.ons_enabled = data.ons_enabled
+end)
+
+function mod:on_user_joined()
+  mod:sync_state()
+end
+
+function mod:on_game_state_changed(status, state)
+  if status == "enter" and state == "StateIngame" then
+    if Managers.player.is_server then
+      mod.rpc_state = {
+        ons_enabled = false,
+        dw_enabled = false,
+        host_synced = false
+      }
+      mod:sync_state()
+    end
+  end
+end
+
+function mod:sync_state()
+  local dw_enabled, ons_enabled = mod:get_status()
+  mod:network_send("dwons_state_sync", "others", {
+    dw_enabled = dw_enabled,
+    ons_enabled = ons_enabled
+  })
+end
+
+local function hook_mods()
+  if deathwish_mod then
+    local deathwish = deathwish_mod:persistent_table("Deathwish")
+    mod:hook_safe(deathwish, "start", mod.sync_state)
+    mod:hook_safe(deathwish, "stop", mod.sync_state)
+  end
+  if onslaught_mod then
+    local onslaught = onslaught_mod:persistent_table("Onslaught")
+    mod:hook_safe(onslaught, "start", mod.sync_state)
+    mod:hook_safe(onslaught, "stop", mod.sync_state)
+  end
+end
+
+local function unhook_mods()
+  if deathwish_mod then
+    local deathwish = deathwish_mod:persistent_table("Deathwish")
+    mod:hook_disable(deathwish, "start")
+    mod:hook_disable(deathwish, "stop")
+  end
+  if onslaught_mod then
+    local onslaught = onslaught_mod:persistent_table("Onslaught")
+    mod:hook_disable(onslaught, "start")
+    mod:hook_disable(onslaught, "stop")
+  end
+end
+
+function mod:on_all_mods_loaded()
+  hook_mods()
+end
+
+function mod:on_unload()
+  unhook_mods()
+end

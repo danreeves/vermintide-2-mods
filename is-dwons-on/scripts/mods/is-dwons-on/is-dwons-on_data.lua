@@ -22,7 +22,7 @@ return {
         setting_id = "font_size",
         type = "numeric",
         default_value = 32,
-        range = { 0, 160 },
+        range = { 0, 360 },
       },
       {
         setting_id = "align_vertically",
@@ -36,6 +36,7 @@ return {
             options = {
               { text = "left" , value = "left" },
               { text = "right", value = "right" },
+              { text = "center", value = "center" },
             }
           }
         }

@@ -23,4 +23,7 @@ return {
   right = {
     en = "Right",
   },
+  center = {
+    en = "Center"
+  }
 }
