@@ -24,6 +24,22 @@ return {
         default_value = 32,
         range = { 0, 160 },
       },
+      {
+        setting_id = "align_vertically",
+        type = "checkbox",
+        default_value = false,
+        sub_widgets = {
+          {
+            setting_id = "horizontal_alignment",
+            type = "dropdown",
+            default_value = "left",
+            options = {
+              { text = "left" , value = "left" },
+              { text = "right", value = "right" },
+            }
+          }
+        }
+      }
     }
   }
 }

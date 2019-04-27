@@ -11,4 +11,16 @@ return {
   font_size = {
     en = "Font size",
   },
+  align_vertically = {
+    en = "Align vertically",
+  },
+  horizontal_alignment = {
+    en = "Horizontal alignment",
+  },
+  left = {
+    en = "Left",
+  },
+  right = {
+    en = "Right",
+  },
 }

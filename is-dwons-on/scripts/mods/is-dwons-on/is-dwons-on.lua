@@ -45,7 +45,8 @@ function IsDwonsOn:init(ingame_ui_context)
 end
 
 function IsDwonsOn:create_ui()
-  self.ui_scenegraph = UISceneGraph.init_scenegraph(definitions.scenegraph_definition)
+  local scenegraph_definition = definitions.create_scenegraph_definition(mod:get("x"), mod:get("y"))
+  self.ui_scenegraph = UISceneGraph.init_scenegraph(scenegraph_definition)
   self.ui_widget = UIWidget.init(definitions.widget_definition)
   DO_RELOAD = false
 end
@@ -53,13 +54,28 @@ end
 function IsDwonsOn:update()
   if DO_RELOAD then
     self:create_ui()
-    self.ui_widget.style.mod_text.offset[1] = mod:get("x")
-    self.ui_widget.style.mod_text.offset[2] = mod:get("y")
-    self.ui_widget.style.mod_text.font_size = mod:get("font_size")
+    local font_size = mod:get("font_size")
+    self.ui_widget.style.dw_text.font_size = font_size
+    self.ui_widget.style.ons_text.font_size = font_size
+
+    if mod:get("align_vertically") then
+      local horizontal_alignment = mod:get("horizontal_alignment")
+      self.ui_widget.style.dw_text.vertical_alignment = "bottom"
+      self.ui_widget.style.ons_text.vertical_alignment = "top"
+      self.ui_widget.style.dw_text.horizontal_alignment = horizontal_alignment
+      self.ui_widget.style.ons_text.horizontal_alignment = horizontal_alignment
+    else
+      self.ui_widget.style.dw_text.offset[1] = -(font_size / 4)
+      self.ui_widget.style.ons_text.offset[1] = font_size / 4
+      self.ui_widget.style.dw_text.vertical_alignment = "center"
+      self.ui_widget.style.ons_text.vertical_alignment = "center"
+    end
+
   end
 
   local dw_active, ons_active = mod:get_status()
-  self.ui_widget.content.mod_text = string.format("Deathwish: %s Onslaught: %s", dw_active, ons_active)
+  self.ui_widget.content.dw_text = string.format("Deathwish: %s", dw_active)
+  self.ui_widget.content.ons_text = string.format("Onslaught: %s", ons_active)
 end
 
 function IsDwonsOn:draw(dt)
