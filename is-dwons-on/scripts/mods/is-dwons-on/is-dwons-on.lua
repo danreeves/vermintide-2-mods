@@ -1,7 +1,5 @@
 local mod = get_mod("is-dwons-on")
 local definitions = mod:dofile("scripts/mods/is-dwons-on/is-dwons-on_definitions")
-local deathwish_mod = get_mod("Deathwish")
-local onslaught_mod = get_mod("Onslaught")
 
 -- Reload the UI when mods are reloaded or a setting is changed.
 local DO_RELOAD = true
@@ -11,6 +9,8 @@ function mod:on_setting_changed()
 end
 
 function mod:get_status()
+  local deathwish_mod = get_mod("Deathwish")
+  local onslaught_mod = get_mod("Onslaught")
   local dw_enabled = false
   local ons_enabled = false
 
@@ -115,6 +115,8 @@ end)
 -- COMMANDS
 mod.dwons_active = false
 mod:command("dwons", "Toggle Deathwish & Onslaught. Must be host and in the keep.", function()
+  local deathwish_mod = get_mod("Deathwish")
+  local onslaught_mod = get_mod("Onslaught")
   mod.dwons_active = not mod.dwons_active
 
   if not deathwish_mod then
@@ -181,6 +183,9 @@ function mod:sync_state()
 end
 
 local function hook_mods()
+  local deathwish_mod = get_mod("Deathwish")
+  local onslaught_mod = get_mod("Onslaught")
+
   if deathwish_mod then
     local deathwish = deathwish_mod:persistent_table("Deathwish")
     mod:hook_safe(deathwish, "start", mod.sync_state)
@@ -194,6 +199,8 @@ local function hook_mods()
 end
 
 local function unhook_mods()
+  local deathwish_mod = get_mod("Deathwish")
+  local onslaught_mod = get_mod("Onslaught")
   if deathwish_mod then
     local deathwish = deathwish_mod:persistent_table("Deathwish")
     mod:hook_disable(deathwish, "start")
@@ -213,3 +220,35 @@ end
 function mod:on_unload()
   unhook_mods()
 end
+
+function mod:is_spawn_tweaks_customized()
+  local spawn_tweaks = get_mod("SpawnTweaks")
+
+  local are_hordes_customized = spawn_tweaks:get(spawn_tweaks.SETTING_NAMES.HORDES) ~= spawn_tweaks.HORDES.DEFAULT
+  local are_bosses_customized = spawn_tweaks:get(spawn_tweaks.SETTING_NAMES.BOSSES) ~= spawn_tweaks.BOSSES.DEFAULT
+  local are_ambients_customized = spawn_tweaks:get(spawn_tweaks.SETTING_NAMES.AMBIENTS) ~= spawn_tweaks.AMBIENTS.DEFAULT
+  local are_specials_customized = spawn_tweaks:get(spawn_tweaks.SETTING_NAMES.SPECIALS) ~= spawn_tweaks.SPECIALS.DEFAULT
+
+  return {
+    Hordes = are_hordes_customized,
+    Bosses = are_bosses_customized,
+    Ambients = are_ambients_customized,
+    Specials = are_specials_customized,
+  }
+end
+
+mod:hook_safe(MatchmakingStateHostGame, "on_enter", function()
+  local dw_enabled, ons_enable = mod:get_status()
+  if dw_enabled or ons_enabled then
+    local spawn_tweaks_settings = mod:is_spawn_tweaks_customized()
+    local spawn_tweaks_customized = table.contains(spawn_tweaks_settings, true)
+    if spawn_tweaks_customized then
+      mod:chat_broadcast("NOTE: Some Spawn Tweaks settings are enabled")
+      for kind, state in pairs(spawn_tweaks_settings) do
+        if state then
+          mod:chat_broadcast(string.format("%s are customized", kind))
+        end
+      end
+    end
+  end
+end)
