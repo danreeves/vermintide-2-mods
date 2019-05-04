@@ -3,12 +3,13 @@ local definitions = mod:dofile("scripts/mods/is-dwons-on/is-dwons-on_definitions
 
 -- Reload the UI when mods are reloaded or a setting is changed.
 local DO_RELOAD = true
+Boot._dwons_booted = false
 
-function mod:on_setting_changed()
+function mod.on_setting_changed()
   DO_RELOAD = true
 end
 
-function mod:get_status()
+function mod.get_status()
   local deathwish_mod = get_mod("Deathwish")
   local onslaught_mod = get_mod("Onslaught")
   local dw_enabled = false
@@ -31,13 +32,13 @@ end
 
 -- Are we currently loaded at the inn?
 -- from Zaphio
-function mod:is_at_inn()
+function mod.is_at_inn()
   local game_mode = Managers.state.game_mode
   if not game_mode then return nil end
   return game_mode:game_mode_key() == "inn"
 end
 
-function mod:is_host_or_host_synced()
+function mod.is_host_or_host_synced()
   return Managers.player.is_server or mod.rpc_state.host_synced
 end
 
@@ -82,7 +83,7 @@ function IsDwonsOn:update()
     self:update_style()
   end
 
-  local dw_active, ons_active = mod:get_status()
+  local dw_active, ons_active = mod.get_status()
   self.ui_widget.content.dw_text = string.format("Deathwish: %s", dw_active)
   self.ui_widget.content.ons_text = string.format("Onslaught: %s", ons_active)
 end
@@ -114,7 +115,7 @@ end)
 
 -- COMMANDS
 mod.dwons_active = false
-mod:command("dwons", "Toggle Deathwish & Onslaught. Must be host and in the keep.", function()
+function mod.toggle()
   local deathwish_mod = get_mod("Deathwish")
   local onslaught_mod = get_mod("Onslaught")
   mod.dwons_active = not mod.dwons_active
@@ -141,8 +142,9 @@ mod:command("dwons", "Toggle Deathwish & Onslaught. Must be host and in the keep
     end
   end
 
-  mod:sync_state()
-end)
+  mod.sync_state()
+end
+mod:command("dwons", "Toggle Deathwish & Onslaught. Must be host and in the keep.", mod.toggle)
 
 -- RPC State
 mod.rpc_state = {
@@ -157,11 +159,11 @@ mod:network_register("dwons_state_sync", function(sender, data)
   mod.rpc_state.ons_enabled = data.ons_enabled
 end)
 
-function mod:on_user_joined()
-  mod:sync_state()
+function mod.on_user_joined()
+  mod.sync_state()
 end
 
-function mod:on_game_state_changed(status, state)
+function mod.on_game_state_changed(status, state)
   if status == "enter" and state == "StateIngame" then
     if Managers.player.is_server then
       mod.rpc_state = {
@@ -169,13 +171,19 @@ function mod:on_game_state_changed(status, state)
         dw_enabled = false,
         host_synced = false
       }
-      mod:sync_state()
+
+      if mod:get("enable_on_boot") and not Boot._dwons_booted then
+        mod.toggle()
+        Boot._dwons_booted = true
+      end
+
+      mod.sync_state()
     end
   end
 end
 
-function mod:sync_state()
-  local dw_enabled, ons_enabled = mod:get_status()
+function mod.sync_state()
+  local dw_enabled, ons_enabled = mod.get_status()
   mod:network_send("dwons_state_sync", "others", {
     dw_enabled = dw_enabled,
     ons_enabled = ons_enabled
@@ -213,15 +221,15 @@ local function unhook_mods()
   end
 end
 
-function mod:on_all_mods_loaded()
+function mod.on_all_mods_loaded()
   hook_mods()
 end
 
-function mod:on_unload()
+function mod.on_unload()
   unhook_mods()
 end
 
-function mod:is_spawn_tweaks_customized()
+function mod.is_spawn_tweaks_customized()
   local spawn_tweaks = get_mod("SpawnTweaks")
 
   if not spawn_tweaks or not spawn_tweaks:is_enabled() then
@@ -242,9 +250,9 @@ function mod:is_spawn_tweaks_customized()
 end
 
 mod:hook_safe(MatchmakingStateHostGame, "on_enter", function()
-  local dw_enabled, ons_enable = mod:get_status()
+  local dw_enabled, ons_enable = mod.get_status()
   if dw_enabled or ons_enabled then
-    local spawn_tweaks_settings = mod:is_spawn_tweaks_customized()
+    local spawn_tweaks_settings = mod.is_spawn_tweaks_customized()
     local spawn_tweaks_customized = table.contains(spawn_tweaks_settings, true)
     if spawn_tweaks_customized then
       mod:chat_broadcast("NOTE: Some Spawn Tweaks settings are enabled")

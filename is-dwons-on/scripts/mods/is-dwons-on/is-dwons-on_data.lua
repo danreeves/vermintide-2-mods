@@ -37,10 +37,15 @@ return {
               { text = "left" , value = "left" },
               { text = "right", value = "right" },
               { text = "center", value = "center" },
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
+      {
+        setting_id = "enable_on_boot",
+        type =  "checkbox",
+        default_value = false,
+      },
     }
   }
 }

@@ -25,5 +25,11 @@ return {
   },
   center = {
     en = "Center"
+  },
+  enable_on_boot = {
+    en = "Enable on boot",
+  },
+  enable_on_boot_description = {
+    en = "Will enable Deathwish and Onslaught when you first boot into the game"
   }
 }
