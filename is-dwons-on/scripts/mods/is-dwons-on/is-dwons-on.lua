@@ -224,6 +224,10 @@ end
 function mod:is_spawn_tweaks_customized()
   local spawn_tweaks = get_mod("SpawnTweaks")
 
+  if not spawn_tweaks then
+    return {}
+  end
+
   local are_hordes_customized = spawn_tweaks:get(spawn_tweaks.SETTING_NAMES.HORDES) ~= spawn_tweaks.HORDES.DEFAULT
   local are_bosses_customized = spawn_tweaks:get(spawn_tweaks.SETTING_NAMES.BOSSES) ~= spawn_tweaks.BOSSES.DEFAULT
   local are_ambients_customized = spawn_tweaks:get(spawn_tweaks.SETTING_NAMES.AMBIENTS) ~= spawn_tweaks.AMBIENTS.DEFAULT
