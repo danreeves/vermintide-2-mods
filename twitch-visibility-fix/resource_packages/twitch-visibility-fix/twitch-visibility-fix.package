@@ -1,0 +1,11 @@
+mod = [
+	"twitch-visibility-fix"
+]
+
+package = [
+	"resource_packages/twitch-visibility-fix/twitch-visibility-fix"
+]
+
+lua = [
+	"scripts/mods/twitch-visibility-fix/*"
+]
