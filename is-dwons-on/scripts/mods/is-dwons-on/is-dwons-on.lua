@@ -224,7 +224,7 @@ end
 function mod:is_spawn_tweaks_customized()
   local spawn_tweaks = get_mod("SpawnTweaks")
 
-  if not spawn_tweaks then
+  if not spawn_tweaks or not spawn_tweaks:is_enabled() then
     return {}
   end
 
