@@ -22,48 +22,21 @@ return {
         "materials/mods/custom-frames/frames_point_sample",
         "materials/mods/custom-frames/frames_point_sample_masked",
       },
+    },
+  },
+  options = {
+    widgets = {
       {
-        "ingame_hud",
-        "materials/mods/custom-frames/frames",
-        "materials/mods/custom-frames/frames_masked",
-        "materials/mods/custom-frames/frames_point_sample",
-        "materials/mods/custom-frames/frames_point_sample_masked",
+        setting_id = "frame",
+        type = "dropdown",
+        default_value = "",
+        options = {
+          { text = "None", value = "" },
+          { text = "Warpfire by Mio", value = "warpfire" },
+          { text = "Storm Vermin by Mio", value = "stormvermin" },
+          { text = "Nurgle by Mio", value = "nurgle" },
+        },
       },
-      {
-        "ui_renderer",
-        "materials/mods/custom-frames/frames",
-        "materials/mods/custom-frames/frames_masked",
-        "materials/mods/custom-frames/frames_point_sample",
-        "materials/mods/custom-frames/frames_point_sample_masked",
-      },
-      {
-        "ui_passes",
-        "materials/mods/custom-frames/frames",
-        "materials/mods/custom-frames/frames_masked",
-        "materials/mods/custom-frames/frames_point_sample",
-        "materials/mods/custom-frames/frames_point_sample_masked",
-      },
-      {
-        "unit_frame_ui",
-        "materials/mods/custom-frames/frames",
-        "materials/mods/custom-frames/frames_masked",
-        "materials/mods/custom-frames/frames_point_sample",
-        "materials/mods/custom-frames/frames_point_sample_masked",
-      },
-      {
-        "unit_frames_handler",
-        "materials/mods/custom-frames/frames",
-        "materials/mods/custom-frames/frames_masked",
-        "materials/mods/custom-frames/frames_point_sample",
-        "materials/mods/custom-frames/frames_point_sample_masked",
-      },
-      {
-        "loading_view",
-        "materials/mods/custom-frames/frames",
-        "materials/mods/custom-frames/frames_masked",
-        "materials/mods/custom-frames/frames_point_sample",
-        "materials/mods/custom-frames/frames_point_sample_masked",
-      },
-    }
-  }
+    },
+  },
 }
