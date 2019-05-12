@@ -7,14 +7,62 @@ return {
   custom_gui_textures = {
     atlases = {
       {
-        "materials/mods/custom-frames/frames_atlas",
         "materials/mods/custom-frames/frames",
+        "frames",
+        "frames_masked",
+        "frames_point_sample",
+        "frames_point_sample_masked",
       },
     },
     ui_renderer_injections = {
       {
         "ingame_ui",
         "materials/mods/custom-frames/frames",
+        "materials/mods/custom-frames/frames_masked",
+        "materials/mods/custom-frames/frames_point_sample",
+        "materials/mods/custom-frames/frames_point_sample_masked",
+      },
+      {
+        "ingame_hud",
+        "materials/mods/custom-frames/frames",
+        "materials/mods/custom-frames/frames_masked",
+        "materials/mods/custom-frames/frames_point_sample",
+        "materials/mods/custom-frames/frames_point_sample_masked",
+      },
+      {
+        "ui_renderer",
+        "materials/mods/custom-frames/frames",
+        "materials/mods/custom-frames/frames_masked",
+        "materials/mods/custom-frames/frames_point_sample",
+        "materials/mods/custom-frames/frames_point_sample_masked",
+      },
+      {
+        "ui_passes",
+        "materials/mods/custom-frames/frames",
+        "materials/mods/custom-frames/frames_masked",
+        "materials/mods/custom-frames/frames_point_sample",
+        "materials/mods/custom-frames/frames_point_sample_masked",
+      },
+      {
+        "unit_frame_ui",
+        "materials/mods/custom-frames/frames",
+        "materials/mods/custom-frames/frames_masked",
+        "materials/mods/custom-frames/frames_point_sample",
+        "materials/mods/custom-frames/frames_point_sample_masked",
+      },
+      {
+        "unit_frames_handler",
+        "materials/mods/custom-frames/frames",
+        "materials/mods/custom-frames/frames_masked",
+        "materials/mods/custom-frames/frames_point_sample",
+        "materials/mods/custom-frames/frames_point_sample_masked",
+      },
+      {
+        "loading_view",
+        "materials/mods/custom-frames/frames",
+        "materials/mods/custom-frames/frames_masked",
+        "materials/mods/custom-frames/frames_point_sample",
+        "materials/mods/custom-frames/frames_point_sample_masked",
       },
     }
   }

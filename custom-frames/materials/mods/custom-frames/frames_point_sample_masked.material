@@ -1,0 +1,11 @@
+frames_point_sample_masked = {
+  material_contexts = {
+    surface_material = ""
+  }
+
+  shader = "gui:DIFFUSE_MAP"
+
+    textures = {
+      diffuse_map = "textures/mods/custom-frames/frames"
+    }
+}
