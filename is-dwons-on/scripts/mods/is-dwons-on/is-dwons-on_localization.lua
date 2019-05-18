@@ -1,6 +1,6 @@
 return {
   mod_description = {
-    en = "Tells you whether Deathwish or Onslaught are enabled while in the keep. /dwons to toggle both.",
+    en = "A collection of Quality of Life utilities for DwOns",
   },
   x = {
     en = "X axis position",

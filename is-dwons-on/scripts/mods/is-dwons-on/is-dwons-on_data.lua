@@ -1,7 +1,7 @@
 local mod = get_mod("is-dwons-on")
 
 return {
-  name = "Is dwons enabled?",
+  name = "DwOns QoL",
   description = mod:localize("mod_description"),
   is_togglable = true,
   options = {

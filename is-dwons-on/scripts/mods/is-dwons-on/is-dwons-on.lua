@@ -174,6 +174,7 @@ function mod.on_game_state_changed(status, state)
 
       if mod:get("enable_on_boot") and not Boot._dwons_booted then
         mod.toggle()
+        mod.dwons_active = true
         Boot._dwons_booted = true
       end
 
