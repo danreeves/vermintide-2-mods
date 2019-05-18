@@ -22,6 +22,13 @@ return {
         "materials/mods/custom-frames/frames_point_sample",
         "materials/mods/custom-frames/frames_point_sample_masked",
       },
+      {
+        "level_end_view_wrapper",
+        "materials/mods/custom-frames/frames",
+        "materials/mods/custom-frames/frames_masked",
+        "materials/mods/custom-frames/frames_point_sample",
+        "materials/mods/custom-frames/frames_point_sample_masked",
+      },
     },
   },
   options = {
@@ -35,6 +42,7 @@ return {
           { text = "Warpfire by Mio", value = "warpfire" },
           { text = "Storm Vermin by Mio", value = "stormvermin" },
           { text = "Nurgle by Mio", value = "nurgle" },
+          { text = "Sadcat by Ivyoary", value = "ivyoary" },
         },
       },
     },

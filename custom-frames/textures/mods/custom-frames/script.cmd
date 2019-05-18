@@ -1,1 +1,1 @@
-convert +append warpfire.png stormvermin.png nurgle.png frames.png
+convert +append warpfire.png stormvermin.png nurgle.png ivyoary.png frames.png
