@@ -1,0 +1,11 @@
+mod = [
+	"dadjokes"
+]
+
+package = [
+	"resource_packages/dadjokes/dadjokes"
+]
+
+lua = [
+	"scripts/mods/dadjokes/*"
+]
