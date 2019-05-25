@@ -1,8 +1,12 @@
 local mod = get_mod("dadjokes")
 
 local function handle_response(success, status_code, response_headers, data)
-  local data = cjson.decode(data)
-  mod:chat_broadcast(data.joke)
+  if success then
+    local data = cjson.decode(data)
+    mod:chat_broadcast(data.joke)
+  else
+    mod:echo("404: No jokes found (sorry the request failed)")
+  end
 end
 
 mod:command('dadjoke', "Get a random dad joke", function()
