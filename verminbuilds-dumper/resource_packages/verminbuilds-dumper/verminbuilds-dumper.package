@@ -1,0 +1,11 @@
+mod = [
+	"verminbuilds-dumper"
+]
+
+package = [
+	"resource_packages/verminbuilds-dumper/verminbuilds-dumper"
+]
+
+lua = [
+	"scripts/mods/verminbuilds-dumper/*"
+]
