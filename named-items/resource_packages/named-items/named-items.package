@@ -1,0 +1,11 @@
+mod = [
+	"named-items"
+]
+
+package = [
+	"resource_packages/named-items/named-items"
+]
+
+lua = [
+	"scripts/mods/named-items/*"
+]
