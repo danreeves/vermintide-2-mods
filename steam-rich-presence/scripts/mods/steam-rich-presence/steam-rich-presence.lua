@@ -9,6 +9,21 @@ local function lobby_level(lobby_data)
 end
 
 local function lobby_difficulty(lobby_data)
+  local dw_enabled, ons_enabled = false, false
+  local dwons_qol = get_mod("is-dwons-on")
+  if dwons_qol then
+    dw_enabled, ons_enabled = dwons_qol.get_status()
+  end
+
+  if dw_enabled or ons_enabled then
+    return string.format(
+      "%s%s%s",
+      dw_enabled and "Deathwish" or "",
+      dw_enabled and ons_enabled and " " or "",
+      ons_enabled and "Onslaught" or ""
+    )
+  end
+
   local diff = lobby_data.difficulty
   local diff_setting = diff and DifficultySettings[diff]
   local diff_display_name = diff_setting and diff_setting.display_name
@@ -67,6 +82,10 @@ function mod.on_game_state_changed()
 end
 
 mod:hook_safe(PlayerManager, "add_player", function()
+  mod.update_presence()
+end)
+
+mod:hook_safe(PlayerManager, "add_remote_player", function()
   mod.update_presence()
 end)
 
