@@ -1,0 +1,11 @@
+mod = [
+	"steam-rich-presence"
+]
+
+package = [
+	"resource_packages/steam-rich-presence/steam-rich-presence"
+]
+
+lua = [
+	"scripts/mods/steam-rich-presence/*"
+]
