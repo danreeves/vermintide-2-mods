@@ -86,13 +86,16 @@ mod:command("dump", "dump all the data for verminbuilds", function()
   mod:echo("--- Items ---")
 
   local items = {}
-  for _, item in pairs(ItemMasterList) do
-    if item.item_type and item.slot_type and item.can_wield then
-      items[item.item_type] = {
-        slot_type = item.slot_type,
-        item_type = item.item_type,
-        can_wield = item.can_wield,
-      }
+  for key, item in pairs(ItemMasterList) do
+    if item.item_type and item.can_wield then
+      local slot_whitelist =  { melee = true , ranged = true, necklace = true, ring = true, trinket = true }
+      if slot_whitelist[item.slot_type] then
+        items[key] = {
+          slot_type = item.slot_type,
+          item_type = item.item_type,
+          can_wield = item.can_wield,
+        }
+      end
     end
   end
 
