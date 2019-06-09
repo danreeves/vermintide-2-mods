@@ -1,6 +1,6 @@
 local mod = get_mod("verminbuilds-dumper")
 
-local locales = {"en",}-- "fr", "de", "it", "pl", "br-pt", "ru", "es", "zh"}
+local locale_code = Application.user_setting("language_id")
 local out_dir = "C:\\dev\\"
 
 mod:command("outdir", "set the output director for dumping, defaults to C:\\dev\\", function(path)
@@ -14,21 +14,38 @@ local function write(filename, contents)
   file:close()
 end
 
-local function get_localisation_data(language_id, data)
-  local profiles_complete = {}
+local function get_localisation_data(data)
   local strings = {}
 
-  for _, character in pairs(data.characters) do
-    if not profiles_complete[character.profile_name] then
-      mod:echo("Generating strings for: %s", character.profile_name)
-      strings[character.display_name] = Localize(character.display_name)
-      strings[character.description] = Localize(character.description)
-      for _, talent in ipairs(data.talents[character.profile_name]) do
-        strings[talent.name] = Localize(talent.name)
-        strings[talent.description] = Localize(talent.description)
-      end
+  local function add (key)
+    strings[key] = Localize(key)
+  end
+
+  for key, character in pairs(data.characters) do
+    add(character.character_name)
+    add(character.ingame_display_name)
+    add(character.ingame_short_display_name)
+  end
+
+  for key, career in pairs(data.careers) do
+    mod:echo("Generating strings for: %s", key)
+    add(career.display_name)
+    add(career.passive_ability.display_name)
+    add(career.passive_ability.description)
+    for _, perk in ipairs(career.passive_ability.perks) do
+      add(perk.display_name)
+      add(perk.description)
     end
-    profiles_complete[character.profile_name] = true
+    add(career.activated_ability.display_name)
+    add(career.activated_ability.description)
+    for _, talent in ipairs(data.talents[career.profile_name]) do
+      add(talent.name)
+      add(talent.description)
+    end
+  end
+
+  for _, item in pairs(data.items) do
+    add(item.item_type)
   end
 
   return strings
@@ -40,8 +57,18 @@ mod:command("dump", "dump all the data for verminbuilds", function()
   mod:echo("--- Character & Talent Data ---")
 
   local characters = {}
+  for _, profile_index in ipairs(ProfilePriority) do
+    local profile = SPProfiles[profile_index]
+    characters[profile.display_name] = {
+      character_name = profile.character_name,
+      ingame_display_name = profile.ingame_display_name,
+      ingame_short_display_name = profile.ingame_short_display_name
+    }
+  end
+
+  local careers = {}
   for name, settings in pairs(CareerSettings) do
-    characters[name] = {
+    careers[name] = {
       profile_name = settings.profile_name,
       display_name = settings.display_name,
       description = settings.description,
@@ -53,21 +80,36 @@ mod:command("dump", "dump all the data for verminbuilds", function()
       portrait_image = settings.portrait_image,
       loadout_equipment_slots = settings.loadout_equipment_slots,
     }
-    characters[name].activated_ability.ability_class = nil
+    careers[name].activated_ability.ability_class = nil
+  end
+
+  mod:echo("--- Items ---")
+
+  local items = {}
+  for _, item in pairs(ItemMasterList) do
+    if item.item_type and item.slot_type and item.can_wield then
+      items[item.item_type] = {
+        slot_type = item.slot_type,
+        item_type = item.item_type,
+        can_wield = item.can_wield,
+      }
+    end
   end
 
   local data = {
     characters = characters,
+    careers = careers,
+    items = items,
     trees = TalentTrees,
-    talents = Talents
+    talents = Talents,
+    num_talent_rows = NumTalentRows,
+    num_talet_columns = NumTalentColumns,
   }
   write('data.json', cjson.encode(data))
 
-  for _, locale in ipairs(locales) do
-    mod:echo("--- %s localisations ---", locale)
-    local strings = get_localisation_data(locale, data)
-    write(string.format("%s.json", locale), cjson.encode(strings))
-  end
+  mod:echo("--- %s localisations ---", locale_code)
+  local strings = get_localisation_data(data)
+  write(string.format("%s.json", locale_code), cjson.encode(strings))
 
   mod:echo("--- Done ---")
 end)
