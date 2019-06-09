@@ -89,12 +89,14 @@ mod:command("dump", "dump all the data for verminbuilds", function()
   for key, item in pairs(ItemMasterList) do
     if item.item_type and item.can_wield then
       local slot_whitelist =  { melee = true , ranged = true, necklace = true, ring = true, trinket = true }
-      if slot_whitelist[item.slot_type] then
-        items[key] = {
-          slot_type = item.slot_type,
-          item_type = item.item_type,
-          can_wield = item.can_wield,
-        }
+      if not string.match(key, "necklace_%d") and not string.match(key, "ring_%d") and not string.match(key, "trinket_%d") then
+        if slot_whitelist[item.slot_type] then
+          items[key] = {
+            slot_type = item.slot_type,
+            item_type = item.item_type,
+            can_wield = item.can_wield,
+          }
+        end
       end
     end
   end
