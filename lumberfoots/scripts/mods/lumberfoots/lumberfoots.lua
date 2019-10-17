@@ -1,14 +1,10 @@
 local mod = get_mod("lumberfoots")
 
-DialogueSettings.auto_load_files = {
-	"dialogues/generated/witch_hunter_honduras",
-	"dialogues/generated/bright_wizard_honduras",
-	"dialogues/generated/dwarf_ranger_honduras",
-	"dialogues/generated/empire_soldier_honduras",
-	"dialogues/generated/special_occasions_honduras",
-    "dialogues/generated/enemies",
-    -- Our custom dialogue file
-    "scripts/mods/lumberfoots/wood_elf_honduras"
-}
-
-return
+mod:hook(WwiseWorld, "trigger_event", function(func, ...)
+  local arg = {...}
+  if string.match(arg[2], "pwe_activate_ability_handmaiden") then
+    arg[2] = "pwe_activate_ability_handmaiden_03"
+    return func(unpack(arg))
+  end
+  return func(...)
+end)
