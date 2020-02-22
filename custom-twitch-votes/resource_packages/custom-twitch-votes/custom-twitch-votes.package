@@ -1,0 +1,11 @@
+mod = [
+	"custom-twitch-votes"
+]
+
+package = [
+	"resource_packages/custom-twitch-votes/custom-twitch-votes"
+]
+
+lua = [
+	"scripts/mods/custom-twitch-votes/*"
+]
