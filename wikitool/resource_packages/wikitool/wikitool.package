@@ -1,0 +1,11 @@
+mod = [
+	"wikitool"
+]
+
+package = [
+	"resource_packages/wikitool/wikitool"
+]
+
+lua = [
+	"scripts/mods/wikitool/*"
+]
