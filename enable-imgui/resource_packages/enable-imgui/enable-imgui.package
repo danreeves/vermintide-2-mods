@@ -1,0 +1,11 @@
+mod = [
+	"enable-imgui"
+]
+
+package = [
+	"resource_packages/enable-imgui/enable-imgui"
+]
+
+lua = [
+	"scripts/mods/enable-imgui/*"
+]
