@@ -1,6 +1,12 @@
 local mod = get_mod("steam-rich-presence")
 
 local function lobby_level(lobby_data)
+  local weave_name = lobby_data.weave_name
+  if weave_name then
+    local weave_template = WeaveSettings.templates[weave_name]
+    local weave_display_name = Localize(weave_template.display_name)
+    return string.format("%d. %s", weave_template.tier, weave_display_name)
+  end
   local lvl = lobby_data.selected_level_key or lobby_data.level_key
   local lvl_setting = lvl and LevelSettings[lvl]
   local lvl_display_name = lvl_setting and lvl_setting.display_name
@@ -15,20 +21,16 @@ local function lobby_difficulty(lobby_data)
     dw_enabled, ons_enabled = dwons_qol.get_status()
   end
 
-  if dw_enabled or ons_enabled then
-    return string.format(
-      "%s%s%s",
-      dw_enabled and "Deathwish" or "",
-      dw_enabled and ons_enabled and " " or "",
-      ons_enabled and "Onslaught" or ""
-    )
-  end
-
   local diff = lobby_data.difficulty
   local diff_setting = diff and DifficultySettings[diff]
   local diff_display_name = diff_setting and diff_setting.display_name
   local diff_text = diff_display_name and Localize(diff_display_name)
-  return diff_text or "No Difficulty"
+
+  return string.format(
+    "%s%s",
+    dw_enabled and "Deathwish" or diff_text,
+    ons_enabled and " Onslaught" or ""
+  )
 end
 
 local function lobby_act(lobby_data)
@@ -92,3 +94,5 @@ end)
 mod:hook_safe(PlayerManager, "remove_player", function()
   mod.update_presence()
 end)
+
+mod.update_presence()
