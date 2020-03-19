@@ -1,19 +1,107 @@
 local mod = get_mod("named-items")
-local SimpleUI = get_mod("SimpleUI")
 
 mod.SETTING_ID = "item_names"
-local ITEM_NAME = ""
-local ITEM_DESC = ""
+
+NamePopup = class(NamePopup)
+
+function NamePopup.init(self)
+  self.backend_id = nil
+  self.name = nil
+  self.description = nil
+end
+
+function NamePopup.capture_input()
+  local input_manager = Managers.input
+
+  if input_manager then
+    input_manager:capture_input({
+      "keyboard",
+      "gamepad",
+      "mouse"
+    }, 1, "chat_input", "Imgui")
+  end
+
+  ShowCursorStack.push()
+  Imgui.enable_imgui_input_system(Imgui.KEYBOARD)
+  Imgui.enable_imgui_input_system(Imgui.MOUSE)
+end
+
+function NamePopup.release_input()
+  local input_manager = Managers.input
+
+  if input_manager then
+    input_manager:release_input({
+      "keyboard",
+      "gamepad",
+      "mouse"
+    }, 1, "chat_input", "Imgui")
+  end
+
+  ShowCursorStack.pop()
+  Imgui.disable_imgui_input_system(Imgui.KEYBOARD)
+  Imgui.disable_imgui_input_system(Imgui.MOUSE)
+end
+
+function NamePopup.draw(self)
+  if self.backend_id then
+    self:capture_input()
+    Imgui.Begin("Name Item")
+    self.name = Imgui.InputText("Name", self.name)
+    self.description = Imgui.InputTextMultiline("Description", self.description)
+
+    if Imgui.Button("Cancel", 300, 50) then
+      self:close()
+    end
+
+    Imgui.SameLine()
+    if Imgui.Button("Save", 300, 50) then
+      mod.save_item_info(self.backend_id, self.name, self.description)
+      self:close()
+    end
+    Imgui.End()
+  end
+
+  if Keyboard.pressed(Keyboard.button_index("esc")) then
+    self:close()
+  end
+end
+
+function NamePopup.open(self, backend_id)
+  self.backend_id = backend_id
+  local current_data = mod.get_item_info(backend_id) or { name = "", description = ""}
+  self.name = current_data.name
+  self.description = current_data.description
+
+  Imgui.open_imgui()
+  self:capture_input()
+end
+
+function NamePopup.close(self)
+  self.backend_id = nil
+  self.name = nil
+  self.description = nil
+  Imgui.close_imgui()
+  self:release_input()
+end
 
 mod:hook_safe(HeroWindowLoadoutInventory, "on_enter", function(hero_window_inventory)
   mod.item_grid = hero_window_inventory._item_grid
+  mod.name_popup = NamePopup:new()
+end)
+
+mod:hook_safe(HeroWindowLoadoutInventory, 'update', function()
+  if mod.name_popup then
+    mod.name_popup:draw()
+  end
 end)
 
 mod:hook_safe(HeroWindowLoadoutInventory, "on_exit", function(hero_window_inventory)
   mod.item_grid = nil
-  if mod.modal then
-    mod.modal:destroy()
-    mod.modal = nil
+
+  if mod.name_popup then
+    mod.name_popup:close()
+    mod.name_popup:release_input()
+    mod.name_popup = nil
   end
 end)
 
@@ -26,74 +114,6 @@ end
 function mod.get_item_info(backend_id)
   local info_table = mod:get(mod.SETTING_ID) or {}
   return info_table[backend_id]
-end
-
-local function open_info_modal(backend_id)
-  if not SimpleUI then
-    mod:echo("The Simple UI mod is required")
-    return
-  end
-
-
-  local current_data = mod.get_item_info(backend_id) or { name = "", description = ""}
-  ITEM_NAME = current_data.name
-  ITEM_DESC = current_data.description
-
-  local width = 300
-  local height = 220
-  local x = (1920 / 2) - (width / 2)
-  local y = (1080 / 2) - (height / 2)
-  local window = SimpleUI:create_window("named_item_info_modal", {x, y}, {width, height})
-
-  window:create_title("modal_title", "Add name and description", 45)
-
-  local row_height = 35
-  local row_margin = 5
-  local row_width = width - (row_margin * 2)
-  local row_y = height - 55
-
-  local size = { row_width, row_height }
-
-  local function get_row_pos()
-    row_y = row_y - (row_height + row_margin)
-    return { row_margin, row_y }
-  end
-
-  window:create_label("name_label", { row_margin, row_y }, size, nil, "Name")
-  local name_input = window:create_textbox("name_input", get_row_pos(), size, nil)
-  name_input.text = current_data.name
-
-  window:create_label("desc_label", get_row_pos(), size, nil, "Description")
-  local desc_input = window:create_textbox("desc_input", get_row_pos(), size, nil)
-  desc_input.text = current_data.description
-
-  local button_row = get_row_pos()
-  local close_button = window:create_button("close_button", button_row, {(row_width / 2) - (row_margin/2), row_height}, "bottom_left", "Cancel")
-  local save_button = window:create_button("save_button", button_row, {(row_width / 2) - (row_margin/2), row_height}, "bottom_right", "Save")
-
-  name_input.on_text_changed = function(self)
-    ITEM_NAME = self.text
-  end
-
-  desc_input.on_text_changed = function(self)
-    ITEM_DESC = self.text
-  end
-
-  close_button.on_click = function()
-    ITEM_NAME = ""
-    ITEM_DESC = ""
-    window:destroy()
-  end
-
-  save_button.on_click = function ()
-    mod.save_item_info(backend_id, ITEM_NAME, ITEM_DESC)
-    ITEM_NAME = ""
-    ITEM_DESC = ""
-    window:destroy()
-  end
-
-  mod.modal = window
-  window:init()
 end
 
 function mod.on_select_item()
@@ -109,7 +129,9 @@ function mod.on_select_item()
   end
 
   -- An item is hovered
-  open_info_modal(item.backend_id)
+  if mod.name_popup then
+    mod.name_popup:open(item.backend_id)
+  end
 end
 
 mod:hook(_G, "Localize", function(func, id, ...)
