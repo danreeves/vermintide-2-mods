@@ -1,0 +1,11 @@
+mod = [
+	"new-no-wobble"
+]
+
+package = [
+	"resource_packages/new-no-wobble/new-no-wobble"
+]
+
+lua = [
+	"scripts/mods/new-no-wobble/*"
+]
