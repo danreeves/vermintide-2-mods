@@ -1,0 +1,11 @@
+mod = [
+	"new-sticky-grim"
+]
+
+package = [
+	"resource_packages/new-sticky-grim/new-sticky-grim"
+]
+
+lua = [
+	"scripts/mods/new-sticky-grim/*"
+]
