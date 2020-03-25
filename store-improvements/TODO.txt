@@ -1,0 +1,4 @@
+Fix hero_view/windows/store/store_window_item_preview.lua:631: attempt to index local 'selected_product' (a nil value)
+Make right hand side list update
+Hotkey to open store?
+Refactor

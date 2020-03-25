@@ -1,0 +1,11 @@
+mod = [
+	"store-improvements"
+]
+
+package = [
+	"resource_packages/store-improvements/store-improvements"
+]
+
+lua = [
+	"scripts/mods/store-improvements/*"
+]
