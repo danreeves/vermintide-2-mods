@@ -1,0 +1,11 @@
+mod = [
+	"debug-slots"
+]
+
+package = [
+	"resource_packages/debug-slots/debug-slots"
+]
+
+lua = [
+	"scripts/mods/debug-slots/*"
+]
