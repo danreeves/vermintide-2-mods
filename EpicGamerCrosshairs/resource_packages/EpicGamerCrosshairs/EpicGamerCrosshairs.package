@@ -1,0 +1,11 @@
+mod = [
+	"EpicGamerCrosshairs"
+]
+
+package = [
+	"resource_packages/EpicGamerCrosshairs/EpicGamerCrosshairs"
+]
+
+lua = [
+	"scripts/mods/EpicGamerCrosshairs/*"
+]

@@ -1,9 +1,10 @@
 local mod = get_mod("enable-imgui")
 local moreitemslibrary = get_mod("MoreItemsLibrary")
 
+Managers.package:load("resource_packages/imgui/imgui", "raindish-mod")
 -- Copied from source because I couldn't figure out how to require them
 -- or load the correct resource
-ImguiManager = mod:dofile("scripts/mods/enable-imgui/imgui/imgui")
+-- ImguiManager = mod:dofile("scripts/mods/enable-imgui/imgui/imgui")
 
 mod:hook_safe(IngameHud, "init", function()
   mod.imgui_manager = ImguiManager:new()
