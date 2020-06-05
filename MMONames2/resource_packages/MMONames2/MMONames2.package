@@ -1,0 +1,11 @@
+mod = [
+	"MMONames2"
+]
+
+package = [
+	"resource_packages/MMONames2/MMONames2"
+]
+
+lua = [
+	"scripts/mods/MMONames2/*"
+]
