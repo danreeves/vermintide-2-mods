@@ -5,13 +5,20 @@ mod.player_colors = {}
 mod:dofile('scripts/mods/MMONames2/ColorPicker')
 mod:dofile('scripts/mods/MMONames2/NetworkColours')
 
-local font_name = "arial"
-local font_material = "materials/fonts/" .. font_name
+local fonts = {
+  { name = "gw_body", size_mod = 2 },
+  { name = "gw_head", size_mod = 4 },
+  { name = "arial", size_mod = 0 },
+}
 
 local function draw_icon(renderer, unit, camera, player_position)
   if not Unit.alive(unit.player_unit) then
     return
   end
+
+  local font_index = mod:get("font")
+  local font_name = fonts[font_index].name
+  local font_material = "materials/fonts/" .. font_name
 
   local head_node = Unit.has_node(unit.player_unit, "c_head") and Unit.node(unit.player_unit, "c_head")
   local head_pos = Unit.world_position(unit.player_unit, head_node)
@@ -51,7 +58,7 @@ local function draw_icon(renderer, unit, camera, player_position)
   local font_render_scale = screen_w / 1920 -- Font size needs to increase
   local min_font_size = mod:get("min_font_size") * font_render_scale
   local max_font_size = mod:get("max_font_size") * font_render_scale
-  local font_size = math.clamp(max_font_size * scale, min_font_size, max_font_size)
+  local font_size = math.clamp(max_font_size * scale, min_font_size, max_font_size) + fonts[font_index].size_mod
   local player_color = mod.get_player_color(unit)
   local color = {alpha, player_color[1], player_color[2], player_color[3]}
 

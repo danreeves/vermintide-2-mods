@@ -3,7 +3,19 @@ return {
     en = "See everyones names above their head with optional health, career icons, and custom colours!",
   },
   font_size_group = {
-    en = "Font size (px)",
+    en = "Font",
+  },
+  font = {
+    en = "Font",
+  },
+  hell_shark_body = {
+    en = "Hell Shark Body",
+  },
+  hell_shark_header = {
+    en = "Hell Shark Header",
+  },
+  arial = {
+    en = "Arial",
   },
   min_font_size = {
     en = "Minimum size",

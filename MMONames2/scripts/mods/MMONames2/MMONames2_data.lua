@@ -19,7 +19,16 @@ return {
         setting_id = "font_size_group",
         type = "group",
         sub_widgets = {
-
+          {
+            setting_id    = "font",
+            type          = "dropdown",
+            default_value = 1,
+            options = {
+              {text = "hell_shark_body",   value = 1 },
+              {text = "hell_shark_header", value = 2 },
+              {text = "arial", value = 3 },
+            },
+          },
           {
             setting_id = "min_font_size",
             type = "numeric",
