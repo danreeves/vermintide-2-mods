@@ -1,0 +1,15 @@
+mod = [
+	"CustomCursors"
+]
+
+package = [
+	"resource_packages/CustomCursors/CustomCursors"
+]
+
+lua = [
+	"scripts/mods/CustomCursors/*"
+]
+
+mouse_cursor = [
+  "cursors/mods/CustomCursors/Yoshi"
+]
