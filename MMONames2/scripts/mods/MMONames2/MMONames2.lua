@@ -1,4 +1,4 @@
--- luacheck: globals get_mod Managers Unit Vector3 POSITION_LOOKUP IngameUI ScriptWorld ScriptViewport Camera UIRenderer Color UIResolution Gui VMFOptionsView ColorPicker ScriptUnit
+-- luacheck: globals get_mod Managers Unit Vector3 POSITION_LOOKUP IngameUI ScriptWorld ScriptViewport Camera UIRenderer Color UIResolution Gui VMFOptionsView ColorPicker ScriptUnit CameraStateFollowThirdPerson
 local mod = get_mod("MMONames2")
 mod.player_colors = {}
 
@@ -116,7 +116,19 @@ function mod.get_camera(player)
   return camera
 end
 
-mod:hook_safe(IngameUI, "post_update", function(self)
+mod.is_in_third_person = false
+mod.is_in_third_person_timeout = 0
+
+mod:hook_safe(CameraStateFollowThirdPerson, "update", function(self, _, _, _, _, t)
+  if self.name == "follow_third_person" then
+    mod.is_in_third_person = true
+    mod.is_in_third_person_timeout = t + 0.5
+  else
+    mod.is_in_third_person = false
+  end
+end)
+
+mod:hook_safe(IngameUI, "post_update", function(self, _, t)
   local renderer = self.ui_renderer
   local current_player = Managers.player:local_player()
   local player_unit = current_player.player_unit
@@ -124,13 +136,19 @@ mod:hook_safe(IngameUI, "post_update", function(self)
     return
   end
 
-  -- Helper objects.
+  if mod.is_in_third_person then
+    if mod.is_in_third_person_timeout <= t then
+      mod.is_in_third_person = false
+    end
+  end
+
+  local display_own_name = mod:get("display_own_name")
   local camera = mod.get_camera(current_player)
   local player_position = POSITION_LOOKUP[player_unit]
-
   local players = Managers.player:human_and_bot_players()
+
   for _, player in pairs(players) do
-    local draw_player_name = player ~= current_player or mod:get("display_own_name")
+    local draw_player_name = player ~= current_player or (display_own_name and mod.is_in_third_person)
     if draw_player_name then
       draw_icon(renderer, player, camera, player_position)
     end
