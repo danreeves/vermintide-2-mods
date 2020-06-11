@@ -9,6 +9,8 @@ function mod.on_disabled()
   Window.set_cursor("gui/cursors/mouse_cursor")
 end
 
-if mod:is_enabled() then
-  Window.set_cursor("cursors/mods/CustomCursors/Yoshi")
+function mod.on_all_mods_loaded()
+  if mod:is_enabled() then
+    Window.set_cursor("cursors/mods/CustomCursors/Yoshi")
+  end
 end
