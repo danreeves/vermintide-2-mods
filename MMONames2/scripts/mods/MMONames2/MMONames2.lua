@@ -64,6 +64,10 @@ local function draw_icon(renderer, unit, camera, player_position)
 
   local text = unit:name()
 
+  if not mod:get("show_name") then
+    text = ""
+  end
+
   if mod:get("show_health") then
     local player_unit = unit.player_unit
     local health_ext = ScriptUnit.extension(player_unit, "health_system")

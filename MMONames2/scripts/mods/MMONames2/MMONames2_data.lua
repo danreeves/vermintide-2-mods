@@ -90,12 +90,17 @@ return {
         type = "group",
         sub_widgets = {
           {
-            setting_id = "show_health",
+            setting_id = "show_name",
             type = "checkbox",
             default_value = true,
           },
           {
             setting_id = "show_career_icon",
+            type = "checkbox",
+            default_value = true,
+          },
+          {
+            setting_id = "show_health",
             type = "checkbox",
             default_value = true,
           },

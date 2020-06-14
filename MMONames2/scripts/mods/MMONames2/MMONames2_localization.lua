@@ -50,11 +50,14 @@ return {
   misc_group = {
     en = "Miscellaneous",
   },
-  show_health = {
-    en = "Show health",
+  show_name = {
+    en = "Show name",
   },
   show_career_icon = {
     en = "Show career icon",
+  },
+  show_health = {
+    en = "Show health",
   },
   text_shadow = {
     en = "Text shadow",
