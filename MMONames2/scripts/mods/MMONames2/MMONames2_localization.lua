@@ -9,10 +9,10 @@ return {
     en = "Font",
   },
   hell_shark_body = {
-    en = "Hell Shark Body",
+    en = "Hell Shark 1",
   },
   hell_shark_header = {
-    en = "Hell Shark Header",
+    en = "Hell Shark 2",
   },
   arial = {
     en = "Arial",

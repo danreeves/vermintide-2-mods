@@ -1,4 +1,4 @@
--- luacheck: globals get_mod Managers Unit Vector3 POSITION_LOOKUP IngameUI ScriptWorld ScriptViewport Camera UIRenderer Color UIResolution Gui VMFOptionsView ColorPicker ScriptUnit CameraStateFollowThirdPerson
+-- luacheck: globals get_mod Managers Unit Vector3 POSITION_LOOKUP IngameUI ScriptWorld ScriptViewport Camera UIRenderer Color UIResolution Gui VMFOptionsView ColorPicker ScriptUnit CameraStateFollowThirdPerson CameraStateObserver
 local mod = get_mod("MMONames2")
 mod.player_colors = {}
 
@@ -132,11 +132,21 @@ mod:hook_safe(CameraStateFollowThirdPerson, "update", function(self, _, _, _, _,
   end
 end)
 
+mod.spectated_unit = nil
+
+mod:hook_safe(CameraStateObserver, "_set_follow_unit", function(_, _, unit)
+  mod.spectated_unit = unit
+end)
+
+mod:hook_safe(CameraStateObserver, "on_exit", function()
+  mod.spectated_unit = nil
+end)
+
 mod:hook_safe(IngameUI, "post_update", function(self, _, t)
   local renderer = self.ui_renderer
   local current_player = Managers.player:local_player()
   local player_unit = current_player.player_unit
-  if not (player_unit and Unit.alive(player_unit)) then
+  if not (player_unit or mod.spectated_unit) then
     return
   end
 
@@ -146,10 +156,24 @@ mod:hook_safe(IngameUI, "post_update", function(self, _, t)
     end
   end
 
+  local player_status = Managers.party:get_player_status(current_player.peer_id, current_player._local_player_id)
+  local health_state = player_status.game_mode_data.health_state
+  if health_state == "respawn" then
+    mod.is_in_third_person = true
+  end
+
+  local players = Managers.player:human_and_bot_players()
   local display_own_name = mod:get("display_own_name")
   local camera = mod.get_camera(current_player)
-  local player_position = POSITION_LOOKUP[player_unit]
-  local players = Managers.player:human_and_bot_players()
+
+  -- If the player is dead and spectating then we want to base distance
+  -- calculations on the spectated player position, i.e. where the camera is
+  local player_position
+  if mod.spectated_unit then
+    player_position = POSITION_LOOKUP[mod.spectated_unit]
+  else
+    player_position = POSITION_LOOKUP[player_unit]
+  end
 
   for _, player in pairs(players) do
     local draw_player_name = player ~= current_player or (display_own_name and mod.is_in_third_person)
@@ -158,3 +182,4 @@ mod:hook_safe(IngameUI, "post_update", function(self, _, t)
     end
   end
 end)
+

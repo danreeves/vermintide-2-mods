@@ -16,10 +16,10 @@ function mod.on_all_mods_loaded()
   end
 end
 
-mod:hook(WwiseWorld, "trigger_event", function(func, wwise_world, event)
+mod:hook(WwiseWorld, "trigger_event", function(func, wwise_world, event, ...)
   if event == "Play_hud_hover" then
     mod.play_sound()
     return -1, -1
   end
-  return func(wwise_world, event)
+  return func(wwise_world, event, ...)
 end)
