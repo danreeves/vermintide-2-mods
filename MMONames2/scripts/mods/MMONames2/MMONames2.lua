@@ -171,8 +171,14 @@ mod:hook_safe(IngameUI, "post_update", function(self, _, t)
   local player_position
   if mod.spectated_unit then
     player_position = POSITION_LOOKUP[mod.spectated_unit]
-  else
+  end
+
+  if not player_position then
     player_position = POSITION_LOOKUP[player_unit]
+  end
+
+  if not player_position then
+    return
   end
 
   for _, player in pairs(players) do
