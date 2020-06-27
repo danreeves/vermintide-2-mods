@@ -1,17 +1,28 @@
 local mod = get_mod("enable-imgui")
-local moreitemslibrary = get_mod("MoreItemsLibrary")
+-- local moreitemslibrary = get_mod("MoreItemsLibrary")
 
-Managers.package:load("resource_packages/imgui/imgui", "raindish-mod")
--- Copied from source because I couldn't figure out how to require them
--- or load the correct resource
--- ImguiManager = mod:dofile("scripts/mods/enable-imgui/imgui/imgui")
+function mod.on_all_mods_loaded()
+  Managers.package:load("resource_packages/imgui/imgui", "raindish-mod", function()
+    mod:dofile("scripts/imgui/imgui")
+    mod.imgui_manager = ImguiManager:new()
+  end, false, true)
+end
 
+function mod.update()
+  if mod.imgui_manager then
+    mod.imgui_manager:update()
+  end
+end
+
+--[[
 mod:hook_safe(IngameHud, "init", function()
   mod.imgui_manager = ImguiManager:new()
 end)
 
 mod:hook_safe(IngameHud, "update", function()
-  mod.imgui_manager:update()
+  if mod.imgui_manager then
+    mod.imgui_manager:update()
+  end
 end)
 
 function mod.on_enabled()
@@ -80,3 +91,5 @@ end)
 mod:hook_safe(HeroWindowLoadoutInventory, "on_exit", function(self)
   mod.inventory_ui = nil
 end)
+
+]]--

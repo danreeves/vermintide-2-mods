@@ -1,0 +1,11 @@
+mod = [
+	"MutatorUnstableTeleport"
+]
+
+package = [
+	"resource_packages/MutatorUnstableTeleport/MutatorUnstableTeleport"
+]
+
+lua = [
+	"scripts/mods/MutatorUnstableTeleport/*"
+]

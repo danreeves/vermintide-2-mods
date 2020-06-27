@@ -1,0 +1,11 @@
+mod = [
+	"ChooseWeather"
+]
+
+package = [
+	"resource_packages/ChooseWeather/ChooseWeather"
+]
+
+lua = [
+	"scripts/mods/ChooseWeather/*"
+]

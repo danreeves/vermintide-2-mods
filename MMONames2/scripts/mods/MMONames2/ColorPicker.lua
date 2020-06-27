@@ -21,13 +21,13 @@ function ColorPicker.capture_input()
 end
 
 function ColorPicker.draw(self)
-  Imgui.Begin("Color Picker")
-  local r, g, b = Imgui.ColorPicker3("Color", self.color[1], self.color[2], self.color[3], self.color[4])
+  Imgui.begin_window("Color Picker")
+  local r, g, b = Imgui.color_picker_3("Color", self.color[1], self.color[2], self.color[3], self.color[4])
   self.color = {r, g, b}
-  if Imgui.Button("Confirm") then
+  if Imgui.button("Confirm") then
     self:save()
   end
-  Imgui.End()
+  Imgui.end_window()
   if Keyboard.pressed(Keyboard.button_index("esc")) then
     self:close()
   end

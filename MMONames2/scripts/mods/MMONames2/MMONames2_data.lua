@@ -10,6 +10,7 @@ return {
       {
         "ingame_ui",
         "materials/ui/ui_1080p_store_menu",
+        "materials/mods/MMONames2/flower",
       },
     },
   },

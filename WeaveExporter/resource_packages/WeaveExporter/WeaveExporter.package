@@ -1,0 +1,11 @@
+mod = [
+	"WeaveExporter"
+]
+
+package = [
+	"resource_packages/WeaveExporter/WeaveExporter"
+]
+
+lua = [
+	"scripts/mods/WeaveExporter/*"
+]

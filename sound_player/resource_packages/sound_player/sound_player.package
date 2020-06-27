@@ -1,0 +1,11 @@
+mod = [
+	"sound_player"
+]
+
+package = [
+	"resource_packages/sound_player/sound_player"
+]
+
+lua = [
+	"scripts/mods/sound_player/*"
+]

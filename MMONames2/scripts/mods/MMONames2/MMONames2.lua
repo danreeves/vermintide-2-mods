@@ -1,4 +1,4 @@
--- luacheck: globals get_mod Managers Unit Vector3 POSITION_LOOKUP IngameUI ScriptWorld ScriptViewport Camera UIRenderer Color UIResolution Gui VMFOptionsView ColorPicker ScriptUnit CameraStateFollowThirdPerson CameraStateObserver
+-- luacheck: globals get_mod Managers Unit Vector3 POSITION_LOOKUP IngameUI ScriptWorld ScriptViewport Camera UIRenderer Color UIResolution Gui VMFOptionsView ColorPicker ScriptUnit CameraStateFollowThirdPerson CameraStateObserver Application
 local mod = get_mod("MMONames2")
 mod.player_colors = {}
 
@@ -55,17 +55,20 @@ local function draw_icon(renderer, unit, camera, player_position)
 
   local screen_w, _ = UIResolution()
   local render_scale = 1920 / screen_w
+  if screen_w > 1920 and Application.user_setting("hud_clamp_ui_scaling") then
+    render_scale = math.max(render_scale, 1)
+  end
   local font_render_scale = screen_w / 1920 -- Font size needs to increase
   local min_font_size = mod:get("min_font_size") * font_render_scale
   local max_font_size = mod:get("max_font_size") * font_render_scale
   local font_size = math.clamp(max_font_size * scale, min_font_size, max_font_size) + fonts[font_index].size_mod
   local player_color = mod.get_player_color(unit)
   local color = {alpha, player_color[1], player_color[2], player_color[3]}
+  local name = unit:name()
+  local text = ""
 
-  local text = unit:name()
-
-  if not mod:get("show_name") then
-    text = ""
+  if mod:get("show_name") then
+    text = text .. name
   end
 
   if mod:get("show_health") then
@@ -90,6 +93,9 @@ local function draw_icon(renderer, unit, camera, player_position)
 
       local career_name = career_ext:career_name()
       local icon = "store_tag_icon_" .. career_name
+      if name:lower() == "hello" then
+        icon = "flower"
+      end
       local icon_position = position - Vector3(font_size, font_size / 3, 0)
       local icon_size = { font_size, font_size }
       UIRenderer.draw_texture(renderer, icon, icon_position, icon_size, color)

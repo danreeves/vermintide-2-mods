@@ -1,0 +1,11 @@
+mod = [
+	"ChooseGrailKnightQuests"
+]
+
+package = [
+	"resource_packages/ChooseGrailKnightQuests/ChooseGrailKnightQuests"
+]
+
+lua = [
+	"scripts/mods/ChooseGrailKnightQuests/*"
+]
