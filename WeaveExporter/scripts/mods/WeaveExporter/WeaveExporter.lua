@@ -1,8 +1,8 @@
 -- luacheck: globals get_mod Localize DifficultySettings WeaveSettings WeaveManager WindSettings
 local mod = get_mod("WeaveExporter")
 
-local home_path = os.getenv("HOMEPATH")
-local desktop = home_path .. "\\Desktop\\"
+local app_data = os.getenv("APPDATA")
+local desktop = app_data:gsub("\\AppData\\Roaming", "\\Desktop\\")
 local column_order = {
   "weave",
   "difficulty",
@@ -63,8 +63,8 @@ local weave_extra_data = {
 }
 
 local function write(filename, contents)
-  mod:echo("Writing to " .. desktop .. filename)
-  local file = io.open(desktop .. filename, "w+")
+  mod:echo("Writing to " .. filename)
+  local file = io.open(filename, "w+")
   file:write(contents)
   file:close()
 end
@@ -85,7 +85,7 @@ local function to_csv(data)
   return str
 end
 
-mod:command("export_weaves", "Export weave data", function()
+mod:command("export_weaves", "Export weave data", function(custom_path)
   local data = {}
   for _, weave in pairs(WeaveSettings.templates_ordered) do
     local row = {}
@@ -106,8 +106,6 @@ mod:command("export_weaves", "Export weave data", function()
       if type(key) == "table" then
         for j = 1, #key, 1 do
           local subkey = key[j]
-          mod:echo("%s %s", index, subkey)
-          mod:echo(wind[index])
           local settings = wind[index]
           local val
           if settings then
@@ -138,5 +136,6 @@ mod:command("export_weaves", "Export weave data", function()
     table.insert(data, row)
   end
 
-  write('weave_data.csv', to_csv(data))
+  local path = custom_path and custom_path or desktop .. 'weave_data.csv'
+  write(path, to_csv(data))
 end)
