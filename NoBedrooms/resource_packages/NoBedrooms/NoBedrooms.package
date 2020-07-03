@@ -1,0 +1,11 @@
+mod = [
+	"NoBedrooms"
+]
+
+package = [
+	"resource_packages/NoBedrooms/NoBedrooms"
+]
+
+lua = [
+	"scripts/mods/NoBedrooms/*"
+]
