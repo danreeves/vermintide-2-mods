@@ -75,7 +75,7 @@ local dodge_ui_definition = {
         text_id = "cooldown_text",
         retained_mode = false,
         content_check_function = function(content)
-          return content.has_cooldown
+          return content.display_cooldown and content.has_cooldown
         end
       }
     }
@@ -85,6 +85,7 @@ local dodge_ui_definition = {
     cooldown_text = "",
     has_dodged = false,
     has_cooldown = false,
+	display_cooldown = mod:get("display_cooldown"),
   },
   style = {
     dodge_text = {
@@ -181,6 +182,7 @@ mod:hook_safe(IngameHud, "update", function(self)
   widget.content.cooldown_text = string.format("%.1fs", cooldown - t)
   widget.content.has_dodged = current_dodge_count > 0
   widget.content.has_cooldown = (cooldown - t) > 0
+  widget.content.display_cooldown = mod:get("display_cooldown")
 
   UIRenderer.begin_pass(ui_renderer, ui_scenegraph, fake_input_service, dt)
   UIRenderer.draw_widget(ui_renderer, widget)

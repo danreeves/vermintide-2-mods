@@ -16,14 +16,6 @@ return {
         keybind_trigger = "pressed",
         keybind_type = "function_call",
         function_name = "toggle_debug"
-      },
-      {
-        setting_id = "toggle_debug_menu",
-        type = "keybind",
-        default_value = {},
-        keybind_trigger = "pressed",
-        keybind_type = "function_call",
-        function_name = "toggle_debug_menu"
       }
     }
   }

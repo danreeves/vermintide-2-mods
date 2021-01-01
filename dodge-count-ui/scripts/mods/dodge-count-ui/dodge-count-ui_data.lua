@@ -11,6 +11,11 @@ return {
         type = "checkbox",
         default_value = true,
       },
+	  {
+		setting_id = "display_cooldown",
+		type = "checkbox",
+		default_value = false,
+	  },
       {
         setting_id = "offset_x",
         type = "numeric",

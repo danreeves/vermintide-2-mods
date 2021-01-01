@@ -5,6 +5,9 @@ return {
   always_on = {
     en = "Always visible",
   },
+  display_cooldown = {
+	en = "Display cooldown",
+  },
   always_on_description = {
     en = "When disabled the UI will disappear when your dodge count is full",
   },
