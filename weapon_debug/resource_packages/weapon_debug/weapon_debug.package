@@ -1,0 +1,11 @@
+mod = [
+	"weapon_debug"
+]
+
+package = [
+	"resource_packages/weapon_debug/weapon_debug"
+]
+
+lua = [
+	"scripts/mods/weapon_debug/*"
+]
