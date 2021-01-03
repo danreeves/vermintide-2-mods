@@ -16,11 +16,6 @@ return {
 		default_value   = {}
 	  },
 	  {
-		setting_id = "show_boxes",
-		type = "checkbox",
-		default_value = false,
-	  },
-	  {
 		setting_id = "only_show_latest_attack",
 		type = "checkbox",
 		default_value = true,
