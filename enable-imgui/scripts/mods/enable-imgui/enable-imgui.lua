@@ -12,7 +12,7 @@ function mod.on_all_mods_loaded()
 	  self._guis = {}
 	  self._key_bindings = {}
 
-	  self:add_gui(ImguiUIEditor, "Tools", "Texture Explorer")
+	  self:add_gui(ImguiUIEditor, "Tools", "Texture Explorer") -- TODO
 	  self:add_gui(ImguiUmbraDebug, "World", "Umbra")
 	  self:add_gui(ImguiCombatLog, "Gameplay", "Combat Log")
 	  self:add_gui(ImguiCraftItem, "Gameplay", "Craft Item")
