@@ -56,15 +56,15 @@ function mod.on_all_mods_loaded()
 
 	  -- for _, dlc in pairs(DLCSettings) do
 	  --   local imgui_system_params = dlc.imgui_system_params or {}
-      --
+	  --
 	  --   for _, params in pairs(imgui_system_params) do
 	  --     require(params.require)
-      --
+	  --
 	  --     local gui_class = rawget(_G, params.gui)
 	  --     local category = params.category
 	  --     local name = params.name
 	  --     local enabled = params.enabled
-      --
+	  --
 	  --     self:add_gui(gui_class:new(), category, name, enabled)
 	  --   end
 	  -- end
@@ -79,12 +79,15 @@ function mod.on_all_mods_loaded()
 	Imgui.open_imgui()
 	-- Imgui.enable_imgui_input_system(Imgui.KEYBOARD)
 	-- Imgui.enable_imgui_input_system(Imgui.MOUSE)
-  end, false, true)
+  end, true, true)
 end
 
 function mod.update()
   if mod.imgui_manager then
 	mod.imgui_manager:update()
+  end
+  if not mod.load_imgui_called then
+	mod.load_imgui()
   end
 end
 

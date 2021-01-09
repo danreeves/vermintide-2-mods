@@ -1,5 +1,5 @@
 -- luacheck: no max line length
--- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld
+-- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable
 local mod = get_mod("weapon_debug")
 mod:dofile("scripts/mods/weapon_debug/game_code/debug_drawer")
 script_data.disable_debug_draw = false
@@ -9,6 +9,10 @@ mod.prev_end_pos = nil
 
 local box_color = Color(255, 255, 255)
 local time = 0
+local jump_height = 0
+local jump_start_height = 0
+local max_jump_height = 0
+local jump_height_calibrated = false
 
 function mod.update ()
   if Managers.state.debug then
@@ -16,10 +20,47 @@ function mod.update ()
 	  drawer:update(Managers.state.debug._world)
 	end
   end
+
 end
 
 function mod.clear_lines()
   QuickDrawerStay:reset()
+end
+
+function mod.on_setting_changed()
+  QuickDrawerStay:reset()
+end
+
+function mod.timescale_up()
+  local timescale_index = Managers.state.debug.time_scale_index
+  local timescales = Managers.state.debug.time_scale_list
+  if timescale_index == #timescales then
+	return
+  else
+	timescale_index = timescale_index + 1
+	Managers.state.debug:set_time_scale(timescale_index)
+	if timescales[timescale_index] >= 1 then
+	  mod:echo("Timescale: %d%%", timescales[timescale_index])
+	else
+	  mod:echo("Timescale: %f%%", timescales[timescale_index])
+	end
+  end
+end
+
+function mod.timescale_down()
+  local timescale_index = Managers.state.debug.time_scale_index
+  local timescales = Managers.state.debug.time_scale_list
+  if timescale_index == 1 then
+	return
+  else
+	timescale_index = timescale_index - 1
+	Managers.state.debug:set_time_scale(timescale_index)
+	if timescales[timescale_index] >= 1 then
+	  mod:echo("Timescale: %d%%", timescales[timescale_index])
+	else
+	  mod:echo("Timescale: %f%%", timescales[timescale_index])
+	end
+  end
 end
 
 mod:hook_safe(ActionSweep, "client_owner_start_action", function()
@@ -49,16 +90,8 @@ end
 
 local unit_alive = Unit.alive
 local unit_get_data = Unit.get_data
-local unit_world_position = Unit.world_position
-local unit_world_rotation = Unit.world_rotation
-local unit_local_rotation = Unit.local_rotation
 local unit_flow_event = Unit.flow_event
 local unit_set_flow_variable = Unit.set_flow_variable
-local unit_node = Unit.node
-local unit_actor = Unit.actor
-local unit_animation_event = Unit.animation_event
-local unit_has_animation_event = Unit.has_animation_event
-local unit_has_animation_state_machine = Unit.has_animation_state_machine
 local actor_node = Actor.node
 local action_hitbox_vertical_fov = math.degrees_to_radians(120)
 local action_hitbox_horizontal_fov = math.degrees_to_radians(115.55)
@@ -134,22 +167,22 @@ mod:hook_origin(ActionSweep, "_do_overlap", function (self, dt, t, unit, owner_u
 	PhysicsWorld.start_reusing_sweep_tables()
   end
 
-
-  local red = Color(255, 0, 0)
-
   -- Line 2
   do
-	local start_pos = position_start
-	local end_pos = position_end
-	local extents = weapon_half_extents
-	local rotation = rotation_previous
-	local pose = Matrix4x4.from_quaternion_position(rotation, start_pos)
-	local movement_vector = end_pos - start_pos
+	if mod:get("show_attack_boxes") then
+	  local red = Color(255, 0, 0)
+	  local start_pos = position_start
+	  local end_pos = position_end
+	  local extents = weapon_half_extents
+	  local rotation = rotation_previous
+	  local pose = Matrix4x4.from_quaternion_position(rotation, start_pos)
+	  local movement_vector = end_pos - start_pos
 
-	if is_within_damage_window or self._could_damage_last_update then
-	  QuickDrawerStay:box_sweep(pose, extents, movement_vector, box_color, box_color)
-	else
-	  QuickDrawerStay:box_sweep(pose, extents, movement_vector, red, red)
+	  if is_within_damage_window or self._could_damage_last_update then
+		QuickDrawerStay:box_sweep(pose, extents, movement_vector, box_color, box_color)
+	  else
+		QuickDrawerStay:box_sweep(pose, extents, movement_vector, red, red)
+	  end
 	end
   end
 
@@ -363,7 +396,7 @@ mod:hook_origin(ActionSweep, "_do_overlap", function (self, dt, t, unit, owner_u
 		if target_settings then
 		  local buff_extension = self._owner_buff_extension
 		  local damage_profile_id = self._damage_profile_id
-		  local hit_zone_name = nil
+		  local hit_zone_name
 
 		  if breed then
 			local node = actor_node(hit_actor)
@@ -609,11 +642,15 @@ end
 
 
 mod:hook_safe(ActionSweep, "_send_attack_hit", function (_, _, _, _, _, _, hit_position)
-  QuickDrawerStay:sphere(hit_position, 0.015, Color(255, 0, 0))
+  if mod:get("show_attack_boxes") then
+	QuickDrawerStay:sphere(hit_position, 0.015, Color(255, 0, 0))
+  end
 end)
 
 mod:hook_safe(ActionSweep, "hit_level_object", function(_, _, _, _, _, hit_position)
-  QuickDrawerStay:sphere(hit_position, 0.015, Color(255, 0, 0))
+  if mod:get("show_attack_boxes") then
+	QuickDrawerStay:sphere(hit_position, 0.015, Color(255, 0, 0))
+  end
 end)
 
 mod:hook_origin(PlayerProjectileImpactUnitExtension, "update_sphere_sweep", function (self, unit, input, dt, context, t, radius, collision_filter)
@@ -628,7 +665,9 @@ mod:hook_origin(PlayerProjectileImpactUnitExtension, "update_sphere_sweep", func
   local moved_position = locomotion_extension:current_position() + offset
   local physics_world = self.physics_world
 
-  QuickDrawerStay:capsule(cached_position, moved_position, radius, Color(255, 255, 255))
+  if mod:get("show_attack_boxes") then
+	QuickDrawerStay:capsule(cached_position, moved_position, radius, Color(255, 255, 255))
+  end
 
   PhysicsWorld.prepare_actors_for_raycast(physics_world, cached_position, Vector3.normalize(moved_position - cached_position), 0, 1, Vector3.length_squared(moved_position - cached_position))
 
@@ -663,8 +702,6 @@ mod:hook_origin(PlayerProjectileImpactUnitExtension, "update_sphere_sweep", func
 		  end
 
 		  fassert(actor_index, "No actor index found for unit [\"%s\"] that was hit on actor [\"%s\"]", hit_unit, hit_actor)
-
-		  QuickDrawerStay:sphere(hit_position, 0.015, Color(255, 0, 0))
 		  self:impact(hit_unit, hit_position, direction, hit_normal, actor_index)
 		end
 	  end
@@ -673,14 +710,440 @@ mod:hook_origin(PlayerProjectileImpactUnitExtension, "update_sphere_sweep", func
 end)
 
 mod:hook_safe(PlayerProjectileImpactUnitExtension, "update_raycast", function (self, unit, input, dt, context, t, override_collision_filter)
-  local locomotion_extension = self.locomotion_extension
+  if mod:get("show_attack_boxes") then
+	local locomotion_extension = self.locomotion_extension
 
-  if not locomotion_extension:moved_this_frame() then
-	return
+	if not locomotion_extension:moved_this_frame() then
+	  return
+	end
+
+	local cached_position = locomotion_extension:last_position()
+	local moved_position = locomotion_extension:current_position()
+	QuickDrawerStay:line(cached_position, moved_position, Color(255, 0, 0))
   end
 
-  local cached_position = locomotion_extension:last_position()
-  local moved_position = locomotion_extension:current_position()
-  QuickDrawerStay:line(cached_position, moved_position, Color(255, 0, 0))
-
 end)
+
+local function sphere_on_hit_position(_, _, _, hit_position)
+  if mod:get("show_attack_boxes") then
+	QuickDrawerStay:sphere(hit_position, 0.015, Color(255, 0, 0))
+  end
+end
+mod:hook_safe(PlayerProjectileUnitExtension, "hit_enemy", sphere_on_hit_position)
+mod:hook_safe(PlayerProjectileUnitExtension, "hit_player", sphere_on_hit_position)
+mod:hook_safe(PlayerProjectileUnitExtension, "hit_level_unit", sphere_on_hit_position)
+mod:hook_safe(PlayerProjectileUnitExtension, "hit_non_level_unit", sphere_on_hit_position)
+
+mod:hook_origin(ActionShieldSlam, "_hit", function (self, world, _, owner_unit, current_action)
+  if mod:get("only_show_latest_attack") then
+	QuickDrawerStay:reset()
+  end
+  local network_manager = Managers.state.network
+  local physics_world = World.get_data(world, "physics_world")
+  local attacker_unit_id = network_manager:unit_game_object_id(owner_unit)
+  local first_person_unit = self.first_person_unit
+  local unit_forward = Quaternion.forward(Unit.local_rotation(first_person_unit, 0))
+  local first_person_extension = ScriptUnit.extension(owner_unit, "first_person_system")
+  local self_pos = first_person_extension:current_position()
+  local forward_offset = current_action.forward_offset or 1
+  local attack_pos = self_pos + unit_forward * forward_offset
+  local radius = current_action.push_radius
+  local collision_filter = "filter_melee_sweep"
+  local actors, actors_n = PhysicsWorld.immediate_overlap(physics_world, "shape", "sphere", "position", attack_pos, "size", radius, "types", "dynamics", "collision_filter", collision_filter, "use_global_table")
+  local inner_forward_offset = forward_offset + radius * 0.65
+  local inner_attack_pos = self_pos + unit_forward * inner_forward_offset
+  local inner_attack_pos_near = self_pos + unit_forward
+  local inner_radius = current_action.inner_push_radius or radius * 0.4
+  local inner_radius_sq = inner_radius * inner_radius
+  local inner_hit_units = self.inner_hit_units
+  local hit_units = self.hit_units
+
+  if mod:get("show_attack_boxes") then
+	QuickDrawerStay:sphere(attack_pos, radius, Color(255, 0, 0))
+	QuickDrawerStay:sphere(inner_attack_pos_near, inner_radius, Color(0, 255, 0))
+	QuickDrawerStay:sphere(inner_attack_pos, inner_radius, Color(0, 255, 0))
+  end
+
+  local target_breed_unit = self.target_breed_unit
+  local target_breed_unit_health_extension = Unit.alive(target_breed_unit) and ScriptUnit.extension(target_breed_unit, "health_system")
+
+  if target_breed_unit_health_extension then
+	if not target_breed_unit_health_extension:is_alive() then
+	  target_breed_unit = nil
+	end
+  else
+	target_breed_unit = nil
+  end
+
+  local side = Managers.state.side.side_by_unit[owner_unit]
+  local player_and_bot_units = side.PLAYER_AND_BOT_UNITS
+
+  for i = 1, actors_n, 1 do
+	repeat
+	  local hit_actor = actors[i]
+	  local hit_unit = Actor.unit(hit_actor)
+	  local breed = unit_get_data(hit_unit, "breed")
+	  local dummy = not breed and unit_get_data(hit_unit, "is_dummy")
+	  local hit_self = hit_unit == owner_unit
+	  local target_is_friendly_player = table.contains(player_and_bot_units, hit_unit)
+
+	  if not target_is_friendly_player and (breed or dummy) and not hit_units[hit_unit] then
+		hit_units[hit_unit] = true
+		self._num_targets_hit = self._num_targets_hit + 1
+
+		if hit_unit == target_breed_unit then
+		  break
+		end
+
+		local node = Actor.node(hit_actor)
+		local hit_zone = breed and breed.hit_zones_lookup[node]
+		local target_hit_zone_name = (hit_zone and hit_zone.name) or "torso"
+		local target_hit_position = Unit.has_node(hit_unit, "j_spine") and Unit.world_position(hit_unit, Unit.node(hit_unit, "j_spine"))
+		local target_world_position = POSITION_LOOKUP[hit_unit] or Unit.world_position(hit_unit, 0)
+		local hit_position = target_hit_position or target_world_position
+		self.target_hit_zones_names[hit_unit] = target_hit_zone_name
+		self.target_hit_unit_positions[hit_unit] = hit_position
+		local attack_direction = Vector3.normalize(hit_position - self_pos)
+		local hit_unit_id = network_manager:unit_game_object_id(hit_unit)
+		local hit_zone_id = NetworkLookup.hit_zones[target_hit_zone_name]
+
+		if self:_is_infront_player(self_pos, unit_forward, hit_position) then
+		  local distance_to_inner_position_sq = math.min(Vector3.distance_squared(target_hit_position, inner_attack_pos), Vector3.distance_squared(target_hit_position, inner_attack_pos_near))
+
+		  if distance_to_inner_position_sq <= inner_radius_sq then
+			inner_hit_units[hit_unit] = true
+		  else
+			local shield_blocked = AiUtils.attack_is_shield_blocked(hit_unit, owner_unit)
+			local damage_source = self.item_name
+			local damage_source_id = NetworkLookup.damage_sources[damage_source]
+			local weapon_system = self.weapon_system
+			local power_level = self.power_level
+			local is_server = self.is_server
+			local damage_profile = self.damage_profile_aoe
+			local target_index = 1
+			local is_critical_strike = self._is_critical_strike
+
+			if not dummy then
+			  ActionSweep._play_character_impact(self, is_server, owner_unit, hit_unit, breed, hit_position, target_hit_zone_name, current_action, damage_profile, target_index, power_level, attack_direction, shield_blocked, self.melee_boost_curve_multiplier, is_critical_strike)
+			end
+
+			weapon_system:send_rpc_attack_hit(damage_source_id, attacker_unit_id, hit_unit_id, hit_zone_id, hit_position, attack_direction, self.damage_profile_aoe_id, "power_level", power_level, "hit_target_index", target_index, "blocking", shield_blocked, "shield_break_procced", false, "boost_curve_multiplier", self.melee_boost_curve_multiplier, "is_critical_strike", self._is_critical_strike, "can_damage", true, "can_stagger", true, "first_hit", self._num_targets_hit == 1)
+		  end
+		end
+	  elseif not target_is_friendly_player and not hit_units[hit_unit] and not hit_self and ScriptUnit.has_extension(hit_unit, "health_system") then
+		local hit_unit_id, is_level_unit = Managers.state.network:game_object_or_level_id(hit_unit)
+
+		if is_level_unit then
+		  hit_units[hit_unit] = true
+		  local no_player_damage = unit_get_data(hit_unit, "no_damage_from_players")
+
+		  if not no_player_damage then
+			local target_hit_position = Unit.world_position(hit_unit, 0)
+			local distance_to_inner_position_sq = math.min(Vector3.distance_squared(target_hit_position, inner_attack_pos), Vector3.distance_squared(target_hit_position, inner_attack_pos_near))
+
+			if distance_to_inner_position_sq <= inner_radius_sq then
+			  inner_hit_units[hit_unit] = true
+			else
+			  local hit_zone_name = "full"
+			  local target_index = 1
+			  local damage_profile = self.damage_profile_aoe
+			  local damage_source = self.item_name
+			  local power_level = self.power_level
+			  local is_critical_strike = self._is_critical_strike
+			  local attack_direction = Vector3.normalize(target_hit_position - self_pos)
+
+			  DamageUtils.damage_level_unit(hit_unit, owner_unit, hit_zone_name, power_level, self.melee_boost_curve_multiplier, is_critical_strike, damage_profile, target_index, attack_direction, damage_source)
+			end
+		  end
+		else
+		  hit_units[hit_unit] = true
+		  local hit_position = POSITION_LOOKUP[hit_unit] or Unit.world_position(hit_unit, 0)
+		  local distance_to_inner_position_sq = math.min(Vector3.distance_squared(hit_position, inner_attack_pos), Vector3.distance_squared(hit_position, inner_attack_pos_near))
+
+		  if distance_to_inner_position_sq <= inner_radius_sq then
+			inner_hit_units[hit_unit] = true
+		  end
+
+		  local damage_source = self.item_name
+		  local damage_source_id = NetworkLookup.damage_sources[damage_source]
+		  local weapon_system = self.weapon_system
+		  local power_level = self.power_level
+		  local hit_zone_id = NetworkLookup.hit_zones.full
+		  local attack_direction = Vector3.normalize(hit_position - self_pos)
+
+		  weapon_system:send_rpc_attack_hit(damage_source_id, attacker_unit_id, hit_unit_id, hit_zone_id, hit_position, attack_direction, self.damage_profile_aoe_id, "power_level", power_level, "hit_target_index", nil, "boost_curve_multiplier", self.melee_boost_curve_multiplier, "is_critical_strike", self._is_critical_strike, "can_damage", true, "can_stagger", true)
+		end
+	  end
+	until true
+  end
+
+  if Unit.alive(target_breed_unit) and not self.hit_target_breed_unit then
+	inner_hit_units[target_breed_unit] = true
+  end
+
+  local hit_index = 1
+
+  for hit_unit, _ in pairs(inner_hit_units) do
+	local breed = unit_get_data(hit_unit, "breed")
+	local dummy = not breed and unit_get_data(hit_unit, "is_dummy")
+	local hit_zone_name = self.target_hit_zones_names[hit_unit] or "torso"
+	local target_hit_position = Unit.has_node(hit_unit, "j_spine") and Unit.world_position(hit_unit, Unit.node(hit_unit, "j_spine"))
+	local target_world_position = POSITION_LOOKUP[hit_unit] or Unit.world_position(hit_unit, 0)
+	local hit_position = target_hit_position or target_world_position
+	local attack_direction = Vector3.normalize(hit_position - self_pos)
+	local hit_unit_id, is_level_unit = network_manager:game_object_or_level_id(hit_unit)
+	local hit_zone_id = NetworkLookup.hit_zones[hit_zone_name]
+
+	if (breed or dummy) and self:_is_infront_player(self_pos, unit_forward, hit_position, current_action.push_dot) then
+	  local is_server = self.is_server
+	  local hit_default_target = hit_unit == target_breed_unit
+	  local damage_profile = (hit_default_target and self.damage_profile_target) or self.damage_profile
+	  local damage_profile_id = (hit_default_target and self.damage_profile_target_id) or self.damage_profile_id
+	  local target_index = 1
+	  local power_level = self.power_level
+	  local is_critical_strike = self._is_critical_strike
+	  local shield_blocked = AiUtils.attack_is_shield_blocked(hit_unit, owner_unit)
+	  local actor = Unit.find_actor(hit_unit, "c_spine") and Unit.actor(hit_unit, "c_spine")
+	  local actor_position_hit = actor and Actor.center_of_mass(actor)
+
+	  if not dummy and actor_position_hit then
+		ActionSweep._play_character_impact(self, is_server, owner_unit, hit_unit, breed, actor_position_hit, hit_zone_name, current_action, damage_profile, target_index, power_level, attack_direction, shield_blocked, self.melee_boost_curve_multiplier, is_critical_strike)
+	  end
+
+	  local send_to_server = true
+	  local charge_value = damage_profile.charge_value or "heavy_attack"
+	  local buff_type = DamageUtils.get_item_buff_type(self.item_name)
+
+	  DamageUtils.buff_on_attack(owner_unit, hit_unit, charge_value, is_critical_strike, hit_zone_name, hit_index, send_to_server, buff_type)
+
+	  local damage_source_id = NetworkLookup.damage_sources[self.item_name]
+	  local weapon_system = self.weapon_system
+
+	  weapon_system:send_rpc_attack_hit(damage_source_id, attacker_unit_id, hit_unit_id, hit_zone_id, hit_position, attack_direction, damage_profile_id, "power_level", power_level, "hit_target_index", target_index, "blocking", shield_blocked, "shield_break_procced", false, "boost_curve_multiplier", self.melee_boost_curve_multiplier, "is_critical_strike", is_critical_strike, "can_damage", true, "can_stagger", true, "first_hit", self._num_targets_hit == 1)
+
+	  if self.is_critical_strike and self.critical_strike_particle_id then
+		World.destroy_particles(self.world, self.critical_strike_particle_id)
+
+		self.critical_strike_particle_id = nil
+	  end
+
+	  if not Managers.player:owner(self.owner_unit).bot_player then
+		Managers.state.controller_features:add_effect("rumble", {
+			rumble_effect = "handgun_fire"
+		  })
+	  end
+
+	  self.hit_target_breed_unit = true
+	  hit_index = hit_index + 1
+	elseif ScriptUnit.has_extension(hit_unit, "health_system") then
+	  if is_level_unit then
+		local no_player_damage = unit_get_data(hit_unit, "no_damage_from_players")
+
+		if not no_player_damage then
+		  hit_zone_name = "full"
+		  local target_index = 1
+		  local damage_profile = self.damage_profile
+		  local damage_source = self.item_name
+		  local power_level = self.power_level
+		  local is_critical_strike = self._is_critical_strike
+		  target_hit_position = Unit.world_position(hit_unit, 0)
+		  attack_direction = Vector3.normalize(target_hit_position - self_pos)
+
+		  DamageUtils.damage_level_unit(hit_unit, owner_unit, hit_zone_name, power_level, self.melee_boost_curve_multiplier, is_critical_strike, damage_profile, target_index, attack_direction, damage_source)
+		end
+	  else
+		local damage_source = self.item_name
+		local damage_source_id = NetworkLookup.damage_sources[damage_source]
+		local weapon_system = self.weapon_system
+		local power_level = self.power_level
+		hit_zone_id = NetworkLookup.hit_zones.full
+		target_hit_position = Unit.world_position(hit_unit, 0)
+		attack_direction = Vector3.normalize(target_hit_position - self_pos)
+
+		weapon_system:send_rpc_attack_hit(damage_source_id, attacker_unit_id, hit_unit_id, hit_zone_id, target_hit_position, attack_direction, self.damage_profile_id, "power_level", power_level, "hit_target_index", nil, "boost_curve_multiplier", self.melee_boost_curve_multiplier, "is_critical_strike", self._is_critical_strike, "can_damage", true, "can_stagger", true)
+	  end
+	end
+  end
+
+  self.state = "hit"
+end)
+
+mod:hook_origin(BTMeleeOverlapAttackAction, "overlap_checks", function (self, unit, blackboard, physics_world, t, action, attack, oobb_pos, box_rot, box_size, hit_units, overlap_update_radius)
+  local filter_name = (attack.hit_only_players and "filter_player_hit_box_check") or "filter_player_and_enemy_hit_box_check"
+
+  PhysicsWorld.prepare_actors_for_overlap(physics_world, oobb_pos, overlap_update_radius)
+
+  if mod:get("show_attack_boxes") and mod:get("show_enemy_attacks") then
+	QuickDrawerStay:oobb_overlap(oobb_pos, box_size, box_rot, Color(255,0,0))
+  end
+
+  local hit_actors, num_hit_actors = PhysicsWorld.immediate_overlap(physics_world, "position", oobb_pos, "rotation", box_rot, "size", box_size, "shape", "oobb", "types", "dynamics", "collision_filter", filter_name, "use_global_table")
+  local self_pos = POSITION_LOOKUP[unit]
+  local unit_rotation = Unit.local_rotation(unit, 0)
+  local forward_dir = Quaternion.forward(unit_rotation)
+  local hit_multiple_targets = attack.hit_multiple_targets
+  local num_hit_units = 0
+
+  for i = 1, num_hit_actors, 1 do
+	local hit_actor = hit_actors[i]
+	local hit_unit = Actor.unit(hit_actor)
+
+	if Unit.alive(hit_unit) and not hit_units[hit_unit] then
+	  local hit_unit_pos = POSITION_LOOKUP[hit_unit]
+
+	  if hit_unit_pos then
+		local attack_dir = Vector3.normalize(hit_unit_pos - self_pos)
+
+		if not attack.ignore_targets_behind or Vector3.dot(attack_dir, forward_dir) > 0 then
+		  if Managers.player:owner(hit_unit) then
+			self:hit_player(unit, blackboard, hit_unit, action, attack)
+
+			hit_units[hit_unit] = true
+			num_hit_units = num_hit_units + 1
+
+			if not hit_multiple_targets then
+			  break
+			end
+		  elseif Unit.has_data(hit_unit, "breed") then
+			self:hit_ai(unit, hit_unit, action, attack, blackboard, t)
+
+			hit_units[hit_unit] = true
+			num_hit_units = num_hit_units + 1
+
+			if not hit_multiple_targets then
+			  break
+			end
+		  end
+		end
+	  else
+		print("BTMeleeOverlapAttackAction: HIT UNIT MISSING POSITION_LOOKUP ENTRY!", hit_unit)
+	  end
+	end
+  end
+
+  return num_hit_units
+end)
+
+mod:hook_safe(BTMeleeOverlapAttackAction, "_init_attack", function()
+  if mod:get("only_show_latest_attack") and mod:get("show_enemy_attacks") then
+	QuickDrawerStay:reset()
+  end
+end)
+
+mod:hook_origin(BTStormVerminAttackAction, "anim_cb_damage", function (self, unit, blackboard)
+  local action = blackboard.action
+  blackboard.past_damage_in_attack = true
+  local world = Unit.world(unit)
+  local pw = World.get_data(world, "physics_world")
+  local range = action.range
+  local height = action.height
+  local width = action.width
+  local offset_up = action.offset_up
+  local offset_forward = action.offset_forward
+  local half_range = range * 0.5
+  local half_height = height * 0.5
+  local hit_size = Vector3(width * 0.5, half_range, half_height)
+  local rat_pos = Unit.local_position(unit, 0)
+  local rat_rot = Unit.local_rotation(unit, 0)
+  local forward = Quaternion.rotate(rat_rot, Vector3.forward()) * (offset_forward + half_range)
+  local up = Vector3.up() * (half_height + offset_up)
+  local oobb_pos = rat_pos + forward + up
+  local hit_actors, _ = PhysicsWorld.immediate_overlap(pw, "position", oobb_pos, "rotation", rat_rot, "size", hit_size, "shape", "oobb", "types", "dynamics", "collision_filter", "filter_player_hit_box_check", "use_global_table")
+
+  if mod:get("show_attack_boxes") and mod:get("show_enemy_attacks") then
+	if mod:get("only_show_latest_attack") then
+	  QuickDrawerStay:reset()
+	end
+
+	-- TODO? Can you jump this attack?
+	-- local attack_height = oobb_pos.z + hit_size.z - rat_pos.z
+	-- mod:echo("%.3f < %.3f = %s", attack_height, max_jump_height, attack_height < max_jump_height)
+
+	local pose = Matrix4x4.from_quaternion_position(rat_rot, oobb_pos)
+	QuickDrawerStay:box(pose, hit_size, Color(255, 0, 0))
+  end
+
+  local hit_units = FrameTable.alloc_table()
+
+  if blackboard.moving_attack then
+	blackboard.navigation_extension:set_enabled(false)
+	blackboard.locomotion_extension:set_wanted_velocity(Vector3(0, 0, 0))
+  else
+	slot22 = Managers.time:time("game")
+  end
+
+  for _, actor in ipairs(hit_actors) do
+	local target_unit = Actor.unit(actor)
+	hit_units[target_unit] = true
+  end
+
+  for target_unit, _ in pairs(hit_units) do
+	if not Unit.alive(target_unit) then
+	  return
+	end
+
+	local attack_direction = action.attack_directions and action.attack_directions[blackboard.attack_anim]
+	local blocked = DamageUtils.check_block(unit, target_unit, action.fatigue_type, attack_direction)
+
+	if action.damage then
+	  if not blocked then
+		AiUtils.damage_target(target_unit, unit, action, action.damage)
+	  elseif blocked and action.blocked_damage then
+		AiUtils.damage_target(target_unit, unit, action, action.blocked_damage)
+	  end
+
+	  if DamageUtils.is_player_unit(target_unit) and blocked and action.fatigue_type == "complete" then
+		SurroundingAwareSystem.add_event(target_unit, "breaking_hit", DialogueSettings.grabbed_broadcast_range, "profile_name", ScriptUnit.extension(target_unit, "dialogue_system").context.player_profile)
+	  end
+	end
+
+	if action.catapult then
+	  BTStormVerminAttackAction.tag_catapult_enemy(unit, blackboard, action, target_unit, blocked)
+	end
+
+	if action.push then
+	  local self_pos = POSITION_LOOKUP[unit]
+	  local enemy_pos = POSITION_LOOKUP[target_unit]
+	  local shove_dir = Vector3.normalize(enemy_pos - self_pos)
+	  local is_player_unit = DamageUtils.is_player_unit(target_unit)
+	  local push_speed = action.player_push_speed
+
+	  if is_player_unit and push_speed then
+		local target_status_extension = ScriptUnit.extension(target_unit, "status_system")
+
+		if not target_status_extension.knocked_down then
+		  local player_locomotion = ScriptUnit.extension(target_unit, "locomotion_system")
+
+		  player_locomotion:add_external_velocity(push_speed * shove_dir, action.max_player_push_speed)
+		end
+	  end
+	end
+  end
+end)
+
+
+
+mod:hook_safe(PlayerCharacterStateJumping, "on_enter", function(_, unit)
+  if not jump_height_calibrated then
+	jump_start_height = Unit.local_position(unit, 0).z
+  end
+end)
+
+mod:hook_safe(PlayerCharacterStateJumping, "update", function(_, unit)
+  if not jump_height_calibrated then
+	jump_height = Unit.local_position(unit, 0).z - jump_start_height
+
+	if jump_height ~= 0 then
+	  max_jump_height = math.max(jump_height, max_jump_height)
+	end
+  end
+end)
+
+mod:hook_safe(PlayerCharacterStateJumping, "on_exit", function()
+  if not jump_height_calibrated then
+	mod:echo("Jump calibrated: jump height %.3f units", max_jump_height)
+	jump_height_calibrated = true
+  end
+end)
+
+

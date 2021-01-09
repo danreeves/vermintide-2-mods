@@ -1,0 +1,11 @@
+mod = [
+	"ExportMutators"
+]
+
+package = [
+	"resource_packages/ExportMutators/ExportMutators"
+]
+
+lua = [
+	"scripts/mods/ExportMutators/*"
+]

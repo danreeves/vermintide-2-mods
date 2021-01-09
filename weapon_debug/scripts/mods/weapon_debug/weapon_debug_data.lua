@@ -16,9 +16,37 @@ return {
 		default_value   = {}
 	  },
 	  {
+		setting_id      = "timescale_up",
+		type            = "keybind",
+		keybind_global  = true,
+		keybind_trigger = "pressed",
+		keybind_type    = "function_call",
+		function_name   = "timescale_up",
+		default_value   = {}
+	  },
+	  {
+		setting_id      = "timescale_down",
+		type            = "keybind",
+		keybind_global  = true,
+		keybind_trigger = "pressed",
+		keybind_type    = "function_call",
+		function_name   = "timescale_down",
+		default_value   = {}
+	  },
+	  {
+		setting_id = "show_attack_boxes",
+		type = "checkbox",
+		default_value = true,
+	  },
+	  {
 		setting_id = "only_show_latest_attack",
 		type = "checkbox",
 		default_value = true,
+	  },
+	  {
+		setting_id = "show_enemy_attacks",
+		type = "checkbox",
+		default_value = false,
 	  },
 	},
   },
