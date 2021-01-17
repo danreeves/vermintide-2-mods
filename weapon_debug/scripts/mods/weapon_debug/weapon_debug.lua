@@ -20,7 +20,6 @@ function mod.update ()
 	  drawer:update(Managers.state.debug._world)
 	end
   end
-
 end
 
 function mod.clear_lines()
@@ -1121,29 +1120,119 @@ mod:hook_origin(BTStormVerminAttackAction, "anim_cb_damage", function (self, uni
   end
 end)
 
-
-
-mod:hook_safe(PlayerCharacterStateJumping, "on_enter", function(_, unit)
-  if not jump_height_calibrated then
-	jump_start_height = Unit.local_position(unit, 0).z
+mod:hook_safe(BTMeleeSlamAction, "init_attack", function()
+  if mod:get("only_show_latest_attack") and mod:get("show_enemy_attacks") then
+	QuickDrawerStay:reset()
   end
 end)
 
-mod:hook_safe(PlayerCharacterStateJumping, "update", function(_, unit)
-  if not jump_height_calibrated then
-	jump_height = Unit.local_position(unit, 0).z - jump_start_height
+mod:hook_origin(BTMeleeSlamAction, "anim_cb_damage", function (self, unit, blackboard)
+  local world = blackboard.world
+  local physics_world = World.get_data(world, "physics_world")
+  local action = blackboard.action
+  local unit_forward = Quaternion.forward(Unit.local_rotation(unit, 0))
+  local self_pos = POSITION_LOOKUP[unit]
+  local pos, rotation, size = self:_calculate_collision(action, self_pos, unit_forward)
+  local shape = (size.y - size.x > 0 and "capsule") or "sphere"
 
-	if jump_height ~= 0 then
-	  max_jump_height = math.max(jump_height, max_jump_height)
+  PhysicsWorld.prepare_actors_for_overlap(physics_world, pos, math.max(action.radius, action.height))
+
+  QuickDrawerStay:capsule_overlap(pos, size, rotation, Color(255, 0, 0))
+
+  local hit_actors, num_actors = PhysicsWorld.immediate_overlap(physics_world, "shape", shape, "position", pos, "rotation", rotation, "size", size, "types", "both", "collision_filter", "filter_rat_ogre_melee_slam", "use_global_table")
+  local t = Managers.time:time("game")
+  local hit_units = FrameTable.alloc_table()
+
+  for i = 1, num_actors, 1 do
+	local hit_actor = hit_actors[i]
+	local hit_unit = Actor.unit(hit_actor)
+
+	if hit_unit ~= unit and not hit_units[hit_unit] then
+	  local damage = nil
+	  local target_status_extension = ScriptUnit.has_extension(hit_unit, "status_system")
+
+	  if target_status_extension then
+		local dodge = nil
+		local to_target = Vector3.flat(POSITION_LOOKUP[hit_unit] - pos)
+
+		if target_status_extension.is_dodging and action.dodge_mitigation_radius_squared < Vector3.length_squared(to_target) then
+		  dodge = true
+		end
+
+		if not dodge then
+		  local attack_direction_name = action.attack_directions and action.attack_directions[blackboard.attack_anim]
+
+		  if target_status_extension:is_disabled() then
+			damage = action.damage
+		  elseif DamageUtils.check_ranged_block(unit, hit_unit, Vector3.normalize(to_target), action.shield_blocked_fatigue_type or "shield_blocked_slam") then
+			local blocked_velocity = action.player_push_speed_blocked * Vector3.normalize(POSITION_LOOKUP[hit_unit] - self_pos)
+			local locomotion_extension = ScriptUnit.extension(hit_unit, "locomotion_system")
+
+			locomotion_extension:add_external_velocity(blocked_velocity)
+		  elseif DamageUtils.check_block(unit, hit_unit, action.fatigue_type, attack_direction_name) then
+			local blocked_velocity = action.player_push_speed_blocked * Vector3.normalize(POSITION_LOOKUP[hit_unit] - self_pos)
+			local locomotion_extension = ScriptUnit.extension(hit_unit, "locomotion_system")
+
+			locomotion_extension:add_external_velocity(blocked_velocity)
+
+			damage = action.blocked_damage
+		  else
+			damage = action.damage
+		  end
+		end
+
+		if action.hit_player_func and damage then
+		  action.hit_player_func(unit, blackboard, hit_unit, damage)
+		end
+	  elseif Unit.has_data(hit_unit, "breed") then
+		local offset = Vector3.flat(POSITION_LOOKUP[hit_unit] - self_pos)
+		local direction = nil
+
+		if Vector3.length_squared(offset) < 0.0001 then
+		  direction = unit_forward
+		else
+		  direction = Vector3.normalize(offset)
+		end
+
+		AiUtils.stagger_target(unit, hit_unit, action.stagger_distance, action.stagger_impact, direction, t)
+
+		damage = action.damage
+	  elseif ScriptUnit.has_extension(hit_unit, "ladder_system") then
+		local ladder_ext = ScriptUnit.extension(hit_unit, "ladder_system")
+
+		ladder_ext:shake()
+	  end
+
+	  if damage then
+		AiUtils.damage_target(hit_unit, unit, action, action.damage)
+	  end
+
+	  hit_units[hit_unit] = true
 	end
   end
+
+  blackboard.rotate_towards_target = false
 end)
 
-mod:hook_safe(PlayerCharacterStateJumping, "on_exit", function()
-  if not jump_height_calibrated then
-	mod:echo("Jump calibrated: jump height %.3f units", max_jump_height)
-	jump_height_calibrated = true
-  end
-end)
-
-
+-- mod:hook_safe(PlayerCharacterStateJumping, "on_enter", function(_, unit)
+--   if not jump_height_calibrated then
+--     jump_start_height = Unit.local_position(unit, 0).z
+--   end
+-- end)
+--
+-- mod:hook_safe(PlayerCharacterStateJumping, "update", function(_, unit)
+--   if not jump_height_calibrated then
+--     jump_height = Unit.local_position(unit, 0).z - jump_start_height
+--
+--     if jump_height ~= 0 then
+--       max_jump_height = math.max(jump_height, max_jump_height)
+--     end
+--   end
+-- end)
+--
+-- mod:hook_safe(PlayerCharacterStateJumping, "on_exit", function()
+--   if not jump_height_calibrated then
+--     mod:echo("Jump calibrated: jump height %.3f units", max_jump_height)
+--     jump_height_calibrated = true
+--   end
+-- end)

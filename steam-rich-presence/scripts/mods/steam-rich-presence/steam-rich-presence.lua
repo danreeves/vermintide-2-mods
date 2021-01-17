@@ -2,7 +2,8 @@ local mod = get_mod("steam-rich-presence")
 
 local function lobby_level(lobby_data)
   local weave_name = lobby_data.weave_name
-  if weave_name then
+  if weave_name and weave_name ~= "false" then
+	mod:echo(weave_name)
     local weave_template = WeaveSettings.templates[weave_name]
     local weave_display_name = Localize(weave_template.display_name)
     return string.format("%d. %s", weave_template.tier, weave_display_name)

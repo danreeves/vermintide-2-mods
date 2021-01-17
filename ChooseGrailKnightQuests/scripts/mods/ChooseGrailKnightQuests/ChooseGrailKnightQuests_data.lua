@@ -19,8 +19,6 @@ for _, quest in pairs(all_quests) do
   table.insert(options, { text = quest.reward, value = quest.reward })
 end
 
-mod:dump(options, "options", 4)
-
 return {
   name = "ChooseGrailKnightQuests",
   description = mod:localize("mod_description"),
