@@ -1,0 +1,11 @@
+mod = [
+	"WeaponTweaks"
+]
+
+package = [
+	"resource_packages/WeaponTweaks/WeaponTweaks"
+]
+
+lua = [
+	"scripts/mods/WeaponTweaks/*"
+]
