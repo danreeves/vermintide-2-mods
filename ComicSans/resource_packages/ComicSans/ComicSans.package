@@ -1,0 +1,15 @@
+mod = [
+	"ComicSans"
+]
+
+package = [
+	"resource_packages/ComicSans/ComicSans"
+]
+
+lua = [
+	"scripts/mods/ComicSans/*"
+]
+
+slug = [
+  "fonts/mods/ComicSans/*"
+]
