@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "ChamfBox_01"
+		node = "ChamfBox_01"
+		shapes = [
+			{
+				material = "default"
+				shape = "ChamfBox_01"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

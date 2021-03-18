@@ -1,0 +1,19 @@
+group = "Utility"
+display_name = "Flow Scale"
+inputs = {
+	"f5a7b960-1a74-45de-9b89-d766ab601c57" = { name = "x" display_name = "A" type = "auto" }
+}
+
+output = {
+	type = { typeof: "x" }
+}
+
+code_blocks = {
+	default = {
+		include: ["core/stingray_renderer/shader_libraries/flow_common#flow_common"]
+		language = "hlsl"
+		code = """
+			RESULT(flow_scale(x));
+		"""
+	}
+}

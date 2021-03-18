@@ -1,0 +1,23 @@
+mod = [
+	"TestCustomUnit"
+]
+
+package = [
+	"resource_packages/TestCustomUnit/TestCustomUnit"
+]
+
+lua = [
+	"scripts/mods/TestCustomUnit/*"
+]
+
+unit = [
+  "units/mods/TestCustomUnit/*"
+]
+
+material = [
+  "materials/mods/TestCustomUnit/*"
+]
+
+* = [
+  "content/*"
+]

@@ -1,0 +1,18 @@
+group = "Input/Skydome"
+display_name = "Skydome Flow Tiling"
+
+imports = {
+	skydome_flow_tiling = {
+		type = "float"
+		domain = "global"
+		source = "shading_environment"
+	}
+}
+
+output = {
+	type = { typeof: "skydome_flow_tiling" }
+}
+
+code = """
+	RESULT(skydome_flow_tiling);
+"""

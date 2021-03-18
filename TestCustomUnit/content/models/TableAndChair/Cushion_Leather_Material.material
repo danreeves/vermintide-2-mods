@@ -1,0 +1,202 @@
+
+shader = {
+	connections = [
+		{
+			destination = {
+				connector_id = "aca690cb-6305-4a2f-bf3d-69183a493db3"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb1"
+			}
+			select = [
+				"rgb"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb3"
+			}
+		}
+		{
+			destination = {
+				connector_id = "1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb3"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb2"
+			}
+		}
+		{
+			destination = {
+				connector_id = "1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb4"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb2"
+			}
+		}
+		{
+			destination = {
+				connector_id = "1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb2"
+			}
+		}
+		{
+			destination = {
+				connector_id = "b1c86408-aacb-4466-b754-ddcf37a3a2c8"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb1"
+			}
+			select = [
+				"rgb"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb4"
+			}
+		}
+		{
+			destination = {
+				connector_id = "36ba46d2-f6ea-4e60-a428-fdc17c75bc62"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb1"
+			}
+			select = [
+				"r"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+		}
+		{
+			destination = {
+				connector_id = "ad5e052f-d316-4a0f-8b79-53c38204d61b"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb1"
+			}
+			select = [
+				"g"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+		}
+		{
+			destination = {
+				connector_id = "59fd1cf4-f736-470d-8510-1dd7c016639e"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb1"
+			}
+			select = [
+				"b"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+		}
+	]
+	constants = [
+	]
+	nodes = [
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb1"
+			options = [
+			]
+			position = [2077 225]
+			samplers = {
+			}
+			title = "Standard Base"
+			type = "core/stingray_renderer/output_nodes/standard_base"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb3"
+			options = [
+				"1e067464-12d8-4826-9b72-cfd5765003e3"
+				"fb3f709b-a54a-4e93-ac9f-e9fc76fb8bcd"
+				"5dd59b3d-1762-4a14-9930-7500230ef3db"
+			]
+			position = [1701 156]
+			samplers = {
+				texture_map = {
+					display_name = "Color"
+					slot_name = "color"
+					ui = {
+						order = 100
+					}
+				}
+			}
+			title = "Color"
+			type = "core/shader_nodes/sample_texture"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb2"
+			options = [
+			]
+			position = [1374 326]
+			samplers = {
+			}
+			title = "Texcoord0"
+			type = "core/shader_nodes/texture_coordinate0"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb4"
+			options = [
+				"f669a3a6-0376-4187-840e-80000e2939d5"
+				"90e20826-8689-42fa-8e24-f484ec64c5c3"
+				"5dd59b3d-1762-4a14-9930-7500230ef3db"
+			]
+			position = [1695 296]
+			samplers = {
+				texture_map = {
+					display_name = "Normal"
+					slot_name = "normal"
+					ui = {
+						order = 100
+					}
+				}
+			}
+			title = "Normal"
+			type = "core/shader_nodes/sample_texture"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			options = [
+				"f669a3a6-0376-4187-840e-80000e2939d5"
+				"e94e53e6-49b6-4194-a747-8f064a5932e0"
+				"5dd59b3d-1762-4a14-9930-7500230ef3db"
+			]
+			position = [1701 437]
+			samplers = {
+				texture_map = {
+					display_name = "Rma"
+					slot_name = "rma"
+					ui = {
+						order = 100
+					}
+				}
+			}
+			title = "Rma"
+			type = "core/shader_nodes/sample_texture"
+		}
+	]
+	version = 3
+}
+textures = {
+	brdf_lut = "core/stingray_renderer/lookup_tables/ibl_brdf_lut"
+	color = "content/models/TableAndChair/textures/cushion_Cushion_Leather_Material_Color"
+	global_diffuse_cube = "core/stingray_renderer/environments/midday/diffuse_cube"
+	global_specular_cube = "core/stingray_renderer/environments/midday/specular_cube"
+	normal = "content/models/TableAndChair/textures/cushion_Cushion_Leather_Material_Normal"
+	rma = "content/models/TableAndChair/textures/cushion_Cushion_Leather_Material_RMA"
+}
+variables = {
+}

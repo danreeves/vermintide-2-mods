@@ -1,0 +1,18 @@
+group = "Input/Skydome"
+display_name = "Skydome Fog Height/Falloff"
+
+imports = {
+	skydome_fog_height_falloff = {
+		type = "float2"
+		domain = "global"
+		source = "engine"
+	}
+}
+
+output = {
+	type = { typeof: "skydome_fog_height_falloff" }
+}
+
+code = """
+	RESULT(skydome_fog_height_falloff);
+"""

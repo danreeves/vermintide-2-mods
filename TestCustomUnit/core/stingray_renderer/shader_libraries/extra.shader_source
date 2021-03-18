@@ -1,0 +1,3296 @@
+includes = [ "core/stingray_renderer/shader_libraries/common.shader_source", 
+	"core/stingray_renderer/shader_libraries/post_processing_common.shader_source",
+	"core/stingray_renderer/shader_libraries/volumetric_lighting_common.shader_source",
+	"core/stingray_renderer/shader_libraries/lighting_common.shader_source",
+	"core/stingray_renderer/shader_libraries/shadow_map_common.shader_source",
+	"core/stingray_renderer/shader_libraries/math.shader_source" ]
+
+/*
+	TODO sort out code blocks later
+	Put this code in a fatshark_postprocessing file and inherit filter from post_processing.
+*/
+
+render_states = {
+	skydome_billboard = {
+		inherits = "default"
+		states = {
+			z_write_enable = "false"
+
+			blend_enable = "true"
+			blend_op = "blend_op_add"
+			dest_blend = "blend_inv_src_alpha"
+			src_blend = "blend_src_alpha"
+		}
+	}
+
+	filter = {
+		inherits = "default"
+		states = {
+			z_write_enable = "false"
+			z_enable = "false"
+		}
+	}
+
+	filter_add = {
+		inherits = "filter"
+		states = {
+			blend_enable = "true"
+			blend_op = "blend_op_add"
+			dest_blend = "blend_one"
+			src_blend = "blend_one"
+		}
+	}
+
+	filter_premultiply = {
+		inherits = "opacity_premultiply"
+		states = {
+			z_write_enable = "false"
+			z_enable = "false"
+		}
+	}
+
+	filter_near = {
+		inherits = "default"
+		states = {
+			z_enable = "true"
+			z_func = "greater"
+			z_write_enable = "false"
+		}
+	}
+
+	filter_far = {
+		inherits = "default"
+		states = {
+			z_enable = "true"
+			z_func = "less_equal"
+			z_write_enable = "false"
+		}
+	}
+
+	filter_depth = {
+		inherits = "default"
+		states = {
+			z_write_enable = "true"
+			z_enable = "true"
+			z_func = "always"
+			write_mask0 = "0x0"
+			write_mask1 = "0x0"
+			write_mask2 = "0x0"
+			write_mask3 = "0x0"
+		}
+	}
+
+	filter_alpha = {
+		inherits = "filter"
+		states = {
+			write_mask0 = "alpha"
+		}
+	}
+
+	filter_specular_aa = {
+		inherits = "filter"
+		states = {
+			defined_SECOND_PASS = {
+				write_mask0 = "alpha"
+			}
+		}
+	}
+
+	filter_hdr_transparency = {
+		inherits = "filter"
+		states = {
+			write_mask0 = "red|green|blue"
+			blend_enable = "true"
+			blend_op = "blend_op_add"
+			src_blend = "blend_one"
+			dest_blend = "blend_inv_src_alpha"
+		}
+	}
+
+	filter_world_interaction = {
+		inherits = "filter"
+		states = {
+			write_mask0 = "red|green"
+			blend_enable = "true"
+			blend_op = "blend_op_add"
+			src_blend = "blend_src_alpha"
+			dest_blend = "blend_inv_src_alpha"
+		}
+	}
+
+	filter_blend = {
+		inherits = "filter"
+		states = {
+			blend_enable = "true"
+			blend_op = "blend_op_add"
+			src_blend = "blend_one"
+
+			defined_PREMULTIPLIED = {
+				dest_blend = "blend_inv_src_alpha"
+			}
+			ndefined_PREMULTIPLIED = {
+				dest_blend = "blend_one"
+			}
+
+			defined_OUTLINE = {
+				stencil_enable = "true"
+
+				stencil_func = "not_equal"
+				stencil_func_back_side = "not_equal"
+
+				stencil_fail = "stencil_op_keep"
+				stencil_pass = "stencil_op_keep"
+				stencil_z_fail = "stencil_op_keep"
+
+				stencil_fail_back_side = "stencil_op_keep"
+				stencil_pass_back_side = "stencil_op_keep"
+				stencil_z_fail_back_side = "stencil_op_keep"
+
+				stencil_ref = "0x80"
+				stencil_mask = "0x80"
+				stencil_write_mask = "0x0"
+			}
+
+			defined_SKIN = {
+				stencil_enable = "true"
+				stencil_func = "equal"
+				stencil_fail = "stencil_op_keep"
+				stencil_pass = "stencil_op_keep"
+				stencil_z_fail = "stencil_op_keep"
+
+				stencil_func_back_side = "equal"
+				stencil_fail_back_side = "stencil_op_keep"
+				stencil_pass_back_side = "stencil_op_keep"
+				stencil_z_fail_back_side = "stencil_op_keep"
+
+				stencil_ref = "0x8"
+				stencil_mask = "0x18"
+				stencil_write_mask = "0x0"
+			}
+		}
+	}
+
+	skin_filter = {
+		inherits = "default"
+		states = {
+			z_write_enable = "false"
+			z_enable = "false"
+
+			stencil_enable = "true"
+			stencil_ref = "0x8"
+			stencil_mask = "0x18"
+			stencil_write_mask = "0x0"
+
+			stencil_func = "equal"
+			stencil_fail = "stencil_op_keep"
+			stencil_pass = "stencil_op_keep"
+			stencil_z_fail = "stencil_op_keep"
+
+			stencil_func_back_side = "equal"
+			stencil_fail_back_side = "stencil_op_keep"
+			stencil_pass_back_side = "stencil_op_keep"
+			stencil_z_fail_back_side = "stencil_op_keep"
+
+			defined_STEP0 = {
+				blend_factor_r = "0.3251"
+				blend_factor_g = "0.45"
+				blend_factor_b = "0.3583"
+			}
+			defined_STEP1 = {
+				blend_factor_r = "0.34"
+				blend_factor_g = "0.1864"
+				blend_factor_b = "0.0"
+			}
+			defined_STEP2 = {
+				blend_factor_r = "0.46"
+				blend_factor_g = "0.0"
+				blend_factor_b = "0.0402"
+			}
+
+			defined_INDEPENDENT_BLEND = {
+				defined_DIRECTION_X = {
+					independent_blend_enable = "false"
+				}
+				defined_DIRECTION_Y = {
+					independent_blend_enable = "true"
+					// blend_enable0 should be set to false but due to a bug in the latest nvidia driver that causes blending to get disabled for MRT1 as well..?!
+					//blend_enable0 = "true"
+					//src_blend0 = "blend_one"
+					//dest_blend0 = "blend_zero"
+					blend_enable0 = "false" // I'm pretty sure this bug has been resolved
+					blend_enable1 = "true"
+					src_blend1 = "blend_blend_factor"
+					dest_blend1 = "blend_inv_blend_factor"
+				}
+			}
+
+			ndefined_INDEPENDENT_BLEND = {
+				defined_BLEND = {
+					blend_enable = "true"
+					src_blend = "blend_blend_factor"
+					dest_blend = "blend_inv_blend_factor"
+				}
+			}
+		}
+	}
+
+	skin_debug = {
+		inherits = "default"
+		states = {
+			z_write_enable = "false"
+			z_enable = "false"
+
+			stencil_enable = "true"
+			defined_SKIN = {
+				stencil_ref = "0x8"
+			}
+			ndefined_SKIN = {
+				stencil_ref = "0x0"
+			}
+			stencil_mask = "0x18"
+			stencil_write_mask = "0x0"
+
+			stencil_func = "equal"
+			stencil_fail = "stencil_op_keep"
+			stencil_pass = "stencil_op_keep"
+			stencil_z_fail = "stencil_op_keep"
+
+			stencil_func_back_side = "equal"
+			stencil_fail_back_side = "stencil_op_keep"
+			stencil_pass_back_side = "stencil_op_keep"
+			stencil_z_fail_back_side = "stencil_op_keep"
+		}
+	}
+
+	outline_stencil = {
+		inherits = "filter"
+		states = {
+			stencil_enable = "true"
+
+			defined_FILL = {
+				stencil_func = "equal"
+				stencil_func_back_side = "equal"
+			}
+			ndefined_FILL = {
+				stencil_func = "not_equal"
+				stencil_func_back_side = "not_equal"
+
+				ndefined_OPAQUE = {
+					blend_enable = "true"
+					blend_op = "blend_op_add"
+					src_blend = "blend_one"
+					dest_blend = "blend_inv_src_alpha"
+				}
+			}
+
+			stencil_fail = "stencil_op_keep"
+			stencil_pass = "stencil_op_keep"
+			stencil_z_fail = "stencil_op_keep"
+
+			stencil_fail_back_side = "stencil_op_keep"
+			stencil_pass_back_side = "stencil_op_keep"
+			stencil_z_fail_back_side = "stencil_op_keep"
+
+			stencil_ref = "0x80"
+			stencil_mask = "0x80"
+			stencil_write_mask = "0x0"
+		}
+	}
+
+	fog_plane = {
+		inherits = "opacity_premultiply"
+		states = {
+			defined_INVERTED = {
+				z_func = "greater"
+			}
+		}
+	}
+
+	opacity_volume = {
+		inherits = "opacity_premultiply"
+		states = {
+			defined_ENABLE_INSIDE = {
+				cull_mode = "cull_ccw"
+				z_enable = "false"
+			}
+			ndefined_ENABLE_INSIDE = {
+				cull_mode = "cull_cw"
+				z_enable = "true"
+			}
+		}
+	}	
+}
+
+sampler_states = {
+}
+
+hlsl_shaders = {
+	error_debug = {
+		includes = [ "common" ]
+
+		code="""
+			Texture2D input_texture0; 
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				return o;
+			}
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				float4 texel = input_texture0.Load(int3(input.position.xy, 0));
+				float4 result = 0.0;
+				if(any(isinf(texel)))
+					result.r = 1.0;
+				if(any(isnan(texel)))
+					result.g = 1.0;
+				if(any(texel < 0.0))
+					result.b = 1.0;
+				if(!any(isfinite(texel)))
+					result.a = 1.0;
+				return result;
+			}
+		"""
+	}
+
+	init_luminance_adaptation = {
+		includes = [ "common" ]
+
+		code="""
+			struct VS_INPUT {
+				float4 position : POSITION;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				return o;
+			}
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				return half4(0.5,0.5,0.5,0.5);
+			}
+		"""
+	}
+
+	average_luminance_feedback = {		
+		includes = [ "common", "gbuffer_access" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+			input_texture1 = { sampler_states = "clamp_linear" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			DECLARE_SAMPLER_2D(input_texture1);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float2 inv_input_texture0_size;
+				float3 eye_adaptation_speed_min_max;			
+			CBUFFER_END
+			
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				
+				return o;
+			}			
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float4 ps_main(PS_INPUT input) : SV_TARGET0 {				
+				float d = inv_input_texture0_size.x;
+				// TODO: expose a luminance to exposure curve (see Cryteks solution). 
+				float current_avg_luminance = exp((
+					TEX2D(input_texture0, input.uv + float2(-d, -d)).a +
+					TEX2D(input_texture0, input.uv + float2( d, -d)).a +
+					TEX2D(input_texture0, input.uv + float2(-d,  d)).a +
+					TEX2D(input_texture0, input.uv + float2( d,  d)).a) * 0.25);
+
+				//float adapted_luminance = TEX2D(input_texture1, input.uv).r;
+				float2 eye_adaption_uv = viewport.zw + viewport.xy * 0.5;
+				float adapted_luminance = TEX2D(input_texture1, eye_adaption_uv).r;
+				
+				// isfinite is a safety check if there is protection if there is incorrect data in the luminance pass. Might consider to do this in the bright pass.
+				return isfinite(current_avg_luminance) ? (adapted_luminance + (clamp(current_avg_luminance, eye_adaptation_speed_min_max.y, eye_adaptation_speed_min_max.z) - adapted_luminance) * (1.0 - exp(-delta_time * eye_adaptation_speed_min_max.x * eye_adaptation_speed))).rrrr : adapted_luminance.rrrr;
+			}	
+		"""
+	}
+
+
+	volume_height_fog = {
+		includes = [ "common", "gbuffer_access", "brdf", "taa_offsets", "volumetric_lighting_common", "intersection_common", "shadow_map_filtering", "shadow_bias", "lighting_data", "lighting" ]
+		samplers = {
+			fog_volume = { sampler_states = "clamp_linear"}
+			global_diffuse_map = { sampler_states = "clamp_linear"}
+
+			sun_shadow_map = { sampler_states = "shadow_map" }
+			static_sun_shadow_map = { sampler_states = "shadow_map" }
+		}
+
+		code="""
+			#if defined(LOW_RES_ENABLED)
+				Texture2D<float4> linear_depth_div2;
+			#else
+				Texture2D<float4> linear_depth;
+			#endif
+			
+			DECLARE_SAMPLER_3D(fog_volume);
+			DECLARE_SAMPLER_CUBE(global_diffuse_map);
+
+			DECLARE_COMPARISON_SAMPLER_2D(sun_shadow_map);
+			DECLARE_COMPARISON_SAMPLER_2D(static_sun_shadow_map);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float3 wp : TEXCOORD0;
+				float4 w : TEXCOORD1;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float4x4 world;
+				float4x4 inv_world;
+
+				float4x4 bounding_volume;
+
+				float3 height_fog_falloff; 		// exports={ name="Fog Falloff" type="vector3" value=[0 0 0] min=[0 0 0] max=[1 1 1] step=[0.001 0.001 0.001] }
+				float3 height_fog_color; 		// exports={ name="Fog Color" type="vector3" value=[0.1 0.1 0.1] min=[0 0 0] max=[1 1 1] step=[0.001 0.001 0.001] }
+				float height_fog_extinction; 	// exports={ name="Fog Phase" type="scalar" value=0.01 min=0 max=10 step=0.0001 }
+				float height_fog_phase; 		// exports={ name="Fog Phase" type="scalar" value=0 min=-1 max=1 step=0.001 }
+
+				float4 dev_wireframe_color;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				
+				[branch]
+				if (volumetric_lighting_enabled && volumetric_volumes_enabled) {
+					// make sure position is outside NDC space, so we don't rasterize this.
+					o.position = float4(-10, -10, -10, 1);
+				} else {
+					o.position = mul(input.position, world_view_proj);
+					o.wp = mul(input.position, world);
+					o.w = encode_world_pos(o.position, camera_unprojection);
+				}
+
+				return o;
+			}
+			
+ 			#if defined(WIREFRAME_PASS)
+ 				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				half4 ps_main(PS_INPUT input) : SV_TARGET0
+				{
+					return dev_wireframe_color;
+				}
+ 			#else
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				half4 ps_main(PS_INPUT input) : SV_TARGET0
+				{
+					#if defined(LOW_RES_ENABLED)
+						float d = gbuffer_decode_depth(linear_depth_div2.Load(int3(input.position.xy, 0)));
+					#else
+						float d = gbuffer_decode_depth(linear_depth.Load(int3(input.position.xy, 0)));
+					#endif
+
+					float3 wp = decode_world_pos(input.w, d);
+					float3 op = mul(float4(wp, 1.0), inv_world).xyz;
+					float3 op_cam = mul(float4(camera_world._m30_m31_m32, 1.0), inv_world).xyz;
+					float3 op_view_vector = op - op_cam;
+
+					const float3 camera_dir = camera_world._m10_m11_m12;
+					const float depth = dot(input.wp - camera_world._m30_m31_m32, camera_dir);
+
+					Ray r = { op_cam, normalize(op_view_vector) };
+					AABB b = { bounding_volume._m00_m01_m02, bounding_volume._m10_m11_m12 };
+
+					float tmin, tmax;
+					intersection(b, r, tmin, tmax);
+
+					float3 mid_op = r.origin + r.dir * (tmin + tmax) * 0.5;
+					float3 bound_volume_min = bounding_volume._m00_m01_m02;
+					float3 bound_volume_max = bounding_volume._m10_m11_m12;
+					float3 origo = (bound_volume_min + bound_volume_max) * 0.5;
+					float3 dist = min(mid_op - bound_volume_min, bound_volume_max - mid_op);
+					float3 dim = (bound_volume_max - bound_volume_min);
+					float3 span = bound_volume_max - origo;
+					float radius = min(dim.x, min(dim.y, dim.z));
+					float3 box_falloff = smoothstep(float3(0.0, 0.0, 0.0), span * dim * height_fog_falloff, dist);
+					const float extinction = height_fog_extinction * min(box_falloff.x, min(box_falloff.y, box_falloff.z));
+
+					#if defined(LOW_RES_ENABLED)
+						float2 screen_uv = input.position.xy / (output_rt_size * 0.5);
+					#else
+						float2 screen_uv = input.position.xy / output_rt_size;
+					#endif
+
+					float3 V = normalize(camera_world._m30_m31_m32 - wp);
+					float3 L = sun_direction;
+					half sun_shadow = calculate_shadow_intensity(sun_shadow_map, static_sun_shadow_map, wp, d);
+
+					float3 sun_scattering = 0.0;
+					float3 ambient = 0.0;
+					calculate_global_volumetric_data(L, V, global_diffuse_map, sun_shadow, height_fog_phase, sun_scattering, ambient);
+
+					const float depth_to_surface = length(op_view_vector);
+					const float dx = min(depth_to_surface, tmax) - max(min(depth_to_surface, tmin), 0.0);
+					const float3 local_light_scattering = 0.0;
+					const float3 emissive = 0.0;
+					float3 S_int = 0;
+					float exp_sigma_dx = 0;
+					calculate_volumetric_lighting(dx, sun_scattering, local_light_scattering, ambient, emissive, height_fog_color, extinction, S_int, exp_sigma_dx);
+					
+					float3 scattering = S_int;
+					float transmittance = exp_sigma_dx;
+					float4 result = float4(scattering, saturate(1.0 - transmittance));
+
+					float4 fog_data = calc_fog_data(fog_volume, global_diffuse_map, wp, depth, screen_uv);
+					result.rgb = result.rgb * (1.0 - fog_data.a) + fog_data.rgb * result.a;
+					
+					return half4(result.rgb, result.a);
+				}
+			#endif
+		"""
+	}
+
+	cs_volume_fill = {
+		includes = [ "common", "space_conversion" ]
+		
+		stage_conditions = {
+			compute = "true"
+		}
+		
+		samplers = {
+		}
+		
+		code = """
+			RWTexture3D<float4> fog_data;
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float4x4 world;
+				float4x4 inv_world;
+				float4x4 bounding_volume;
+			CBUFFER_END
+
+			inline float linear_to_clip_depth(float depth) {
+				return (depth * camera_near_far.y - camera_near_far.y * camera_near_far.x) / (depth * (camera_near_far.y - camera_near_far.x));
+			}
+			
+			[numthreads(4, 4, 4)]
+			void cs_main(uint3 Gid : SV_GroupID, uint3 DTId : SV_DispatchThreadID, uint3 GTid : SV_GroupThreadID, uint GI : SV_GroupIndex )
+			{
+				float3 inv_input_texture0_size = 1.0 / float3(32, 32, 128);
+
+
+				float3 sample_pos = DTId + 0.5;
+				float2 uv = sample_pos.xy * inv_input_texture0_size.xy;
+				float dx = volumetric_distance * inv_input_texture0_size.z;
+				float depth = camera_near_far.x + dx * sample_pos.z;
+				float non_linear_depth = linear_to_clip_depth(depth); 
+				float3 ss_pos = float3(uv, non_linear_depth);
+				float3 wp = view_to_world(ss_to_view(ss_pos, 1.0), 1.0);
+
+				float3 op = mul(float4(wp, 1), inv_world);
+				bool3 inside = ((op > bounding_volume._m00_m01_m02) && (op < bounding_volume._m10_m11_m12));
+				if(all(inside))
+				{
+					//float4 current_data = fog_data.Load(DTId.xyz, 0);
+					fog_data[DTId.xyz] = float4(1, 0, 0, 1);
+				}
+
+				
+			}
+		"""
+	}
+
+	fog_plane = { 
+		includes = [ "common", "gbuffer_access", "brdf", "taa_offsets", "volumetric_lighting_common" ]
+
+		samplers = {
+			diffuse_map = { sampler_states ="wrap_linear" }
+			fog_volume = { sampler_states = "clamp_linear"}
+			global_diffuse_map = { sampler_states = "clamp_linear"}
+		}
+		
+		code="""				
+			#if defined(LOW_RES_ENABLED)
+				Texture2D<float4> linear_depth_div2;
+			#else
+				Texture2D<float4> linear_depth;
+			#endif
+			DECLARE_SAMPLER_3D(fog_volume);
+			DECLARE_SAMPLER_CUBE(global_diffuse_map);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float3 normal : NORMAL;
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float4 plane_eq : TEXCOORD0;
+				float4 w : TEXCOORD1;
+				float linear_depth : TEXCOORD2;
+				#if defined(AMBIENT_TINT)
+					float3 ambient_color : 	TEXCOORD3;
+				#endif
+			};			
+			
+			CBUFFER_START(c0)
+				float4x4 world;
+				float4x4 view_proj;
+				float3 fog_plane_color; // exports={ name="Fog Color" type="vector3" value=[0.5 0.5 0.5] min=[0 0 0] max=[8 8 8] step=[0.001 0.001 0.001] }
+				float fog_distance; 	// exports={ name="Fog Distance" type="scalar" value=10 min=0.01 max=200 step=0.01 }
+			CBUFFER_END
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+								
+				float3 wp = mul(input.position, world);
+				o.position = mul(float4(wp,1), view_proj);
+
+				float3 wnormal = normalize(mul(input.normal, (float3x3)world));
+				o.plane_eq = float4(wnormal, dot(wnormal, wp));
+				
+				o.w = encode_world_pos(o.position, camera_unprojection);
+
+				#if defined(GL2)
+					o.linear_depth = linearize_depth(o.position.z*0.5 / o.position.w + 0.5);
+				#else
+					o.linear_depth = linearize_depth(o.position.z / o.position.w);
+				#endif
+
+				#if defined(AMBIENT_TINT)
+					float3 ambient_tint_color = (ambient_tint_top_enabled > 0.0 ? lerp(ambient_tint, ambient_tint_top, wnormal.z*0.5+0.5) : ambient_tint) * ambient_global_tint;
+					#if defined(D3D11)
+						ambient_tint_color = (capture_cubemap == 1) ? 1.0 : ambient_tint_color;
+					#endif
+					o.ambient_color = (global_probe_rgbm_encoded ? 
+						rgbm_decode(TEXCUBELOD(global_diffuse_map, wnormal, 0)) :
+						TEXCUBELOD(global_diffuse_map, wnormal, 0)) * ambient_tint_color * fog_plane_color;
+				#endif
+
+				return o;
+			}
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0
+			{					
+				#if defined(LOW_RES_ENABLED)
+					float d = gbuffer_decode_depth(linear_depth_div2.Load(int3(input.position.xy, 0)));
+				#else
+					float d = gbuffer_decode_depth(linear_depth.Load(int3(input.position.xy, 0)));
+				#endif
+
+				#if defined(MASK_OUT_SKYDOME)
+					if (d > camera_near_far.y) discard;
+				#endif
+
+				float3 wp = decode_world_pos(input.w, d);
+				
+				float distance_to_plane = abs(dot(wp, input.plane_eq.xyz) - input.plane_eq.w);
+				
+				#if defined(AMBIENT_TINT)
+					float3 color = input.ambient_color;
+				#else
+					float3 color = fog_plane_color;
+				#endif
+				#if defined(LOW_RES_ENABLED)
+					float2 screen_uv = input.position.xy / (output_rt_size * 0.5);
+				#else
+					float2 screen_uv = input.position.xy / output_rt_size;
+				#endif
+				half4 result = apply_fog(fog_volume, global_diffuse_map, float4(color, saturate(distance_to_plane / fog_distance)), wp, input.linear_depth, screen_uv);
+				
+				return half4(result.rgb * result.a, result.a);	
+			}	
+		"""
+	}
+
+	screen_space_light_shafts_mask = {		
+		includes = [ "common", "gbuffer_access", "color_management" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }
+			input_texture1 = { sampler_states = "clamp_point" }
+			input_texture2 = { sampler_states = "clamp_point" }
+		}
+		 
+		code="""
+			#if !defined(FAR_PLANE)
+				DECLARE_SAMPLER_2D(input_texture0);
+				DECLARE_SAMPLER_2D(input_texture1);
+				DECLARE_SAMPLER_2D(input_texture2);
+			#endif
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position 		: SV_POSITION;
+				float2 uv 				: TEXCOORD0;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.position.z = o.position.w;	
+				o.uv = input.uv;
+				
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half ps_main(PS_INPUT input) : SV_TARGET0 
+			{
+				#if defined(FAR_PLANE)
+					return 1.0;
+				#elif defined(SIMPLE)
+					return 0.0;
+				#else
+					half4 gbuffer_0 = TEX2D(input_texture1, input.uv);
+					half4 gbuffer_1 = TEX2D(input_texture2, input.uv);
+					half material_id = gbuffer_decode_material_id(gbuffer_0);
+					float3 N = gbuffer_decode_normal(gbuffer_1, material_id);
+					return TEX2D(input_texture0, input.uv).r * (dot(-sun_direction, N) > 0.0 ? 1.0 : 0.0);
+				#endif
+			}
+		"""
+	}
+
+	screen_space_light_shafts = {		
+		includes = [ "common", "gbuffer_access", "color_management" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+			//luminance_adaptation_history = { sampler_states = "clamp_linear" }
+		}
+		 
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			//DECLARE_SAMPLER_2D(linear_depth);
+			//#if defined(EYE_ADAPTATION)
+			//	DECLARE_SAMPLER_2D(luminance_adaptation_history);
+			//#endif
+			
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position 		: SV_POSITION;
+				float2 uv 				: TEXCOORD0;
+				float2 sun_screen_pos 	: TEXCOORD1;
+				float visibility		: TEXCOORD2;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float exposure;
+				float light_shafts_weigth;
+				float2 light_shafts_settings;
+				float2 input_texture0_size;
+			CBUFFER_END
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);		
+				o.uv = input.uv;
+				
+				float4 sun_pos = float4(-sun_direction, 1.0);
+				camera_view._m30_m31_m32 = float3(0,0,0);
+				sun_pos = mul(mul(sun_pos, camera_view), camera_projection);
+				sun_pos /= sun_pos.w;
+				o.sun_screen_pos = sun_pos.xy * float2(0.5, -0.5) + 0.5;
+
+				o.visibility = max(dot(camera_world._m10_m11_m12, -sun_direction), 0.0);
+				
+				return o;
+			}
+
+			half3 scattering(half2 uv, half2 sun_uv) {
+				half2 delta = uv - sun_uv;
+
+				float dist = length(delta * half2(input_texture0_size.x/input_texture0_size.y, 1.0));
+				float3 result = fog_color * sun_color * light_shafts_settings.x * (1.0 - saturate(dist/light_shafts_settings.y)) * TEX2DLOD(input_texture0, uv, 0.0).rrr;
+
+				/*
+				#ifdef EYE_ADAPTATION
+					float2 eye_adaption_uv = viewport.zw + viewport.xy * 0.5;
+					result *= exposure / TEX2D(luminance_adaptation_history, eye_adaption_uv).r;
+				#else
+					result *= exposure;
+				#endif
+				*/
+
+				return result;
+			}
+
+			// Retrieve samples at new location.  
+			static const float weights[] = { 0.25, 0.5, 0.25 };
+
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half3 ps_main(PS_INPUT input) : SV_TARGET0 
+			{
+				if (input.visibility == 0.0)
+					return 0.0;
+
+				half2 uv = input.uv;
+
+				const uint NUM_SAMPLES = 50;
+				const float density = 0.90;
+				const float decay = 0.992;
+				const float weight = light_shafts_weigth;
+				
+				// Calculate vector from pixel to light source in screen space
+				// Divide by number of samples and scale by control factor. 
+				const half2 delta_uv = (uv - input.sun_screen_pos) * density / NUM_SAMPLES;
+
+				// Set up illumination decay factor.  
+				half illumination_decay = 1.0f;
+
+				const float INV_3 = 0.33333333333;
+				
+				half3 c = scattering(uv, input.sun_screen_pos);
+				// Evaluate summation from Equation 3 NUM_SAMPLES iterations.
+				[loop]
+				for (uint i = 0; i < NUM_SAMPLES; i++) {					
+					half3 s = scattering(uv - delta_uv * INV_3, input.sun_screen_pos) * weights[0];
+					s += scattering(uv, input.sun_screen_pos) * weights[1];
+					s += scattering(uv + delta_uv * INV_3, input.sun_screen_pos) * weights[2];
+					
+					// Apply attenuation decay and weight factor
+					s *= illumination_decay * weight; 
+					
+					// Accumulate combined color.
+					c += s.rgb;
+					
+					// Update exponential decay factor.  
+					illumination_decay *= decay;
+					
+					// Step sample location along ray. 
+					uv -= delta_uv;
+				}
+
+				return c * input.visibility;
+			}
+		"""
+	}
+
+	sun_visibility = {		
+		includes = [ "common", "gbuffer_access", "brdf", "shadow_map_filtering", "shadow_bias", "lighting_data", "lighting" ]
+
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }
+
+			sun_shadow_map = { sampler_states = "shadow_map" }
+			static_sun_shadow_map = { sampler_states = "shadow_map" }
+		}
+		 
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+
+			DECLARE_COMPARISON_SAMPLER_2D(sun_shadow_map);
+			DECLARE_COMPARISON_SAMPLER_2D(static_sun_shadow_map);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv 		: TEXCOORD0;
+			};
+			
+			struct PS_INPUT {
+				float4 position	: SV_POSITION;
+				float2 uv 		: TEXCOORD0;
+				float2 sun_uv 	: TEXCOORD1;
+				float4 w 		: TEXCOORD2;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float4x4 view;
+				float4x4 proj;
+				float sun_flare_fade_time;
+			CBUFFER_END
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+
+				view._m30_m31_m32 = float3(0,0,0);
+
+				float4 sun_pos = float4(-sun_direction, 1.0);
+				sun_pos = mul(mul(sun_pos, view), proj);
+				sun_pos /= sun_pos.w;
+				float2 sun_uv = sun_pos.xy * float2(0.5, -0.5) + 0.5;
+
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				o.sun_uv = sun_uv;
+				o.w = encode_world_pos(o.position);
+				
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half ps_main(PS_INPUT input) : SV_TARGET0 
+			{
+				half old_visibility = TEX2D(input_texture0, input.uv).r;
+
+				float3 wp = decode_world_pos(input.w, camera_near_far.x);
+				half visibility = all(input.sun_uv >= 0.0 && input.sun_uv <= 1.0) ? 
+					calculate_shadow_intensity(sun_shadow_map, static_sun_shadow_map, wp, camera_near_far.x) : 
+					0.0;
+
+				// converges faster when old is close to current visibility value
+				float converge_time = sun_flare_fade_time * lerp(sun_flare_fade_time, 1.0, min(distance(old_visibility, visibility), 1.0));
+				return lerp(old_visibility, visibility, converge_time > 0.0 ? min(delta_time / converge_time, 1.0) : 1.0);
+			}
+		"""
+	}
+
+	sun_flare = {		
+		includes = [ "common", "billboard_transformation" ]
+
+		samplers = {
+			sun_visibility_history = { sampler_states = "clamp_linear" }
+
+			sun_flare_radial_map = { sampler_states = "clamp_linear" }
+			sun_flare_streaks_map = { sampler_states = "clamp_linear" }
+			sun_flare_stripe_map = { sampler_states = "clamp_linear" }
+			sun_flare_star_map = { sampler_states = "clamp_linear" }
+		}
+		 
+		code="""
+			#if defined(RADIAL)
+				#define flare_map sun_flare_radial_map
+				#define CHANNEL x
+			#elif defined(STREAKS)
+				#define flare_map sun_flare_streaks_map
+				#define CHANNEL y
+			#elif defined(STRIPE)
+				#define flare_map sun_flare_stripe_map
+				#define CHANNEL z
+			#elif defined(STAR)
+				#define flare_map sun_flare_star_map
+				#define CHANNEL w
+			#endif
+
+			DECLARE_SAMPLER_2D(sun_visibility_history);
+			DECLARE_SAMPLER_2D(flare_map);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv 		: TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position 		: SV_POSITION;
+				float2 uv 				: TEXCOORD0;
+				float visibility 		: TEXCOORD1;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 view;
+				float4x4 proj;
+				float4 sun_flare_weights;
+				float4 sun_flare_scales;
+				float4 sun_flare_fade_angle;
+			CBUFFER_END
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				float cosVL = dot(camera_world._m10_m11_m12, -sun_direction);
+
+				float2 texture_dim;
+			    flare_map.tex.GetDimensions(texture_dim.x, texture_dim.y);
+				float2 scale = sun_flare_scales.CHANNEL * texture_dim / max(texture_dim.x, texture_dim.y);
+	
+			    input.position.xy *= scale;
+
+			    // TODO: shrink position or move it outside if the flare is not visible
+				float4 wp, offset;
+				float3 normal, tangent, binormal;
+				float4 position = float4(input.position.xyz, 1.0);
+				get_billboard_positions_from_direction(sun_direction, camera_view, position, wp, offset); // TODO: use view?
+				
+				view._m30_m31_m32 = float3(0,0,0);
+				o.position = mul(mul(wp, view), proj);
+				o.position.z = o.position.w;
+				o.uv = input.uv;
+				o.visibility = smoothstep(sun_flare_fade_angle.CHANNEL, 1.0, cosVL) * sun_flare_weights.CHANNEL;
+				
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half3 ps_main(PS_INPUT input) : SV_TARGET0 
+			{
+				const half sun_visibility = TEX2D(sun_visibility_history, input.uv).r * input.visibility;
+				return TEX2D(flare_map, input.uv).rgb * sun_visibility;
+			}
+		"""
+	}
+
+	skydome_billboard = {
+		includes = [ "common", "gbuffer_access" ]
+		samplers = {
+			diffuse_map = { sampler_states = "wrap_linear" }
+		}
+
+		code="""
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv 		: TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv 		: TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 view;
+				float4x4 proj;
+				#if defined(SECONDARY_SUN)
+					float3 secondary_sun_direction;
+					#define direction secondary_sun_direction
+				#else
+					#define direction sun_direction
+				#endif
+				float scale; // exports={ name="Scale" type="scalar" value=1 min=0 max=2 step=0.001 }
+			CBUFFER_END
+
+			DECLARE_SAMPLER_2D(diffuse_map); // exports={ name="Diffuse Map" type="resource" }
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+
+				float4 position = input.position * scale;
+				
+				float4 wp = float4(-direction, 1.0);
+				float3 y_axis = float3(0, 0, 1);
+				float3 x_axis = normalize(cross(y_axis, direction));
+				y_axis = cross(direction, x_axis);
+				wp.rgb += x_axis * position.x + y_axis * position.y;
+
+				o.uv = input.uv;
+
+				view._m30_m31_m32 = float3(0,0,0);
+				o.position = mul(mul(wp, view), proj);
+				o.position.z = o.position.w;
+
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				return TEX2D(diffuse_map, input.uv);
+			}
+		"""
+	}
+
+	fixed_function_blend = {
+		includes = [ "common", "gbuffer_access" ]
+		samplers = {
+			defined_POINT_SAMPLER = {
+				input_texture0 = { sampler_states = "wrap_point" }
+			}
+			ndefined_POINT_SAMPLER = {
+				input_texture0 = { sampler_states = "wrap_linear" }
+			}
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv 		: TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv 		: TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				#if defined(OUTLINE)
+					float outline_cutoff;			
+				#endif
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				float4 color = TEX2D(input_texture0, input.uv);
+				#if defined(OUTLINE)
+					color.a = max(color.r, max(color.g, color.b));
+					const float offset = 0.2;
+
+					color = smoothstep(outline_cutoff * (1.0 - offset), outline_cutoff * (1.0 + offset), color.a) * color;
+				#endif
+				return color;
+			}
+		"""
+	}
+
+	skin_filter = {
+		includes = [ "common", "gbuffer_access" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+			input_texture1 = { sampler_states = "clamp_point" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			DECLARE_SAMPLER_2D(input_texture1);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+
+				return o;
+			}
+
+			#if defined(BLEND)
+				float4 blend_result(PS_INPUT input) {
+					return TEX2D(input_texture0, input.uv);
+				}
+			#else
+				float4 skin_blur(PS_INPUT input, uniform float2 step_value) : SV_TARGET0 {
+					// Gaussian weights for the six samples around the current pixel:
+					//   -3 -2 -1 +1 +2 +3
+					float w[6] = { 0.006,   0.061,   0.242,  0.242,  0.061, 0.006 };
+					float o[6] = {  -1.0, -0.6667, -0.3333, 0.3333, 0.6667,   1.0 };
+
+					// Fetch color and linear depth for current pixel:
+					float4 colorM = TEX2D(input_texture0, input.uv);
+					float depthM = TEX2D(input_texture1, input.uv);
+
+					// Accumulate center sample, multiplying it with its gaussian weight:
+					float4 colorBlurred = colorM;
+					colorBlurred.rgb *= 0.382;
+
+					// Calculate the step that we will use to fetch the surrounding pixels,
+					// where "step" is:
+					//     step = sssStrength * gaussianWidth * pixelSize * dir
+					// The closer the pixel, the stronger the effect needs to be, hence
+					// the factor 1.0 / depthM.
+					//colorM.a = 1;
+					float2 finalStep = colorM.a * step_value / depthM;
+					float correction = 1600; //8000;
+
+					// Accumulate the other samples:
+					[unroll]
+					for (int i = 0; i < 6; i++) {
+						// Fetch color and depth for current sample:
+						float2 offset = input.uv + o[i] * finalStep;
+						float3 color = TEX2D(input_texture0, offset).rgb;
+						float depth = TEX2D(input_texture1, offset).r;
+
+						// If the difference in depth is huge, we lerp color back to "colorM":
+						float s = min(0.0125 * correction * abs(depthM - depth), 1.0);
+						color = lerp(color, colorM.rgb, s);
+
+						// Accumulate:
+						colorBlurred.rgb += w[i] * color;
+					}
+
+					// The result will be alpha blended with current buffer by using specific
+					// RGB weights. For more details, I refer you to the GPU Pro chapter :)
+					return colorBlurred;
+				}
+
+				float4 skin_main(PS_INPUT input) {
+					float sss_strength = 12.5; //31.5;
+					float maxdd = 0.001;
+
+					#ifdef STEP0
+						float gaussian_width = sqrt((0.0516 - 0.0064));
+					#elif defined(STEP1)
+						float gaussian_width = sqrt((0.2719 - 0.0516));
+					#elif defined(STEP2)
+						float gaussian_width = sqrt((2.0062 - 0.2719));
+					#endif
+
+					#ifdef DIRECTION_X
+						float2 dir = float2(1,0);
+					#else
+						float2 dir = float2(0,1);
+					#endif
+
+					float2 step_val = sss_strength * gaussian_width * (float2(1,1) / output_rt_size.xy) * dir;
+
+					float4 c = skin_blur(input, step_val);
+
+					return c;
+				}
+			#endif
+
+			#if defined(DIRECTION_X) || (defined(DIRECTION_Y) && !defined(INDEPENDENT_BLEND))
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				float4 ps_main(PS_INPUT input) : SV_TARGET0 {
+					return skin_main(input);
+				}
+			#elif defined(BLEND)
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				float4 ps_main(PS_INPUT input) : SV_TARGET0 {
+					return blend_result(input);
+				}
+			#else
+				struct PS_OUTPUT {
+					float4 acc : SV_TARGET0;
+					float4 final : SV_TARGET1;
+				};
+
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				PS_OUTPUT ps_main(PS_INPUT input) {
+					PS_OUTPUT o;
+					float4 c = skin_main(input);
+					o.acc = c;
+					o.final = c;
+					return o;
+				}
+			#endif
+		"""
+	}
+
+	add_colored_outline = {
+		includes = [ "common", "gbuffer_access" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+			input_texture1 = { sampler_states = "clamp_point" }
+		}
+
+		code="""
+			#ifndef FILL
+				DECLARE_SAMPLER_2D(input_texture0);
+				DECLARE_SAMPLER_2D(input_texture1);
+			#endif
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				#ifndef FILL
+					float4 outline_thickness;			
+
+					float3 outline_color_red;
+					float3 outline_color_green;
+					float3 outline_color_blue;
+					float3 outline_color_alpha;
+
+					float outline_multiplier_red;
+					float outline_multiplier_green;
+					float outline_multiplier_blue;
+					float outline_multiplier_alpha;
+				#endif
+				#if defined(SOLID)
+					float outline_cutoff;			
+				#endif
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				#ifdef FILL
+					return float4(0, 0, 0, 0);
+				#else
+					// float mask = 1.0 - TEX2D(input_texture1, input.uv).r;
+					float4 color = TEX2D(input_texture0, input.uv);
+
+					color = pow(color, outline_thickness);
+
+					float3 	final_color = 	color.r * outline_color_red * outline_multiplier_red;
+							final_color += 	color.g * outline_color_green * outline_multiplier_green;
+							final_color += 	color.b * outline_color_blue * outline_multiplier_blue;
+							final_color += 	color.a * outline_color_alpha * outline_multiplier_alpha;
+
+					// final_color *= mask;
+
+					// We assume that the colors was authered in gamma 2.2
+					final_color = pow(final_color, 2.2/gamma);
+					float alpha = saturate(max(final_color.r, max(final_color.g, final_color.b)));
+					#if defined(SOLID)
+						const float offset = 0.2;
+						final_color = smoothstep(outline_cutoff * (1.0 - offset), outline_cutoff * (1.0 + offset), alpha) * final_color;
+					#endif
+					return float4(final_color, alpha);
+				#endif
+			}
+		"""
+	}
+
+	specular_aa = {
+		includes = [ "common", "gbuffer_access" ]
+		samplers = {
+		}
+
+		code="""
+			#define NUM_GAUSSIAN_WEIGHTS 4
+
+			// Gaussian coefficients
+			static float gaussian_weights[] =
+			//	{ 0.398943, 0.241971, 0.053991, 0.004432, 0.000134 };  // stddev = 1.0
+				{ 0.153170, 0.144893, 0.122649, 0.092902, 0.062970 };  // stddev = 2.0
+			//	{ 0.111220, 0.107798, 0.098151, 0.083953, 0.067458, 0.050920, 0.036108 }; // stddev = 3.0
+
+			// First pass:
+			// Decode and blur normals
+			// Second pass:
+			// Blur normals and encode new roughness
+			#if defined(FIRST_PASS)
+				static int2 axis = int2(1,0);
+				#define NORMALIZE(x) normalize(x)
+				#define DECODE_NORMAL(x) gbuffer_decode_normal(x)
+				#define DECODE_ROUGHNESS(x) gbuffer_decode_roughness(x)
+			#else
+				static int2 axis = int2(0,1);
+				#define NORMALIZE(x) x
+				#define DECODE_NORMAL(x) x.rgb
+				#define DECODE_ROUGHNESS(x) x.a
+			#endif
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			Texture2D<float4> input_texture0;
+			Texture2D<float4> linear_depth;
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				float4 p = mul(input.position, world_view_proj);
+				o.position = p;
+				o.uv = input.uv;
+
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				int2 position = input.position.xy;
+
+				half4 texel = input_texture0.Load(int3(position, 0));
+				float3 ref_N = NORMALIZE(DECODE_NORMAL(texel));
+				float ref_roughness = DECODE_ROUGHNESS(texel);
+				float ref_depth = gbuffer_decode_depth(linear_depth.Load(int3(position, 0)));
+
+				// Base weight for depth falloff. Decrease this for more blurriness,
+				// increase it for better edge discrimination
+				float total_weight = gaussian_weights[0] * 0.5;
+				float3 Na = ref_N * total_weight;
+
+				const float DEPTH_THRESHOLD = 0.2;
+				const float inv_denominator = 1.0 / (-DEPTH_THRESHOLD);
+
+				position -= axis * NUM_GAUSSIAN_WEIGHTS;
+				[unroll]
+				for (int r = NUM_GAUSSIAN_WEIGHTS; r > 0 ; --r) {
+					// Sample data
+					float3 N = NORMALIZE(DECODE_NORMAL(input_texture0.Load(int3(position, 0))));
+					float depth = gbuffer_decode_depth(linear_depth.Load(int3(position, 0)));
+					float weight = gaussian_weights[r];
+
+					// Range domain (the "bilateral" weight). As depth difference increases, decrease weight.
+					weight *= saturate(abs(ref_depth - depth) * inv_denominator + 1.0);  //linearstep is cheaper, smoothstep(DEPTH_THRESHOLD, 0, abs(ref_depth - depth));
+
+					Na += N * weight;
+					total_weight += weight;
+
+					position += axis;
+				}
+
+				// The case where r == 0 is handled above the for loop, just change the sample pos here and go into the next loop.
+				position = input.position.xy + axis;
+				[unroll]
+				for (int r = 1; r <= NUM_GAUSSIAN_WEIGHTS; ++r) {
+					// Sample data
+					float3 N = NORMALIZE(DECODE_NORMAL(input_texture0.Load(int3(position, 0))));
+					float depth = gbuffer_decode_depth(linear_depth.Load(int3(position, 0)));
+					float weight = gaussian_weights[r];
+
+					// Range domain (the "bilateral" weight). As depth difference increases, decrease weight.
+					weight *= saturate(abs(ref_depth - depth) * inv_denominator + 1.0); //linearstep is cheaper, smoothstep(DEPTH_THRESHOLD, 0, abs(ref_depth - depth));
+
+					Na += N * weight;
+					total_weight += weight;
+
+					position += axis;
+				}
+
+				Na = Na / total_weight;
+
+				#if defined(FIRST_PASS)
+					return half4(Na, ref_roughness);
+				#else
+					// Specular AA
+					// http://blog.selfshadow.com/publications/s2013-shading-course/rad/s2013_pbs_rad_notes.pdf
+					float l = length(Na);
+					[flatten]
+					if (l < 0.999) {
+						float ll = l * l ;
+						float kappa = (3.0 * l - l * ll) / (1.0 - ll) ;
+						float variance = 1.0 / kappa;
+						ref_roughness = sqrt(ref_roughness * ref_roughness + variance);
+					}
+
+					return half4(0, 0, 0, gbuffer_encode_roughness(ref_roughness));
+				#endif
+			}
+		"""
+	}
+
+	apply_hdr_transparent = {
+		includes = [ "common", "gbuffer_access" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+			input_texture1 = { sampler_states = "clamp_linear" }
+		}
+
+		compiler_options = {
+			D3D11 = {
+				pixel_shader = {					
+					instruction_set = "ps_5_0"
+				}				
+			}
+			D3D12 = {
+				pixel_shader = {					
+					instruction_set = "ps_5_0"
+				}				
+			}
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			DECLARE_SAMPLER_2D(input_texture1);
+
+			Texture2D linear_depth;
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+
+				return o;
+			}
+
+			// Upsampling method based on Destiny VDP
+			// http://advances.realtimerendering.com/destiny/i3d_2015/I3D_Tatarchuk_keynote_2015_for_web.pdf
+			// http://advances.realtimerendering.com/s2013/Tatarchuk-Destiny-SIGGRAPH2013.pdf
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				int2 position = input.position.xy + 1;
+				int2 offset = (((position & 3) >> 1) << 1) - 1; // same as position%4 < 2 ? -1 : 1; but faster
+
+				float background_depth = linear_depth.Load(int3(input.position.xy, 0)).r;
+
+				// TODO: is the result of d the same for both branches?
+				#if defined(DX10_CAPS) || defined(RENDERER_GNM) || defined(PLATFORM_XB1) // Todo: Implement compile_options for consoles
+					// TODO: optmize sample pattern
+					float d0 = input_texture1.tex.Load(int3(input.position.xy/4, 0)).r;
+					float d1 = input_texture1.tex.Load(int3(input.position.xy/4 + int2(offset.x, 0), 0)).r;
+					float d2 = input_texture1.tex.Load(int3(input.position.xy/4 + int2(0, offset.y), 0)).r;
+					float d3 = input_texture1.tex.Load(int3(input.position.xy/4 + offset, 0)).r;
+					float4 d = float4(d0, d1, d2, d3);
+				#else
+					float4 d = input_texture1.tex.Gather(input_texture1.state, input.uv);
+				#endif
+
+				// Based on nearest-depth upsampling
+				// https://mynameismjp.wordpress.com/2015/09/13/programmable-sample-points/
+				float2 particle_depth_values = 0;
+				half4 color = 0;
+				[branch]
+				if (all(d < background_depth)) {
+					particle_depth_values =  TEX2D(input_texture1, input.uv).rg;
+					color = TEX2D(input_texture0, input.uv);
+				} else {
+					particle_depth_values = input_texture1.tex.Load(int3(input.position.xy/4, 0)).rg;
+					color = input_texture0.tex.Load(int3(input.position.xy/4, 0));
+				}
+
+				float depth_mean = particle_depth_values.x;
+				float depth_variance = particle_depth_values.y - depth_mean*depth_mean;
+				depth_variance = depth_variance > 0.0 ? sqrt(depth_variance) : 0.001;
+				
+				float diff = max(background_depth - depth_mean, 0.0);
+				float C = 1.38629436112; // 2 * ln(2)
+				float T = exp2(-diff*diff / (C * depth_variance));
+
+				return color * (1.0 - T);
+			}
+		"""
+	}
+
+	depth_filter = {		
+		includes = [ "common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+						
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv 		: TEXCOORD0;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float2 inv_input_texture0_size;	
+				float2 output_target_base_size;		
+			CBUFFER_END
+			
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				return o;
+			}			
+			
+			#if defined(GNM)
+				#define DEPTH S_DEPTH_OUTPUT
+			#endif
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float ps_main(PS_INPUT input) : DEPTH {
+				
+				#if defined(DOWNSAMPLE_4x4)
+					#define load_depth(coordinate) input_texture0.tex.Load(coordinate).r
+
+					int2 coord = input.position.xy*4.0 + 0.5;
+					float4 depth1 = float4(load_depth(int3(coord + int2(-2, -2), 0.0)).r, load_depth(int3(coord + int2(-1, -2), 0.0)).r, load_depth(int3(coord + int2(0, -2), 0.0)).r, load_depth(int3(coord + int2(1, -2), 0.0)).r);
+					float4 depth2 = float4(load_depth(int3(coord + int2(-2, -1), 0.0)).r, load_depth(int3(coord + int2(-1, -1), 0.0)).r, load_depth(int3(coord + int2(0, -1), 0.0)).r, load_depth(int3(coord + int2(1, -1), 0.0)).r);
+					float4 depth3 = float4(load_depth(int3(coord + int2(-2,  0), 0.0)).r, load_depth(int3(coord + int2(-1,  0), 0.0)).r, load_depth(int3(coord + int2(0,  0), 0.0)).r, load_depth(int3(coord + int2(1,  0), 0.0)).r);
+					float4 depth4 = float4(load_depth(int3(coord + int2(-2,  1), 0.0)).r, load_depth(int3(coord + int2(-1,  1), 0.0)).r, load_depth(int3(coord + int2(0,  1), 0.0)).r, load_depth(int3(coord + int2(1,  1), 0.0)).r);
+
+					#if defined(MIN_FILTER)
+						float4 min_column = min(min(depth1, depth2), min(depth3, depth4));
+						float depth = min(min(min_column.x, min_column.y), min(min_column.z, min_column.w));
+					#elif defined(MAX_FILTER)
+						float4 max_column = max(max(depth1, depth2), max(depth3, depth4));
+						float depth = max(max(max_column.x, max_column.y), max(max_column.z, max_column.w));
+					#else
+						float depth = dot(depth1 + depth2 + depth3 + depth4, float4(0.0625, 0.0625, 0.0625, 0.0625));
+					#endif
+				#else
+					float depth = TEX2D(input_texture0, input.uv).r;
+				#endif
+
+				return depth;
+			}
+		"""
+	}
+
+	skin_debug = {
+		includes = [ "common" ]
+		samplers = {
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			DECLARE_SAMPLER_2D(input_texture1);
+
+			Texture2D linear_depth;
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+
+				return o;
+			}
+
+			// Upsampling method based on Destiny VDP
+			// http://advances.realtimerendering.com/destiny/i3d_2015/I3D_Tatarchuk_keynote_2015_for_web.pdf
+			// http://advances.realtimerendering.com/s2013/Tatarchuk-Destiny-SIGGRAPH2013.pdf
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				#if defined(SKIN)
+					return float4(0, 1, 0, 0.8);
+				#else
+					return float4(0, 0, 0, 0.5);
+				#endif
+			}
+		"""
+	}
+
+	fill_far_plane = {
+		includes = [ "common" ]
+
+		code="""
+			struct VS_INPUT {
+				float4 position : POSITION;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.position.z = o.position.w;
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				return float4(0, 0, 0, 0);
+			}
+		"""
+	}
+
+	rgba_temporal_aa = {		
+		includes = [ "common", "gbuffer_access", "taa_offsets", "color_management", "post_processing_common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }
+			input_texture1 = { sampler_states = "clamp_linear" }
+			input_texture2 = { sampler_states = "clamp_point" }	
+		}
+		  
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			DECLARE_SAMPLER_2D(input_texture1);
+			DECLARE_SAMPLER_2D(input_texture2);
+			
+			#define TAA_SIMPLE_BLEND_FACTOR 0.05
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+			
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);				
+				o.uv = input.uv;
+				
+				return o;
+			}			
+
+			float4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				// Current fragment generic info
+				float4 result = 0;
+				float2 pixel_size = 1.0/output_rt_size;
+
+				float2 uv = input.uv;
+				float3 ss_pos = float3(uv, 0);
+				float3 ss_front_most_neighbor = ss_pos;
+
+				// Reprojection info
+				float2 motion_vector = decode_velocity(TEX2D(input_texture2, ss_front_most_neighbor.xy).VELOCITY_COMPONENTS);
+				float2 ss_prev_pos = ss_pos.xy - motion_vector;
+				
+				float3 prev_sample = TEX2D(input_texture1, ss_prev_pos).rgb;
+
+				float2 nd_prev_pos = ss_prev_pos * 2.0 - 1.0;
+				bool reprojection_is_offscreen = max(abs(nd_prev_pos.x), abs(nd_prev_pos.y)) >= 1.0;
+
+				// 3x3 neighbors info
+				int3 st = input.position;
+				float4 reconstructed_sample = input_texture0.tex.Load(st, + neighbor_offsets[4]);
+
+				float3 sample0 = input_texture0.tex.Load(st, + neighbor_offsets[0]).rgb;
+				float3 sample1 = input_texture0.tex.Load(st, + neighbor_offsets[1]).rgb;
+				float3 sample2 = input_texture0.tex.Load(st, + neighbor_offsets[2]).rgb;
+				float3 sample3 = input_texture0.tex.Load(st, + neighbor_offsets[3]).rgb;
+				float3 sample4 = reconstructed_sample.rgb;
+				float3 sample5 = input_texture0.tex.Load(st, + neighbor_offsets[5]).rgb;
+				float3 sample6 = input_texture0.tex.Load(st, + neighbor_offsets[6]).rgb;
+				float3 sample7 = input_texture0.tex.Load(st, + neighbor_offsets[7]).rgb;
+				float3 sample8 = input_texture0.tex.Load(st, + neighbor_offsets[8]).rgb;
+
+				// Shaped Neighorhood clamp info
+				// We want the clamped of the min/max values to appear filtered.
+				// We split the samples into two "neighborhoods" and average
+				// them together (Karis 2014)
+				// ________________  ________________
+				// Neighborhood '1'  Neighborhood '2'
+				//      0 1 2             - 1 -
+				//      3 4 5             3 4 5
+				//      6 7 8             - 7 -
+				float3 neighborhood_1_min = min(min(sample0, sample2), min(sample6, sample8));
+				float3 neighborhood_1_max = max(max(sample0, sample2), max(sample6, sample8));
+				float3 neighborhood_2_min = min(min(min(sample1, sample3), min(sample4, sample5)), sample7);
+				float3 neighborhood_2_max = max(max(max(sample1, sample3), max(sample4, sample5)), sample7);
+				neighborhood_1_min = min(neighborhood_1_min, neighborhood_2_min);
+				neighborhood_1_max = max(neighborhood_1_max, neighborhood_2_max);
+
+				prev_sample = clamp(prev_sample, neighborhood_1_min, neighborhood_1_max);
+				result = reprojection_is_offscreen ? reconstructed_sample : float4(lerp(prev_sample, reconstructed_sample.rgb, TAA_SIMPLE_BLEND_FACTOR), reconstructed_sample.a);
+
+				return result;
+			}
+		"""
+	}
+
+	world_interaction = {		
+		includes = [ "common", "gbuffer_access" ]
+		samplers = {
+		}
+
+		code="""
+			Texture2D<float4> input_texture0;
+			//Texture2D<float4> input_texture1;
+
+						
+			struct VS_INPUT {
+				float4 position : POSITION;			
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				float4 current = input_texture0.Load(int3(input.position.xy, 0));
+				float value = dot(current.rg, float2(0.5,0.5));
+				if( abs(value - 0.5) < 0.1 )
+					return float4(current.rgb, 0.05); 
+				else
+					return float4(current.rgb, 1.0);
+			}
+		"""
+	}
+
+	color_blindness_filter_protanomaly = {
+		includes = [ "common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			// Transform according to http://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html
+			static float3x3 transform =
+			{
+				0.152286, 1.052583, -0.204868,
+				0.114503, 0.786281, 0.099216,
+				-0.003882, -0.048116, 1.051998
+			};
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input)
+			{
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float4 ps_main( PS_INPUT input ) : SV_TARGET0
+			{
+				float3 color = TEX2D(input_texture0, input.uv).xyz;
+				float3 linear_color = pow(color, gamma/2.2);
+				float3 transformed_color = mul(transform, linear_color);
+				color = pow(transformed_color, 2.2/gamma);
+				return float4(color.rgb, 1.0);
+			}
+		"""
+	}
+
+	color_blindness_filter_deuteranomaly = {
+		includes = [ "common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			// Transform according to http://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html
+			static float3x3 transform =
+			{
+				0.367322, 0.860646, -0.227968,
+				0.280085, 0.672501, 0.047413,
+				-0.011820, 0.042940, 0.968881
+			};
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input)
+			{
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float4 ps_main( PS_INPUT input ) : SV_TARGET0
+			{
+				float3 color = TEX2D(input_texture0, input.uv).xyz;
+				float3 linear_color = pow(color, gamma/2.2);
+				float3 transformed_color = mul(transform, linear_color);
+				color = pow(transformed_color, 2.2/gamma);
+				return float4(color.rgb, 1.0);
+			}
+		"""
+	}
+
+	color_blindness_filter_tritanomaly = {
+		includes = [ "common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			// Transform according to http://www.inf.ufrgs.br/~oliveira/pubs_files/CVD_Simulation/CVD_Simulation.html
+			static float3x3 transform =
+			{
+				1.255528, -0.076749, -0.178779,
+				-0.078411, 0.930809, 0.147602,
+				0.004733, 0.691367, 0.303900
+			};
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input)
+			{
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float4 ps_main( PS_INPUT input ) : SV_TARGET0
+			{
+				float3 color = TEX2D(input_texture0, input.uv).xyz;
+				float3 linear_color = pow(color, gamma/2.2);
+				float3 transformed_color = mul(transform, linear_color);
+				color = pow(transformed_color, 2.2/gamma);
+				return float4(color.rgb, 1.0);
+			}
+		"""
+	}
+
+	init_variance_shadow_map = {
+		includes = [ "common", "lighting_data", "vsm_common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float2 ps_main(PS_INPUT input) : SV_TARGET0 {
+				float shadow_depth = sample_light_depth(input_texture0, input.uv);
+				return float2(shadow_depth, shadow_depth * shadow_depth);
+			}
+		"""
+	}
+
+	apply_variance_shadow_map = {
+		includes = [ "common", "gbuffer_access", "taa_offsets", "lighting_data", "vsm_common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			Texture2D<float> input_texture1;
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+				float4 w : TEXCOORD1;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				// When using temporal antialiasing we try to cancel out the jitter
+				// that was introduced in the depth buffer. This is to minimize self occlusion
+				// that can arrise when performing a depth test beween the jittered depth buffer
+				// and a non jittered shadow map.
+				float4 tmp = o.position;
+				float4 view_space = tmp / tmp.w;
+				view_space.xy -= get_vs_halton_offset(frame_number);
+				tmp = view_space * tmp.w;
+				o.w = encode_world_pos(tmp);
+
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half ps_main(PS_INPUT input) : SV_TARGET0
+			{
+				float depth = gbuffer_decode_depth(input_texture1.Load(int3(input.position.xy, 0)));
+				float3 wp = decode_world_pos(input.w, depth);
+				return calculate_vsm_intensity(input_texture0, wp);
+			}
+		"""
+	}
+
+	init_exponential_shadow_map = {
+		includes = [ "common", "lighting_data", "vsm_common", "esm_common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float ps_main(PS_INPUT input) : SV_TARGET0 {
+				float shadow_depth = sample_light_depth(input_texture0, input.uv);
+				return exp(volumetric_esm_constant*shadow_depth);
+			}
+		"""
+	}
+
+	apply_exponential_shadow_map = {
+		includes = [ "common", "gbuffer_access", "taa_offsets", "lighting_data", "vsm_common", "esm_common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }
+		}
+
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			Texture2D<float> input_texture1;
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+				float4 w : TEXCOORD1;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				// When using temporal antialiasing we try to cancel out the jitter
+				// that was introduced in the depth buffer. This is to minimize self occlusion
+				// that can arrise when performing a depth test beween the jittered depth buffer
+				// and a non jittered shadow map.
+				float4 tmp = o.position;
+				float4 view_space = tmp / tmp.w;
+				view_space.xy -= get_vs_halton_offset(frame_number);
+				tmp = view_space * tmp.w;
+				o.w = encode_world_pos(tmp);
+
+				return o;
+			}
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half ps_main(PS_INPUT input) : SV_TARGET0
+			{
+				float depth = gbuffer_decode_depth(input_texture1.Load(int3(input.position.xy, 0)));
+				float3 wp = decode_world_pos(input.w, depth);
+				
+				return calculate_esm_intensity(input_texture0, wp);
+			}
+		"""
+	}
+
+	blend_blur = {		
+		includes = [ "common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_linear" }	
+			input_texture1 = { sampler_states = "clamp_linear" }	
+			input_texture2 = { sampler_states = "clamp_linear" }	
+			input_texture3 = { sampler_states = "clamp_linear" }	
+			input_texture4 = { sampler_states = "clamp_linear" }	
+		}
+		
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+			DECLARE_SAMPLER_2D(input_texture1);
+			DECLARE_SAMPLER_2D(input_texture2);
+			DECLARE_SAMPLER_2D(input_texture3);
+			DECLARE_SAMPLER_2D(input_texture4);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float fullscreen_blur_amount;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);				
+				o.uv = input.uv;
+				
+				return o;
+			}						
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				half3 level1 = TEX2D(input_texture0, input.uv).rgb;
+				half3 level2 = TEX2D(input_texture1, input.uv).rgb;
+				half3 level3 = TEX2D(input_texture2, input.uv).rgb;
+				half3 level4 = TEX2D(input_texture3, input.uv).rgb;
+				half3 level5 = TEX2D(input_texture4, input.uv).rgb;
+
+				float x2 = fullscreen_blur_amount * fullscreen_blur_amount;
+				float x4 = x2*x2;
+				float x8 = x4*x4;
+				float x16 = x8*x8;
+				float x32 = x16*x16;
+
+				float w0 = fullscreen_blur_amount;
+				float w1 = x2  * 4.0;
+				float w2 = x4  * 16.0;
+				float w3 = x8  * 64.0;
+				float w4 = x16 * 256.0;
+				float w5 = x32 * 1024.0;
+
+				w0 *= w0;
+				w1 *= w1;
+				w2 *= w2;
+				w3 *= w3;
+				w4 *= w4;
+				w5 *= w5;
+
+				half inv_weight = fullscreen_blur_amount > 0.0 ? 1.0 / (w0 + w1 + w2 + w3 + w4 + w5) : 0.0;
+				half alpha =  fullscreen_blur_amount > 0.0 ? (1.0 - (w0 * inv_weight)) : 0.0;
+				
+				half3 result = (level1*w1 + level2*w2 + level3*w3 + level4*w4 + level5*w5) * inv_weight;
+				return half4(result, alpha);
+			}
+		"""
+	}
+
+	sharpen = {		
+		includes = [ "common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }	
+		}
+		
+		code="""
+			DECLARE_SAMPLER_2D(input_texture0);
+
+			static const int2 offsets[9] = {
+				int2(-1, -1), 
+				int2(0, -1), 
+				int2(1, -1),
+				int2(-1, 0), 
+				int2(0, 0), 
+				int2(1, 0),
+				int2(-1, 1), 
+				int2(0, 1), 
+				int2(1,1)
+			};
+
+			static const float laplace_kernel[9] = {
+				-0.71, 
+				-1.0, 
+				-0.71,
+				-1.0, 
+				6.84, 
+				-1.0,
+				-0.71, 
+				-1.0, 
+				-0.71
+			};
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float sharpen_amount;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);				
+				o.uv = input.uv;
+				
+				return o;
+			}						
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				half4 sample0 = Sample(input_texture0, input.uv, offsets[0]);
+				half4 sample1 = Sample(input_texture0, input.uv, offsets[1]);
+				half4 sample2 = Sample(input_texture0, input.uv, offsets[2]);
+				half4 sample3 = Sample(input_texture0, input.uv, offsets[3]);
+				half4 sample4 = Sample(input_texture0, input.uv, offsets[4]);
+				half4 sample5 = Sample(input_texture0, input.uv, offsets[5]);
+				half4 sample6 = Sample(input_texture0, input.uv, offsets[6]);
+				half4 sample7 = Sample(input_texture0, input.uv, offsets[7]);
+				half4 sample8 = Sample(input_texture0, input.uv, offsets[8]);
+		
+				float4 filter_result = 
+					sample0 * laplace_kernel[0] +
+					sample1 * laplace_kernel[1] +
+					sample2 * laplace_kernel[2] +
+					sample3 * laplace_kernel[3] +
+					sample4 * laplace_kernel[4] +
+					sample5 * laplace_kernel[5] +
+					sample6 * laplace_kernel[6] +
+					sample7 * laplace_kernel[7] +
+					sample8 * laplace_kernel[8];
+
+				return sample4 + sharpen_amount * filter_result;
+			}
+
+		"""
+	}
+
+	signed_distance_field_2d = {		
+		includes = [ "common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }	
+		}
+		
+		code="""
+			#define MAX_DISTANCE_2D 3
+
+			DECLARE_SAMPLER_2D(input_texture0);
+
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;				
+			};
+			
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};			 			
+			
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+
+				float3 outline_color_red;
+				float3 outline_color_green;
+				float3 outline_color_blue;
+				float3 outline_color_alpha;
+
+				float2 outline_outer_params;
+				float2 outline_inner_params;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.uv = input.uv;
+				return o;
+			}
+
+			#define linearstep(min, max, x) saturate((x - min) / (max - min))		
+
+			#if defined(VERTICAL_PASS)
+				#define SAMPLES_COUNT 6
+				static const int distance_lut[SAMPLES_COUNT] = {
+					9, 4, 1, 1, 4, 9
+				};
+
+			#endif
+
+			// TODO: optimizations
+			// 1. if we want to only have inner or outer outlines, we should try to optimizwe the shader for it.
+			// 2. Discard pixels that are inside/outside or use the stencil buffer (if taa is used we need to set stencil values)
+			// 3. if we still need to have both inside and outside pixels, then we should use binary operators to pack the data.
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			half4 ps_main(PS_INPUT input) : SV_TARGET0 {
+				const int2 position = input.position.xy;
+
+				#if defined(HORIZONTAL_PASS)
+					const float4 s0 = Sample(input_texture0, input.uv, int2(-3, 0));
+					const float4 s1 = Sample(input_texture0, input.uv, int2(-2, 0));
+					const float4 s2 = Sample(input_texture0, input.uv, int2(-1, 0));
+					const float4 s3 = input_texture0.tex.Load(int3(position.xy, 0));
+					const float4 s4 = Sample(input_texture0, input.uv, int2(1, 0));
+					const float4 s5 = Sample(input_texture0, input.uv, int2(2, 0));
+					const float4 s6 = Sample(input_texture0, input.uv, int2(3, 0));
+					
+					const bool4 is_inside = s3 > 0.5;
+					
+					int4 dist = 127; // should be smaller than 128 but value * value should be larger or equals to MAX_DISTANCE_SQUARED 
+					[branch]
+					if (all(is_inside)) {
+						dist = s0 <= 0.5 ? 9 : dist;
+						dist = s6 <= 0.5 ? 9 : dist;
+						dist = s1 <= 0.5 ? 4 : dist;
+						dist = s5 <= 0.5 ? 4 : dist;
+						dist = s2 <= 0.5 ? 1 : dist;
+						dist = s4 <= 0.5 ? 1 : dist;
+					} else if (all(!is_inside)) {
+						dist = s0 > 0.5 ? 9 : dist;
+						dist = s6 > 0.5 ? 9 : dist;
+						dist = s1 > 0.5 ? 4 : dist;
+						dist = s5 > 0.5 ? 4 : dist;
+						dist = s2 > 0.5 ? 1 : dist;
+						dist = s4 > 0.5 ? 1 : dist;
+					} else {
+						dist = (is_inside && s0 <= 0.5) || (!is_inside && s0 > 0.5) ? 9 : dist;
+						dist = (is_inside && s6 <= 0.5) || (!is_inside && s6 > 0.5) ? 9 : dist;
+						dist = (is_inside && s1 <= 0.5) || (!is_inside && s1 > 0.5) ? 4 : dist;
+						dist = (is_inside && s5 <= 0.5) || (!is_inside && s5 > 0.5) ? 4 : dist;
+						dist = (is_inside && s2 <= 0.5) || (!is_inside && s2 > 0.5) ? 1 : dist;
+						dist = (is_inside && s4 <= 0.5) || (!is_inside && s4 > 0.5) ? 1 : dist;
+					}
+
+					return (float4)((is_inside ? 128 : 0) + dist) / 255.0;
+					
+					//// Code above is a manual unroll of the code below when MAX_DISTANCE_2D == 3
+					//int4 dist = 11;
+					//const float4 value = input_texture0.Load(int3(position.xy, 0));
+					//const bool4 is_inside = value > 0.5;
+					//int4 dist = MAX_DISTANCE_2D + 1;
+					//
+					//for (int x = -MAX_DISTANCE_2D; x <= -1; ++x) {
+					//	const float4 value = input_texture0.Load(int3(position.xy + int2(x, 0), 0));
+					//	const bool4 is_valid = !((is_inside && value > 0.5) || (!is_inside && value <= 0.5));
+					//
+					//	dist = is_valid ? min(dist, -x) : dist;
+					//}
+					//
+					//for (int x = 1; x <= MAX_DISTANCE_2D; ++x) {
+					//	const float4 value = input_texture0.Load(int3(position.xy + int2(x, 0), 0));
+					//	const bool4 is_valid = !((is_inside && value > 0.5) || (!is_inside && value <= 0.5));
+					//
+					//	dist = is_valid ? min(dist, x) : dist;
+					//}
+					//return (float4)((is_inside ? 128 : 0) + dist * dist) / 255.0;
+				#elif defined(VERTICAL_PASS)
+					const int4 s0 = Sample(input_texture0, input.uv, int2(0, -3))	* 255.0 + 0.5;
+					const int4 s1 = Sample(input_texture0, input.uv, int2(0, -2))	* 255.0 + 0.5;
+					const int4 s2 = Sample(input_texture0, input.uv, int2(0, -1))	* 255.0 + 0.5;
+					const int4 s3 = input_texture0.tex.Load(int3(position.xy, 0)) 	* 255.0 + 0.5;
+					const int4 s4 = Sample(input_texture0, input.uv, int2(0, 1))	* 255.0 + 0.5;
+					const int4 s5 = Sample(input_texture0, input.uv, int2(0, 2))	* 255.0 + 0.5;
+					const int4 s6 = Sample(input_texture0, input.uv, int2(0, 3))	* 255.0 + 0.5;			
+					const bool4 is_inside = s3 >= 128;
+
+					const int4 samples[SAMPLES_COUNT] = {
+						s0, s1, s2, s4, s5, s6
+					};
+					
+					const int MAX_DISTANCE_2D_SQUARED = (MAX_DISTANCE_2D + 1) * (MAX_DISTANCE_2D + 1);
+					const int MAX_DISTANCE_SQUARED = MAX_DISTANCE_2D_SQUARED * 2;
+					
+					int4 dist = MAX_DISTANCE_SQUARED;
+					
+					[branch]
+					if (all(is_inside)) {
+						for (int i = 0; i < SAMPLES_COUNT; ++i) {
+							const int4 temp_value = samples[i];
+							const int y2 = distance_lut[i];
+							dist = min(dist, max(temp_value - 128, 0) + y2);
+						}
+					} else if (all(!is_inside)) {
+						for (int i = 0; i < SAMPLES_COUNT; ++i) {
+							const int4 temp_value = samples[i];
+							const int y2 = distance_lut[i];
+							dist = min(dist, (temp_value >= 128 ? 0 : temp_value) + y2);
+						}
+					} else {
+						// check for both outside and inside samples
+						for (int i = 0; i < SAMPLES_COUNT; ++i) {
+							const int4 temp_value = samples[i];
+							// inner samples is value + 128, outer samples is the same
+							const int4 value = is_inside ? 
+								max(temp_value - 128, 0) :
+								(temp_value >= 128 ? 0 : temp_value);
+
+							const int y2 = distance_lut[i];
+							dist = min(dist, value + y2);
+						}
+
+						//for (int y = -MAX_DISTANCE_2D; y <= MAX_DISTANCE_2D; ++y) {
+						//	const int4 temp_value = input_texture0.Load(int3(position.xy + int2(0, y), 0))	* 255.0 + 0.5;
+						//	// inner samples is value + 128, outer samples is the same
+						//	const int4 value = is_inside ? 
+						//		max(temp_value - 128, 0) :
+						//		(temp_value >= 128 ? 0 : temp_value);
+						//
+						//	dist = min(dist, value + y * y);
+						//}
+					}
+
+					const float4 settings_start = is_inside ? outline_inner_params.xxxx : outline_outer_params.xxxx;
+					const float4 settings_end = is_inside ? outline_inner_params.yyyy : outline_outer_params.yyyy;
+
+					float4 normalized_distance = sqrt((float4)(dist) / (float4)(MAX_DISTANCE_SQUARED));
+					float4 result = 1.0 - linearstep(settings_start, settings_end, normalized_distance);
+
+					float3 color = 
+						result.r * outline_color_red +
+						result.g * outline_color_green + 
+						result.b * outline_color_blue + 
+						result.a * outline_color_alpha;
+
+					float alpha = max(max(result.r, result.g), max(result.b, result.a));
+					return float4(pow(color, 2.2/gamma), alpha);
+				#endif
+			}
+
+		"""
+	}
+}
+
+shaders = {
+	error_debug = {
+		editor_advanced_mode = true
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="error_debug" render_states="filter" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		} 
+	}
+
+	init_luminance_adaptation = {
+		editor_advanced_mode = true
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="init_luminance_adaptation" render_states="filter" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		} 
+	}
+
+	average_luminance_feedback = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="average_luminance_feedback" render_states="filter" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		}
+	}
+
+
+	volume_height_fog = {
+		editor_options = [
+			{
+				name="Options"
+				options = [
+					{ name="Enable Camera Inside Volume" define="ENABLE_INSIDE" tooltip="Extra computations to make correct fog calculations when camera is inside the volume." }
+				]
+			}
+		]
+
+		contexts = {
+			default = {
+				passes = [
+					{ layer="hdr_transparent" hlsl_shader="volume_height_fog" defines=["CALCULATE_FOG" "CALCULATE_LIGHTING"] render_states="opacity_volume" }
+					{ layer="wireframe" hlsl_shader="volume_height_fog" defines=["WIREFRAME_PASS"] render_states="wireframe" branch_key="dev_wireframe" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ if: "on_renderer(D3D11, D3D12, GNM) && render_setting(low_res_transparency)" defines=["LOW_RES_ENABLED"] }
+				{ defines="" platforms = "D3D11 D3D12 GNM"}
+			]
+		}
+	}
+
+	fog_plane = {
+		editor_options = [
+			{
+				name="Settings"
+				options = [
+					{ name="Inverted: Fog pixels in-front of plane" define="INVERTED" }
+					{ name="Mask out skydome" define="MASK_OUT_SKYDOME" }	
+					{ name="Ambient tint" define="AMBIENT_TINT" }		
+				]
+			}		
+		]
+		
+		contexts = {
+			default = {
+				passes = [
+					{ layer="hdr_transparent" hlsl_shader="fog_plane" defines=["CALCULATE_FOG"] render_states="fog_plane" }
+				]
+			}			
+		}	
+		
+		compile = {
+			default = [
+				{ if: "on_renderer(D3D11, D3D12, GNM) && render_setting(low_res_transparency)" defines=["LOW_RES_ENABLED"] }			
+				{ defines="" platforms = "D3D11 D3D12 GNM"} 
+			]
+		} 
+	}
+
+	screen_space_light_shafts_mask = {
+		editor_advanced_mode = true
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{
+						defined="FAR_PLANE"
+						pass = [
+							{ hlsl_shader="screen_space_light_shafts_mask" render_states="filter_far" }
+						]
+						fail = [
+							{ hlsl_shader="screen_space_light_shafts_mask" render_states="filter_near" }
+						]
+					}
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		} 
+	}	
+
+	screen_space_light_shafts = {
+		editor_advanced_mode = true
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="screen_space_light_shafts" render_states="filter" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		} 
+	}
+
+	sun_visibility = {
+		editor_advanced_mode = true
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="sun_visibility" defines=["CALCULATE_LIGHTING"] render_states="filter" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		} 
+	}
+
+	sun_flare = {
+		editor_advanced_mode = true
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="sun_flare" render_states="filter_add" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		} 
+	}
+
+	skydome_billboard = {
+		editor_advanced_mode = false
+		editor_options = [
+			{
+				name="Sun Direction"
+				options = [
+					{ name="Use Secondary Sun" define="SECONDARY_SUN" }
+				]
+			}
+		]
+
+		contexts = {
+			default = {
+				passes = [
+					{ layer="skydome_billboard" hlsl_shader="skydome_billboard" render_states="skydome_billboard" }
+				]
+			}
+
+			// TODO: material transfer
+		}
+
+		compile = {
+			default = [
+				{ defines=[""] }
+			]
+		}
+	}
+
+	fixed_function_blend = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="fixed_function_blend" render_states="filter_blend" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		}
+	}
+
+	skin_filter = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="skin_filter" render_states="skin_filter" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines="INDEPENDENT_BLEND" platforms="GNM" }
+				{ defines="INDEPENDENT_BLEND" render_caps={ feature_level="DX11_0" } platforms="D3D11" }
+				{ defines="INDEPENDENT_BLEND" render_caps={ feature_level="DX12_1" } platforms="D3D12" }
+				{ defines="INDEPENDENT_BLEND DX10_1" render_caps={ feature_level="DX10_1" } platforms="D3D11" }
+				{ defines="SEPARATE_BLEND" platforms="D3D11 D3D12 GNM" }
+			]
+		}
+	}
+
+	add_colored_outline = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="add_colored_outline" render_states="outline_stencil" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		}
+	}
+
+	specular_aa = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="specular_aa" render_states="filter_specular_aa" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		}
+	}
+
+	apply_hdr_transparent = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="apply_hdr_transparent" render_states="filter_hdr_transparency" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		}
+	}
+
+	depth_filter = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="depth_filter" render_states="filter_depth" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		}
+	}
+
+	skin_debug = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="skin_debug" render_states="skin_debug" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		}
+	}
+
+	fill_far_plane = {
+		editor_advanced_mode = true
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="fill_far_plane" render_states="filter_far" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		} 
+	}
+
+	world_interaction = {
+		editor_advanced_mode = true
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="world_interaction" render_states="filter_world_interaction" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		} 
+	}
+
+	color_blindness_filter_protanomaly = {
+		editor_advanced_mode = false
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="color_blindness_filter_protanomaly" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[""] }
+			]
+		}
+	}
+
+	color_blindness_filter_deuteranomaly = {
+		editor_advanced_mode = false
+		
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="color_blindness_filter_deuteranomaly" }
+				]
+			}
+		}	
+		
+		compile = {
+			default = [
+				{ defines=[""] }
+			]
+		}
+	}
+
+	color_blindness_filter_tritanomaly = {
+ 		editor_advanced_mode = false
+ 		
+ 		contexts = {
+ 			default = {
+ 				passes_sort_mode="immediate"
+ 				passes = [
+ 					{ hlsl_shader="color_blindness_filter_tritanomaly" }
+ 				]
+ 			}
+ 		}	
+ 		
+ 		compile = {
+ 			default = [
+ 				{ defines=[""] }
+ 			]
+ 		}
+ 	}
+
+ 	init_variance_shadow_map = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="init_variance_shadow_map" defines=["CALCULATE_LIGHTING"] render_states="filter" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines="" }
+			]
+		}
+	}
+
+	apply_variance_shadow_map = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="apply_variance_shadow_map" defines=["CALCULATE_LIGHTING"] render_states="filter" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines="" }
+			]
+		}
+	}
+
+	init_exponential_shadow_map = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="init_exponential_shadow_map" defines=["CALCULATE_LIGHTING"] render_states="filter" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines="" }
+			]
+		}
+	}
+
+	apply_exponential_shadow_map = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="apply_exponential_shadow_map" defines=["CALCULATE_LIGHTING"] render_states="filter" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines="" }
+			]
+		}
+	}
+
+	blend_blur = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="blend_blur" render_states="filter_premultiply" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines="" }
+			]
+		}
+	}
+
+	sharpen = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{ hlsl_shader="sharpen" render_states="filter" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines="" }
+			]
+		}
+	}
+
+	signed_distance_field_2d = {
+		editor_advanced_mode = true
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+					{
+						defined="HORIZONTAL_PASS"
+						pass = [
+							{ hlsl_shader="signed_distance_field_2d" render_states="filter" }
+						]
+						fail = [
+							{ hlsl_shader="signed_distance_field_2d" render_states="filter_premultiply" }
+						]
+					}
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines="" }
+			]
+		}
+	}
+}
+
+static_compile= [
+	{ shader="error_debug" }
+	{ shader="init_luminance_adaptation" }
+	{ shader="average_luminance_feedback" }
+	{ shader="color_blindness_filter_protanomaly" }
+	{ shader="color_blindness_filter_deuteranomaly" }
+	{ shader="color_blindness_filter_tritanomaly" }
+
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="screen_space_light_shafts_mask" defines=["FAR_PLANE"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="screen_space_light_shafts_mask" defines=["SIMPLE"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="screen_space_light_shafts_mask" }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="screen_space_light_shafts" }
+
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_visibility" }
+
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_flare" defines=["RADIAL"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_flare" defines=["STREAKS"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_flare" defines=["STRIPE"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_flare" defines=["STAR"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_flare" defines=["RADIAL" "BILLBOARD_CAMERA_ALIGNED"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_flare" defines=["STREAKS" "BILLBOARD_CAMERA_ALIGNED"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_flare" defines=["STRIPE" "BILLBOARD_CAMERA_ALIGNED"] }
+	{ if: "on_renderer(D3D11, D3D12, GNM)" shader="sun_flare" defines=["STAR" "BILLBOARD_CAMERA_ALIGNED"] }
+
+	{ shader="fixed_function_blend" }
+	{ shader="fixed_function_blend" defines=["POINT_SAMPLER"] }
+	{ shader="fixed_function_blend" defines=["PREMULTIPLIED"] }
+	//{ shader="fixed_function_blend" defines=["PREMULTIPLIED" "OUTLINE"] }
+	{ if: "!on_renderer(GL)" shader="fixed_function_blend" defines=["POINT_SAMPLER" "SKIN"] }
+
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["DIRECTION_X" "STEP0"] }
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["DIRECTION_Y" "STEP0"] }
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["DIRECTION_X" "STEP1"] }
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["DIRECTION_Y" "STEP1"] }
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["DIRECTION_X" "STEP2"] }
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["DIRECTION_Y" "STEP2"] }
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["BLEND STEP0"] }
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["BLEND STEP1"] }
+	{ if: "!on_renderer(GL)" shader="skin_filter" defines=["BLEND STEP2"] }
+
+	//{ if: "on_renderer(D3D11, D3D12, GNM)" shader="add_colored_outline" defines=["SOLID"] }
+	//{ if: "on_renderer(D3D11, D3D12, GNM)" shader="add_colored_outline" defines=["FILL"] }
+	//{ if: "on_renderer(D3D11, D3D12, GNM)" shader="add_colored_outline" defines=["OPAQUE"] }
+	// { if: "on_renderer(D3D11, D3D12, GNM)" shader="specular_aa" defines=["FIRST_PASS"]}
+	// { if: "on_renderer(D3D11, D3D12, GNM)" shader="specular_aa" defines=["SECOND_PASS"]}
+
+	{ shader="apply_hdr_transparent" }
+
+	{ shader="depth_filter" }
+
+	{ shader="skin_debug" }
+	{ shader="skin_debug" defines=["SKIN"] }
+
+	{ shader="fill_far_plane" }
+
+	{ shader="world_interaction" }
+
+	// { shader="init_variance_shadow_map" }
+	// { shader="apply_variance_shadow_map" }
+	// { shader="init_exponential_shadow_map" }
+	// { shader="apply_exponential_shadow_map" }
+
+	{ shader="blend_blur" }
+
+	{ shader="sharpen" }
+
+	{ shader="signed_distance_field_2d" defines=["VERTICAL_PASS"] }
+	{ shader="signed_distance_field_2d" defines=["HORIZONTAL_PASS"] }
+]

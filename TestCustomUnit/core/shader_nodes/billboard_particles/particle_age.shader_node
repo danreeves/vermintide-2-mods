@@ -1,0 +1,21 @@
+ 
+
+group = "Particle Billboard"
+display_name = "Particle Age"
+
+imports = {
+	particle_age = {
+		type = "float"
+		semantic = "TEXCOORD8"
+		domain = "vertex"
+	}
+}
+
+output = {
+	type = { typeof: "particle_age" }
+}
+
+code = """
+	RESULT(particle_age);
+"""
+

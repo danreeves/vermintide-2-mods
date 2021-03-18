@@ -1,0 +1,325 @@
+
+shader = {
+	connections = [
+		{
+			destination = {
+				connector_id = "aca690cb-6305-4a2f-bf3d-69183a493db3"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+			select = [
+				"rgb"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb8"
+			}
+		}
+		{
+			destination = {
+				connector_id = "c5823c75-4ae5-4c71-b070-315fa4d03e8e"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb8"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb9"
+			}
+		}
+		{
+			destination = {
+				connector_id = "242d1648-a626-445b-9534-bccec094112f"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb8"
+			}
+			select = [
+				"rgb"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb2"
+			}
+		}
+		{
+			destination = {
+				connector_id = "1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb2"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb6"
+			}
+		}
+		{
+			destination = {
+				connector_id = "1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb3"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb6"
+			}
+		}
+		{
+			destination = {
+				connector_id = "1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb4"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb6"
+			}
+		}
+		{
+			destination = {
+				connector_id = "c5823c75-4ae5-4c71-b070-315fa4d03e8e"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb6"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb7"
+			}
+		}
+		{
+			destination = {
+				connector_id = "242d1648-a626-445b-9534-bccec094112f"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb6"
+			}
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb1"
+			}
+		}
+		{
+			destination = {
+				connector_id = "b1c86408-aacb-4466-b754-ddcf37a3a2c8"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+			select = [
+				"rgb"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb3"
+			}
+		}
+		{
+			destination = {
+				connector_id = "36ba46d2-f6ea-4e60-a428-fdc17c75bc62"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+			select = [
+				"r"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb4"
+			}
+		}
+		{
+			destination = {
+				connector_id = "ad5e052f-d316-4a0f-8b79-53c38204d61b"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+			select = [
+				"g"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb4"
+			}
+		}
+		{
+			destination = {
+				connector_id = "59fd1cf4-f736-470d-8510-1dd7c016639e"
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			}
+			select = [
+				"b"
+			]
+			source = {
+				instance_id = "abbaabba-abba-abba-abba-abbaabbaabb4"
+			}
+		}
+	]
+	constants = [
+	]
+	groups = [
+	]
+	nodes = [
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb5"
+			options = [
+			]
+			position = [1280 220]
+			samplers = {
+			}
+			title = "Standard Base"
+			type = "core/stingray_renderer/output_nodes/standard_base"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb8"
+			options = [
+			]
+			position = [1000 137]
+			samplers = {
+			}
+			title = "Multiply"
+			type = "core/shader_nodes/mul"
+		}
+		{
+			content_size = [160 0]
+			export = {
+				material_variable = {
+					display_name = "Material Variable"
+					name = "Material_Variable"
+					type = "float3"
+					ui = {
+						max = [1 1 1]
+						min = [0 0 0]
+						order = 100
+						step = [0.01 0.01 0.01]
+						ui_type = "Color"
+					}
+					value = [0.848485 0.840258 0.821334]
+				}
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb9"
+			options = [
+			]
+			position = [716 80]
+			samplers = {
+			}
+			title = "Material Variable"
+			type = "core/shader_nodes/material_variable"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb2"
+			options = [
+				"1e067464-12d8-4826-9b72-cfd5765003e3"
+				"fb3f709b-a54a-4e93-ac9f-e9fc76fb8bcd"
+				"5dd59b3d-1762-4a14-9930-7500230ef3db"
+			]
+			position = [720 220]
+			samplers = {
+				texture_map = {
+					display_name = "Color Map"
+					slot_name = "color_map"
+					ui = {
+						order = 1
+					}
+				}
+			}
+			title = "Color Map"
+			type = "core/shader_nodes/sample_texture"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb6"
+			options = [
+			]
+			position = [360 340]
+			samplers = {
+			}
+			title = "Multiply"
+			type = "core/shader_nodes/mul"
+		}
+		{
+			content_size = [160 0]
+			export = {
+				material_variable = {
+					display_name = "Scale"
+					name = "scale"
+					type = "float"
+					ui = {
+						max = 5
+						min = 0.0001
+						order = 100
+						step = 0.01
+					}
+					value = 10
+				}
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb7"
+			options = [
+			]
+			position = [123 297]
+			samplers = {
+			}
+			title = "Scale"
+			type = "core/shader_nodes/material_variable"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb1"
+			options = [
+			]
+			position = [110 442]
+			samplers = {
+			}
+			title = "Texcoord0"
+			type = "core/shader_nodes/texture_coordinate0"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb3"
+			options = [
+				"f669a3a6-0376-4187-840e-80000e2939d5"
+				"90e20826-8689-42fa-8e24-f484ec64c5c3"
+				"5dd59b3d-1762-4a14-9930-7500230ef3db"
+			]
+			position = [720 380]
+			samplers = {
+				texture_map = {
+					display_name = "Normal Map"
+					slot_name = "normal_map"
+					ui = {
+						order = 2
+					}
+				}
+			}
+			title = "Normal Map"
+			type = "core/shader_nodes/sample_texture"
+		}
+		{
+			content_size = [160 0]
+			export = {
+			}
+			id = "abbaabba-abba-abba-abba-abbaabbaabb4"
+			options = [
+				"f669a3a6-0376-4187-840e-80000e2939d5"
+				"e94e53e6-49b6-4194-a747-8f064a5932e0"
+				"5dd59b3d-1762-4a14-9930-7500230ef3db"
+			]
+			position = [720 480]
+			samplers = {
+				texture_map = {
+					display_name = "Rma"
+					slot_name = "rma"
+					ui = {
+						order = 3
+					}
+				}
+			}
+			title = "Rma"
+			type = "core/shader_nodes/sample_texture"
+		}
+	]
+	version = 3
+}
+textures = {
+	color_map = "content/models/TableAndChair/textures/wood_dark_basecolor"
+	normal_map = "content/models/TableAndChair/textures/wood_normal"
+	rma = "content/models/TableAndChair/textures/wood_rma"
+}
+variables = {
+	Material_Variable = {
+		type = "vector3"
+		value = [0.848485 0.840258 0.821334]
+	}
+	scale = {
+		type = "scalar"
+		value = 10
+	}
+}

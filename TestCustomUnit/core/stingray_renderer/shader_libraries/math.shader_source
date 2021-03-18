@@ -1,0 +1,41 @@
+hlsl_shaders ={
+	intersection_common = {
+		code = """
+			struct AABB {
+				float3 min_bound;
+				float3 max_bound;
+			};
+
+			struct Ray {
+				float3 origin;
+				float3 dir;
+			};
+
+			// https://tavianator.com/fast-branchless-raybounding-box-intersections-part-2-nans/
+			bool intersection(AABB b, Ray r, out float tmin, out float tmax) {
+			    float3 inv_dir = 1.0 / r.dir;
+
+			    float3 r_min = (b.min_bound - r.origin) * inv_dir;
+			    float3 r_max = (b.max_bound - r.origin) * inv_dir;
+			    
+			    float3 tmin3 = min(r_min, r_max);
+			    float3 tmax3 = max(r_min, r_max);
+			 	
+			    tmin = tmin3.x;
+			    tmax = tmax3.x;
+			 	
+			    //tmin = max(tmin, min(tmin3.y, tmax));
+			    //tmax = min(tmax, max(tmax3.y, tmin));
+			    tmin = max(tmin, min(tmin3.y, tmax)); // NaN safe
+       			tmax = min(tmax, max(tmax3.y, tmin)); // NaN safe
+
+			    //tmin = max(tmin, min(tmin3.z, tmax));
+			    //tmax = min(tmax, max(tmax3.z, tmin));
+			    tmin = max(tmin, min(tmin3.z, tmax)); // NaN safe
+       			tmax = min(tmax, max(tmax3.z, tmin)); // NaN safe
+			 
+			    return tmax > max(tmin, 0.0);
+			}
+		"""
+	}
+}

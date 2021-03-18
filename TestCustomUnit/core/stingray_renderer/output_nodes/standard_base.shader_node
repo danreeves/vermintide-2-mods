@@ -1,0 +1,2176 @@
+group = "Output"
+display_name = "Standard Base"
+output_node = true
+render_configs = ["core/stingray_renderer/renderer"]
+
+inputs = {
+	"aee6e47b-be7b-4d67-a123-2ab5d660b94e" = {
+		name = "vertex_offset"
+		display_name = "Position offset"
+		is_required = false
+		type = { vector3: ["HAS_VERTEX_OFFSET"] }
+		domain = "vertex"
+	}
+
+	"aee6e47b-be7b-4d67-a123-2ab5d760b94e" = {
+		name = "last_vertex_offset"
+		display_name = "Last Position offset"
+		is_required = false
+		type = { vector3: ["HAS_LAST_VERTEX_OFFSET"] }
+		domain = "vertex"
+	}
+
+	"aca690cb-6305-4a2f-bf3d-69183a493db3" = {
+		name = "base_color"
+		is_required = false
+		display_name = "Base Color"
+		type = { vector3: ["HAS_BASE_COLOR"] }
+		domain = "pixel"
+	}
+
+	"34259752-b962-4b65-92c3-903a57338519" = {
+		name = "opacity"
+		is_required = false
+		display_name = "Opacity"
+		type = { scalar: ["HAS_OPACITY"] }
+		domain = "pixel"
+	}
+
+	"7a9306c6-95ae-4cdb-9fef-0eedacce4e83" = {
+		name = "opacity_threshold"
+		is_required = false
+		display_name = "Opacity Threshold"
+		type = { scalar: ["HAS_OPACITY_THRESHOLD"] }
+		domain = "pixel"
+	}
+
+	"b1c86408-aacb-4466-b754-ddcf37a3a2c8" = {
+		is_required = false
+		name = "normal"
+		display_name = "Normal"
+		type = { vector3: ["HAS_NORMAL"] }
+		domain = "pixel"
+	}
+
+	"ad5e052f-d316-4a0f-8b79-53c38204d61b" = {
+		is_required = false
+		name = "metallic"
+		display_name = "Metallic"
+		type = { scalar: ["HAS_METALLIC"] }
+		domain = "pixel"
+	}
+
+	"36ba46d2-f6ea-4e60-a428-fdc17c75bc62" = {
+		is_required = false
+		name = "roughness"
+		display_name = "Roughness"
+		type = { scalar: ["HAS_ROUGHNESS"] }
+		domain = "pixel"
+	}
+
+	"1164a5ef-4563-4795-b3b5-42825d6df037" = {
+		is_required = false
+		name = "emissive"
+		display_name = "Emissive"
+		type = { vector3: ["HAS_EMISSIVE"] }
+		domain = "pixel"
+	}
+
+	"59fd1cf4-f736-470d-8510-1dd7c016639e" = {
+		is_required = false
+		name = "ambient_occlusion"
+		display_name = "Ambient Occlusion"
+		type = { scalar: ["HAS_AMBIENT_OCCLUSION"] }
+		domain = "pixel"
+	}
+
+	"0544ddb6-e168-452d-86f2-42a79e8c98e3" = {
+		is_required = false
+		name = "sss_strength"
+		display_name = "Skin SSS"
+		type = { scalar: ["HAS_SKIN_SSS_STRENGTH"] }
+		domain = "pixel"
+	}
+
+	"cc5a1773-27a2-430b-96d2-d81815d97feb" = {
+		is_required = false
+		name = "refraction"
+		display_name = "Refraction"
+		type = { scalar: ["HAS_REFRACTION"] }
+		domain = "pixel"
+	}
+
+	"20346ea6-ecb0-41c1-bdcc-35bbe3ce1a5c" = {
+		is_required = false
+		name = "density"
+		display_name = "Density"
+		type = { scalar: ["HAS_DENSITY"] }
+		domain = "pixel"
+	}
+
+	"a5149a4e-1a26-4893-a6de-77803fd8d0ac" = {
+		is_required = false
+		name = "density_shadow_bias"
+		display_name = "Density Shadow Bias"
+		type = { scalar: ["HAS_DENSITY_SHADOW_BIAS"] }
+		domain = "pixel"
+	}
+
+	"deebba0a-34d1-4052-b373-bee4aa9329cc" = {
+		is_required = false
+		name = "clear_coat"
+		display_name = "Clear Coat Roughness"
+		type = { scalar: ["HAS_CLEARCOAT_ROUGHNESS"] }
+		domain = "pixel"
+	}
+
+	"e600fd0d-a77a-404c-831c-e82839ead7d9" = {
+		is_required = false
+		name = "cloth_falloff"
+		display_name = "Cloth Falloff"
+		type = { scalar: ["HAS_CLOTH_FALLOFF"] }
+		domain = "pixel"
+	}
+
+	"833b7e51-dac7-4e12-8bec-16cc04d422d4" = {
+		is_required = false
+		name = "volumetric_albedo"
+		display_name = "Volumetric Albedo"
+		type = { vector3: ["HAS_VOLUMETRIC_ALBEDO" "DEFAULT_LIGHTING" "VOLUMETRIC_LIGHTING"] }
+		domain = "pixel"
+	}
+
+	"c236635d-2ebc-4bb2-a669-163331df3c42" = {
+		is_required = false
+		name = "volumetric_emissive"
+		display_name = "Volumetric Emissive"
+		type = { vector3: ["HAS_VOLUMETRIC_EMISSIVE" "DEFAULT_LIGHTING" "VOLUMETRIC_LIGHTING"] }
+		domain = "pixel"
+	}
+
+	"70558382-0995-45f4-8afe-1aa10a4aca36" = {
+		is_required = false
+		name = "volumetric_extinction"
+		display_name = "Volumetric Extinction"
+		type = { scalar: ["HAS_VOLUMETRIC_EXTINCTION" "DEFAULT_LIGHTING" "VOLUMETRIC_LIGHTING"] }
+		domain = "pixel"
+	}
+
+	"19251d98-20e3-4457-8b4f-9b41dbed3fe6" = {
+		is_required = false
+		name = "volumetric_depth"
+		display_name = "Volumetric Depth"
+		type = { scalar: ["HAS_VOLUMETRIC_DEPTH" "DEFAULT_LIGHTING" "VOLUMETRIC_LIGHTING"] }
+		domain = "pixel"
+	}
+
+	"6477670a-948c-438a-a174-3608d4dd2bb2" = {
+		is_required = false
+		name = "volumetric_phase"
+		display_name = "Volumetric Phase"
+		type = { scalar: ["HAS_VOLUMETRIC_PHASE" "DEFAULT_LIGHTING" "VOLUMETRIC_LIGHTING"] }
+		domain = "pixel"
+	}
+
+	"9e1ff47e-c234-4b4e-bbef-ecc062b1fc3b" = {
+		is_required = false
+		name = "volumetric_light_extinction"
+		display_name = "Volumetric Light Extinction"
+		type = { scalar: ["HAS_VOLUMETRIC_LIGHT_EXTINCTION" "DEFAULT_LIGHTING" "VOLUMETRIC_LIGHTING"] }
+		domain = "pixel"
+	}
+}
+
+options = {
+	"b2c7c0d2-beff-4b1a-a9d4-068a507625a2" = "USE_FBX_PERMUTATIONS"
+	"d1a42a54-0794-4d57-9aa0-eb35acb6b35c" = "INSTANCED"
+	"8df1b8f7-17c2-4ae4-8c4e-25517ec1df46" = "CULL_NONE"
+	"c198c109-2cdf-49ee-af18-a982c23e2729" = "CULL_FRONT"
+	"2b136447-676e-4943-997b-04a28ae68497" = "WORLD_SPACE_NORMAL"
+	"dd7fcf97-0627-48ab-b29a-95b5685bb123" = "TRANSPARENT"
+	"3b55d6c6-4398-4dbc-b9ef-570aff8696ae" = "TRANSPARENT_FADE"
+	"b5bb2062-c8fa-43c5-8657-493a0be6860c" = "SKINNED_DISABLED"
+	"901b44ce-d128-498a-9912-32cd9635c556" = "HAS_FOV"
+	"da4e717b-5d0d-47fa-93b0-01c988f8f3ff" = "LOCK_NORMAL_ROTATION"
+	"979cb7cf-c255-42d0-a389-78fc0fb0539f" = "DEFERRED_DECALS_GROUP_1"
+	"d557b597-fa90-46b4-a751-eb51ae61ba5b" = "DEFERRED_DECALS_GROUP_2"
+	"fe20cc01-4cec-4217-98a0-07220ad3add9" = "DEFERRED_DECALS_GROUP_3"
+	"524a5842-23b7-46d1-ab22-cb3a14746ce0" = "USE_GLOBAL_ROUGHNESS_MULTIPLIER"
+	"11256995-4805-4018-bd6b-9214414fd363" = "NORMAL_FLIP_DISABLED"
+	"580cc6eb-3591-4c71-aa50-528af18ba160" = "JITTER_TRANSPARENCY"
+	"b649332d-7a8a-42b3-a809-6d0eb9c7c070" = "GBUFFER_POST_OUTLINE"
+	"08e965b9-90ed-4046-b314-c97ea7e7f30e" = "OPAQUE_FORWARD_DISABLED"
+	"8248aaf6-a6ac-40bf-9c1c-9a2377d4faed" = "HAS_WRITE_LINEAR_Z_DEPTH"
+	"86069823-3e07-4fdd-b95f-423d30b06df6" = "HAS_WRITE_LINEAR_DEPTH"
+
+	"8cfab86a-7e97-466d-8e01-95af7f5cebb4" = "TRANSLUCENT_MATERIAL"
+	"a12c2c04-48dc-47c8-9f48-7f3a91d54817" = "CLOTH_MATERIAL"
+	"f619f708-c19f-479e-95f0-7b57f32f39f6" = "HAIR_MATERIAL"
+	"04cb0038-e705-4512-b5fa-fdd32ce4ee57" = "CLEAR_COAT_MATERIAL"
+	"8700c670-feb5-4189-aa35-2289d80fc206" = "SKIN"
+}
+
+ui = [
+	{
+		type = "drop_down"
+		display_name = "Material Type"
+		options = {
+			"Default"			= "00000000-0000-0000-0000-000000000000"
+			"Translucent"		= "8cfab86a-7e97-466d-8e01-95af7f5cebb4"
+			"Cloth"				= "a12c2c04-48dc-47c8-9f48-7f3a91d54817"
+			"Fur/Hair"			= "f619f708-c19f-479e-95f0-7b57f32f39f6"
+			"Clear Coat"		= "04cb0038-e705-4512-b5fa-fdd32ce4ee57"
+			"Skin"				= "8700c670-feb5-4189-aa35-2289d80fc206"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{
+		type = "drop_down"
+		display_name = "Normals In"
+		options = {
+			"Tangent Space"	= "00000000-0000-0000-0000-000000000000"
+			"World Space"	= "2b136447-676e-4943-997b-04a28ae68497"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{
+		type = "drop_down"
+		display_name = "Blend Mode"
+		options = {
+			"Opaque"			= "00000000-0000-0000-0000-000000000000"
+			"Transparent"		= "dd7fcf97-0627-48ab-b29a-95b5685bb123"
+			"Transparent Fade"	= "3b55d6c6-4398-4dbc-b9ef-570aff8696ae"
+
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{
+		type = "drop_down"
+		display_name = "Depth Write"
+		options = {
+			"Default"				= "00000000-0000-0000-0000-000000000000"
+			"Linear-Depth"			= "86069823-3e07-4fdd-b95f-423d30b06df6"
+			"Linear- and Z-Depth"	= "8248aaf6-a6ac-40bf-9c1c-9a2377d4faed"
+			
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{
+		type = "drop_down"
+		display_name = "Face Culling"
+		options = {
+			"Back"					= "00000000-0000-0000-0000-000000000000"
+			"Front"					= "c198c109-2cdf-49ee-af18-a982c23e2729"
+			"None (double sided)"	= "8df1b8f7-17c2-4ae4-8c4e-25517ec1df46"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}	
+
+	{
+		type = "drop_down"
+		display_name = "Decal Group"
+		options = {
+			"Group 0" = "00000000-0000-0000-0000-000000000000"
+			"Group 1" = "979cb7cf-c255-42d0-a389-78fc0fb0539f"
+			"Group 2" = "d557b597-fa90-46b4-a751-eb51ae61ba5b"
+			"Group 3" = "fe20cc01-4cec-4217-98a0-07220ad3add9"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	
+	{ type = "checkbox" display_name = "Disable Skinning"						option = "b5bb2062-c8fa-43c5-8657-493a0be6860c" }
+	{ type = "checkbox" display_name = "Instancing" 							option = "d1a42a54-0794-4d57-9aa0-eb35acb6b35c" }
+	{ type = "checkbox" display_name = "Custom FOV" 							option = "901b44ce-d128-498a-9912-32cd9635c556" }
+	{ type = "checkbox" display_name = "Avoid Tangent Space Transform" 			option = "da4e717b-5d0d-47fa-93b0-01c988f8f3ff" }
+	{ type = "checkbox" display_name = "Use Global Roughness Multiplier" 		option = "524a5842-23b7-46d1-ab22-cb3a14746ce0" }
+	{ type = "checkbox" display_name = "Normal Flip Disabled (double sided)" 	option = "11256995-4805-4018-bd6b-9214414fd363" }
+	{ type = "checkbox" display_name = "Jitter Transparency" 					option = "580cc6eb-3591-4c71-aa50-528af18ba160" }
+	{ type = "checkbox" display_name = "Gbuffer Post-Outline" 					option = "b649332d-7a8a-42b3-a809-6d0eb9c7c070" }
+	{ type = "checkbox" display_name = "Disable Opaque Forward"				 	option = "08e965b9-90ed-4046-b314-c97ea7e7f30e" }
+
+]
+
+
+render_state = {
+	culling_base_default = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#default"]
+		state: {
+			"defined(CULL_NONE)" = {
+				cull_mode = "cull_none"
+			}
+			"defined(CULL_FRONT)" = {
+				cull_mode = "cull_ccw"
+			}
+			"!defined(CULL_NONE) && !defined(CULL_FRONT)" = {
+				cull_mode = "cull_cw"
+			}
+		}
+	}
+
+	culling_base_gbuffer = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#gbuffer_material"]
+		state: {			
+			"defined(CULL_NONE)" = {
+				cull_mode = "cull_none"
+			}
+			"defined(CULL_FRONT)" = {
+				cull_mode = "cull_ccw"
+			}
+			"!defined(CULL_NONE) && !defined(CULL_FRONT)" = {
+				cull_mode = "cull_cw"	
+			}
+		}
+	}
+
+	gbuffer_material = {
+		inherit: ["culling_base_gbuffer"]
+		state: {
+		}
+	}
+
+	emissive = {
+		inherit: ["culling_base_default"]
+		state: {
+			z_write_enable = "false"
+			z_func = "equal"
+			blend_enable = "true"
+			blend_op = "blend_op_add"
+			dest_blend = "blend_one"
+			src_blend = "blend_one"
+		}
+	}
+
+	transparent_base = {
+		state : {
+			"!defined(HAS_WRITE_LINEAR_Z_DEPTH)" = {
+				z_write_enable = "false"
+			}
+
+			// with refraction we are essentially taking over the blending in our shader, so we disable alpha blending
+			"!defined(HAS_REFRACTION)" = {
+				blend_enable = "true"
+				blend_op = "blend_op_add"
+				dest_blend = "blend_inv_src_alpha"
+				src_blend = "blend_one"
+			}		
+		}
+	}
+
+	transparent = {
+		inherit: ["culling_base_default", "transparent_base"]
+	}
+
+	transparent_double_sided_cw = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#default", "transparent_base"]
+		state : {
+			cull_mode = "cull_cw"
+		}
+	}
+
+	transparent_double_sided_ccw = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#default", "transparent_base"]
+		state : {
+			cull_mode = "cull_ccw"
+		}
+	}
+
+	write_linear_depth = {
+		inherit: ["culling_base_default"]
+		state: {
+			"defined(HAS_WRITE_LINEAR_Z_DEPTH)" = {
+				z_func = "equal"
+			}
+			z_write_enable = "false"
+		}
+	}
+
+	wireframe = {
+		inherit: ["transparent"]
+		state: {
+			fill_mode = "fill_wireframe"
+			src_blend = "blend_src_alpha"
+			cull_mode = "cull_none"
+			"on_renderer(D3D11, D3D12)" = {
+				depth_bias = "-1"
+				depth_bias_clamp = "-0.00015"
+				slope_scale_depth_bias = "-2.0"
+			}
+		}
+	}
+
+	depth_only = {
+		inherit: ["culling_base_default"]
+		state: {
+			write_mask0 = "0x0"
+			write_mask1 = "0x0"
+			write_mask2 = "0x0"
+			write_mask3 = "0x0"
+		}
+	}
+
+	outline_stencil_write_always = {
+		inherit: ["culling_base_default"]
+		state: {
+			blend_enable = "true"
+			blend_op = "blend_op_add"
+			dest_blend = "blend_one"
+			src_blend = "blend_one"
+
+			z_enable = "false"
+			z_write_enable = "false"
+			
+			stencil_enable = "true"
+			stencil_func = "always"
+			stencil_mask = "0x0"
+			stencil_ref = "0x80"
+			stencil_write_mask = "0x80"
+			stencil_pass = "stencil_op_replace"
+			stencil_fail = "stencil_op_replace"
+			stencil_z_fail = "stencil_op_replace"
+
+			stencil_func_back_side = "always"
+			stencil_fail_back_side = "stencil_op_replace"
+			stencil_pass_back_side = "stencil_op_replace"
+			stencil_z_fail_back_side = "stencil_op_replace"
+		}
+	}
+
+	outline_stencil_write_z = {
+		inherit: ["culling_base_default"]
+		state: {
+			blend_enable = "true"
+			blend_op = "blend_op_add"
+			dest_blend = "blend_one"
+			src_blend = "blend_one"
+
+			z_enable = "true"
+			z_write_enable = "false"
+
+			stencil_enable = "true"
+			stencil_func = "always"
+			stencil_mask = "0x0"
+			stencil_ref = "0x80"
+			stencil_write_mask = "0x80"
+			stencil_pass = "stencil_op_replace"
+			stencil_fail = "stencil_op_replace"
+			stencil_z_fail = "stencil_op_keep"
+
+			stencil_func_back_side = "always"
+			stencil_fail_back_side = "stencil_op_replace"
+			stencil_pass_back_side = "stencil_op_replace"
+			stencil_z_fail_back_side = "stencil_op_keep"
+		}
+	}
+
+	outline_remove = {
+		inherit: ["culling_base_default"]
+		state: {
+			z_enable = "true"
+			z_write_enable = "false"
+			z_func = "equal"
+
+			stencil_enable = "true"
+			stencil_func = "not_equal"
+			stencil_mask = "0x80"
+			stencil_ref = "0x0"
+			stencil_write_mask = "0x80"
+			stencil_pass = "stencil_op_replace"
+			stencil_fail = "stencil_op_keep"
+			stencil_z_fail = "stencil_op_keep"
+
+			stencil_func_back_side = "not_equal"
+			stencil_pass_back_side = "stencil_op_replace"
+			stencil_fail_back_side = "stencil_op_keep"
+			stencil_z_fail_back_side = "stencil_op_keep"
+		}
+	}
+
+	shadow_caster = {
+		inherit: ["depth_only"]
+		state: {
+			// for translucent materials we cast shadows from back facing triangles to avoid harsh shadow cutoff in the middle of the object
+			// note: we only want to do this flip for materials rendering with cull_back (default)
+			//"defined(TRANSLUCENT_MATERIAL) && !defined(CULL_NONE) && !defined(CULL_FRONT)" = {
+			//	cull_mode = "cull_ccw"
+			//}
+
+			"on_renderer(D3D11, D3D12)" = {
+				depth_bias = "0xff"
+				slope_scale_depth_bias = "2.5"
+			}
+			"on_renderer(GNM)" = {
+				offset_front = "0.0001"
+				offset_scale_front = "40.0"
+				offset_back = "0.0001"
+				offset_scale_back = "40.0"
+			}
+			"on_renderer(GL)" = {
+				offset_factor = "1.0"
+				offset_units = "1024.0"
+				depth_bias_enable = "true"
+			}
+		}
+	}
+
+	material_transfer = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#default"]
+		state: {
+			cull_mode = "cull_none"
+			z_write_enable = "false"
+			z_enable = "false"
+		}
+	}
+}
+
+sampler_state = {
+	shadow_map = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#clamp_point"]
+		states = {
+			"on_renderer(D3D11, D3D12)" = {
+				comparison_func = "less"
+				filter = "comparison_min_mag_linear_mip_point"
+			}
+			"on_renderer(GNM)" = {
+				comparison_func = "less"
+				filter = "min_mag_mip_linear"
+
+			}
+			"on_renderer(GL)" = {
+				comparison_func = "less"
+				filter = "min_mag_linear"
+			}
+		}
+	}
+
+	clamp_point_no_mip = {
+		inherits: ["core/stingray_renderer/shader_libraries/common#clamp"]
+		states = {
+			"on_renderer(GL)" = {
+				filter = "min_mag_point"
+			}
+			"on_renderer(D3D11, D3D12)" = {
+				filter = "min_mag_mip_point"
+			}
+			"on_renderer(GNM)" = {
+				filter = "min_mag_mip_point"
+			}
+		}
+	}
+}
+
+channels = 	{
+	"(defined(HAS_NORMAL) && !defined(WORLD_SPACE_NORMAL)) || defined(NEEDS_TANGENT_SPACE)": {
+		vertex_tangent = { type = "float3" semantic = "TANGENT" domain = "vertex" }
+		vertex_binormal = { type = "float3" semantic = "BINORMAL" domain = "vertex" }
+
+		tsm0 = { type = "float3" domains = ["vertex", "pixel"] }
+		tsm1 = { type = "float3" domains = ["vertex", "pixel"] }
+		tsm2 = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(NEEDS_EYE_VECTOR)": {
+		eye_vector = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"!defined(HAS_NORMAL) || defined(NEEDS_WORLD_SPACE_NORMAL)": {
+		world_space_normal = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(MOTION_BLUR)": {
+		last_clip_position = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	vertex_position = { type = "float4" domain = "vertex" }
+	vertex_normal = { type = "float3" semantic = "NORMAL" domain = "vertex" }
+
+	"defined(HAS_VERTEX_BAKED_DIFFUSE_LIGHTING)": {
+		vertex_color1 = { type = "float4" semantic = "COLOR1" domains = ["vertex"] }
+		baked_light = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)": {
+		lightmap_uv_input = { type = "float2" semantic="TEXCOORD1" domains = ["vertex"] }
+		lightmap_uv = { type = "float2" domains = ["vertex", "pixel"] }
+	}
+	
+	"defined(MATERIAL_TRANSFER)": {
+		lightmap_uv = { type = "float2" semantic="TEXCOORD1" domains = ["vertex"] }
+	}
+
+	"defined(NEEDS_UNSKINNED_WORLD_POS)": {
+		unskinned_world_pos = { type = "float3" domains = ["vertex", "pixel"] }
+		unskinned_normal = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(NEEDS_PIXEL_DEPTH)": {
+		pixel_depth = { type = "float" domain = "pixel" }
+	}
+
+	"defined(NEEDS_SCREEN_POS)": {
+		screen_pos = { type = "float2" domain = "pixel" }
+	}
+
+	"defined(NEEDS_SUN_SHADOW_MASK)": {
+	//"defined(NEEDS_SUN_SHADOW_MASK) && (defined(EMISSIVE_PASS) || defined(TRANSPARENT) || defined(TRANSPARENT_FADE))": {	
+		sun_shadow_mask = { type = "float" domain = "pixel" }
+	}
+
+	"defined(NEEDS_UNSKINNED_VERTEX_POSITION)": {
+		unskinned_vertex_position = { type = "float4" domain = "vertex" }
+	}
+
+	"defined(NEEDS_PIXEL_ELEVATION)": {
+		w = { type = "float4" domains = ["vertex", "pixel"] }
+		pixel_elevation = { type = "float" domain = "pixel" }
+	}
+}
+
+//log_permutations = true
+permutation_sets = {
+	vertex_modifiers = [
+		{ if: "!defined(SKINNED_DISABLED) && (num_skin_weights() == 4)" define: { "macros": ["SKINNED_4WEIGHTS"] stages: ["vertex"] } }
+		//{ if: "!defined(SKINNED_DISABLED) && (num_skin_weights() == 3)" define: { "macros": ["SKINNED_3WEIGHTS"] stages: ["vertex"] } }
+		//{ if: "!defined(SKINNED_DISABLED) && (num_skin_weights() == 2)" define: { "macros": ["SKINNED_2WEIGHTS"] stages: ["vertex"] } }
+		//{ if: "!defined(SKINNED_DISABLED) && (num_skin_weights() == 1)" define: { "macros": ["SKINNED_1WEIGHT"]  stages: ["vertex"] } }
+		{ default = true }
+	]
+
+	instanced_modifiers = [
+		// { if: "mesh_baked_lighting_type() == lightmap" define: ["HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING"] }
+		{ default = true }
+	]
+
+	lightmap_modifiers = [
+		// { if: "lightmap_format() == directional_irradiance" define: ["HAS_DIRECTIONAL_LIGHTMAPS"] }
+		{ default = true }
+	]
+
+	non_instanced_modifiers = [
+		// { if: "mesh_baked_lighting_type() == lightmap" define: ["HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING"] permute_with: "lightmap_modifiers" }
+		// { if: "mesh_baked_lighting_type() == vertex" define: ["HAS_VERTEX_BAKED_DIFFUSE_LIGHTING"] }
+		{ permute_with: "vertex_modifiers" }  
+	]
+
+	instanced_and_non_instanced = [
+		{ if: "defined(INSTANCED)" permute_with: "instanced_modifiers" }
+		{ if: "!defined(INSTANCED)" permute_with: "non_instanced_modifiers" }
+	]
+	
+	default = [
+		// FBX Standard material exclusive permutations, these will only compile of the
+		// 'USE_FBX_PERMUTATIONS' option is set, which it is in the shader used for imported fbx files.
+		//{ if: "defined(USE_FBX_PERMUTATIONS) && is_any_material_variable_set(use_emissive_map, emissive)" define: ["FBX_EMISSIVE"] permute_with: "instanced_and_non_instanced" }
+
+		// Normal default permutation set
+		//{ if: "on_renderer(D3D11, D3D12, GNM, GL) && render_cap(development) && render_setting(mipmap_visualization)" defines=["MIPMAP_LEVEL_VISUALIZATION"] permute_with: "instanced_and_non_instanced" }
+		{ if: "on_renderer(D3D11, D3D12, GNM, GL) && !defined(HAS_WRITE_LINEAR_Z_DEPTH) && (defined(TRANSPARENT) || defined(TRANSPARENT_FADE)) && render_setting(low_res_transparency)" defines=["LOW_RES_ENABLED"] permute_with: "instanced_and_non_instanced" }
+		{ permute_with: "instanced_and_non_instanced" }
+	]
+
+	shadow_caster = [
+		//{ if: "defined(INSTANCED)" }
+		//{ if: "!defined(INSTANCED)" permute_with: "vertex_modifiers" }
+		{ if: "defined(INSTANCED)" permute_with: "instanced_modifiers" }
+		{ if: "!defined(INSTANCED)" permute_with: "non_instanced_modifiers" }
+	]
+}
+
+//log_permutations = true
+//log_constant_buffers = true
+shader_contexts = {
+	shadow_caster = {
+		passes_sort_mode = "immediate"
+		compile_with = [
+			{ if: "on_renderer(D3D11, D3D12, GNM, GL)" permute_with: "shadow_caster" }
+		]
+
+		passes = [
+			{ code_block="depth_only" render_state="shadow_caster" }
+		]
+	}
+
+	//material_transfer = {
+	//	passes_sort_mode = "immediate"
+	//	compile_with = [
+	//		{ if: "on_renderer(D3D11, D3D12)" }
+	//	]
+	//
+	//	passes = [
+	//		{ code_block="gbuffer_base" defines=["MATERIAL_TRANSFER"] render_state="material_transfer" }
+	//	]
+	//}
+
+	default = {
+		passes_sort_mode = "deferred"
+		compile_with = [
+			{ if: "on_renderer(D3D11, D3D12, GNM, GL)" permute_with: [
+				// TODO: create permutation for when local lights is off.
+				{ permute_with: "default" }
+			] }
+		]
+
+		passes = [
+			{ if: "(defined(TRANSPARENT) || defined(TRANSPARENT_FADE))" then: [
+				{ if: "defined(HAS_WRITE_LINEAR_Z_DEPTH)" then: [
+					{ layer="hdr_transparent_depth" code_block="gbuffer_base" defines=["CALCULATE_LIGHTING" "LOCAL_LIGHT_SHADOWS_ENABLED" "CALCULATE_FOG"] render_state="transparent" }
+					{ layer="hdr_linear_depth" 		code_block="depth_only" defines=["WRITE_LINEAR_DEPTH"] render_state="write_linear_depth" }
+				] else: [
+					{ if: "defined(CULL_NONE)" then: [
+						// TODO: render transparency in two passes makes the last pass not being sorted correctly with particles
+						//{ layer="hdr_transparent" code_block="gbuffer_base" defines="CALCULATE_LIGHTING" render_state="transparent_double_sided_ccw" }
+						//{ layer="hdr_transparent" code_block="gbuffer_base" defines="CALCULATE_LIGHTING" render_state="transparent_double_sided_cw" }
+						{ layer="hdr_transparent" code_block="gbuffer_base" defines=["CALCULATE_LIGHTING" "LOCAL_LIGHT_SHADOWS_ENABLED" "CALCULATE_FOG"] render_state="transparent" }
+					] else: [
+						{ layer="hdr_transparent" code_block="gbuffer_base" defines=["CALCULATE_LIGHTING" "LOCAL_LIGHT_SHADOWS_ENABLED" "CALCULATE_FOG"] render_state="transparent" }
+					]}
+					{ if: "defined(HAS_WRITE_LINEAR_DEPTH)" then: [
+						{ layer="hdr_linear_depth_2" code_block="depth_only" defines=["WRITE_LINEAR_DEPTH"] render_state="write_linear_depth" }
+					]}
+				]}
+			] else: [
+				{ if: "defined(GBUFFER_POST_OUTLINE)"  then: [
+					{ layer="gbuffer_post_outline" code_block="gbuffer_base" defines="MOTION_BLUR" render_state="gbuffer_material" }
+				] else: [
+					{ if: "defined(HAS_FOV)" then: [
+						{ layer="gbuffer_fpr" code_block="gbuffer_base" defines="MOTION_BLUR" render_state="gbuffer_material" }
+					] else: [
+						{ if: "defined(HAS_OPACITY) || defined(JITTER_TRANSPARENCY)" then: [
+							{ layer="gbuffer_alpha_masked" code_block="gbuffer_base" defines="MOTION_BLUR" render_state="gbuffer_material" }
+						] else: [
+							{ layer="gbuffer" code_block="gbuffer_base" defines="MOTION_BLUR" render_state="gbuffer_material" }
+						]}
+					]}
+				]}
+				
+				// This bit of logic is a bit complicated. The gist of it is that we want to disable this pass
+				// for materials that has a value connected on emissive for all permutations, but should have it
+				// discarded for all but the special permutations with the define FBX_EMISSIVE
+				{ if: "defined(HAS_EMISSIVE) && (!defined(USE_FBX_PERMUTATIONS) || defined(FBX_EMISSIVE))" then: [
+					{ layer="emissive" code_block="gbuffer_base" defines={ macros: ["EMISSIVE_PASS"] stages: ["pixel"] } render_state="emissive" }
+				]}
+
+				{ if: "!defined(OPAQUE_FORWARD_DISABLED)" then: [
+					{ layer="opaque_forward" code_block="gbuffer_base" defines=["OPAQUE_FORWARD" "CALCULATE_LIGHTING" "LOCAL_LIGHT_SHADOWS_ENABLED" "MOTION_BLUR"] render_state="culling_base_default" }
+				]}
+			]}
+
+			// Note we define MOTION_VECTOR for these additional passes to ensure we share constant buffer for bone stransforms with the opaque gbuffer pass
+			// For transparent surfaces the MOTION_VECTOR define gets undefined in the SKINNED code block
+			{ layer="wireframe" code_block="depth_only" defines=["DRAW_WIREFRAME" "MOTION_BLUR"] render_state="wireframe" branch_key="dev_wireframe" }
+			{ layer="outline" code_block="depth_only" define="DRAW_OUTLINE" render_state="outline_stencil_write_always" branch_key="outline_unit" }
+			{ layer="outline" code_block="depth_only" define="DRAW_OUTLINE" render_state="outline_stencil_write_z" branch_key="outline_unit_z" }
+
+			// remove outline for fps units
+			{ if: "defined(HAS_FOV) && !(defined(TRANSPARENT) || defined(TRANSPARENT_FADE))" then: [
+				{ layer="outline" code_block="depth_only" defines=["DRAW_OUTLINE", "REMOVE_OUTLINE"] render_state="outline_remove" }
+			]}
+		]
+	}
+}
+
+code_blocks = {
+	gbuffer_base = {
+		include:[
+			"core/stingray_renderer/shader_libraries/common#common",
+			"core/stingray_renderer/shader_libraries/common#gbuffer_access",
+			"core/stingray_renderer/shader_libraries/common#skinning",
+			"core/stingray_renderer/shader_libraries/common#taa_offsets",
+			"core/stingray_renderer/shader_libraries/lighting_common#brdf",
+			"core/stingray_renderer/shader_libraries/shadow_map_common#shadow_bias",
+			"core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map_filtering",
+			"core/stingray_renderer/shader_libraries/lighting_common#lighting_data",
+			"core/stingray_renderer/shader_libraries/lighting_common#lighting",
+			"core/stingray_renderer/shader_libraries/lighting_common#clustered_shading",
+			"core/stingray_renderer/shader_libraries/common#billboard_transformation",
+			"core/stingray_renderer/shader_libraries/volumetric_lighting_common#volumetric_lighting_common"]
+
+		instance_data = {
+			"on_renderer(D3D11) && !defined(MATERIAL_TRANSFER) && defined(INSTANCED)": {
+				world = { type = "matrix4x4" }
+				"defined(MOTION_BLUR)": {
+					last_world = { type = "matrix4x4" }
+				}
+			}
+		}
+
+		stage_conditions = {
+			tessellation_control = "defined(DX11_DISPLACEMENT_MAPPING)"
+		}
+
+		samplers = {
+			"defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)": {
+			lightmap = {
+				sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+				source = "resource_set"
+				slot_name = "lightmap"
+				type = "2d"
+			}
+			lightmap_ambient_term = {
+				sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+				source = "resource_set"
+				slot_name = "lightmap_ambient_term"
+				type = "2d"
+			}
+			lightmap_directional_term = {
+				sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+				source = "resource_set"
+				slot_name = "lightmap_directional_term"
+				type = "2d"
+			}
+			lightmap_dominant_direction = {
+				sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+				source = "resource_set"
+				slot_name = "lightmap_dominant_direction"
+				type = "2d"
+			}
+			}
+
+			"defined(HAS_REFRACTION)": {
+				hdr0_rgb = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "hdr0_rgb"
+					type = "2d"
+				}
+			}
+			"defined(HAS_REFRACTION) || defined(NEEDS_LINEAR_DEPTH) || defined(VOLUMETRIC_LIGHTING)": {
+				"defined(LOW_RES_ENABLED)": {
+					linear_depth = {
+						sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_point"
+						source = "resource_set"
+						slot_name = "linear_depth_div2"
+						type = "2d"
+					}
+				}
+				"!defined(LOW_RES_ENABLED)": {
+					linear_depth = {
+						sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_point"
+						source = "resource_set"
+						slot_name = "linear_depth"
+						type = "2d"
+					}
+				}
+			}
+
+			"defined(CALCULATE_LIGHTING)": {
+				sun_shadow_map = {
+					sampler_state = "core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map"
+					slot_name = "sun_shadow_map"
+					type = "2d"
+				}
+				local_lights_shadow_atlas = {
+					sampler_state = "core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map"
+					slot_name = "local_lights_shadow_atlas"
+					type = "2d"
+				}
+				cached_local_lights_shadow_atlas = {
+					sampler_state = "core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map"
+					slot_name = "cached_local_lights_shadow_atlas"
+					type = "2d"
+				}
+				
+				//cs_cluster_buffer = {
+				//	sampler_state = "clamp_point_no_mip"
+				//	slot_name = "cs_cluster_buffer"
+				//	type = "2d"
+				//}
+				//cs_light_index_buffer = {
+				//	sampler_state = "clamp_point_no_mip"
+				//	slot_name = "cs_light_index_buffer"
+				//	type = "2d"
+				//}
+				//cs_light_data_buffer = {
+				//	sampler_state = "clamp_point_no_mip"
+				//	slot_name = "cs_light_data_buffer"
+				//	type = "2d"
+				//}
+				//cs_light_shadow_matrices_buffer = {
+				//	sampler_state = "clamp_point_no_mip"
+				//	slot_name = "cs_light_shadow_matrices_buffer"
+				//	type = "2d"
+				//}
+				static_sun_shadow_map = {
+					sampler_state = "core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map"
+					slot_name = "static_sun_shadow_map"
+					type = "2d"
+				}
+				global_diffuse_map = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "global_diffuse_map"
+					type = "cube"
+				}
+				global_specular_map = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "global_specular_map"
+					type = "cube"
+				}
+				brdf_lut = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "brdf_lut"
+					type = "2d"
+				}
+				fog_volume = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "fog_volume"
+					type = "3d"
+				}
+			}
+		}
+
+		code = {
+			hlsl = """
+				// We need to disable instancing for the material transfer context as it doesn't use the world transform.
+				#if defined(INSTANCED) && defined(MATERIAL_TRANSFER)
+					#undef INSTANCED
+				#endif
+
+				#if defined(CALCULATE_LIGHTING) || defined(NEEDS_PIXEL_DEPTH) || defined(NEEDS_PIXEL_ELEVATION)
+					#define PS_NEEDS_WP
+				#endif
+
+				#if defined(HAS_VERTEX_OFFSET) ||  defined(BILLBOARD) || (defined(RENDERER_D3D11) && defined(INSTANCED))
+					#define MODIFIED_WORLD_SPACE_POSITION
+				#endif
+
+				#if defined(PS_NEEDS_WP) || defined(NEEDS_EYE_VECTOR) || defined(MODIFIED_WORLD_SPACE_POSITION)
+					#define NEEDS_WORLD_SPACE_POSITION
+				#endif
+
+				#if (defined(HAS_NORMAL) && !defined(WORLD_SPACE_NORMAL)) || defined(HAS_ANISOTROPY)
+					#define NEEDS_TANGENT_SPACE
+				#endif
+
+				#if defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)
+					#if defined(HAS_DIRECTIONAL_LIGHTMAPS)
+						DECLARE_SAMPLER_2D(lightmap_ambient_term);
+						DECLARE_SAMPLER_2D(lightmap_directional_term);
+						DECLARE_SAMPLER_2D(lightmap_dominant_direction);
+					#else
+						DECLARE_SAMPLER_2D(lightmap);
+					#endif
+				#endif
+
+				#if defined(NEEDS_INVERSE_WORLD_POSE)
+					#define NEEDS_INV_WORLD;
+				#endif
+
+				struct VS_INPUT
+				{
+					float4 position : POSITION;
+					SKIN_INPUT
+					GRAPH_VERTEX_INPUT
+				};
+				
+				struct PS_INPUT
+				{
+					float4 position : SV_POSITION;
+					#if defined(PS_NEEDS_WP)
+						float3 world_pos : TEXCOORD15;
+					#endif
+					GRAPH_PIXEL_INPUT
+				};
+
+				CBUFFER_START(c_per_object)
+					float4x4 view_proj;
+					float4x4 world_view_proj;
+					#if defined(NEEDS_INV_WORLD)
+						float4x4 inv_world;
+					#endif
+					float4x4 world;
+					float4x4 last_world;
+
+					#if defined(JITTER_TRANSPARENCY)
+						float inv_jitter_alpha;
+					#endif
+
+					#if defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)
+						#if defined(HAS_DIRECTIONAL_LIGHTMAPS)
+							float2 lightmap_ambient_term_uv_scale;
+							float2 lightmap_ambient_term_uv_offset;
+						#else
+							float2 lightmap_uv_scale;
+							float2 lightmap_uv_offset;
+						#endif
+					#endif
+
+					#if defined(BILLBOARD) && defined(SKYDOME_BILLBOARD)
+						#if defined(SECONDARY_SUN_DIRECTION)
+							float3 secondary_sun_direction;
+							#define billboard_direction secondary_sun_direction
+						#else
+							#define billboard_direction sun_direction
+						#endif
+					#endif
+
+					#if defined(USE_GLOBAL_ROUGHNESS_MULTIPLIER)
+						float global_roughness_multiplier;
+					#endif
+
+					GRAPH_MATERIAL_EXPORTS
+				CBUFFER_END
+
+				#if defined(CALCULATE_LIGHTING)
+					DECLARE_CLUSTER_DATA(cs_cluster_buffer);
+					DECLARE_LIGHT_INDEX_DATA(cs_light_index_buffer);
+					DECLARE_LIGHT_DATA(cs_light_data_buffer);
+					DECLARE_LIGHT_SHADOW_MATRICES(cs_light_shadow_matrices_buffer);
+					DECLARE_LIGHT_SHADOW_LOOKUP(cs_light_shadow_lookup_buffer);
+
+					DECLARE_COMPARISON_SAMPLER_2D(sun_shadow_map);
+					DECLARE_COMPARISON_SAMPLER_2D_SHARED(static_sun_shadow_map, sun_shadow_map);
+					DECLARE_COMPARISON_SAMPLER_2D_SHARED(local_lights_shadow_atlas, sun_shadow_map);
+					DECLARE_COMPARISON_SAMPLER_2D_SHARED(cached_local_lights_shadow_atlas, sun_shadow_map);
+					DECLARE_SAMPLER_CUBE(global_specular_map);
+					DECLARE_SAMPLER_CUBE_SHARED(global_diffuse_map, global_specular_map);
+					DECLARE_SAMPLER_2D_SHARED(brdf_lut, global_specular_map);
+
+					#if defined(CALCULATE_FOG)
+						DECLARE_SAMPLER_3D(fog_volume);
+					#endif
+				#endif
+
+				#if defined(TRANSPARENT) || defined(TRANSPARENT_FADE)
+					#if defined(HAS_REFRACTION)
+						DECLARE_SAMPLER_2D_SHARED(hdr0_rgb, global_specular_map);
+					#endif
+					#if defined(HAS_REFRACTION) || defined(NEEDS_LINEAR_DEPTH) || (defined(VOLUMETRIC_LIGHTING) && !defined(HAS_VOLUMETRIC_DEPTH))
+						DECLARE_SAMPLER_2D(linear_depth);
+						#define HAS_LINEAR_DEPTH
+					#endif
+				#endif
+
+				#if defined(INSTANCED) && (defined(RENDERER_D3D11))
+					Buffer<float4> idata;
+					float ioffset;
+				#endif
+
+				//inline float3 calc_clip_position_with_halton_offset(float3 wp, float4x4 view_proj)
+				//{					
+				//	float4 clip_pos = mul(float4(wp, 1), view_proj);
+				//	float4 view_space = clip_pos / clip_pos.w;
+				//	view_space.xy += get_vs_halton_offset(frame_number);
+				//	view_space.xy = view_space.xy * 0.5 + 0.5;
+				//	view_space.y = 1.0 - view_space.y;
+				//	clip_pos = view_space * clip_pos.w;
+				//	return clip_pos.xyw;
+				//}
+
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				PS_INPUT vs_main(VS_INPUT input
+					#if defined(INSTANCED) && (defined(RENDERER_D3D11))
+						, uint instance_id : SV_InstanceId
+					#endif
+					)
+				{
+					PS_INPUT o;
+					float4 p;
+
+					GraphVertexParams params;
+					GraphVertexResults results;
+
+					#if defined(INSTANCED) && (defined(RENDERER_D3D11))
+						const uint offset = (uint)ioffset + instance_id*IDATA_STRIDE;
+						world[0] = idata.Load(offset + IDATA_world + 0);
+						world[1] = idata.Load(offset + IDATA_world + 1);
+						world[2] = idata.Load(offset + IDATA_world + 2);
+						world[3] = idata.Load(offset + IDATA_world + 3);
+
+						#if defined(MOTION_BLUR)
+							last_world[0] = idata.Load(offset + IDATA_last_world + 0);
+							last_world[1] = idata.Load(offset + IDATA_last_world + 1);
+							last_world[2] = idata.Load(offset + IDATA_last_world + 2);
+							last_world[3] = idata.Load(offset + IDATA_last_world + 3);
+						#endif
+					#endif
+
+					// Write automatic params
+					GRAPH_VERTEX_WRITE_PARAMS(params, input);
+
+					// Write output channels
+					#if defined(SKINNED)
+						float4 position = float4(skin_point(input.position, input.blendindices, input.blendweights), 1);
+						#if defined(MOTION_BLUR)
+							float4 last_position = float4(skin_point_last_frame(input.position, input.blendindices, input.blendweights), 1);
+						#endif
+						#if !defined(BILLBOARD)
+							float3 normal = skin_vector(GRAPH_VERTEX_DATA(input, vertex_normal).xyz, input.blendindices, input.blendweights);
+							#if defined(NEEDS_TANGENT_SPACE)
+								float3 tangent = skin_vector(GRAPH_VERTEX_DATA(input, vertex_tangent).xyz, input.blendindices, input.blendweights);
+								float3 binormal = skin_vector(GRAPH_VERTEX_DATA(input, vertex_binormal).xyz, input.blendindices, input.blendweights);
+							#endif
+						#endif
+					#else
+						float4 position = input.position;
+						#if defined(MOTION_BLUR)
+							float4 last_position = position;
+						#endif
+						#if !defined(BILLBOARD)
+							float3 normal = GRAPH_VERTEX_DATA(input, vertex_normal).xyz;
+							#if defined(NEEDS_TANGENT_SPACE)
+								float3 tangent = GRAPH_VERTEX_DATA(input, vertex_tangent).xyz;
+								float3 binormal = GRAPH_VERTEX_DATA(input, vertex_binormal).xyz;
+							#endif
+						#endif
+					#endif
+
+					#if defined(BILLBOARD)
+						float4 wp, wp_offset;
+						float3 normal, tangent, binormal;
+						#if !defined(SKYDOME_BILLBOARD)
+							get_billboard_data_from_position(world._m30_m31_m32, camera_world._m30_m31_m32, camera_view, position, wp, wp_offset, normal, tangent, binormal);
+						#else
+							get_billboard_data_from_direction(billboard_direction, camera_view, position, wp, wp_offset, normal, tangent, binormal);
+						#endif
+					#elif defined(NEEDS_WORLD_SPACE_POSITION)
+						float4 wp = mul(position, world);
+					#endif
+
+					#if defined(NEEDS_UNSKINNED_WORLD_POS)
+						float4 unskinned_wp = mul(input.position, world);
+						GRAPH_VERTEX_PARAM(params, unskinned_world_pos) = unskinned_wp.xyz;
+						GRAPH_VERTEX_PARAM(params, unskinned_normal) = GRAPH_VERTEX_DATA(input, vertex_normal).xyz;
+					#endif
+
+					#if defined(BILLBOARD)
+						GRAPH_VERTEX_PARAM(params, vertex_position) = wp_offset; // this offset is in world space direction
+					#else
+						GRAPH_VERTEX_PARAM(params, vertex_position) = position;
+					#endif
+
+					#if defined(NEEDS_UNSKINNED_VERTEX_POSITION)
+						GRAPH_VERTEX_PARAM(params, unskinned_vertex_position) = input.position;
+					#endif
+
+					#if !defined(HAS_NORMAL) || defined(NEEDS_WORLD_SPACE_NORMAL)
+						GRAPH_VERTEX_PARAM(params, world_space_normal).rgb = mul(normal, (float3x3)world);
+					#endif
+
+					#if defined(NEEDS_EYE_VECTOR)
+						#if defined(BILLBOARD) && defined(SKYDOME_BILLBOARD)
+							// TODO: not correct length, we can't use length(eye_vector) to determine the distance
+							GRAPH_VERTEX_PARAM(params, eye_vector).rgb = billboard_direction;
+						#else
+							GRAPH_VERTEX_PARAM(params, eye_vector).rgb = camera_pos - wp.rgb;
+						#endif
+					#endif
+
+					#if defined(NEEDS_TANGENT_SPACE)
+						#if defined(LOCK_NORMAL_ROTATION)
+							tspace_transpose(
+								GRAPH_VERTEX_PARAM(params, tsm0),
+								GRAPH_VERTEX_PARAM(params, tsm1),
+								GRAPH_VERTEX_PARAM(params, tsm2),
+								tangent, binormal, normal);
+						#else
+							tspace_transform_transpose(
+								GRAPH_VERTEX_PARAM(params, tsm0),
+								GRAPH_VERTEX_PARAM(params, tsm1),
+								GRAPH_VERTEX_PARAM(params, tsm2),
+								tangent, binormal, normal,
+								(float3x3)world);
+						#endif
+					#endif
+
+					// Evaluate all pieces of the graph that should run per-vertex.
+					GRAPH_EVALUATE_VERTEX(results, params);
+					
+					#if defined(HAS_VERTEX_OFFSET)
+						wp += float4(results.vertex_offset, 0);
+					#endif
+					#if defined(MODIFIED_WORLD_SPACE_POSITION)
+						#if defined(HAS_FOV)
+							p = mul(wp, camera_custom_fov_view_projection);
+						#else
+							p = mul(wp, view_proj);
+						#endif
+					#else
+						#if defined(HAS_FOV)
+							// TODO: create camera_custom_fov_world_view_projection?
+							p = mul(mul(position, world), camera_custom_fov_view_projection); 
+						#else
+							p = mul(position, world_view_proj);
+						#endif
+					#endif
+					
+					#if defined(MOTION_BLUR)
+						#if defined(LOW_RES_ENABLED)
+							#error "LOW_RES_ENABLED and MOTION_BLUR should not be active simultaneously"
+						#endif
+
+						GRAPH_VERTEX_PARAM(params, last_clip_position) = float3(0.0, 0.0, 0.0);
+						#if defined(MODIFIED_WORLD_SPACE_POSITION)
+							float4 last_wp = mul(last_position, last_world);
+							
+							#if defined(HAS_VERTEX_OFFSET)
+								#if defined(HAS_LAST_VERTEX_OFFSET)
+									last_wp += float4(results.last_vertex_offset, 0);
+								#else
+									last_wp += float4(results.vertex_offset, 0);
+								#endif
+								// TODO: Add _last_ position offset here to support vertex animation.
+								// The way it works now will only yield correct results of the offset is constant
+								//last_wp += float4(results.vertex_offset, 0);
+							#endif
+						#else
+							float4 last_wp = mul(last_position, last_world);
+						#endif
+						#if defined(HAS_FOV)
+							float4 last_clip_pos = mul(last_wp, camera_custom_fov_last_view_projection);
+						#else
+							float4 last_clip_pos = mul(last_wp, camera_last_view_projection);
+						#endif
+						float4 last_view_space = last_clip_pos / last_clip_pos.w;
+						last_view_space.xy += get_vs_halton_offset(frame_number);
+						last_view_space.xy = last_view_space.xy * 0.5 + 0.5;
+						last_view_space.y = 1.0 - last_view_space.y;
+						last_clip_pos = last_view_space * last_clip_pos.w;
+						GRAPH_VERTEX_PARAM(params, last_clip_position) = last_clip_pos.xyw;
+					#endif
+
+					#if defined(MATERIAL_TRANSFER)
+						float2 unwrapped_uv = GRAPH_VERTEX_DATA(input, lightmap_uv);
+						float2 ndc = float2(unwrapped_uv.x, unwrapped_uv.y) * 2 - 1;
+						ndc.y *= -1;
+						p = float4(ndc, 0, 1);
+					#endif
+
+					#if defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)
+						GRAPH_VERTEX_PARAM(params, lightmap_uv) = float2(0,0);
+						#if defined(HAS_DIRECTIONAL_LIGHTMAPS)
+							GRAPH_VERTEX_PARAM(params, lightmap_uv) = GRAPH_VERTEX_DATA(input, lightmap_uv_input)*lightmap_ambient_term_uv_scale + lightmap_ambient_term_uv_offset;
+						#else
+							GRAPH_VERTEX_PARAM(params, lightmap_uv) = GRAPH_VERTEX_DATA(input, lightmap_uv_input)*lightmap_uv_scale + lightmap_uv_offset;
+						#endif
+					#endif
+
+					#if defined(PS_NEEDS_WP)
+						o.world_pos = wp.xyz;
+					#endif
+					
+					#if defined(MATERIAL_TRANSFER)
+						o.position = p;
+					#else
+						float4 view_space = p / p.w;
+						#if defined(LOW_RES_ENABLED)
+							view_space.xy += get_vs_halton_offset(frame_number, output_rt_size * 0.5);
+						#else
+							view_space.xy += get_vs_halton_offset(frame_number);
+						#endif
+						o.position = view_space * p.w;
+					#endif
+
+					#if defined(NEEDS_PIXEL_ELEVATION)
+						GRAPH_VERTEX_PARAM(params, w) = encode_world_pos(o.position);
+					#endif
+
+					// Write results
+					GRAPH_VERTEX_WRITE(o, results, params);
+
+					return o;
+				}
+
+				#if defined(MATERIAL_TRANSFER)
+					#if defined(LOW_RES_ENABLED)
+						#error "Material transfer pass should not be low resolution"
+					#endif
+
+					struct MATERIAL_TRANSFER_OUT {
+						float4 albedo_op : SV_TARGET0;
+						float4 emissive : SV_TARGET1;
+					};
+					
+					DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+					MATERIAL_TRANSFER_OUT ps_main(PS_INPUT input) : SV_TARGET0
+					{
+						GraphPixelParams params;
+						GraphPixelResults graph;
+
+						GRAPH_PIXEL_WRITE_PARAMS(params, input);
+
+						#if defined(PS_NEEDS_WP)
+							const float3 world_pos = input.world_pos;
+							const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+							const float3 camera_dir = camera_world._m10_m11_m12;
+							const float depth = dot(-view_dir, camera_dir);
+						#endif
+
+						#if defined(NEEDS_PIXEL_DEPTH)
+							GRAPH_PIXEL_PARAM(params, pixel_depth) = depth;
+						#endif
+
+						#if defined(NEEDS_SCREEN_POS)
+							float2 screen_position = (input.position.xy / output_rt_size);
+							GRAPH_PIXEL_PARAM(params, screen_pos) = screen_position;
+						#endif
+						
+						GRAPH_EVALUATE_PIXEL(graph, params);
+
+						MATERIAL_TRANSFER_OUT o;
+
+						float opacity = 1.0;
+
+						#if defined(TRANSPARENT) || defined(TRANSPARENT_FADE)
+							#if defined(HAS_OPACITY)
+								opacity = graph.opacity;
+							#else
+								opacity = 0.5;
+							#endif
+						#elif defined(HAS_OPACITY)
+							#if defined(HAS_OPACITY_THRESHOLD)
+								float threshold = graph.opacity_threshold;
+							#else
+								float threshold = 0.5f;
+							#endif
+							if (graph.opacity < threshold)
+								opacity = 0;
+							else
+								opacity = 1.0;
+						#endif
+
+						#if defined(HAS_BASE_COLOR)
+							o.albedo_op = float4(graph.base_color, opacity);
+						#else
+							o.albedo_op = float4(0.5, 0.5, 0.5, opacity);
+						#endif
+
+						#if defined(HAS_EMISSIVE)
+							o.emissive = float4(graph.emissive, 1.0);
+						#else
+							o.emissive = float4(0.0, 0.0, 0.0, 0.0);
+						#endif
+
+						return o;
+					}
+				#elif defined(EMISSIVE_PASS)
+					#if defined(LOW_RES_ENABLED)
+						#error "Emissive pass should not be low resolution"
+					#endif
+					
+					DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+					float4 ps_main(PS_INPUT input) : SV_TARGET0
+					{
+						#if defined(JITTER_TRANSPARENCY)
+							uint2 pos = uint2(input.position.xy);
+							float alpha = (float)((pos.x%2u) + 2u*(pos.y%2u)) * 0.25;
+                       		if (alpha >= 1.0 - inv_jitter_alpha)
+                            	discard;
+                        #endif
+
+						GraphPixelParams params;
+						GraphPixelResults graph;
+
+						GRAPH_PIXEL_WRITE_PARAMS(params, input);
+
+						#if defined(PS_NEEDS_WP)
+							const float3 world_pos = input.world_pos;
+							const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+							const float3 camera_dir = camera_world._m10_m11_m12;
+
+							const float depth = dot(-view_dir, camera_dir);
+						#endif
+
+						#if defined(NEEDS_PIXEL_DEPTH)
+							GRAPH_PIXEL_PARAM(params, pixel_depth) = depth;
+						#endif
+
+						#if defined(NEEDS_SCREEN_POS)
+							float2 screen_position = (input.position.xy / output_rt_size);
+							GRAPH_PIXEL_PARAM(params, screen_pos) = screen_position;
+						#endif
+
+						#if defined(NEEDS_SUN_SHADOW_MASK) 
+							GRAPH_PIXEL_PARAM(params, sun_shadow_mask) = 1.0;
+							#define HAS_SUN_SHADOW_MASK
+						#endif
+
+						GRAPH_EVALUATE_PIXEL(graph, params);
+
+						#if defined(EMISSIVE_PASS)
+							#if defined(HAS_OPACITY)
+								#if defined(HAS_OPACITY_THRESHOLD)
+									float threshold = graph.opacity_threshold;
+								#else
+									float threshold = 0.5f;
+								#endif
+								if (graph.opacity < threshold)
+									discard;
+							#endif
+							return float4(graph.emissive, 0);
+						#endif
+					}
+				#else
+					#if defined(CALCULATE_LIGHTING)
+						struct PS_OUTPUT {
+							half4 color : SV_TARGET0;
+							#if defined(MOTION_BLUR)
+								half2 buffer4 : SV_TARGET1;
+							#endif
+						};
+						DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+						PS_OUTPUT ps_main(PS_INPUT input
+					#else
+						DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+						GBUFFER_OUT ps_main(PS_INPUT input
+					#endif
+						#if defined(CULL_NONE) || defined(CULL_FRONT)
+							#if defined(GNM)
+								, bool vface : S_FRONT_FACE
+							#else
+								, float vface : VFACE
+							#endif
+						#endif
+						)
+					{
+						#if defined(CALCULATE_LIGHTING)
+							PS_OUTPUT o;
+						#else
+							GBUFFER_OUT o;
+						#endif
+
+						#if defined(JITTER_TRANSPARENCY) && !(defined(TRANSPARENT) || defined(TRANSPARENT_FADE))
+							uint2 pos = uint2(input.position.xy);
+							float alpha = (float)((pos.x%2u) + 2u*(pos.y%2u)) * 0.25;
+                       		if (alpha >= 1.0 - inv_jitter_alpha)
+                            	discard;
+                        #endif
+
+						GraphPixelParams params;
+						GraphPixelResults graph;
+
+						GRAPH_PIXEL_WRITE_PARAMS(params, input);
+
+						#if defined(PS_NEEDS_WP)
+							const float3 world_pos = input.world_pos;
+							const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+							const float3 camera_dir = camera_world._m10_m11_m12;
+
+							const float depth = dot(-view_dir, camera_dir);
+						#endif
+
+						#if defined(NEEDS_PIXEL_DEPTH)
+							GRAPH_PIXEL_PARAM(params, pixel_depth) = depth;
+						#endif
+
+						#if defined(NEEDS_SCREEN_POS) || defined(HAS_REFRACTION) || defined(CALCULATE_LIGHTING) || defined(NEEDS_PIXEL_ELEVATION)
+							#if defined(LOW_RES_ENABLED)
+								float2 screen_pos = input.position.xy / (output_rt_size * 0.5);
+							#else
+								float2 screen_pos = (input.position.xy / output_rt_size);
+							#endif
+
+							#if defined(NEEDS_SCREEN_POS)
+								GRAPH_PIXEL_PARAM(params, screen_pos) = screen_pos;
+							#endif
+						#endif
+
+						#if defined(NEEDS_PIXEL_ELEVATION)
+							#if defined(CALCULATE_LIGHTING)
+								float linear_background_depth = gbuffer_decode_depth(TEX2D(linear_depth, screen_pos));
+							#else
+								#error "linear depth is not supported for this gbuffer effects"
+							#endif
+
+							float3 background_wp = decode_world_pos(GRAPH_PIXEL_DATA(input, w), linear_background_depth);
+							GRAPH_PIXEL_PARAM(params, pixel_elevation) = distance(world_pos, background_wp);
+							#define HAS_PIXEL_ELEVATION
+						#endif
+
+						GRAPH_EVALUATE_PIXEL(graph, params);
+
+						#if defined(HAS_OPACITY) && !defined(TRANSPARENT) && !defined(TRANSPARENT_FADE)
+							#if defined(HAS_OPACITY_THRESHOLD)
+								float threshold = graph.opacity_threshold;
+							#else
+								float threshold = 0.5f;
+							#endif
+							if (graph.opacity < threshold)
+								discard;
+						#endif
+
+						// Base color
+						float3 base_color_to_use = float3(0,0,0);
+						#if defined(HAS_BASE_COLOR)
+							base_color_to_use = graph.base_color;
+						#else
+							base_color_to_use = float3(0.5, 0.5, 0.5);
+						#endif
+
+						// World space normal
+						#if defined(HAS_NORMAL)
+							#if !defined(WORLD_SPACE_NORMAL)
+								float3 tsm0 = GRAPH_PIXEL_DATA(input, tsm0).xyz;
+								float3 tsm1 = GRAPH_PIXEL_DATA(input, tsm1).xyz;
+								float3 tsm2 = GRAPH_PIXEL_DATA(input, tsm2).xyz;
+								#if (defined(CULL_NONE) || defined(CULL_FRONT)) && !defined(NORMAL_FLIP_DISABLED)
+									if (!front_facing(vface)) {
+										tsm0.z = -tsm0.z;
+										tsm1.z = -tsm1.z;
+										tsm2.z = -tsm2.z;
+									}
+								#endif
+								float3 wn = rotate_vector3(graph.normal, tsm0, tsm1, tsm2);
+								#if defined(LOCK_NORMAL_ROTATION)
+									wn = mul(wn, (float3x3)world);
+								#endif
+							#else
+								float3 wn = normalize(graph.normal);
+								#if (defined(CULL_NONE) || defined(CULL_FRONT)) && !defined(NORMAL_FLIP_DISABLED)
+									wn = !front_facing(vface) ? -wn : wn;
+								#endif
+							#endif
+						#else
+							float3 wn = normalize((float3)GRAPH_PIXEL_DATA(input, world_space_normal).rgb);
+							#if (defined(CULL_NONE) || defined(CULL_FRONT)) && !defined(NORMAL_FLIP_DISABLED)
+								wn = !front_facing(vface) ? -wn : wn;
+							#endif
+						#endif
+
+						// Metallic
+						half metallic_ = 0.f;
+						#if defined(HAS_METALLIC)
+							metallic_ = graph.metallic;
+						#else
+							metallic_ = 0.f;
+						#endif
+
+						// Roughness
+						half roughness_ = 0.f;
+						#if defined(HAS_ROUGHNESS)
+							roughness_ = graph.roughness;
+						#else
+							roughness_ = 0.5;
+						#endif
+						#if defined(USE_GLOBAL_ROUGHNESS_MULTIPLIER)
+							roughness_ *= global_roughness_multiplier;
+						#endif
+
+						// Velocity vector
+						#if defined(MOTION_BLUR)
+							#if defined(LOW_RES_ENABLED)
+								#error "MOTION_BLUR should not be calculated using low resolution"
+							#endif
+
+							float3 last_clip_pos = GRAPH_PIXEL_DATA(input, last_clip_position);
+							float2 current_screen_pos = (input.position.xy / output_rt_size - viewport.zw) / viewport.xy;
+							float2 last_screen_pos = last_clip_pos.xy / last_clip_pos.z;
+							VELOCITY(o) = encode_velocity(viewport.xy*(current_screen_pos - last_screen_pos));
+						#endif
+
+						#if defined(CALCULATE_LIGHTING)
+							// Ambient Diffuse
+							float3 ambient = float3(0, 0, 0);
+							#if defined(HAS_VERTEX_BAKED_DIFFUSE_LIGHTING)
+								ambient = GRAPH_PIXEL_DATA(input, baked_light).rgb;
+							#elif defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)
+								#if defined(HAS_DIRECTIONAL_LIGHTMAPS)
+									ambient = TEX2D(lightmap_ambient_term, GRAPH_PIXEL_DATA(input, lightmap_uv)).rgb;
+									float3 dd = TEX2D(lightmap_dominant_direction, GRAPH_PIXEL_DATA(input, lightmap_uv)).rgb * 2 - 1;
+									ambient += TEX2D(lightmap_directional_term, GRAPH_PIXEL_DATA(input, lightmap_uv)).rgb * max(0, dot(dd, wn));
+								#else
+									ambient = TEX2D(lightmap, GRAPH_PIXEL_DATA(input, lightmap_uv)).rgb;
+								#endif
+							#else
+								ambient = global_probe_rgbm_encoded ?
+									rgbm_decode(TEXCUBELOD(global_diffuse_map, wn, 0)) :
+									TEXCUBELOD(global_diffuse_map, wn, 0);
+							#endif
+					
+							// ensure that lightmap debug grid is visible in dark areas of a level
+							#if defined(DRAW_LIGHTMAP_TEXELS) && defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)
+								ambient += float3(0.1, 0.1, 0.1);
+							#endif
+						#endif
+
+						// Skin SSS
+						half skin_sss = 0.0f;
+						#if defined(HAS_SKIN_SSS_STRENGTH)
+							skin_sss = graph.sss_strength;
+						#endif
+
+						// Density
+						half density_ = 1.0f;
+						#if defined(HAS_DENSITY)
+							density_ = graph.density;
+						#endif
+
+						half density_shadow_bias_ = 0.0f;
+						#if defined(HAS_DENSITY_SHADOW_BIAS)
+							density_shadow_bias_ = graph.density_shadow_bias;
+						#endif
+
+						// Clear Coat
+						half clear_coat = 0.0;
+						#if defined(HAS_CLEARCOAT_ROUGHNESS)
+							clear_coat = graph.clear_coat;
+						#endif
+
+						// Cloth cloth_falloff
+						half cloth_falloff = 4.0;
+						#if defined(HAS_CLOTH_FALLOFF)
+							cloth_falloff = graph.cloth_falloff;
+						#endif
+
+						// Ambient Occlusion
+						half ao = 1.0;
+						#if defined(HAS_AMBIENT_OCCLUSION)
+							ao = graph.ambient_occlusion;
+						#endif
+
+						#if !defined(CALCULATE_LIGHTING)
+							BASE_COLOR(o) = gbuffer_encode_base_color(base_color_to_use);
+							MATERIAL_ID(o) = gbuffer_encode_material_id();
+							NORMAL(o) = gbuffer_encode_normal(wn);
+							ROUGHNESS(o) = gbuffer_encode_roughness(roughness_);
+							AMBIENT_OCCLUSION(o) = gbuffer_encode_ambient_occlusion(ao);
+
+							#if defined(TRANSLUCENT_MATERIAL)
+								DENSITY(o) = gbuffer_encode_density(density_);
+								DENSITY_SHADOW_BIAS(o) = gbuffer_encode_density_shadow_bias(density_shadow_bias_);
+							#elif defined(CLEAR_COAT_MATERIAL)
+								CLEAR_COAT(o) = gbuffer_encode_clear_coat(clear_coat);
+							#elif defined(CLOTH_MATERIAL)
+								CLOTH(o) = gbuffer_encode_cloth_falloff(cloth_falloff);
+							#elif defined(SKIN)
+								SKIN_SSS(o) = gbuffer_encode_skin(skin_sss);
+							#elif !defined(HAIR_MATERIAL)
+								METALLIC(o) = gbuffer_encode_metallic_mask(metallic_);
+							#elif defined(HAIR_MATERIAL)
+								// nothing yet
+							#else
+								#error "Unexpected material type set"
+							#endif
+						#else
+							#if defined(HAS_OPACITY)
+								half opacity_to_use = graph.opacity;
+							#else
+								half opacity_to_use = 0.5;
+							#endif
+
+							#if defined(TRANSLUCENT_MATERIAL) || defined(CLOTH_MATERIAL) || defined(HAIR_MATERIAL) || defined(SKIN)
+								metallic_ = 0.0;
+							#elif defined(CLEAR_COAT_MATERIAL)
+								metallic_ = 1.0;
+							#endif
+
+							const float3 V = normalize(view_dir);
+							const float3 N = wn;
+
+							#if defined(CALCULATE_LIGHTING) && defined(HAS_ANISOTROPY)
+								float anisotropy_ = graph.anisotropy;
+
+								// TODO: Reuse and use the real tangent and binormal. Optional should be to input a tangent/binormal map.
+								float3 tsm00 = GRAPH_PIXEL_DATA(input, tsm0).xyz;
+								float3 tsm11 = GRAPH_PIXEL_DATA(input, tsm1).xyz;
+								float3 tsm22 = GRAPH_PIXEL_DATA(input, tsm2).xyz;
+
+								// create tangentspace vectors
+								#ifdef HAS_NORMAL
+									float3 B = normalize(float3(tsm00.y, tsm11.y, tsm22.y));
+									float3 T = cross(B, N);
+									B = cross(N, T);
+								#else
+									float3 T = normalize(float3(tsm00.x, tsm11.x, tsm22.x));
+									float3 B = normalize(float3(tsm00.y, tsm11.y, tsm22.y));
+								#endif
+							#endif
+							
+							// 0.04 is taken as a common value for dielectrics. Source: Real-time rendering 3rd edition.
+							const float3 specular_color = lerp(float3(0.04,0.04,0.04), base_color_to_use, metallic_);
+							float3 diffuse_color = lerp(base_color_to_use, new_half3(0,0,0), metallic_);
+
+							half material_id = gbuffer_encode_material_id();
+
+							half3 acc_diff = 0;
+							half3 acc_spec = 0;
+							half3 translucency = 0;
+							#if defined(CALCULATE_LIGHTING)
+								#if defined(VOLUMETRIC_LIGHTING)
+									float sun_shadow = saturate(calculate_shadow_intensity(sun_shadow_map, static_sun_shadow_map, world_pos, depth));
+									float3 local_light_scattering = 0.0;
+									#if defined(HAS_VOLUMETRIC_PHASE)
+										float phase = graph.volumetric_phase;
+									#else
+										float phase = 0.0;
+									#endif
+								#endif
+
+								#if defined(D3D11)
+									// If we are currently capturing a reflection probe, use specular F0 as diffuse color for metallics
+									diffuse_color = (capture_cubemap == 1) ? lerp(diffuse_color, specular_color, metallic_) : diffuse_color;
+								#endif
+
+								calculate_lighting(world_pos, depth, sun_shadow_map, static_sun_shadow_map, brdf_lut, global_specular_map, N, V, roughness_, ambient, diffuse_color, specular_color, density_, density_shadow_bias_, base_color_to_use, material_id, clear_coat, cloth_falloff, ao, acc_diff, acc_spec, translucency);
+								clustered_shading(cs_cluster_buffer, cs_light_index_buffer, cs_light_data_buffer, 
+									#if defined(LOCAL_LIGHT_SHADOWS_ENABLED)
+										cs_light_shadow_matrices_buffer,
+										cs_light_shadow_lookup_buffer,
+										local_lights_shadow_atlas,
+										cached_local_lights_shadow_atlas,
+									#endif
+									world_pos, V, screen_pos * output_rt_size, depth, N, diffuse_color, specular_color, roughness_, density_, density_shadow_bias_, base_color_to_use, material_id, clear_coat, cloth_falloff, ao, acc_diff, acc_spec, translucency 
+									#if defined(VOLUMETRIC_LIGHTING)
+										, phase, local_light_scattering
+									#endif
+								);
+							#endif
+
+							float3 accumulated_color = acc_diff + translucency;
+							#if defined(HAS_EMISSIVE)
+								accumulated_color += graph.emissive;
+							#endif
+							#if !defined(TRANSPARENT)
+								accumulated_color += acc_spec;
+							#endif
+
+							#if defined(OPAQUE_FORWARD)
+								opacity_to_use = 1.0;
+							#elif defined(JITTER_TRANSPARENCY)
+								opacity_to_use *= 1.0 - inv_jitter_alpha;
+	                        #endif
+	
+							float4 color = 0;
+							#if defined(TRANSPARENT)
+								color = float4(acc_spec + accumulated_color * opacity_to_use, opacity_to_use);
+							#else
+								color = float4(accumulated_color * opacity_to_use, opacity_to_use);
+							#endif
+
+							#if defined(HAS_REFRACTION)
+								float3 acc_refraction = float3(0,0,0);
+								float3 distortion_normal = normalize(mul(N, (float3x3)view_proj)); // TODO: check tangent space?
+
+								// A negative screen-space normal (-y) means we want to sample more towards the bottom of the screen, so we need to flip this value, because our screen_pos uses 0,0 for top left corner
+								distortion_normal.y = 1-distortion_normal.y;
+
+								// put refraction value more towards the range of real material IOR values (air=1.0 glass=1.5).
+								half ior_air = 1.0;
+								half ior_range_bias = 0.1;
+								half2 distorted_uv = screen_pos - distortion_normal.xy * (graph.refraction - ior_air) * ior_range_bias;
+
+								// avoid including pixels from objects in front of the refractive object
+								float refraction_depth = gbuffer_decode_depth(TEX2D(linear_depth, distorted_uv));
+								bool depth_ok = depth < refraction_depth;
+								distorted_uv = lerp(screen_pos, distorted_uv, depth_ok);
+							#endif
+
+							#if defined(VOLUMETRIC_LIGHTING)
+								float3 wp = world_pos;
+								#if defined(HAS_VOLUMETRIC_ALBEDO)
+									float3 albedo = graph.volumetric_albedo;
+								#else
+									float3 albedo = float3(0.1, 0.1, 0.1);
+								#endif
+
+								#if defined(HAS_VOLUMETRIC_EXTINCTION)
+									float3 ot = graph.volumetric_extinction;
+								#else
+									float3 ot = 0.01;
+								#endif
+
+								#if defined(HAS_VOLUMETRIC_DEPTH)
+									float dx = graph.volumetric_depth;
+								#else
+									#if defined(HAS_REFRACTION)
+										float dx = depth_ok ? (refraction_depth - depth) : (gbuffer_decode_depth(TEX2D(linear_depth, screen_pos)) - depth);
+									#else
+										float dx = gbuffer_decode_depth(TEX2D(linear_depth, screen_pos)) - depth;
+									#endif
+								#endif
+
+								#if defined(HAS_VOLUMETRIC_LIGHT_EXTINCTION)
+									float volumetric_light_extinction = graph.volumetric_light_extinction;
+								#else
+									float volumetric_light_extinction = 1.0;
+								#endif
+
+								#if defined(HAS_VOLUMETRIC_EMISSIVE)
+									float3 volumetric_emissive = graph.volumetric_emissive;
+								#else
+									float3 volumetric_emissive = 0.0;
+								#endif
+
+								half3 ambient_tint_color = (ambient_tint_top_enabled > 0.0 ? lerp(ambient_tint, ambient_tint_top, -V.z*phase*0.5+0.5) : ambient_tint) * ambient_global_tint;
+								#if defined(D3D11)
+									// Remove ambient tint from cube map baking, since will have an exponential effect on the result.
+									ambient_tint_color = (capture_cubemap == 1) ? 1.0 : ambient_tint_color;
+								#endif
+
+								// TODO: sample global paramters such as, ambient, specular, sun, and sun shadow and reuse this.
+								float3 S_int;
+								float exp_sigma_dx;
+								float3 L = sun_direction;
+								float L_depth = max(dot(-V, L), 0.0) * dx; // approximation of the light depth in the medium
+								float volumetric_attn = lerp(1.0, exp(-ot * L_depth), volumetric_light_extinction);
+								float3 sun_scattering;
+								sun_scattering = volumetric_bsdf(L, V, sun_color, sun_enabled*sun_shadow*volumetric_attn, phase);
+								calculate_volumetric_lighting(dx, sun_scattering, local_light_scattering, ambient*ambient_tint_color, volumetric_emissive, albedo, ot, S_int, exp_sigma_dx);
+
+								float3 scattering = S_int;
+								float transmittance = exp_sigma_dx;
+
+								color.rgb += (1.0 - color.a) * scattering;
+								color.a += (1.0 - color.a) * (1.0 - transmittance);
+							#endif
+
+	                        #if defined(TRANSPARENT) || defined(TRANSPARENT_FADE)
+								float4 fog_data = calc_fog_data(fog_volume, global_diffuse_map, world_pos, depth, screen_pos);
+								color.rgb = color.rgb * (1.0 - fog_data.a) + fog_data.rgb * color.a;
+							#endif
+
+							#if defined(HAS_REFRACTION)
+								acc_refraction = TEX2D(hdr0_rgb, distorted_uv).rgb;
+								color.rgb += (1 - color.a) * acc_refraction;
+							#endif
+
+							o.color = color;
+						#endif
+
+						return o;
+					}
+				#endif
+			"""
+		}
+	}
+
+	depth_only = {
+		include: [
+			"core/stingray_renderer/shader_libraries/common#common",
+			"core/stingray_renderer/shader_libraries/common#skinning",
+			"core/stingray_renderer/shader_libraries/common#billboard_transformation",
+			"core/stingray_renderer/shader_libraries/common#taa_offsets"]
+
+		instance_data = {
+			"on_renderer(D3D11) && defined(INSTANCED)": {
+				world = { type = "matrix4x4" }
+
+				"defined(DRAW_WIREFRAME)": {
+					dev_wireframe_color = { type = "vector4" }
+				}
+				"defined(DRAW_OUTLINE)": {
+					outline_color = { type = "vector4" }
+				}		
+			}	
+		}
+
+		code = {
+			hlsl = """
+				#if defined(NEEDS_PIXEL_DEPTH) || defined(WRITE_LINEAR_DEPTH)
+					#define PS_NEEDS_WP
+				#endif
+
+				#if defined(HAS_VERTEX_OFFSET) || defined(BILLBOARD) || (defined(RENDERER_D3D11) && defined(INSTANCED))
+					#define MODIFIED_WORLD_SPACE_POSITION
+				#endif
+
+				#if defined(PS_NEEDS_WP) || defined(NEEDS_EYE_VECTOR) || defined(MODIFIED_WORLD_SPACE_POSITION)
+					#define NEEDS_WORLD_SPACE_POSITION
+				#endif
+
+				struct VS_INPUT {
+					float4 position : POSITION;
+					SKIN_INPUT
+					GRAPH_VERTEX_INPUT
+				};
+
+				struct PS_INPUT {
+					float4 position : SV_POSITION;
+					#if defined(RENDERER_D3D11) && defined(INSTANCED) 
+						#if defined(DRAW_WIREFRAME)
+							float4 instance_wireframe_color : COLOR0;
+							#if defined(DRAW_OUTLINE)
+								float4 instance_outline_color : COLOR1;
+							#endif
+						#elif defined(DRAW_OUTLINE)
+							float4 instance_outline_color : COLOR0;
+						#endif
+					#endif
+					#if defined(PS_NEEDS_WP) || defined(DRAW_OUTLINE)
+						float3 world_pos : TEXCOORD15;
+					#endif
+					GRAPH_PIXEL_INPUT
+				};
+
+				CBUFFER_START(c_depth_only)
+					
+					float4x4 view_proj;
+					float4x4 world_view_proj;
+					float4x4 world;
+					#if defined(NEEDS_INVERSE_WORLD_POSE)
+						float4x4 inv_world;
+					#endif
+					float4 dev_wireframe_color;
+
+					#if defined(BILLBOARD) && defined(SKYDOME_BILLBOARD)
+						#if defined(SECONDARY_SUN_DIRECTION)
+							float3 secondary_sun_direction;
+							#define billboard_direction secondary_sun_direction
+						#else
+							#define billboard_direction sun_direction
+						#endif
+					#endif
+
+					float4 outline_color;
+					float inv_jitter_alpha;
+					GRAPH_MATERIAL_EXPORTS
+				CBUFFER_END
+
+				#if defined(INSTANCED) && (defined(RENDERER_D3D11))
+					Buffer<float4> idata;
+					float ioffset;
+				#endif
+				
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				PS_INPUT vs_main(VS_INPUT input
+					#if defined(INSTANCED) && (defined(RENDERER_D3D11))
+						, uint instance_id : SV_InstanceId
+					#endif
+					)
+				{
+					PS_INPUT o;
+					float4 p;
+
+					GraphVertexParams params;
+					GraphVertexResults results;
+
+					#if ((defined(HAS_NORMAL) && !defined(WORLD_SPACE_NORMAL)) || defined(NEEDS_TANGENT_SPACE))
+						GRAPH_VERTEX_PARAM(params, tsm0) = float3(0, 0, 0);
+						GRAPH_VERTEX_PARAM(params, tsm1) = float3(0, 0, 0);
+						GRAPH_VERTEX_PARAM(params, tsm2) = float3(0, 0, 0);
+					#endif
+
+					#if defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)
+						GRAPH_VERTEX_PARAM(params, lightmap_uv) = float2(0, 0);
+					#endif
+
+					#if defined(INSTANCED) && (defined(RENDERER_D3D11))
+						const uint offset = (uint)ioffset + instance_id*IDATA_STRIDE;
+						world[0] = idata.Load(offset + IDATA_world + 0);
+						world[1] = idata.Load(offset + IDATA_world + 1);
+						world[2] = idata.Load(offset + IDATA_world + 2);
+						world[3] = idata.Load(offset + IDATA_world + 3);
+
+						#if defined(DRAW_WIREFRAME)
+							o.instance_wireframe_color = idata.Load(offset + IDATA_dev_wireframe_color);
+						#endif	
+						#if defined(DRAW_OUTLINE)
+							o.instance_outline_color = idata.Load(offset + IDATA_outline_color);
+						#endif
+					#endif
+
+					// Write automatic params
+					GRAPH_VERTEX_WRITE_PARAMS(params, input);
+
+					// Write output channels
+					#if defined(SKINNED)
+						float4 position = float4(skin_point(input.position, input.blendindices, input.blendweights), 1);
+						#if !defined(BILLBOARD) && (!defined(HAS_NORMAL) || defined(NEEDS_WORLD_SPACE_NORMAL))
+							float3 normal = skin_vector(GRAPH_VERTEX_DATA(input, vertex_normal).xyz, input.blendindices, input.blendweights);
+						#endif
+					#else
+						float4 position = input.position;
+						#if !defined(BILLBOARD) && (!defined(HAS_NORMAL) || defined(NEEDS_WORLD_SPACE_NORMAL))
+							float3 normal = GRAPH_VERTEX_DATA(input, vertex_normal).xyz;
+						#endif
+					#endif
+
+					#if defined(BILLBOARD)
+						float4 wp, wp_offset;
+						#if !defined(HAS_NORMAL) || defined(NEEDS_WORLD_SPACE_NORMAL)
+							float3 normal, tangent, binormal;
+							#if !defined(SKYDOME_BILLBOARD)
+								get_billboard_data_from_position(world._m30_m31_m32, camera_world._m30_m31_m32, camera_view, position, wp, wp_offset, normal, tangent, binormal);
+							#else
+								get_billboard_data_from_direction(billboard_direction, camera_view, position, wp, wp_offset, normal, tangent, binormal);
+							#endif
+						#else
+							#if !defined(SKYDOME_BILLBOARD)
+								get_billboard_positions_from_position(world._m30_m31_m32, camera_world._m30_m31_m32, camera_view, position, wp, wp_offset);
+							#else
+								get_billboard_positions_from_direction(billboard_direction, camera_view, position, wp, wp_offset);
+							#endif
+						#endif
+					#elif defined(NEEDS_WORLD_SPACE_POSITION)
+						float4 wp = mul(position, world);
+						// TODO: Expose output channel here
+					#endif
+
+					// Write output channels
+					#if defined(BILLBOARD)
+						GRAPH_VERTEX_PARAM(params, vertex_position) = wp_offset; // this offset is in world space direction
+					#else
+						GRAPH_VERTEX_PARAM(params, vertex_position) = position;
+					#endif
+					#if defined(NEEDS_UNSKINNED_VERTEX_POSITION)
+						GRAPH_VERTEX_PARAM(params, unskinned_vertex_position) = input.position;
+					#endif
+
+					// All members of the params struct has to be initialized, so assign dummy normal here.
+					#if !defined(HAS_NORMAL) || defined(NEEDS_WORLD_SPACE_NORMAL)
+						GRAPH_VERTEX_PARAM(params, world_space_normal).rgb = mul(normal, (float3x3)world);
+					#endif
+
+					#if defined(NEEDS_TANGENT_SPACE)
+						GRAPH_VERTEX_PARAM(params, tsm0) =
+							GRAPH_VERTEX_PARAM(params, tsm1) =
+							GRAPH_VERTEX_PARAM(params, tsm2) =
+							float3(0, 0, 0);
+					#endif
+
+					#if defined(NEEDS_EYE_VECTOR)
+						#if defined(BILLBOARD) && defined(SKYDOME_BILLBOARD)
+							// TODO: not correct length, we can't use length(eye_vector) to determine the distance
+							GRAPH_VERTEX_PARAM(params, eye_vector).rgb = billboard_direction;
+						#else
+							GRAPH_VERTEX_PARAM(params, eye_vector).rgb = camera_pos - wp.rgb;
+						#endif
+					#endif
+
+					// Evaluate all pieces of the graph that should run per-vertex.
+					GRAPH_EVALUATE_VERTEX(results, params);
+
+					// Apply world pos offset
+					#if defined(HAS_VERTEX_OFFSET)
+						wp += float4(results.vertex_offset, 0);
+					#endif
+					#if defined(MODIFIED_WORLD_SPACE_POSITION)
+						#if defined(HAS_FOV)
+							p = mul(wp, camera_custom_fov_view_projection);
+						#else
+							p = mul(wp, view_proj);
+						#endif
+					#else
+						#if defined(HAS_FOV)
+							// TODO: create camera_custom_fov_world_view_projection?
+							p = mul(mul(position, world), camera_custom_fov_view_projection); 
+						#else
+							p = mul(position, world_view_proj);
+						#endif
+					#endif
+
+					#if defined(DRAW_OUTLINE) || defined(HAS_FOV) || defined(WRITE_LINEAR_DEPTH)
+						float4 view_space = p / p.w;
+						view_space.xy += get_vs_halton_offset(frame_number);
+						o.position = view_space * p.w;
+					#else
+						o.position = p;
+					#endif
+
+					// Write results
+					GRAPH_VERTEX_WRITE(o, results, params);
+
+					#if defined(PS_NEEDS_WP)
+						o.world_pos = wp.xyz;
+					#endif
+
+					return o;
+				}
+				
+				#if defined(DRAW_OUTLINE)
+					struct PS_OUTPUT {
+						float4 outline_mask : SV_TARGET0;
+					};
+
+					DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+					#if defined(REMOVE_OUTLINE)
+						PS_OUTPUT ps_main()
+						{
+							PS_OUTPUT o;
+							o.outline_mask = 0;
+							return o;
+						}
+					#else
+						PS_OUTPUT ps_main(PS_INPUT input)
+						{
+							PS_OUTPUT o;
+
+							#if defined(HAS_OPACITY)
+								GraphPixelParams params;
+								GraphPixelResults graph;
+								GRAPH_PIXEL_WRITE_PARAMS(params, input);
+
+								#if defined(NEEDS_PIXEL_DEPTH)
+									const float3 world_pos = input.world_pos;
+									const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+									const float3 camera_dir = camera_world._m10_m11_m12;
+									const float depth = dot(-view_dir, camera_dir);
+
+									GRAPH_PIXEL_PARAM(params, pixel_depth) = depth;
+								#endif
+
+								GRAPH_EVALUATE_PIXEL(graph, params);
+
+								#if defined(HAS_OPACITY_THRESHOLD)
+									float threshold = graph.opacity_threshold;
+								#else
+									float threshold = 0.5f;
+								#endif
+
+								if (graph.opacity < threshold) {
+									o.outline_mask = 0;
+									return o;
+								}
+							#endif
+
+							#if defined(RENDERER_D3D11) && defined(INSTANCED)
+								o.outline_mask = input.instance_outline_color;
+							#else
+								o.outline_mask = outline_color;
+							#endif
+
+							return o;
+						}
+					#endif
+				#else
+					DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+					#if ((defined(RENDERER_D3D11) && defined(INSTANCED)) || defined(HAS_OPACITY)) || defined(WRITE_LINEAR_DEPTH)
+						float4 ps_main(PS_INPUT input) : SV_TARGET0
+					#else
+						float4 ps_main() : SV_TARGET0
+					#endif
+					#if defined(DRAW_WIREFRAME)
+						{
+							#if (defined(RENDERER_D3D11)) && defined(INSTANCED)
+								return input.instance_wireframe_color;
+							#else
+								return dev_wireframe_color;
+							#endif
+						}	
+					#elif defined(WRITE_LINEAR_DEPTH)
+						{
+							const float3 world_pos = input.world_pos;
+							const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+							const float3 camera_dir = camera_world._m10_m11_m12;
+							const float depth = dot(-view_dir, camera_dir);
+
+							return depth.xxxx;
+						}
+					#else
+						{
+							#if defined(HAS_OPACITY) && !defined(TRANSPARENT) && !defined(TRANSPARENT_FADE)
+								GraphPixelParams params;
+								GraphPixelResults graph;
+								GRAPH_PIXEL_WRITE_PARAMS(params, input);
+								GRAPH_EVALUATE_PIXEL(graph, params);
+
+								#if defined(HAS_OPACITY_THRESHOLD)
+									float threshold = graph.opacity_threshold;
+								#else
+									float threshold = 0.5f;
+								#endif
+
+								if (graph.opacity < threshold)
+									discard;
+							#endif
+
+							return float4(1, 1, 1, 1);
+						}
+					#endif
+				#endif
+			"""
+		}
+	}
+}

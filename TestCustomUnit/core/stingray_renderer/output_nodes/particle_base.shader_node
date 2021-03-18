@@ -1,0 +1,1477 @@
+group = "Output/Particles"
+display_name = "Blend Base"
+output_node = true
+render_configs = ["core/stingray_renderer/renderer"]
+
+// TODO: disable sun if it's disabled in environment settings.
+// TODO: options to disable shadows, local lights, sun_light.
+
+inputs = {
+	"e1d24468-d03e-4884-9b0d-dba23aaa94d6" = {
+		name = "base_color"
+		is_required = false
+		display_name = "Base Color"
+		type = { vector3: ["HAS_BASE_COLOR"] }
+		domain = "pixel"
+	}
+	
+	"0752e133-0c01-4fc4-b45a-a629cad4f850" = {
+		name = "opacity"
+		is_required = false
+		display_name = "Opacity"
+		type = { scalar: ["HAS_OPACITY"] }
+		domain = "pixel"
+	}
+
+	"ecf646b2-91fc-4c75-ab73-90dc1da18fd0" = {
+		name = "emissive"
+		is_required = false
+		display_name = "Emissive"
+		type = { vector3: ["HAS_EMISSIVE"] }
+		domain = "pixel"
+	}
+
+	"a4334a80-de5b-45ca-85e5-4a931bdf1354" = {
+		name = "additive"
+		is_required = false
+		display_name = "Additive"
+		type = { scalar: ["HAS_ADDITIVE"] }
+		domain = "pixel"
+	}
+
+	"277fc016-3300-4c4f-85d0-50277d9cafd0" = {
+		name = "premultiply"
+		is_required = false
+		display_name = "Premultiply"
+		type = { scalar: ["HAS_PREMULTIPLIED"] }
+		domain = "pixel"
+	}
+
+	"6fd5ebe2-4d15-4ecc-abad-ab9731ea861a" = {
+		name = "fade_range"
+		is_required = false
+		display_name = "Angle Fade Range"
+		type = { vector2: ["HAS_ANGLE_FADE", "NEEDS_EYE_VECTOR", "NEEDS_WORLD_SPACE_PLANE_NORMAL"] }
+		domain = "pixel"
+	}
+}
+
+options = {
+	"e8e86308-83cd-47a1-ab84-82776b3cf0ca" = "SCREEN_SPACE"
+	"47a74b09-1932-40d4-ab90-0ec090fb9643" = "BLEND_ADDITIVE"
+	"e267562a-65dc-4547-a9fa-6a605b451cae" = "BLEND_PREMULTIPLIED_ALPHA"
+	"4a42f2e1-1069-4afe-a93f-c7558572780f" = "EMISSIVE_PARTICLES"
+	"5e380f16-5cc6-482b-9df6-af0d2b3bda3c" = "HAS_CUSTOM_FOV"
+}
+
+ui = [
+	{
+		type = "drop_down"
+		display_name = "Blend Mode"
+		options = {
+			"Alpha Blend"			 		= "00000000-0000-0000-0000-000000000000"
+			"Additive Blend"			 	= "47a74b09-1932-40d4-ab90-0ec090fb9643"
+			"Pre-Multiplied Alpha Blend" 	= "e267562a-65dc-4547-a9fa-6a605b451cae"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+
+	{
+		type = "drop_down"
+		display_name = "Turn-up Algorithms"
+		options = {
+			"Disabled"		= "00000000-0000-0000-0000-000000000000"
+			"Screen Space"	= "e8e86308-83cd-47a1-ab84-82776b3cf0ca"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+
+	{ type = "checkbox" display_name = "Emissive particles" option = "4a42f2e1-1069-4afe-a93f-c7558572780f" }
+	{ type = "checkbox" display_name = "Custom FOV" 		option = "5e380f16-5cc6-482b-9df6-af0d2b3bda3c" }
+]
+
+render_state = {
+	// TODO: does not work.
+	shadow_caster = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#shadow_caster"]
+		state: {
+			z_write_enable = "false"
+			
+			write_mask0 = "red"
+			cull_mode = "cull_none"
+			blend_enable = "true"
+
+			blend_op = "blend_op_add"
+			src_blend = "blend_one"
+			dest_blend = "blend_inv_src_color"
+		}
+	}
+
+	opacity = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#opacity_premultiply"]
+		state: {
+			"defined(SCREEN_SPACE)": {
+				z_enable = "false"
+			}
+		}
+	}
+}
+
+sampler_state = {
+	// TODO: inherit from lighting
+	shadow_map = {
+		inherit: ["core/stingray_renderer/shader_libraries/common#clamp_point"]
+		state: { 			
+			"on_platform(D3D11, D3D12)": {
+				comparison_func = "less"
+				filter = "comparison_min_mag_linear_mip_point"
+			}
+			"on_platform(GNM)": {
+				comparison_func = "less"
+				filter = "min_mag_mip_linear"
+			}
+			"on_platform(GL)": {
+				comparison_func = "less"
+				filter = "min_mag_linear"
+			}	
+		}
+	}
+}
+
+channels = 	{
+	"defined(PARTICLE_LIGHTING)": {
+		basis0 = { type = "float4" domains = ["vertex", "pixel"] }
+		basis1 = { type = "float4" domains = ["vertex", "pixel"] }
+		basis2 = { type = "float4" domains = ["vertex", "pixel"] }
+		back_lighting = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(NEEDS_EYE_VECTOR)": {
+		eye_vector = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+	
+	"defined(NEEDS_WORLD_SPACE_PLANE_NORMAL)": {
+		world_space_plane_normal = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(NEEDS_WORLD_SPACE_NORMAL)": {
+		world_space_normal = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(NEEDS_PIXEL_DEPTH)": {
+		pixel_depth = { type = "float" domain = "pixel" }
+	}
+
+	"defined(NEEDS_SCREEN_POS)": {
+		screen_pos = { type = "float2" domain = "pixel" }
+	}
+	
+	"on_platform(GL)": {
+		vertex_corner_info = { type = "float2" semantic = "COLOR1" domain = "vertex" }
+	}
+	"!on_platform(GL)": {
+		vertex_corner_info = { type = "float2" semantic = "POSITION1" domain = "vertex" }
+	}
+	vertex_size = { type = "float2" semantic = "TEXCOORD7" domain = "vertex" }
+	"defined(ROTATION)": {
+		vertex_rotation = { type = "float" semantic = "TEXCOORD1" domains = ["vertex"] }
+	}
+	"defined(NEEDS_UV_SCALE)": {
+		"defined(NEEDS_UV_ANIMATION)": {
+			vertex_uv_data = { type = "float3" semantic = "TEXCOORD0" domains = ["vertex"] }
+			uv_frame = { type = "float" domains = ["vertex"] }
+		}
+		"!defined(NEEDS_UV_ANIMATION)": {
+			vertex_uv_data = { type = "float2" semantic = "TEXCOORD0" domains = ["vertex"] }
+		}
+		uv_scale = { type = "float2" domains = ["vertex"] }
+	}
+	"!defined(NEEDS_UV_SCALE)": {
+		"defined(NEEDS_UV_ANIMATION)": {
+			vertex_uv_frame = { type = "float" semantic = "TEXCOORD0" domains = ["vertex"] }
+			uv_frame = { type = "float" domains = ["vertex"] }
+		}
+	}
+	"defined(PIVOT)": {
+		vertex_pivot = { type = "float3" semantic = "TEXCOORD6" domains = ["vertex"] }
+	}
+	"defined(EXTERNAL_ROTATION) || defined(TANGENT_LOCKED)": {
+		vertex_tangent = { type = "float3" semantic = "TANGENT" domains = ["vertex"] }
+		"defined(EXTERNAL_ROTATION)": {
+			vertex_binormal = { type = "float3" semantic = "BINORMAL" domains = ["vertex"] }
+		}
+	}
+
+	"defined(WIRE_AA)": {
+		wire_aa_fade = { type = "float" domains = ["vertex", "pixel"] }
+	}
+}
+
+log_permutations = false
+permutation_sets = {
+   	pivot = [
+		{ if: "has_visualizer_channels(pivot)" define: { "macros": ["PIVOT"] stages: ["vertex"] } }
+		{ default = true }
+	]
+
+    rotation = [
+		{ if: "has_visualizer_channels(rotation)" define: { "macros": ["ROTATION"] stages: ["vertex"] } permute_with: "pivot" }
+		{ permute_with: "pivot" }
+	]
+
+	axis_aligment = [
+		{ if: "has_visualizer_channels(tangent, binormal)" define: { "macros": ["EXTERNAL_ROTATION"] stages: ["vertex"] } permute_with: "rotation" }
+		{ if: "has_visualizer_channels(tangent)" define: { "macros": ["TANGENT_LOCKED"] stages: ["vertex"] } permute_with: "rotation" }
+		{ permute_with: "rotation" }
+	]
+
+    default = [
+    	{ permute_with: "axis_aligment" }
+    ]
+}
+
+shader_contexts = {
+	default = {
+		passes_sort_mode = "deferred"
+		compile_with = [
+			// { if: "on_renderer(D3D11, D3D12, GNM, GL) && render_cap(development) && render_setting(particle_visualization)" defines=["PARTICLE_DEBUG"] permute_with: "default" }
+			{ if: "render_setting(low_res_transparency)" defines=["LOW_RES_ENABLED"] permute_with: "default" }
+			{ permute_with: "default" }
+		]
+
+		passes = [
+			{ if: "defined(PARTICLE_DEBUG)" then: [
+				{ if: "defined(SCREEN_SPACE)" then: [
+					{ layer="hdr_transparent_screen_space" code_block="billboard" render_state="opacity" }
+				] else: [
+					{ layer="hdr_transparent" code_block="billboard" render_state="opacity" }
+				]}
+			] else: [
+				{ if: "defined(SCREEN_SPACE)" then: [
+					{ if: "defined(EMISSIVE_PARTICLES)" then: [
+						{ layer="hdr_transparent_screen_space" code_block="billboard" render_state="opacity" }
+					] else: [
+						{ layer="hdr_transparent_screen_space" code_block="billboard" render_state="opacity" defines=["PARTICLE_LIGHTING" "CALCULATE_LIGHTING" "CALCULATE_FOG" "HL2_BASIS_LIGHTING" "BACK_LIGHTING"] }
+					]}
+				] else: [
+					{ if: "defined(EMISSIVE_PARTICLES)" then: [
+						{ layer="hdr_transparent" code_block="billboard" render_state="opacity" defines=["WIRE_AA"] }
+					] else: [
+						{ layer="hdr_transparent" code_block="billboard" render_state="opacity" defines=["PARTICLE_LIGHTING" "CALCULATE_LIGHTING" "CALCULATE_FOG" "WIRE_AA" "HL2_BASIS_LIGHTING" "BACK_LIGHTING"] }
+					]}
+				]}
+			]}
+		]
+	}
+}
+
+code_blocks = {
+	billboard = {
+		language = "hlsl"
+
+		include:[
+			"core/stingray_renderer/shader_libraries/common#common",
+			"core/stingray_renderer/shader_libraries/common#gbuffer_access",
+			"core/stingray_renderer/shader_libraries/lighting_common#brdf"
+			"core/stingray_renderer/shader_libraries/common#taa_offsets",
+			"core/stingray_renderer/shader_libraries/volumetric_lighting_common#volumetric_lighting_common"
+			"core/stingray_renderer/shader_libraries/shadow_map_common#shadow_bias",
+			"core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map_filtering",
+			"core/stingray_renderer/shader_libraries/lighting_common#lighting_data",
+			"core/stingray_renderer/shader_libraries/lighting_common#lighting",
+			"core/stingray_renderer/shader_libraries/lighting_common#clustered_shading",
+			"core/stingray_renderer/shader_libraries/particle_lighting_common#radiosity_normal_mapping"
+			"core/stingray_renderer/shader_libraries/particle_lighting_common#particle_debug" ]
+
+		instance_data = {
+		}
+
+		stage_conditions = {
+		}
+
+		samplers = {
+			"defined(HAS_REFRACTION) || defined(DISTORTION)": {
+				hdr0_rgb = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "hdr0_rgb"
+					type = "2d"
+				}
+			}
+			"defined(PARTICLE_LIGHTING) || defined(CALCULATE_LIGHTING)": {
+				global_diffuse_map = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "global_diffuse_map"
+					type = "cube"
+				}
+				
+				sun_shadow_map = {
+					sampler_state = "shadow_map"
+					source = "resource_set"
+					slot_name = "sun_shadow_map"
+					type = "2d"
+				}
+			}
+			"defined(HAS_REFRACTION) || defined(NEEDS_LINEAR_DEPTH)": {
+				"defined(LOW_RES_ENABLED)": {
+					linear_depth = {
+						sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_point"
+						source = "resource_set"
+						slot_name = "linear_depth_div2"
+						type = "2d"
+					}
+				}
+				"!defined(LOW_RES_ENABLED)": {
+					linear_depth = {
+						sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_point"
+						source = "resource_set"
+						slot_name = "linear_depth"
+						type = "2d"
+					}
+				}			
+			}
+
+			fog_volume = {
+				sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+				source = "resource_set"
+				slot_name = "fog_volume"
+				type = "3d"
+			}
+
+			"defined(CALCULATE_LIGHTING)": {
+				local_lights_shadow_atlas = {
+					sampler_state = "core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map"
+					slot_name = "local_lights_shadow_atlas"
+					type = "2d"
+				}
+				cached_local_lights_shadow_atlas = {
+					sampler_state = "core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map"
+					slot_name = "cached_local_lights_shadow_atlas"
+					type = "2d"
+				}
+				static_sun_shadow_map = {
+					sampler_state = "core/stingray_renderer/shader_libraries/shadow_map_common#shadow_map"
+					slot_name = "static_sun_shadow_map"
+					type = "2d"
+				}
+				global_specular_map = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "global_specular_map"
+					type = "cube"
+				}
+				brdf_lut = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "brdf_lut"
+					type = "2d"
+				}
+			}
+		}
+
+		code = """
+			#if defined(HAS_NORMAL) && !defined(WORLD_SPACE_NORMAL) 
+				#define NEEDS_TANGENT_SPACE
+			#endif
+
+			#if defined(NEEDS_PIXEL_DEPTH) || defined(PARTICLE_LIGHTING) || defined(CALCULATE_LIGHTING)
+				#define PS_NEEDS_WP
+			#endif
+
+			#if defined(HAS_REFRACTION) || defined(NEEDS_LINEAR_DEPTH)
+				DECLARE_SAMPLER_2D(linear_depth);
+				#define HAS_LINEAR_DEPTH
+			#endif
+
+			#if defined(PARTICLE_LIGHTING) || defined(CALCULATE_LIGHTING)
+				DECLARE_SAMPLER_3D(fog_volume);
+				DECLARE_SAMPLER_CUBE(global_diffuse_map);
+			#endif
+
+			#if defined(HAS_REFRACTION) || defined(DISTORTION)
+				DECLARE_SAMPLER_2D(hdr0_rgb);
+			#endif
+
+			struct VS_INPUT {
+				float4 position : POSITION;	
+				GRAPH_VERTEX_INPUT
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;	
+				#if defined(PS_NEEDS_WP)
+					float3 world_pos : TEXCOORD15;
+				#endif
+				#if defined(VS_FOG)
+					float4 fog_params : TEXCOORD16;
+				#endif
+				GRAPH_PIXEL_INPUT
+			};
+
+			CBUFFER_START(c_billboard)
+				#if defined(SCREEN_SPACE)
+					float4x4 proj;
+					float4x4 view;
+				#else
+					float4x4 view;
+					float4x4 view_proj;
+				#endif
+				#if defined(EMISSIVE_PARTICLES)
+					float emissive_particle_intensity;
+				#endif
+			CBUFFER_END
+			
+			CBUFFER_START(c_material_exports)
+				GRAPH_MATERIAL_EXPORTS
+			CBUFFER_END
+			
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input)
+			{
+				PS_INPUT o;
+
+				GraphVertexParams params;
+				GraphVertexResults results;
+
+				// Write automatic params
+				GRAPH_VERTEX_WRITE_PARAMS(params, input);
+
+				#if defined(PIVOT)
+					input.position.xyz = input.position.xyz + normalize(input.position.xyz - camera_pos) * params.vertex_pivot.z;
+				#endif
+
+				#if defined(EXTERNAL_ROTATION)
+					float3 y = GRAPH_VERTEX_DATA(input, vertex_tangent);
+					float3 x = GRAPH_VERTEX_DATA(input, vertex_binormal);
+				#elif defined(TANGENT_LOCKED)
+					float3 y = GRAPH_VERTEX_DATA(input, vertex_tangent);
+					float3 x = normalize(cross(normalize(input.position.xyz - camera_pos), y));
+				#elif defined(SCREEN_SPACE)
+					float3 x = float3(1,0,0);
+					float3 y = float3(0,1,0); //float3(0,0,1);
+				#else
+					float3 x = view._m00_m10_m20;
+					float3 y = view._m02_m12_m22;
+				#endif
+				
+				#if defined(ROTATION)
+					float rotation = GRAPH_VERTEX_DATA(input, vertex_rotation);
+					float c = cos(rotation);
+					float s = sin(rotation);
+					float3 x_axis = x * c + y * s;
+					float3 y_axis = y * c - x * s;
+				#else
+					float3 x_axis = x;
+					float3 y_axis = y;
+				#endif
+
+				float2 corner_info = GRAPH_VERTEX_DATA(input, vertex_corner_info);
+				float2 size = GRAPH_VERTEX_DATA(input, vertex_size);
+   
+				#if defined(WIRE_AA) && !defined(SCREEN_SPACE)
+					#if defined(HAS_CUSTOM_FOV)
+						float4 temp_p = mul(float4(input.position.xyz, 1), camera_custom_fov_view_projection);
+					#else
+						float4 temp_p = mul(float4(input.position.xyz, 1), view_proj);
+					#endif
+					#if defined(LOW_RES_ENABLED)
+						float min_particle_radius = 10.0;
+					#else
+						float min_particle_radius = 5.0;
+					#endif
+					float pixel_size = min_particle_radius / max(output_rt_size.x, output_rt_size.y);
+					float pixel_radius = temp_p.w * pixel_size;
+					float2 original_size = size;
+					size = max(size, pixel_radius);
+					GRAPH_VERTEX_PARAM(params, wire_aa_fade) = (original_size.x * original_size.y) / (size.x * size.y);
+				#endif
+ 
+				
+				#if defined(PIVOT)
+					float2 ci = corner_info;
+					float2 corner = ci * size * (ci*(params.vertex_pivot.xy - 0.5) + 0.5);
+					#if defined(WIRE_AA)
+						corner -= (size - original_size) * (params.vertex_pivot.xy - 0.5);
+					#endif
+				#else
+					float2 corner = corner_info * (size * 0.5);
+				#endif
+				
+				#if defined(SCREEN_SPACE)										
+					float3 wp = input.position.xzy + (x_axis * corner.x + y_axis * corner.y) / float3(normalize(camera_unprojection.xz), 1);
+					float4 p = float4(wp, 1); //mul(float4(wp, 1), proj);
+				#else					
+					float3 wp = input.position.xyz + (x_axis * corner.x + y_axis * corner.y);
+					#if defined(HAS_CUSTOM_FOV)
+						float4 p = mul(float4(wp, 1),camera_custom_fov_view_projection);
+					#else
+						float4 p = mul(float4(wp, 1), view_proj);
+					#endif
+					float4 proj_pos = p / p.w;
+					#if defined(LOW_RES_ENABLED)
+						proj_pos.xy += get_vs_halton_offset(frame_number, output_rt_size * 0.5);
+					#else
+						proj_pos.xy += get_vs_halton_offset(frame_number);
+					#endif
+					p = proj_pos * p.w;
+				#endif
+
+				#if defined(NEEDS_WORLD_SPACE_NORMAL) || defined(NEEDS_TANGENT_SPACE) || defined(PARTICLE_LIGHTING)
+					#if defined(SCREEN_SPACE)
+						float3 normal = view._m01_m11_m21;						
+					#else					
+						float3 normal = normalize(lerp(wp - input.position.xyz, -view._m01_m11_m21, 0.2));						
+					#endif
+					normal = mul(normal, (float3x3)view);
+				#endif
+
+				#if defined(PARTICLE_LIGHTING)
+					float4 basis0 = float4(0,0,0,1);
+					float4 basis1 = float4(0,0,0,1);
+					float4 basis2 = float4(0,0,0,1);
+					float3 back_lighting = float3(0,0,0);
+					calc_basis_lighting(basis0, basis1, basis2, back_lighting, wp, normal, view, p, global_diffuse_map);
+					GRAPH_VERTEX_PARAM(params, basis0) = basis0;
+					GRAPH_VERTEX_PARAM(params, basis1) = basis1;
+					GRAPH_VERTEX_PARAM(params, basis2) = basis2;
+					#if defined(BACK_LIGHTING)
+						GRAPH_VERTEX_PARAM(params, back_lighting) = back_lighting;
+					#endif
+				#endif
+
+				#if defined(NEEDS_TANGENT_SPACE) || defined(NEEDS_WORLD_SPACE_PLANE_NORMAL)
+					float3 n = cross(x_axis, y_axis);
+				#endif 
+				#if defined(NEEDS_TANGENT_SPACE)
+					float3 tangent = x_axis;
+					float3 binormal = y_axis;
+					GRAPH_VERTEX_PARAM(params, tsm0).rgb = float3(tangent.x, binormal.x, n.x);
+					GRAPH_VERTEX_PARAM(params, tsm1).rgb = float3(tangent.y, binormal.y, n.y);
+					GRAPH_VERTEX_PARAM(params, tsm2).rgb = float3(tangent.z, binormal.z, n.z);
+				#endif
+
+				#if defined(NEEDS_WORLD_SPACE_NORMAL)
+					GRAPH_VERTEX_PARAM(params, world_space_normal).rgb = normal;
+				#endif
+
+				#if defined(NEEDS_EYE_VECTOR)
+					GRAPH_VERTEX_PARAM(params, eye_vector).rgb = camera_pos -  wp;
+				#endif
+
+				// TOOD: Move this code to its own shader node!
+				#if defined(NEEDS_UV_SCALE)
+					#if defined(NEEDS_UV_ANIMATION)
+						GRAPH_VERTEX_PARAM(params, uv_frame) = GRAPH_VERTEX_DATA(input, vertex_uv_data).z;
+					#endif 
+					GRAPH_VERTEX_PARAM(params, uv_scale) = GRAPH_VERTEX_DATA(input, vertex_uv_data).xy;
+				#elif defined(NEEDS_UV_ANIMATION)
+					GRAPH_VERTEX_PARAM(params, uv_frame) = GRAPH_VERTEX_DATA(input, vertex_uv_frame);
+				#endif
+
+				#if defined(NEEDS_WORLD_SPACE_PLANE_NORMAL)
+					GRAPH_VERTEX_PARAM(params, world_space_plane_normal) = n;
+				#endif
+
+				// Evaluate all pieces of the graph that should run per-vertex.
+				GRAPH_EVALUATE_VERTEX(results, params);
+
+				#if defined(PS_NEEDS_WP)
+					o.world_pos = wp;
+				#endif
+				
+				#if defined(VS_FOG)
+					const float2 clip_space = float2(p.x, -p.y)/p.w*0.5 + 0.5;
+
+					const float3 view_dir = camera_world._m30_m31_m32 - wp.xyz;
+					const float3 camera_dir = camera_world._m10_m11_m12;
+					const float depth = dot(-view_dir, camera_dir);
+					o.fog_params = calc_fog_data(fog_volume, global_diffuse_map, wp, depth, clip_space);
+				#endif
+				
+				o.position = p;
+
+				// Write results
+				GRAPH_VERTEX_WRITE(o, results, params);
+
+				return o;
+			}
+
+			#if defined(GBUFFER_PARTICLES)
+
+				#if defined(CALCULATE_LIGHTING)
+					DECLARE_CLUSTER_DATA(cs_cluster_buffer);
+					DECLARE_LIGHT_INDEX_DATA(cs_light_index_buffer);
+					DECLARE_LIGHT_DATA(cs_light_data_buffer);
+					DECLARE_LIGHT_SHADOW_MATRICES(cs_light_shadow_matrices_buffer);
+					DECLARE_LIGHT_SHADOW_LOOKUP(cs_light_shadow_lookup_buffer);
+
+					DECLARE_COMPARISON_SAMPLER_2D(sun_shadow_map);
+					DECLARE_COMPARISON_SAMPLER_2D_SHARED(static_sun_shadow_map, sun_shadow_map);
+					DECLARE_COMPARISON_SAMPLER_2D_SHARED(local_lights_shadow_atlas, sun_shadow_map);
+					DECLARE_COMPARISON_SAMPLER_2D_SHARED(cached_local_lights_shadow_atlas, sun_shadow_map);
+					DECLARE_SAMPLER_CUBE(global_specular_map);
+					DECLARE_SAMPLER_2D(brdf_lut);
+				#endif
+
+				// TODO: use a common code base for standard base, since this is basically a copy of it
+				#if defined(CALCULATE_LIGHTING)
+						struct PS_OUTPUT {
+							half4 color : SV_TARGET0;
+							#if defined(MOTION_BLUR)
+								half2 buffer4 : SV_TARGET1;
+							#endif
+						};
+						DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+						PS_OUTPUT ps_main(PS_INPUT input
+					#else
+						DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+						GBUFFER_OUT ps_main(PS_INPUT input
+					#endif
+						#if defined(CULL_NONE) || defined(CULL_FRONT)
+							#if defined(GNM)
+								, bool vface : S_FRONT_FACE
+							#else
+								, float vface : VFACE
+							#endif
+						#endif
+						)
+					{
+						#if defined(CALCULATE_LIGHTING)
+							PS_OUTPUT o;
+						#else
+							GBUFFER_OUT o;
+						#endif
+
+						#if defined(JITTER_TRANSPARENCY) && !(defined(TRANSPARENT) || defined(TRANSPARENT_FADE))
+							uint2 pos = uint2(input.position.xy);
+							float alpha = (float)((pos.x%2u) + 2u*(pos.y%2u)) * 0.25;
+                       		if (alpha >= 1.0 - inv_jitter_alpha)
+                            	discard;
+                        #endif
+
+						GraphPixelParams params;
+						GraphPixelResults graph;
+
+						GRAPH_PIXEL_WRITE_PARAMS(params, input);
+
+						#if defined(PS_NEEDS_WP)
+							const float3 world_pos = input.world_pos;
+							const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+							const float3 camera_dir = camera_world._m10_m11_m12;
+
+							const float depth = dot(-view_dir, camera_dir);
+						#endif
+
+						#if defined(NEEDS_PIXEL_DEPTH)
+							GRAPH_PIXEL_PARAM(params, pixel_depth) = depth;
+						#endif
+
+						#if defined(NEEDS_SCREEN_POS) || defined(HAS_REFRACTION) || defined(CALCULATE_LIGHTING) || defined(NEEDS_PIXEL_ELEVATION)
+							#if defined(LOW_RES_ENABLED)
+								float2 screen_pos = input.position.xy / (output_rt_size * 0.5);
+							#else
+								float2 screen_pos = (input.position.xy / output_rt_size);
+							#endif
+
+							#if defined(NEEDS_SCREEN_POS)
+								GRAPH_PIXEL_PARAM(params, screen_pos) = screen_pos;
+							#endif
+						#endif
+
+						#if defined(NEEDS_PIXEL_ELEVATION)
+							#if defined(CALCULATE_LIGHTING)
+								float linear_background_depth = gbuffer_decode_depth(TEX2D(linear_depth, screen_pos));
+							#else
+								#error "linear depth is not supported for this gbuffer effects"
+							#endif
+
+							float3 background_wp = decode_world_pos(GRAPH_PIXEL_DATA(input, w), linear_background_depth);
+							GRAPH_PIXEL_PARAM(params, pixel_elevation) = distance(world_pos, background_wp);
+							#define HAS_PIXEL_ELEVATION
+						#endif
+
+						GRAPH_EVALUATE_PIXEL(graph, params);
+
+						#if defined(HAS_OPACITY) && !defined(TRANSPARENT) && !defined(TRANSPARENT_FADE)
+							#if defined(HAS_OPACITY_THRESHOLD)
+								float threshold = graph.opacity_threshold;
+							#else
+								float threshold = 0.5f;
+							#endif
+							if (graph.opacity < threshold)
+								discard;
+						#endif
+
+						// Base color
+						float3 base_color_to_use = float3(0,0,0);
+						#if defined(HAS_BASE_COLOR)
+							base_color_to_use = graph.base_color;
+						#else
+							base_color_to_use = float3(0.5, 0.5, 0.5);
+						#endif
+
+						// World space normal
+						#if defined(HAS_NORMAL)
+							#if !defined(WORLD_SPACE_NORMAL)
+								float3 tsm0 = GRAPH_PIXEL_DATA(input, tsm0).xyz;
+								float3 tsm1 = GRAPH_PIXEL_DATA(input, tsm1).xyz;
+								float3 tsm2 = GRAPH_PIXEL_DATA(input, tsm2).xyz;
+								#if (defined(CULL_NONE) || defined(CULL_FRONT)) && !defined(NORMAL_FLIP_DISABLED)
+									if (!front_facing(vface)) {
+										tsm0.z = -tsm0.z;
+										tsm1.z = -tsm1.z;
+										tsm2.z = -tsm2.z;
+									}
+								#endif
+								float3 wn = rotate_vector3(graph.normal, tsm0, tsm1, tsm2);
+								#if defined(LOCK_NORMAL_ROTATION)
+									wn = mul(wn, (float3x3)world);
+								#endif
+							#else
+								float3 wn = normalize(graph.normal);
+								#if (defined(CULL_NONE) || defined(CULL_FRONT)) && !defined(NORMAL_FLIP_DISABLED)
+									wn = !front_facing(vface) ? -wn : wn;
+								#endif
+							#endif
+						#else
+							float3 wn = normalize((float3)GRAPH_PIXEL_DATA(input, world_space_normal).rgb);
+							#if (defined(CULL_NONE) || defined(CULL_FRONT)) && !defined(NORMAL_FLIP_DISABLED)
+								wn = !front_facing(vface) ? -wn : wn;
+							#endif
+						#endif
+
+						// Metallic
+						half metallic_ = 0.f;
+						#if defined(HAS_METALLIC)
+							metallic_ = graph.metallic;
+						#else
+							metallic_ = 0.f;
+						#endif
+
+						// Roughness
+						half roughness_ = 0.f;
+						#if defined(HAS_ROUGHNESS)
+							roughness_ = graph.roughness;
+						#else
+							roughness_ = 0.5;
+						#endif
+						#if defined(USE_GLOBAL_ROUGHNESS_MULTIPLIER)
+							roughness_ *= global_roughness_multiplier;
+						#endif
+
+						// Velocity vector
+						#if defined(MOTION_BLUR)
+							#if defined(LOW_RES_ENABLED)
+								#error "MOTION_BLUR should not be calculated using low resolution"
+							#endif
+
+							float3 last_clip_pos = GRAPH_PIXEL_DATA(input, last_clip_position);
+							float2 current_screen_pos = (input.position.xy / output_rt_size - viewport.zw) / viewport.xy;
+							float2 last_screen_pos = last_clip_pos.xy / last_clip_pos.z;
+							VELOCITY(o) = encode_velocity(viewport.xy*(current_screen_pos - last_screen_pos));
+						#endif
+
+						#if defined(CALCULATE_LIGHTING)
+							// Ambient Diffuse
+							float3 ambient = float3(0, 0, 0);
+							#if defined(HAS_VERTEX_BAKED_DIFFUSE_LIGHTING)
+								ambient = GRAPH_PIXEL_DATA(input, baked_light).rgb;
+							#elif defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)
+								#if defined(HAS_DIRECTIONAL_LIGHTMAPS)
+									ambient = TEX2D(lightmap_ambient_term, GRAPH_PIXEL_DATA(input, lightmap_uv)).rgb;
+									float3 dd = TEX2D(lightmap_dominant_direction, GRAPH_PIXEL_DATA(input, lightmap_uv)).rgb * 2 - 1;
+									ambient += TEX2D(lightmap_directional_term, GRAPH_PIXEL_DATA(input, lightmap_uv)).rgb * max(0, dot(dd, wn));
+								#else
+									ambient = TEX2D(lightmap, GRAPH_PIXEL_DATA(input, lightmap_uv)).rgb;
+								#endif
+							#else
+								ambient = global_probe_rgbm_encoded ?
+									rgbm_decode(TEXCUBELOD(global_diffuse_map, wn, 0)) :
+									TEXCUBELOD(global_diffuse_map, wn, 0);
+							#endif
+					
+							// ensure that lightmap debug grid is visible in dark areas of a level
+							#if defined(DRAW_LIGHTMAP_TEXELS) && defined(HAS_LIGHTMAP_BAKED_DIFFUSE_LIGHTING)
+								ambient += float3(0.1, 0.1, 0.1);
+							#endif
+						#endif
+
+						// Skin SSS
+						half skin_sss = 0.0f;
+						#if defined(HAS_SKIN_SSS_STRENGTH)
+							skin_sss = graph.sss_strength;
+						#endif
+
+						// Density
+						half density_ = 1.0f;
+						#if defined(HAS_DENSITY)
+							density_ = graph.density;
+						#endif
+
+						half density_shadow_bias_ = 0.0f;
+						#if defined(HAS_DENSITY_SHADOW_BIAS)
+							density_shadow_bias_ = graph.density_shadow_bias;
+						#endif
+
+						// Clear Coat
+						half clear_coat = 0.0;
+						#if defined(HAS_CLEARCOAT_ROUGHNESS)
+							clear_coat = graph.clear_coat;
+						#endif
+
+						// Cloth cloth_falloff
+						half cloth_falloff = 4.0;
+						#if defined(HAS_CLOTH_FALLOFF)
+							cloth_falloff = graph.cloth_falloff;
+						#endif
+
+						// Ambient Occlusion
+						half ao = 1.0;
+						#if defined(HAS_AMBIENT_OCCLUSION)
+							ao = graph.ambient_occlusion;
+						#endif
+
+						#if !defined(CALCULATE_LIGHTING)
+							BASE_COLOR(o) = gbuffer_encode_base_color(base_color_to_use);
+							MATERIAL_ID(o) = gbuffer_encode_material_id();
+							NORMAL(o) = gbuffer_encode_normal(wn);
+							ROUGHNESS(o) = gbuffer_encode_roughness(roughness_);
+							AMBIENT_OCCLUSION(o) = gbuffer_encode_ambient_occlusion(ao);
+
+							#if defined(TRANSLUCENT_MATERIAL)
+								DENSITY(o) = gbuffer_encode_density(density_);
+								DENSITY_SHADOW_BIAS(o) = gbuffer_encode_density_shadow_bias(density_shadow_bias_);
+							#elif defined(CLEAR_COAT_MATERIAL)
+								CLEAR_COAT(o) = gbuffer_encode_clear_coat(clear_coat);
+							#elif defined(CLOTH_MATERIAL)
+								CLOTH(o) = gbuffer_encode_cloth_falloff(cloth_falloff);
+							#elif defined(SKIN)
+								SKIN_SSS(o) = gbuffer_encode_skin(skin_sss);
+							#elif !defined(HAIR_MATERIAL)
+								METALLIC(o) = gbuffer_encode_metallic_mask(metallic_);
+							#elif defined(HAIR_MATERIAL)
+								// nothing yet
+							#else
+								#error "Unexpected material type set"
+							#endif
+						#else
+							#if defined(HAS_OPACITY)
+								half opacity_to_use = graph.opacity;
+							#else
+								half opacity_to_use = 0.5;
+							#endif
+
+							#if defined(TRANSLUCENT_MATERIAL) || defined(CLOTH_MATERIAL) || defined(HAIR_MATERIAL) || defined(SKIN)
+								metallic_ = 0.0;
+							#elif defined(CLEAR_COAT_MATERIAL)
+								metallic_ = 1.0;
+							#endif
+
+							const float3 V = normalize(view_dir);
+							const float3 N = wn;
+
+							#if defined(CALCULATE_LIGHTING) && defined(HAS_ANISOTROPY)
+								float anisotropy_ = graph.anisotropy;
+
+								// TODO: Reuse and use the real tangent and binormal. Optional should be to input a tangent/binormal map.
+								float3 tsm00 = GRAPH_PIXEL_DATA(input, tsm0).xyz;
+								float3 tsm11 = GRAPH_PIXEL_DATA(input, tsm1).xyz;
+								float3 tsm22 = GRAPH_PIXEL_DATA(input, tsm2).xyz;
+
+								// create tangentspace vectors
+								#ifdef HAS_NORMAL
+									float3 B = normalize(float3(tsm00.y, tsm11.y, tsm22.y));
+									float3 T = cross(B, N);
+									B = cross(N, T);
+								#else
+									float3 T = normalize(float3(tsm00.x, tsm11.x, tsm22.x));
+									float3 B = normalize(float3(tsm00.y, tsm11.y, tsm22.y));
+								#endif
+							#endif
+							
+							// 0.04 is taken as a common value for dielectrics. Source: Real-time rendering 3rd edition.
+							const float3 specular_color = lerp(float3(0.04,0.04,0.04), base_color_to_use, metallic_);
+							float3 diffuse_color = lerp(base_color_to_use, new_half3(0,0,0), metallic_);
+
+							half material_id = gbuffer_encode_material_id();
+
+							half3 acc_diff = 0;
+							half3 acc_spec = 0;
+							half3 translucency = 0;
+							#if defined(CALCULATE_LIGHTING)
+								#if defined(VOLUMETRIC_LIGHTING)
+									float sun_shadow = saturate(calculate_shadow_intensity(sun_shadow_map, static_sun_shadow_map, world_pos, depth));
+									float3 local_light_scattering = 0.0;
+									#if defined(HAS_VOLUMETRIC_PHASE)
+										float phase = graph.volumetric_phase;
+									#else
+										float phase = 0.0;
+									#endif
+								#endif
+
+								#if defined(D3D11)
+									// If we are currently capturing a reflection probe, use specular F0 as diffuse color for metallics
+									diffuse_color = (capture_cubemap == 1) ? lerp(diffuse_color, specular_color, metallic_) : diffuse_color;
+								#endif
+
+								calculate_lighting(world_pos, depth, sun_shadow_map, static_sun_shadow_map, brdf_lut, global_specular_map, N, V, roughness_, ambient, diffuse_color, specular_color, density_, density_shadow_bias_, base_color_to_use, material_id, clear_coat, cloth_falloff, ao, acc_diff, acc_spec, translucency);
+								clustered_shading(cs_cluster_buffer, cs_light_index_buffer, cs_light_data_buffer, 
+									cs_light_shadow_matrices_buffer,
+									cs_light_shadow_lookup_buffer,
+									local_lights_shadow_atlas,
+									cached_local_lights_shadow_atlas,
+									world_pos, V, screen_pos * output_rt_size, depth, N, diffuse_color, specular_color, roughness_, density_, density_shadow_bias_, base_color_to_use, material_id, clear_coat, cloth_falloff, ao, acc_diff, acc_spec, translucency 
+									#if defined(VOLUMETRIC_LIGHTING)
+										, phase, local_light_scattering
+									#endif
+								);
+							#endif
+
+							float3 accumulated_color = acc_diff + translucency;
+							#if defined(HAS_EMISSIVE)
+								accumulated_color += graph.emissive;
+							#endif
+							#if !defined(TRANSPARENT)
+								accumulated_color += acc_spec;
+							#endif
+
+							#if defined(OPAQUE_FORWARD)
+								opacity_to_use = 1.0;
+							#elif defined(JITTER_TRANSPARENCY)
+								opacity_to_use *= 1.0 - inv_jitter_alpha;
+	                        #endif
+	
+							float4 color = 0;
+							#if defined(TRANSPARENT)
+								color = float4(acc_spec + accumulated_color * opacity_to_use, opacity_to_use);
+							#else
+								color = float4(accumulated_color * opacity_to_use, opacity_to_use);
+							#endif
+
+							#if defined(HAS_REFRACTION)
+								float3 acc_refraction = float3(0,0,0);
+								float3 distortion_normal = normalize(mul(N, (float3x3)view_proj)); // TODO: check tangent space?
+
+								// A negative screen-space normal (-y) means we want to sample more towards the bottom of the screen, so we need to flip this value, because our screen_pos uses 0,0 for top left corner
+								distortion_normal.y = 1-distortion_normal.y;
+
+								// put refraction value more towards the range of real material IOR values (air=1.0 glass=1.5).
+								half ior_air = 1.0;
+								half ior_range_bias = 0.1;
+								half2 distorted_uv = screen_pos - distortion_normal.xy * (graph.refraction - ior_air) * ior_range_bias;
+
+								// avoid including pixels from objects in front of the refractive object
+								float refraction_depth = gbuffer_decode_depth(TEX2D(linear_depth, distorted_uv));
+								bool depth_ok = depth < refraction_depth;
+								distorted_uv = lerp(screen_pos, distorted_uv, depth_ok);
+							#endif
+
+							#if defined(VOLUMETRIC_LIGHTING)
+								float3 wp = world_pos;
+								#if defined(HAS_VOLUMETRIC_ALBEDO)
+									float3 albedo = graph.volumetric_albedo;
+								#else
+									float3 albedo = float3(0.1, 0.1, 0.1);
+								#endif
+
+								#if defined(HAS_VOLUMETRIC_EXTINCTION)
+									float3 ot = graph.volumetric_extinction;
+								#else
+									float3 ot = 0.01;
+								#endif
+
+								#if defined(HAS_VOLUMETRIC_DEPTH)
+									float dx = graph.volumetric_depth;
+								#else
+									#if defined(HAS_REFRACTION)
+										float dx = depth_ok ? (refraction_depth - depth) : (gbuffer_decode_depth(TEX2D(linear_depth, screen_pos)) - depth);
+									#else
+										float dx = gbuffer_decode_depth(TEX2D(linear_depth, screen_pos)) - depth;
+									#endif
+								#endif
+
+								#if defined(HAS_VOLUMETRIC_LIGHT_EXTINCTION)
+									float volumetric_light_extinction = graph.volumetric_light_extinction;
+								#else
+									float volumetric_light_extinction = 1.0;
+								#endif
+
+								#if defined(HAS_VOLUMETRIC_EMISSIVE)
+									float3 volumetric_emissive = graph.volumetric_emissive;
+								#else
+									float3 volumetric_emissive = 0.0;
+								#endif
+
+								half3 ambient_tint_color = (ambient_tint_top_enabled > 0.0 ? lerp(ambient_tint, ambient_tint_top, -V.z*phase*0.5+0.5) : ambient_tint) * ambient_global_tint;
+								#if defined(D3D11)
+									// Remove ambient tint from cube map baking, since will have an exponential effect on the result.
+									ambient_tint_color = (capture_cubemap == 1) ? 1.0 : ambient_tint_color;
+								#endif
+
+								// TODO: sample global paramters such as, ambient, specular, sun, and sun shadow and reuse this.
+								float3 S_int;
+								float exp_sigma_dx;
+								float3 L = sun_direction;
+								float L_depth = max(dot(-V, L), 0.0) * dx; // approximation of the light depth in the medium
+								float volumetric_attn = lerp(1.0, exp(-ot * L_depth), volumetric_light_extinction);
+								float3 sun_scattering;
+								sun_scattering = volumetric_bsdf(L, V, sun_color, sun_enabled*sun_shadow*volumetric_attn, phase);
+								calculate_volumetric_lighting(dx, sun_scattering, local_light_scattering, ambient*ambient_tint_color, volumetric_emissive, albedo, ot, S_int, exp_sigma_dx);
+
+								float3 scattering = S_int;
+								float transmittance = exp_sigma_dx;
+
+								color.rgb += (1.0 - color.a) * scattering;
+								color.a += (1.0 - color.a) * (1.0 - transmittance);
+							#endif
+
+	                        #if defined(TRANSPARENT) || defined(TRANSPARENT_FADE)
+								float4 fog_data = calc_fog_data(fog_volume, global_diffuse_map, world_pos, depth, screen_pos);
+								color.rgb = color.rgb * (1.0 - fog_data.a) + fog_data.rgb * color.a;
+							#endif
+
+							#if defined(HAS_REFRACTION)
+								acc_refraction = TEX2D(hdr0_rgb, distorted_uv).rgb;
+								color.rgb += (1 - color.a) * acc_refraction;
+							#endif
+
+							o.color = color;
+						#endif
+
+						return o;
+					}
+			#elif defined(EMISSIVE_PASS)
+				#if defined(LOW_RES_ENABLED)
+					#error "Emissive pass should not be low resolution"
+				#endif
+				
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				float4 ps_main(PS_INPUT input) : SV_TARGET0
+				{
+					GraphPixelParams params;
+					GraphPixelResults graph;
+
+					GRAPH_PIXEL_WRITE_PARAMS(params, input);
+
+					#if defined(PS_NEEDS_WP)
+						const float3 world_pos = input.world_pos;
+						const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+						const float3 camera_dir = camera_world._m10_m11_m12;
+
+						const float depth = dot(-view_dir, camera_dir);
+					#endif
+
+					#if defined(NEEDS_PIXEL_DEPTH)
+						GRAPH_PIXEL_PARAM(params, pixel_depth) = depth;
+					#endif
+
+					#if defined(NEEDS_SCREEN_POS)
+						float2 screen_position = (input.position.xy / output_rt_size);
+						GRAPH_PIXEL_PARAM(params, screen_pos) = screen_position;
+					#endif
+
+					#if defined(NEEDS_SUN_SHADOW_MASK) 
+						GRAPH_PIXEL_PARAM(params, sun_shadow_mask) = 1.0;
+						#define HAS_SUN_SHADOW_MASK
+					#endif
+
+					GRAPH_EVALUATE_PIXEL(graph, params);
+
+					#if defined(EMISSIVE_PASS)
+						#if defined(HAS_OPACITY)
+							#if defined(HAS_OPACITY_THRESHOLD)
+								float threshold = graph.opacity_threshold;
+							#else
+								float threshold = 0.5f;
+							#endif
+							if (graph.opacity < threshold)
+								discard;
+						#endif
+						return float4(graph.emissive, 0);
+					#endif
+				}
+			#elif defined(DISTORTION) // TODO: avoid sample from objects infront of the "distortion"			
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				half4 ps_main(PS_INPUT input) : SV_TARGET0
+				{
+					GraphPixelParams params;
+					GraphPixelResults graph;
+
+					GRAPH_PIXEL_WRITE_PARAMS(params, input);
+
+					#if defined(LOW_RES_ENABLED)
+						const float2 inv_output_rt_size = 1.0 / (output_rt_size * 0.5);
+					#else
+						const float2 inv_output_rt_size = 1.0 / (output_rt_size);
+					#endif
+					#if defined(NEEDS_SCREEN_POS)
+						float2 screen_position = input.position.xy  * inv_output_rt_size;
+						GRAPH_PIXEL_PARAM(params, screen_pos) = screen_position;
+					#endif
+
+					#if defined(PS_NEEDS_WP)
+						const float3 world_pos = input.world_pos;
+						const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+						const float3 camera_dir = camera_world._m10_m11_m12;
+
+						const float depth = dot(-view_dir, camera_dir);
+					#endif
+					#if defined(NEEDS_PIXEL_DEPTH)
+						GRAPH_PIXEL_PARAM(params, pixel_depth) = depth;
+					#endif
+
+					GRAPH_EVALUATE_PIXEL(graph, params);
+
+					float3 normal = graph.distortion_normal;
+					normal.rg = normal.rg * 2 - 1;
+					half2 distortion = normal.xy * inv_output_rt_size;
+
+					#if defined(HAS_OPACITY)
+						half opacity = saturate(graph.opacity);
+					#else
+						half opacity = 0.5;
+					#endif
+
+					float3 color = TEX2D(hdr0_rgb, screen_position + (distortion * graph.distortion_strength)).rgb;
+
+					#if defined(HAS_BASE_COLOR)
+						color *= graph.base_color;
+					#endif
+
+					#if defined(WIRE_AA)
+						opacity *= GRAPH_CHANNEL(input, wire_aa_fade);
+					#endif
+					
+					#if defined(PARTICLE_DEBUG)
+						return DISTORTION_PARTICLES_DEBUG_COLOR;
+					#else
+						return half4(color * opacity, opacity);
+					#endif	
+				}
+			#else
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				half4 ps_main(PS_INPUT input) : SV_TARGET0
+				{
+					GraphPixelParams params;
+					GraphPixelResults graph;
+
+					GRAPH_PIXEL_WRITE_PARAMS(params, input);
+
+					#if defined(NEEDS_SCREEN_POS) || defined(PARTICLE_LIGHTING)
+						#if defined(LOW_RES_ENABLED)
+							float2 screen_position = input.position.xy / (output_rt_size * 0.5);
+						#else
+							float2 screen_position = input.position.xy / output_rt_size;
+						#endif
+					#endif
+
+					#if defined(NEEDS_SCREEN_POS)
+						GRAPH_PIXEL_PARAM(params, screen_pos) = screen_position;
+					#endif
+
+					#if defined(PS_NEEDS_WP)
+						const float3 world_pos = input.world_pos;
+						const float3 view_dir = camera_world._m30_m31_m32 - world_pos;
+						const float3 camera_dir = camera_world._m10_m11_m12;
+
+						const float depth = dot(-view_dir, camera_dir);
+					#endif
+					#if defined(NEEDS_PIXEL_DEPTH)
+						GRAPH_PIXEL_PARAM(params, pixel_depth) = depth;
+					#endif
+
+					GRAPH_EVALUATE_PIXEL(graph, params);
+
+					#if defined(HAS_OPACITY)
+						const half opacity = saturate(graph.opacity);
+					#else
+						const half opacity = 0.5;
+					#endif
+
+					#if defined(HAS_BASE_COLOR)
+						float4 color = float4(graph.base_color, opacity);
+					#else
+						float4 color = float4(0,0,0, opacity);
+					#endif 
+					
+					#if defined(PARTICLE_LIGHTING)
+							float4 basis0 = GRAPH_PIXEL_DATA(input, basis0);
+							float4 basis1 = GRAPH_PIXEL_DATA(input, basis1);
+							float4 basis2 = GRAPH_PIXEL_DATA(input, basis2);
+							#if defined(BACK_LIGHTING)
+								float3 back_lighting = GRAPH_PIXEL_DATA(input, back_lighting);
+							#endif
+							float3 normal = normalize(float3(basis0.w, basis1.w, basis2.w));
+						color.rgb = calc_lighting(color, normal, back_lighting, basis0.xyz, basis1.xyz, basis2.xyz);
+						#if !defined(SCREEN_SPACE)
+							#if defined(VS_FOG)
+								// apply vs calculated fog
+								color = apply_fog_data(color, input.fog_params);
+							#else
+								color = apply_fog(fog_volume, global_diffuse_map, color, world_pos, depth, screen_position);
+							#endif
+						#endif
+					#elif defined(EMISSIVE_PARTICLES)
+						color.rgb *= emissive_particle_intensity;
+					#endif
+
+					#if defined(HAS_EMISSIVE)
+						color.rgb += graph.emissive * emissive_particle_intensity;
+					#endif
+
+					#if defined(HAS_ANGLE_FADE)
+						float3 plane_wn = normalize(GRAPH_PIXEL_DATA(input, world_space_plane_normal));
+						float3 eye_dir = normalize(GRAPH_PIXEL_DATA(input, eye_vector));
+						float fade = dot(plane_wn, eye_dir);
+						color.a *= saturate((fade - graph.fade_range.x) / (graph.fade_range.y - graph.fade_range.x));
+					#endif
+
+					#if defined(WIRE_AA)
+						color.a *= GRAPH_CHANNEL(input, wire_aa_fade);
+					#endif
+
+					half4 output_color;
+					#if defined(HAS_PREMULTIPLIED) || defined(HAS_ADDITIVE)
+						#if defined(HAS_PREMULTIPLIED)
+							half premultiply = graph.premultiply;
+						#else
+							half premultiply = 0.0;
+						#endif
+
+						#if defined(HAS_ADDITIVE)
+							half additive = graph.additive;
+						#else
+							half additive = 0.0;
+						#endif
+
+						output_color = half4(color.rgb * lerp(color.a, 1.0, premultiply), lerp(color.a, 0.0, additive));
+					#elif defined(BLEND_ADDITIVE)
+						output_color = half4(color.rgb * color.a, 0.0);
+					#elif defined(BLEND_PREMULTIPLIED_ALPHA)
+						output_color = half4(color.rgb, color.a);
+					#else
+						output_color = half4(color.rgb * color.a, color.a);
+					#endif
+
+					#if defined(PARTICLE_DEBUG)
+						#if defined(EMISSIVE_PARTICLES)
+							return EMISSIVE_PARTICLES_DEBUG_COLOR;
+						#else
+							return LIT_PARTICLES_DEBUG_COLOR;
+						#endif
+					#else
+						return output_color;
+					#endif
+				}			
+			#endif
+		"""
+	}
+
+	depth_only = {
+		language = "hlsl"
+
+		include:[
+			"core/stingray_renderer/shader_libraries/common#common",
+			"core/stingray_renderer/shader_libraries/common#gbuffer_access" ]
+
+		instance_data = {
+		}
+
+		/*stage_conditions = {
+			tessellation_control = "defined(DX11_DISPLACEMENT_MAPPING)"
+		}*/
+
+		samplers = {
+			"defined(DISTORTION)": {
+				hdr0_rgb = {
+					sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+					source = "resource_set"
+					slot_name = "hdr0_rgb"
+					type = "2d"
+				}
+			}
+		}
+
+		code = """
+			#if defined(HAS_NORMAL) && !defined(WORLD_SPACE_NORMAL) 
+				#define NEEDS_TANGENT_SPACE
+			#endif
+
+			struct VS_INPUT {
+				float4 position : POSITION;		
+				GRAPH_VERTEX_INPUT
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;	
+				GRAPH_PIXEL_INPUT
+			};
+
+			CBUFFER_START(c_billboard)
+				#if defined(SCREEN_SPACE)
+					float4x4 proj;
+					float4x4 view;
+				#else
+					float4x4 view;
+					float4x4 view_proj;
+				#endif
+				GRAPH_MATERIAL_EXPORTS
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input)
+			{
+				PS_INPUT o;
+
+				GraphVertexParams params;
+				GraphVertexResults results;
+
+				// Write automatic params
+				GRAPH_VERTEX_WRITE_PARAMS(params, input);
+
+				#if defined(PIVOT)
+					input.position.xyz = input.position.xyz + normalize(input.position.xyz - camera_pos) * params.vertex_pivot.z;
+				#endif
+
+				#if defined(EXTERNAL_ROTATION)
+					float3 y = GRAPH_VERTEX_DATA(input, vertex_tangent);
+					float3 x = GRAPH_VERTEX_DATA(input, vertex_binormal);
+				#elif defined(TANGENT_LOCKED)
+					float3 y = GRAPH_VERTEX_DATA(input, vertex_tangent);
+					float3 x = normalize(cross(normalize(input.position.xyz - camera_pos), y));
+				#elif defined(SCREEN_SPACE)
+					float3 x = float3(1,0,0);
+					float3 y = float3(0,1,0); //float3(0,0,1);
+				#else
+					float3 x = view._m00_m10_m20;
+					float3 y = view._m02_m12_m22;
+				#endif
+				
+				#if defined(ROTATION)
+					float rotation = GRAPH_VERTEX_DATA(input, vertex_rotation);
+					float c = cos(rotation);
+					float s = sin(rotation);
+					float3 x_axis = x * c + y * s;
+					float3 y_axis = y * c - x * s;
+				#else
+					float3 x_axis = x;
+					float3 y_axis = y;
+				#endif
+
+				float2 corner_info = GRAPH_VERTEX_DATA(input, vertex_corner_info);
+				float2 size = GRAPH_VERTEX_DATA(input, vertex_size);
+				#if defined(PIVOT)
+					float2 pivot = GRAPH_VERTEX_DATA(input, vertex_pivot).xy;
+					float2 corner = corner_info * ( (1-(corner_info*0.5+0.5)) * size + corner_info * (pivot * size) );
+				#else					
+					float2 corner = corner_info * (size * 0.5);					
+				#endif
+				
+				#if defined(SCREEN_SPACE)										
+					float3 wp = input.position.xzy + (x_axis * corner.x + y_axis * corner.y) / float3(camera_unprojection.xz, 1); 
+					float4 p = float4(wp, 1); //mul(float4(wp, 1), proj);
+				#else					
+					float3 wp = input.position.xyz + (x_axis * corner.x + y_axis * corner.y);
+					#if defined(HAS_CUSTOM_FOV)
+						float4 p = mul(float4(wp, 1),camera_custom_fov_view_projection);
+					#else
+						float4 p = mul(float4(wp, 1), view_proj);
+					#endif
+				#endif
+
+				#if defined(NEEDS_WORLD_SPACE_NORMAL) || defined(NEEDS_TANGENT_SPACE)
+					#if defined(SCREEN_SPACE)
+						float3 normal = view._m01_m11_m21;						
+					#else					
+						float3 normal = normalize(lerp(wp - input.position.xyz, -view._m01_m11_m21, 0.2));						
+					#endif
+					normal = mul(normal, (float3x3)view);
+				#endif
+
+				#if defined(NEEDS_UV) 
+					GRAPH_VERTEX_PARAM(params, uv) = (corner_info * float2(1,-1) * 0.5 + 0.5);				
+				#endif
+
+				#if defined(NEEDS_TANGENT_SPACE)
+					float3 n = cross(x_axis, y_axis);
+					float3 tangent = x_axis;
+					float3 binormal = y_axis;
+					GRAPH_VERTEX_PARAM(params, tsm0).rgb = float3(tangent.x, binormal.x, n.x);
+					GRAPH_VERTEX_PARAM(params, tsm1).rgb = float3(tangent.y, binormal.y, n.y);
+					GRAPH_VERTEX_PARAM(params, tsm2).rgb = float3(tangent.z, binormal.z, n.z);
+				#endif
+
+				#if defined(NEEDS_WORLD_SPACE_NORMAL)
+					GRAPH_VERTEX_PARAM(params, world_space_normal).rgb = normal;
+				#endif
+
+				#if defined(NEEDS_EYE_VECTOR)
+					GRAPH_VERTEX_PARAM(params, eye_vector).rgb = camera_pos -  wp;
+				#endif
+
+				#if defined(NEEDS_UV_SCALE)
+					#if defined(NEEDS_UV_ANIMATION)
+						GRAPH_VERTEX_PARAM(params, uv_frame) = GRAPH_VERTEX_DATA(input, vertex_uv_data).z;
+					#endif 
+					GRAPH_VERTEX_PARAM(params, uv_scale) = GRAPH_VERTEX_DATA(input, vertex_uv_data).xy;
+				#elif defined(NEEDS_UV_ANIMATION)
+					GRAPH_VERTEX_PARAM(params, uv_frame) = GRAPH_VERTEX_DATA(input, vertex_uv_frame);
+				#endif
+
+				// Evaluate all pieces of the graph that should run per-vertex.
+				GRAPH_EVALUATE_VERTEX(results, params);
+
+				o.position = p;
+
+				// Write results
+				GRAPH_VERTEX_WRITE(o, results, params);
+
+				return o;
+			}
+
+			#if defined(GBUFFER_PARTICLES)
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				float4 ps_main(PS_INPUT input) : SV_TARGET0
+				{
+					#if defined(HAS_OPACITY)
+						GraphPixelParams params;
+						GraphPixelResults graph;
+
+						GRAPH_PIXEL_WRITE_PARAMS(params, input);
+						GRAPH_EVALUATE_PIXEL(graph, params);
+						
+						#if defined(HAS_OPACITY_THRESHOLD)
+							float threshold = graph.opacity_threshold;
+						#else
+							float threshold = 0.5f;
+						#endif
+						if (graph.opacity < threshold)
+							discard;
+					#endif
+
+					return float4(1,1,1,1);
+				}
+			#else
+				DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+				float4 ps_main(PS_INPUT input) : SV_TARGET0 
+				{
+					#if defined(HAS_OPACITY)
+						GraphPixelParams params;
+						GraphPixelResults graph;
+
+						GRAPH_PIXEL_WRITE_PARAMS(params, input);
+						GRAPH_EVALUATE_PIXEL(graph, params);
+						
+						half opacity = saturate(graph.opacity);
+					#else
+						half opacity = 0.5;
+					#endif
+
+					return opacity.xxxx;
+				}			
+			#endif
+		"""
+	}
+}
