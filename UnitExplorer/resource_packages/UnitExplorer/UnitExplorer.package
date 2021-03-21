@@ -1,0 +1,11 @@
+mod = [
+	"UnitExplorer"
+]
+
+package = [
+	"resource_packages/UnitExplorer/UnitExplorer"
+]
+
+lua = [
+	"scripts/mods/UnitExplorer/*"
+]
