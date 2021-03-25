@@ -1,5 +1,5 @@
 
-/* parent_material = "core/stingray_renderer/shader_import/standard" */
+parent_material = "core/stingray_renderer/shader_import/standard"
 shader = "gui:DIFFUSE_MAP"
 textures = {
 }

@@ -1,0 +1,31 @@
+flow = { nodes = [] }
+level_references = []
+level_settings = {
+  num_background_units = 0
+}
+object_sets = {}
+overrides = []
+particle_effects = []
+prototypes = []
+replays = []
+scatter = []
+sounds = []
+splines = []
+stories = []
+triggers = []
+units = [
+{
+  cameras = { }
+  data = { }
+  id = "93ce72a5-9682-4706-8383237d86552568"
+  lights = { }
+  material = ""
+  materials = { }
+  name = "animation_preview_tile_1"
+  pos = [ 5.900599 0.896381 0 ]
+  rot = [ 0 0 0 -1 ]
+  scl = [ 1 1 1 ]
+  type = "units/mods/TestCustomUnit/ChamfBox"
+}
+]
+volumes = [ ]

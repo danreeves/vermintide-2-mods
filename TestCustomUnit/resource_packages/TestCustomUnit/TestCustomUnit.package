@@ -17,7 +17,3 @@ unit = [
 material = [
   "materials/mods/TestCustomUnit/*"
 ]
-
-* = [
-  "content/*"
-]

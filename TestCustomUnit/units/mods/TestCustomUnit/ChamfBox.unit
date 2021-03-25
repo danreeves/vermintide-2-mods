@@ -27,7 +27,7 @@ editor_metadata = {
 	}
 }
 materials = {
-	ChamfBox_01 = "materials/mods/TestCustomUnit/yellow"
+	ChamfBox_01 = "materials/mods/TestCustomUnit/floor"
 }
 renderables = {
 	ChamfBox_01 = {

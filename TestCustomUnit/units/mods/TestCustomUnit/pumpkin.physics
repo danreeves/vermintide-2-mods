@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "pumpkin"
+		node = "pumpkin"
+		shapes = [
+			{
+				material = "default"
+				shape = "pumpkin"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

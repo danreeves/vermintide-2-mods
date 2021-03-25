@@ -41,8 +41,8 @@ local function get_hash(unit)
   return string.gsub(id, "%]'%]", "")
 end
 
-local unit_path = "units/mods/TestCustomUnit/Sonic"
-local unit_hash = "db0a68cb4cb20b05"
+local unit_path = "units/mods/TestCustomUnit/pumpkin"
+-- local unit_hash = "db0a68cb4cb20b05"
 
 -- Breeds.critter_rat.base_unit = unit_path
 --
@@ -83,6 +83,12 @@ mod:hook(PackageManager, "has_loaded", function (func, self, package, reference_
 	return true
   end
   return func(self, package, reference_name)
+end)
+
+mod:hook(PackageManager, "force_load", function (func, self, package_name)
+  if package_name ~= unit_path then
+    return func(self, package_name)
+  end
 end)
 
 local nwlid = #NetworkLookup.husks + 1

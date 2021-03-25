@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "MyCube"
+		node = "MyCube"
+		shapes = [
+			{
+				material = "default"
+				shape = "MyCube"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]
