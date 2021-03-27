@@ -1,0 +1,82 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/fog"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            fog_enabled = {
+                type = ":bool"
+                default = true
+                editor = {
+                    label = "Enabled"
+                    description = "Is Fog Enabled?"
+                }
+            }
+            fog_depth_range = {
+                type = "core/types/range"
+                default = [10 100]
+                editor = {
+                    label = "Depth Range"
+                    description = "Lower and Upper Bound of fog"
+                }
+            }
+            fog_color = {
+                type = "core/types/color"
+                fields = {
+                    rgb = { default = [0.6, 0.6, 0.6] }
+                    alpha = { default = 1 }
+                    intensity = { default = 1 }
+                }
+                editor = {
+                    description = "Color"
+                }
+            }
+            fog_sun_blend = {
+                type = "#non_negative_number"
+                default = 1.0
+                editor = {
+                    label = "Sun Blend"
+                }
+            }
+            fog_sun_exponent = {
+                type = "#non_negative_number"
+                default = 8.0
+                editor = {
+                    label = "Sun Exponent"
+                }
+            }
+            fog_sun_strength = {
+                type = "#non_negative_number"
+                default = 1.0
+                editor = {
+                    label = "Sun Strength"
+                }
+            }
+        }
+        editor = {
+            category = "Fog"
+            priority = 1100
+            icon = "cloud"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+    non_negative_number = {
+        type = ":number"
+        min = 0
+    }
+}

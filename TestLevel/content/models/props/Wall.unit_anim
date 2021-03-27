@@ -1,0 +1,20 @@
+
+_data_root_version = 1
+_id = "1210ef3f-eaf9-4588-beea-847d62168d56"
+_name = "content/models/props/Wall"
+anim_controller_ref = {
+	_id = "559ddb25-4f84-4acb-845a-153a4890c212"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "68c22067-daee-4871-bda6-672d153f4d3c"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "d99c1e76-2e2f-480e-a578-ad3b2515447f"
+	ref_filename = "content/models/props/Wall.dcc_asset"
+	ref_id = null
+}
+old_unit_name = "content/models/props/Wall"

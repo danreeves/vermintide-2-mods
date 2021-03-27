@@ -1,0 +1,74 @@
+
+Connections = [
+	{
+		Class = "Stingray.Flow.EventConnection"
+		FromItem = "Out"
+		FromNode = "fbae4664-982f-4f0d-a3db-af1e0ed7a6b8"
+		Id = "3adc39a6-38b2-4ed3-ac6e-b35a44ca9cc2"
+		Priority = 0
+		ToItem = "In"
+		ToNode = "d5093a31-487d-486c-8028-55bdb617bdc0"
+	}
+	{
+		Class = "Stingray.Flow.EventConnection"
+		FromItem = "Out"
+		FromNode = "3ae588a6-4d71-4067-9fb1-8023c875dcda"
+		Id = "c471ffdb-e7d3-4562-8b98-462bf3be66b9"
+		Priority = 0
+		ToItem = "In"
+		ToNode = "d5093a31-487d-486c-8028-55bdb617bdc0"
+	}
+]
+Groups = [
+]
+Nodes = [
+	{
+		Class = "Stingray.Flow.SetUnitVisibility"
+		Group = {
+			Value = "gizmo"
+		}
+		Id = "d5093a31-487d-486c-8028-55bdb617bdc0"
+		In = {
+		}
+		NodeLocation = {
+			X = 420
+			Y = 80
+		}
+		Out = {
+		}
+		Unit = {
+			UseMyUnit = true
+		}
+		Width = 160
+		Visible = {
+			Value = false
+		}
+	}
+	{
+		Class = "Stingray.Flow.UnitSpawned"
+		Id = "fbae4664-982f-4f0d-a3db-af1e0ed7a6b8"
+		NodeLocation = {
+			X = 220
+			Y = 100
+		}
+		Out = {
+		}
+		Unit = {
+		}
+		Width = 160
+	}
+	{
+		Class = "Stingray.Flow.ExternalEvent"
+		EventName = {
+			Value = "hide_helper_mesh"
+		}
+		Id = "3ae588a6-4d71-4067-9fb1-8023c875dcda"
+		NodeLocation = {
+			X = 220
+			Y = 160
+		}
+		Out = {
+		}
+		Width = 160
+	}
+]

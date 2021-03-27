@@ -1,0 +1,7 @@
+export = {
+    type = ":interface"
+    refine = {
+        type = ":key"
+        key = "type"
+    }
+}

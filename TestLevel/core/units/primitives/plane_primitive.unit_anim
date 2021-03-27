@@ -1,0 +1,20 @@
+
+_data_root_version = 1
+_id = "5ae8844b-2975-48b2-a4e4-8b87a855434f"
+_name = "core/units/primitives/plane_primitive"
+anim_controller_ref = {
+	_id = "a1822f6e-e277-45d1-a999-54145b7de548"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "b24b81fc-8a12-41d8-a806-a5aa68258396"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "139307fd-7661-48f4-86db-113a3baf40d6"
+	ref_filename = "core/units/primitives/plane_primitive.dcc_asset"
+	ref_id = null
+}
+old_unit_name = "core/units/primitives/plane_primitive"

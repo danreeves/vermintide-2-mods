@@ -1,0 +1,12 @@
+category = "Helpers"
+subcategory = "Misc"
+display_name = "Volume"
+type = "tool"
+tool_name = "volume"
+extra_data = "default" // The volume type is passed as extra data.
+icon = "icons/volume.svg"
+menu_item = {
+    path = "Create/Volume"
+    section = "GENERAL"
+    order = 160
+}

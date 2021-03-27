@@ -1,0 +1,11 @@
+category = "Helpers"
+subcategory = "Misc"
+display_name = "Trigger"
+type = "tool"
+tool_name = "trigger"
+icon = "icons/trigger.svg"
+menu_item = {
+    path = "Create/Trigger"
+    section = "GENERAL"
+    order = 150
+}

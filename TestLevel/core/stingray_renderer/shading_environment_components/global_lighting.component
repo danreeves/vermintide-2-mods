@@ -1,0 +1,94 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/global_lighting"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            skydome_map = {
+                type = ":resource"
+                extension = "texture"
+                editor = {
+                    label = "Skydome Map"
+                }
+            }
+            skydome_intensity = {
+                type = ":number"
+                default = 1
+                min = 0.001
+                max = 50
+                editor = {
+                    label = "Skydome Intensity"
+                    step = 0.01
+                }
+            }
+            global_diffuse_map = { 
+                type = ":resource"
+                extension = "texture"
+                editor = {
+                    label = "Global Diffuse Map"
+                }
+            }
+            global_specular_map = { 
+                type = ":resource"
+                extension = "texture"
+                editor = {
+                    label = "Global Specular Map"
+                }
+            }
+            baked_diffuse_tint = {
+                type = "core/types/color"
+                fields = {
+                    rgb = { default = [1, 1, 1] }
+                    alpha = { default = 1 }
+                    intensity = { default = 1 }
+                }
+                editor = {
+                    label = "Baked Diffuse Tint"
+                }
+            }
+            reflections_tint = {
+                type = "core/types/color"
+                fields = {
+                    rgb = { default = [1, 1, 1] }
+                    alpha = { default = 1 }
+                    intensity = { default = 1 }
+                }
+                editor = {
+                    label = "Reflections Tint"
+                }
+            }
+            emissive_particle_intensity = {
+                type = ":number"
+                default = 1
+                min = 0.001
+                max = 50.0
+                editor = {
+                    label = "Emissive Particle Intensity"
+                    step = 0.01
+                }
+            }
+
+        }
+        editor = {
+            category = "Global Lighting"
+            priority = 1000
+            icon = "lightbulb-o"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+}

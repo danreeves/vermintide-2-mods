@@ -1,0 +1,23 @@
+
+visibility_groups = {
+}
+renderables = {
+	g_spot = {
+		viewport_visible = true
+		shadow_caster = false
+	}
+	g_omni = {
+		viewport_visible = true
+		shadow_caster = false
+	}
+	g_box = {
+		viewport_visible = true
+		shadow_caster = false
+	}
+	g_pyramid = {
+		viewport_visible = true
+		shadow_caster = false
+	}
+}
+lights = {
+}

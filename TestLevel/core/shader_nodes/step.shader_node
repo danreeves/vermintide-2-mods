@@ -1,0 +1,14 @@
+group = "Math"
+display_name = "Step"
+inputs = {
+	"41c4c701-a022-4408-8454-f24bca59094c" = { name = "y" display_name = "Y" type = "auto" }
+	"08e1dcf5-7c82-4ea0-87a0-43d3b7bc94c7" = { name = "x" display_name = "X" type = "auto" }
+}
+
+output = {
+	type = { largestof: ["y", "x"] }
+}
+
+code = """
+	RESULT(step(y, x));
+"""

@@ -1,0 +1,3 @@
+shading_component_mapping = {
+	sun_shadow_slice_depth_ranges = { type="shadow_slice_depth_ranges" num_slices=4 path = { max_distance=["shadow_max_distance"] log_linear_blend=["shadow_log_linear_blend"] } }
+}

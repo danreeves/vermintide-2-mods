@@ -1,0 +1,123 @@
+material = "core/stingray_renderer/environments/env_materials"
+
+variables = {
+	sun_enabled = { type="scalar" value=1.0 }
+	sun_direction = { type="vector3" value=[0.0 0.0 -1.0] }
+	sun_color = { type="vector3" value=[1.0 1.0 1.0] }
+	sun_shadows_enabled = { type="scalar" value=1.0 }
+	
+	sun_shadow_slice_depth_ranges = { type="vector2_array" ui_name="Cascaded Shadow Mapping" value=[0 8 8 19 19 56 56 80] ui_type="cascaded_shadow_mapping" num_slices=4 start=0 end=80 log_linear_blend=0.4 }
+
+	skydome_map = { type="resource" ui_name="Skydome Texture" value="" }
+	skydome_intensity = { type="scalar" ui_name="Skydome Intensity" value=1 min=0.001 max=2 step=0.01  }
+	global_diffuse_map = { type="resource" ui_name="Global Diffuse Map" value="" }
+	global_specular_map = { type="resource" ui_name="Global Specular Map" value="" }
+	baked_diffuse_tint = { type="vector3" ui_name="Baked Diffuse Tint" ui_type="hdr_color" value=[1.0 1.0 1.0] min=[0 0 0] max=[5 5 5] step=[0.003 0.003 0.003]  }
+	reflections_tint = { type="vector3" ui_name="Reflections Tint" ui_type="hdr_color" value=[1.0 1.0 1.0] min=[0 0 0] max=[5 5 5] step=[0.003 0.003 0.003]  }
+
+	emissive_particle_intensity = { type="scalar" ui_name="Emissive Particle Intensity" value=1 min=0.001 max=4 step=0.01 }
+
+	fog_enabled = { type="scalar" ui_name="Enable Fog" value=1.0 min=0.0 max=1.0 step=1.0 }
+	fog_depth_range = { type="vector2" ui_name="Fog Depth Range" value=[10 100] min=[0 0] max=[5000 5000] step=[0.01 0.01 0.01] } 
+	fog_color = { type="vector3" ui_name="Fog Color" ui_type="hdr_color" value=[0.6 0.6 0.6] min=[0 0 0] max=[1 1 1] step=[0.001 0.001 0.001] }	
+	fog_sun_blend = { type="vector3" ui_name="Fog Sun Blend / Exponent / Strength" value=[1.0 8.0 1.0] min=[0 1 0] max = [1 16 1] step = [0.001 0.01 0.001] }
+
+	exposure = { type="scalar" ui_name="Exposure" value=1 min=0.001 max=4 step=0.01 }
+
+	// Used to globally expose world to shadow map transforms for sun shadow mapping
+	sun_world_to_shadow_slice0 = { type="matrix4x4" value=[1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1] }
+	sun_world_to_shadow_slice1 = { type="matrix4x4" value=[1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1] }
+	sun_world_to_shadow_slice2 = { type="matrix4x4" value=[1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1] }
+	sun_world_to_shadow_slice3 = { type="matrix4x4" value=[1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1] }
+
+	bloom_enabled = { type="scalar" ui_name="Enable Bloom" value=1.0 min=0.0 max=1.0 step=1.0  }
+	bloom_threshold_offset_falloff = { type="vector3" ui_name="Bloom Threshold / Offset / Falloff" value=[0.8 1.0 1.0] min=[0.0 0.01 0.0] max=[5.0 2 1.0] step=[0.001 0.001 0.001] }
+	global_lens_dirt_map = { type="resource" ui_name="Global Lens Dirt Map" value="" }
+	bloom_lens_dirt_amount = { type="scalar" ui_name="Lens Dirt Amount" value=1.0 min=0.0 max=2.0 step=0.001 }
+	bloom_tint = { type="vector3" ui_name="Bloom Tint" ui_type="hdr_color" value=[1.0 1.0 1.0] min=[0 0 0] max=[5 5 5] step=[0.003 0.003 0.003] }
+
+	motion_blur_enabled = { type="scalar" ui_name="Enable Motion Blur" value=0.0 min=0.0 max=1.0 step=1.0 }
+	motion_blur_amount = { type="scalar" ui_name="Motion Blur Amount" value=2.0 min=0.0 max=5.0 step=0.001 }	
+
+	ao_enabled = { type="scalar" ui_name="Enable AO" value=1.0 min=0.0 max=1.0 step=1.0 }
+	ao_quality = { type="scalar" ui_name="AO Quality" value=2.0 min=1.0 max=3.0 step=1.0 }
+	ao_radius = { type="scalar" ui_name="AO Radius" value=0.2 min=0.1 max=1.0 step=0.001 }
+	ao_intensity = { type="scalar" ui_name="AO Intensity" value=0.6 min=0.0 max=1.0 step=0.01 }
+
+	dof_enabled = { type="scalar" ui_name="Enable Depth Of Field" value=1.0 min=0.0 max=1.0 step=1.0 }
+	dof_focal_distance = { type="scalar" ui_name="Focus Distance" value=10.0 min=0.0 max=5000 step=0.01 }
+	dof_focal_region = { type="scalar" ui_name="Focus Region" value=5 min=0.0 max=2500 step=0.01 }
+	dof_focal_region_start = { type="scalar" ui_name="Focus Region Start" value=5 min=0.0 max=2500 step=0.01 }
+	dof_focal_region_end = { type="scalar" ui_name="Focus Region End" value=5 min=0.0 max=2500 step=0.01 }
+	dof_focal_near_scale = { type="scalar" ui_name="Near Scale" value=1.0 min=0.0 max=1.0 step=0.001 }
+	dof_focal_far_scale = { type="scalar" ui_name="Far Scale" value=1.0 min=0.0 max=1.0 step=0.001 }
+
+	ssr_enabled = { type="scalar" ui_name="Enable Screen Space Reflections" value=0 min=0 max=1 step=1 }
+	ssr_surface_thickness_threshold = { type="vector2"  ui_name="SSR Mask: Surface Thickness Threshold" value=[0.001 5] min=[0.0001 0.1] max=[0.01 20] step=[0.000001 0.001] }
+	ssr_screen_edge_threshold = { type="scalar"  ui_name="SSR Mask: Screen Edge Threshold" value=0.05 min=0.01 max=0.2 step=0.00001 }
+
+	lens_quality_enabled = { type="scalar" ui_name="Enable Lens Quality" value=0.0 min=0.0 max=1.0 step=1.0 }
+	lens_quality_properties = {type="vector3" ui_name="Lens Quality (Distortion | Fringe Intensity | Fringe Color)" value=[0.0 0.0 0.0] min=[-0.6 0.0 0.0] max=[0.9 1.0 1.0] step=[0.001 0.001 0.001] }
+
+	vignette_enabled = { type="scalar" ui_name="Enable Vignette" value=1.0 min=0.0 max=1.0 step=1.0 }
+	vignette_properties = { type="vector3" ui_name="Vignette (Radius | Falloff | Opacity)" value=[1.0 0.5 1.0] min=[0.0 0.0 0.0] max=[1.0 1.0 1.0] step=[0.001 0.001 0.001] }
+
+	color_grading_enabled = { type="scalar" ui_name="Enable Color Grading" value=0.0 min=0.0 max=1.0 step=1.0 }
+	color_grading_map = { type="resource" ui_name="Color Grading Volume Map" value="core/stingray_renderer/environments/color_grading_identity" }
+}
+
+editor = [
+	"skydome_map"
+	"skydome_intensity"
+
+	"global_diffuse_map"
+	"global_specular_map"
+	"baked_diffuse_tint"
+	"reflections_tint"
+
+	"sun_shadow_slice_depth_ranges"
+
+	"emissive_particle_intensity"
+
+	"fog_enabled"
+	"fog_depth_range"
+	"fog_color"
+	"fog_sun_blend"
+
+	"exposure"
+
+	"bloom_enabled"
+	"bloom_threshold_offset_falloff"
+	"global_lens_dirt_map"
+	"bloom_lens_dirt_amount"
+	"bloom_tint"
+
+	"motion_blur_enabled"
+	"motion_blur_amount"
+
+	"ao_enabled"
+	"ao_quality"
+	"ao_radius"
+	"ao_intensity"
+
+	"dof_enabled"
+	"dof_focal_distance"
+	"dof_focal_region"
+	"dof_focal_region_start"
+	"dof_focal_region_end"
+	"dof_focal_near_scale"
+	"dof_focal_far_scale"
+
+	"ssr_enabled"
+	"ssr_surface_thickness_threshold"
+	"ssr_screen_edge_threshold"
+
+	"lens_quality_enabled"
+	"lens_quality_properties"
+
+	"vignette_enabled"
+	"vignette_properties"
+
+	"color_grading_enabled"
+	"color_grading_map"
+]

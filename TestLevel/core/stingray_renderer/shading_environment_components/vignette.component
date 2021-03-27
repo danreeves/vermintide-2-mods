@@ -1,0 +1,65 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/vignette"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            vignette_enabled = {
+                type = ":bool"
+                default = true
+                editor = {
+                    label = "Enabled"
+                    description = "Is Vignette Enabled?"
+                }
+            }
+            vignette_radius = {
+                type = "#scalar_0_to_1"
+                default = 1.0
+                editor = {
+                    label = "Radius"
+                }
+            }
+            vignette_falloff = {
+                type = "#scalar_0_to_1"
+                default = 0.5
+                editor = {
+                    label = "Falloff"
+                }
+            }
+            vignette_opacity = {
+                type = "#scalar_0_to_1"
+                default = 1.0
+                editor = {
+                    label = "Opacity"
+                }
+            }
+        }
+        editor = {
+            category = "Vignette"
+            priority = 1900
+            icon = "circle"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+    scalar_0_to_1 = {
+        type = ":number"
+        min = 0.0
+        max = 1.0
+        step = 0.001
+    }
+}

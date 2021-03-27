@@ -1,0 +1,49 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/color_grading"
+                    "$resource_type" = "shading_environment_mapping"
+                }               
+                editor = {
+                    visible = false
+                }
+            }
+            color_grading_enabled = {
+                type = ":bool"
+                default = true
+                editor = {
+                    label = "Enabled"
+                    description = "Is Color Grading Enabled?"
+                }
+            }
+            color_grading_map = {
+                type = ":resource"
+                extension = "texture"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/environments/color_grading_identity"
+                    "$resource_type" = "texture"
+                }
+                editor = {
+                    label = "Color Grading Volume Map"
+                }
+            }
+        }
+        editor = {
+            category = "Color Grading"
+            priority = 2100
+            icon = "tint"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+}

@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Primitives"
+display_name = "Plane"
+type = "unit"
+unit_resource = "core/units/primitives/plane_primitive"
+icon = "icons/plane.svg"
+menu_item = {
+    path = "Create/Primitives/Plane"
+    section = "GENERAL"
+    order = 110
+}

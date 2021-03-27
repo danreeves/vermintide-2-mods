@@ -1,0 +1,42 @@
+android = {
+	output = {
+		format = "R8G8B8A8"
+	}
+}
+common = {
+	input = {
+		filename = "core/editor_slave/units/skydome/night_sky"
+	}
+	output = {
+		apply_processing = true
+		category = ""
+		srgb = true
+		cut_alpha_threshold = 0.5
+		enable_cut_alpha_threshold = false
+		mipmap_filter = "box"
+		mipmap_filter_wrap_mode = "mirror"
+		mipmap_keep_original = false
+		mipmap_num_largest_steps_to_discard = 0
+		mipmap_num_smallest_steps_to_discard = 0
+	}
+}
+ios = {
+	output = {
+		format = "PVRTC_RGB4"
+	}
+}
+macosx = {
+	output = {
+		format = "DXT1"
+	}
+}
+ps4 = {
+	output = {
+		format = "DXT1"
+	}
+}
+win32 = {
+	output = {
+		format = "DXT1"
+	}
+}

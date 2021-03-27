@@ -1,0 +1,284 @@
+
+nodes = [
+	{
+		id = "ef6ed6a2-ea03-4750-836b-e7463d144b82"
+		out_events = {
+			out = [
+				{
+					event = 0
+					id = "20d6dbe1-abf1-4495-b82d-f42646c711be:0"
+					node = "20d6dbe1-abf1-4495-b82d-f42646c711be"
+				}
+				{
+					event = 0
+					id = "99169fc8-75ca-47af-9ce7-9b9ebbb96b4b:0"
+					node = "99169fc8-75ca-47af-9ce7-9b9ebbb96b4b"
+				}
+				{
+					event = 0
+					id = "97a77094-c532-455e-8f0d-e72710a5fabc:0"
+					node = "97a77094-c532-455e-8f0d-e72710a5fabc"
+				}
+			]
+		}
+		out_variables = {
+			unit = {
+				type = "unit"
+			}
+		}
+		type = "unit_spawned_editor"
+		variable_values = {
+			unit = null
+		}
+	}
+	{
+		id = "20d6dbe1-abf1-4495-b82d-f42646c711be"
+		in_variables = {
+			arg1 = {
+				node = "ef6ed6a2-ea03-4750-836b-e7463d144b82"
+				type = "unit"
+				variable = "unit"
+			}
+			arg2 = {
+				type = "generic"
+			}
+			arg3 = {
+				type = "generic"
+			}
+			arg4 = {
+				type = "generic"
+			}
+			arg5 = {
+				type = "generic"
+			}
+		}
+		type = "script_do_string"
+		variable_values = {
+			arg1 = null
+			arg2 = null
+			arg3 = null
+			arg4 = null
+			arg5 = null
+			script = "if stingray.Light.has_material(stingray.Unit.light(({...})[1], \"probe\")) then stingray.Material.set_vector3(stingray.Light.material(stingray.Unit.light(({...})[1], \"probe\")), \"trace_box_min\", stingray.Vector3(stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min[0]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min\", 0),stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min[1]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min\", 1),stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min[2]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min\", 2))) end
+"
+		}
+	}
+	{
+		id = "99169fc8-75ca-47af-9ce7-9b9ebbb96b4b"
+		in_variables = {
+			arg1 = {
+				node = "ef6ed6a2-ea03-4750-836b-e7463d144b82"
+				type = "unit"
+				variable = "unit"
+			}
+			arg2 = {
+				type = "generic"
+			}
+			arg3 = {
+				type = "generic"
+			}
+			arg4 = {
+				type = "generic"
+			}
+			arg5 = {
+				type = "generic"
+			}
+		}
+		type = "script_do_string"
+		variable_values = {
+			arg1 = null
+			arg2 = null
+			arg3 = null
+			arg4 = null
+			arg5 = null
+			script = "if stingray.Light.has_material(stingray.Unit.light(({...})[1], \"probe\")) then stingray.Material.set_vector3(stingray.Light.material(stingray.Unit.light(({...})[1], \"probe\")), \"trace_box_max\", stingray.Vector3(stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max[0]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max\", 0),stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max[1]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max\", 1),stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max[2]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max\", 2))) end
+"
+		}
+	}
+	{
+		id = "97a77094-c532-455e-8f0d-e72710a5fabc"
+		in_variables = {
+			arg1 = {
+				node = "ef6ed6a2-ea03-4750-836b-e7463d144b82"
+				type = "unit"
+				variable = "unit"
+			}
+			arg2 = {
+				type = "generic"
+			}
+			arg3 = {
+				type = "generic"
+			}
+			arg4 = {
+				type = "generic"
+			}
+			arg5 = {
+				type = "generic"
+			}
+		}
+		type = "script_do_string"
+		variable_values = {
+			arg1 = null
+			arg2 = null
+			arg3 = null
+			arg4 = null
+			arg5 = null
+			script = "if stingray.Light.has_material(stingray.Unit.light(({...})[1], \"probe\")) then stingray.Material.set_vector3(stingray.Light.material(stingray.Unit.light(({...})[1], \"probe\")), \"falloff\", stingray.Vector3(stingray.Unit.get_data(({...})[1], \"probe\",\"falloff[0]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"falloff\", 0),stingray.Unit.get_data(({...})[1], \"probe\",\"falloff[1]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"falloff\", 1),stingray.Unit.get_data(({...})[1], \"probe\",\"falloff[2]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"falloff\", 2))) end
+"
+		}
+	}
+	{
+		id = "fbae4664-982f-4f0d-a3db-af1e0ed7a6b8"
+		out_events = {
+			out = [
+				{
+					event = 0
+					id = "d5093a31-487d-486c-8028-55bdb617bdc0:0"
+					node = "d5093a31-487d-486c-8028-55bdb617bdc0"
+				}
+				{
+					event = 0
+					id = "1bd5a13c-02d4-4289-bc64-00ce7a511406:0"
+					node = "1bd5a13c-02d4-4289-bc64-00ce7a511406"
+				}
+				{
+					event = 0
+					id = "8e19ee6d-5a48-44f6-be3f-e7b6f6fa3d7c:0"
+					node = "8e19ee6d-5a48-44f6-be3f-e7b6f6fa3d7c"
+				}
+				{
+					event = 0
+					id = "d00c595d-c744-4ea3-96ef-2d272214a570:0"
+					node = "d00c595d-c744-4ea3-96ef-2d272214a570"
+				}
+			]
+		}
+		out_variables = {
+			unit = {
+				type = "unit"
+			}
+		}
+		type = "unit_spawned"
+		variable_values = {
+			unit = null
+		}
+	}
+	{
+		id = "8e19ee6d-5a48-44f6-be3f-e7b6f6fa3d7c"
+		in_variables = {
+			arg1 = {
+				node = "fbae4664-982f-4f0d-a3db-af1e0ed7a6b8"
+				type = "unit"
+				variable = "unit"
+			}
+			arg2 = {
+				type = "generic"
+			}
+			arg3 = {
+				type = "generic"
+			}
+			arg4 = {
+				type = "generic"
+			}
+			arg5 = {
+				type = "generic"
+			}
+		}
+		type = "script_do_string"
+		variable_values = {
+			arg1 = null
+			arg2 = null
+			arg3 = null
+			arg4 = null
+			arg5 = null
+			script = "if stingray.Light.has_material(stingray.Unit.light(({...})[1], \"probe\")) then stingray.Material.set_vector3(stingray.Light.material(stingray.Unit.light(({...})[1], \"probe\")), \"trace_box_max\", stingray.Vector3(stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max[0]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max\", 0),stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max[1]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max\", 1),stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max[2]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_max\", 2))) end
+"
+		}
+	}
+	{
+		id = "d00c595d-c744-4ea3-96ef-2d272214a570"
+		in_variables = {
+			arg1 = {
+				node = "fbae4664-982f-4f0d-a3db-af1e0ed7a6b8"
+				type = "unit"
+				variable = "unit"
+			}
+			arg2 = {
+				type = "generic"
+			}
+			arg3 = {
+				type = "generic"
+			}
+			arg4 = {
+				type = "generic"
+			}
+			arg5 = {
+				type = "generic"
+			}
+		}
+		type = "script_do_string"
+		variable_values = {
+			arg1 = null
+			arg2 = null
+			arg3 = null
+			arg4 = null
+			arg5 = null
+			script = "if stingray.Light.has_material(stingray.Unit.light(({...})[1], \"probe\")) then stingray.Material.set_vector3(stingray.Light.material(stingray.Unit.light(({...})[1], \"probe\")), \"falloff\", stingray.Vector3(stingray.Unit.get_data(({...})[1], \"probe\",\"falloff[0]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"falloff\", 0),stingray.Unit.get_data(({...})[1], \"probe\",\"falloff[1]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"falloff\", 1),stingray.Unit.get_data(({...})[1], \"probe\",\"falloff[2]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"falloff\", 2))) end
+"
+		}
+	}
+	{
+		id = "d5093a31-487d-486c-8028-55bdb617bdc0"
+		in_variables = {
+			group = {
+				type = "id"
+			}
+			unit = {
+				node = "fbae4664-982f-4f0d-a3db-af1e0ed7a6b8"
+				type = "unit"
+				variable = "unit"
+			}
+			visible = {
+				type = "bool"
+			}
+		}
+		type = "set_unit_visibility"
+		variable_values = {
+			group = "gizmo"
+			unit = null
+			visible = false
+		}
+	}
+	{
+		id = "1bd5a13c-02d4-4289-bc64-00ce7a511406"
+		in_variables = {
+			arg1 = {
+				node = "fbae4664-982f-4f0d-a3db-af1e0ed7a6b8"
+				type = "unit"
+				variable = "unit"
+			}
+			arg2 = {
+				type = "generic"
+			}
+			arg3 = {
+				type = "generic"
+			}
+			arg4 = {
+				type = "generic"
+			}
+			arg5 = {
+				type = "generic"
+			}
+		}
+		type = "script_do_string"
+		variable_values = {
+			arg1 = null
+			arg2 = null
+			arg3 = null
+			arg4 = null
+			arg5 = null
+			script = "if stingray.Light.has_material(stingray.Unit.light(({...})[1], \"probe\")) then stingray.Material.set_vector3(stingray.Light.material(stingray.Unit.light(({...})[1], \"probe\")), \"trace_box_min\", stingray.Vector3(stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min[0]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min\", 0),stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min[1]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min\", 1),stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min[2]\") or stingray.Unit.get_data(({...})[1], \"probe\",\"trace_box_min\", 2))) end
+"
+		}
+	}
+]

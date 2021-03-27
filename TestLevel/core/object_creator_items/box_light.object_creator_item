@@ -1,0 +1,14 @@
+category = "Lights"
+subcategory = "Lights"
+display_name = "Box"
+type = "unit"
+unit_resource = "core/units/light"
+icon = "icons/box_light.svg"
+menu_item = {
+    path = "Create/Box Light"
+    section = "LIGHTING"
+    order = 210
+}
+enabled = """
+    return false
+"""

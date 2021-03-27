@@ -1,0 +1,6 @@
+shading_component_mapping = {
+	fog_enabled = { type="scalar" path=["fog_enabled"]  }
+	fog_depth_range = { type="vector2" path=["fog_depth_range"] }
+	fog_color = { type="color" path={ rgb = ["fog_color", "rgb"] intensity = ["fog_color", "intensity"] } }
+	fog_sun_blend = { type="vector3" path={ x = ["fog_sun_blend"] y = ["fog_sun_exponent"] z = ["fog_sun_strength"] } }
+}

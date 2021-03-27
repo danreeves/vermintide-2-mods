@@ -1,0 +1,6 @@
+shading_component_mapping = {
+	ao_enabled = { type="scalar" path=["ao_enabled"]  }
+	ao_quality = { type="scalar" path=["ao_quality"]  }
+	ao_radius = { type="scalar" path=["ao_radius"]  }
+	ao_intensity = { type="scalar" path=["ao_intensity"]  }
+}

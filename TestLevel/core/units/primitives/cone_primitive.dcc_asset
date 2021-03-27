@@ -1,0 +1,6 @@
+
+_data_root_version = 1
+_id = "31230054-3361-43f9-8000-28a03c6f3cf4"
+_name = "core/units/primitives/cone_primitive"
+asset = "core/units/primitives/cone_primitive"
+extension = ".fbx"

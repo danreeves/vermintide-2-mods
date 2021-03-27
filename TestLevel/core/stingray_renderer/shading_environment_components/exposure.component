@@ -1,0 +1,40 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/exposure"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            exposure = {
+                type = ":number"
+                default = 1
+                min = 0.001
+                max = 10
+                editor = {
+                    label = "Exposure"
+                    step = 0.01
+                }
+            }
+        }
+        editor = {
+            category = "Exposure"
+            priority = 1200
+            icon = "adjust"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+}

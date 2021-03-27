@@ -1,0 +1,95 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/bloom"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            bloom_enabled = {
+                type = ":bool"
+                default = true
+                editor = {
+                    label = "Enabled"
+                }
+            }
+            bloom_threshold = {
+                type = ":number"
+                default = 0.8
+                min = 0.0
+                max = 5.0
+                editor = {
+                    label = "Threshold"
+                    step = 0.001
+                }
+            }
+            bloom_offset = {
+                type = ":number"
+                default = 1.0
+                min = 0.01
+                max = 2.0
+                editor = {
+                    label = "Offset"
+                    step = 0.001
+                }
+            }
+            bloom_falloff = {
+                type = ":number"
+                default = 1.0
+                min = 0.0
+                max = 1.0
+                editor = {
+                    label = "Falloff"
+                    step = 0.001
+                }
+            }
+            global_lens_dirt_map = {
+                type = ":resource"
+                extension = "texture"
+                editor = {
+                    label = "Lens Dirt Map"
+                }
+            }
+            bloom_lens_dirt_amount = {
+                type = ":number"
+                default = 1.0
+                min = 0.0
+                max = 50.0
+                editor = {
+                    label = "Lens Dirt Amount"
+                    step = 0.001
+                }
+            }
+            bloom_tint = {
+                type = "core/types/color"
+                fields = {
+                    rgb = { default = [1, 1, 1] }
+                    alpha = { default = 1 }
+                    intensity = { default = 1 }
+                }
+                editor = {
+                    label = "Tint"
+                }
+            }
+        }
+        editor = {
+            category = "Bloom"
+            priority = 1800
+            icon = "certificate"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+}

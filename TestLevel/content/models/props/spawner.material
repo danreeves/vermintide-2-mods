@@ -1,0 +1,22 @@
+
+lambert1 = {
+	shader = "base"
+	variables = {
+		diffuse_rgb = {
+			type = "vector3"
+			value = [
+				0.5
+				0.5
+				0.5
+			]
+		}
+		glossiness = {
+			type = "scalar"
+			value = 0.5
+		}
+		specular = {
+			type = "scalar"
+			value = 0.8
+		}
+	}
+}

@@ -1,0 +1,20 @@
+
+_data_root_version = 1
+_id = "3184b831-ac97-4a40-8ad2-279c29705d97"
+_name = "core/units/primitives/sphere_primitive"
+anim_controller_ref = {
+	_id = "3a41f4d0-b3a3-4dd4-8b79-fbe775c02eba"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "975826e1-c591-4937-918f-b16ab9e65e7b"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "4a58ab2c-ca08-4d6a-ab1c-af2247e52d42"
+	ref_filename = "core/units/primitives/sphere_primitive.dcc_asset"
+	ref_id = null
+}
+old_unit_name = "core/units/primitives/sphere_primitive"

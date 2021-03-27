@@ -1,0 +1,96 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/dof"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            dof_enabled = {
+                type = ":bool"
+                default = true
+                editor = {
+                    label = "Enabled"
+                    description = "Is depth of field enabled"
+                }
+            }
+            dof_focal_distance = {
+                type = "#non_negative_number"
+                max = 5000
+                default = 10
+                editor = {
+                    label = "Focal Distance"
+                    step = 0.01
+                }
+            }
+            dof_focal_region = {
+                type = "#non_negative_number"
+                max = 2500
+                default = 5
+                editor = {
+                    label = "Focal Region"
+                    step = 0.01
+                }
+            }
+            dof_focal_region_start = {
+                type = "#non_negative_number"
+                max = 2500
+                default = 5
+                editor = {
+                    label = "Focal Region Start"
+                    step = 0.01
+                }
+            }
+            dof_focal_region_end = {
+                type = "#non_negative_number"
+                max = 2500
+                default = 5
+                editor = {
+                    label = "Focal Region End"
+                    step = 0.01
+                }
+            }
+            dof_focal_near_scale = {
+                type = "#non_negative_number"
+                max = 1.0
+                default = 1.0
+                editor = {
+                    label = "Focal Near Scale"
+                    step = 0.001
+                }
+            }
+            dof_focal_far_scale = {
+                type = "#non_negative_number"
+                max = 1.0
+                default = 1.0
+                editor = {
+                    label = "Focal Far Scale"
+                    step = 0.001
+                }
+            }
+        }
+        editor = {
+            category = "Depth of Field"
+            priority = 1500
+            icon = "road"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+    non_negative_number = {
+        type = ":number"
+        min = 0
+    }
+}

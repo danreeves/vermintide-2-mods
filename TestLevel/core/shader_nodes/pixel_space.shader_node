@@ -1,0 +1,16 @@
+group = "Fatshark"
+display_name = "Pixel Space"
+
+inputs = {
+	"163530ee-d572-4ee8-bbd9-cd9ea0335c17" = { name = "value" display_name = "Value" type = "auto" }
+}
+
+domain = "pixel"
+output = {
+	type = { typeof: "value" }
+}
+
+language = "hlsl"
+code = """
+	RESULT(value);
+"""

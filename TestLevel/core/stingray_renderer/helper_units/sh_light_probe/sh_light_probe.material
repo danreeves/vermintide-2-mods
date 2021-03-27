@@ -1,0 +1,14 @@
+
+shader = "base"
+textures = {
+}
+variables = {
+	diffuse_rgb = {
+		type = "vector3"
+		value = [
+			0.5
+			0.5
+			0.5
+		]
+	}
+}

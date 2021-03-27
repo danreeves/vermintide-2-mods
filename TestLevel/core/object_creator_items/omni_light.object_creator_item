@@ -1,0 +1,14 @@
+category = "Lights"
+subcategory = "Lights"
+display_name = "Omni"
+type = "unit"
+unit_resource = "core/units/light"
+icon = "icons/omni_light.svg"
+menu_item = {
+    path = "Create/Omni Light"
+    section = "LIGHTING"
+    order = 210
+}
+enabled = """
+    return false
+"""

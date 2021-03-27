@@ -1,0 +1,4 @@
+lua = ["core/stingray_renderer/lookup_tables/generator/generate_luts"]
+render_config = ["core/stingray_renderer/lookup_tables/generator/generate_luts"]
+
+BUNDLE = false

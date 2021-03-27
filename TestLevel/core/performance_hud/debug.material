@@ -1,0 +1,4 @@
+shader = "gui:DIFFUSE_MAP"
+textures = {
+	diffuse_map = "core/performance_hud/debug"
+}

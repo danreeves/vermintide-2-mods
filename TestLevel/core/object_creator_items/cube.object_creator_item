@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Primitives"
+display_name = "Cube"
+type = "unit"
+unit_resource = "core/units/primitives/cube_primitive"
+icon = "icons/cube.svg"
+menu_item = {
+    path = "Create/Primitives/Cube"
+    section = "GENERAL"
+    order = 110
+}

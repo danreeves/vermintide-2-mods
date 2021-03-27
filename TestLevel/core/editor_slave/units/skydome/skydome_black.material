@@ -1,0 +1,13 @@
+
+mat_sky = {
+	shader = "skydome:CAMERA_LOCK_XY:CAMERA_LOCK_Z:DIFFUSE_MAP"
+	textures = {
+		diffuse_map = "core/editor_slave/units/skydome/skybox_black"
+	}
+	variables = {
+		intensity = {
+			type = "scalar"
+			value = 1.1
+		}
+	}
+}

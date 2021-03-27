@@ -1,0 +1,9 @@
+shading_component_mapping = {
+	dof_enabled = { type="scalar" path=["dof_enabled"]  }
+	dof_focal_distance = { type="scalar" path=["dof_focal_distance"]  }
+	dof_focal_region = { type="scalar" path=["dof_focal_region"]  }
+	dof_focal_region_start = { type="scalar" path=["dof_focal_region_start"]  }
+	dof_focal_region_end = { type="scalar" path=["dof_focal_region_end"]  }
+	dof_focal_near_scale = { type="scalar" path=["dof_focal_near_scale"]  }
+	dof_focal_far_scale = { type="scalar" path=["dof_focal_far_scale"]  }
+}

@@ -1,0 +1,17 @@
+category = "Tools"
+render_configs = ["core/stingray_renderer/renderer"]
+display_name = "Reflection Probe Volumes"
+activate = """
+	for _, u in pairs(context.selected_units) do
+		if Unit.has_light(u, "probe") and Light.has_material(Unit.light(u, "probe")) then 
+			Material.set_shader_pass_flag(Light.material(Unit.light(u, "probe")), "dev_volume_visualization", true)
+		end
+	end	
+"""
+deactivate = """
+	for _, u in pairs(context.selected_units) do
+		if Unit.has_light(u, "probe") and Light.has_material(Unit.light(u, "probe")) then 
+			Material.set_shader_pass_flag(Light.material(Unit.light(u, "probe")), "dev_volume_visualization", false)
+		end
+	end
+"""

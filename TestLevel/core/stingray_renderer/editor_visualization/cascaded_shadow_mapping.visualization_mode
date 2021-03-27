@@ -1,0 +1,9 @@
+category = "Debug"
+render_configs = ["core/stingray_renderer/renderer"]
+display_name = "Cascaded Shadow Mapping"
+activate = """
+    Application.set_render_setting("shadow_cascade_visualization", "true")
+"""
+deactivate = """
+    Application.set_render_setting("shadow_cascade_visualization", "false")
+"""

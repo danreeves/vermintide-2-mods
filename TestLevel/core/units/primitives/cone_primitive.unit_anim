@@ -1,0 +1,20 @@
+
+_data_root_version = 1
+_id = "2a915fec-c91a-4584-a250-3a2fa6f15af2"
+_name = "core/units/primitives/cone_primitive"
+anim_controller_ref = {
+	_id = "c08a7e54-c1eb-49c7-8632-a1b3f92934d4"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "a1bad9e8-9c84-4221-a7bd-ef61185b33ae"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "95fb73c3-4262-4541-a5fd-6d1512f5bcd3"
+	ref_filename = "core/units/primitives/cone_primitive.dcc_asset"
+	ref_id = null
+}
+old_unit_name = "core/units/primitives/cone_primitive"

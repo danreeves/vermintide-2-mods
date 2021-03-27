@@ -1,0 +1,20 @@
+
+_data_root_version = 1
+_id = "5050a802-6a3f-4f30-a277-6ada3953836d"
+_name = "core/units/primitives/cube_primitive"
+anim_controller_ref = {
+	_id = "08de1733-dd60-4b4f-a2ca-95a3f51e9c84"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "08a18411-6dd7-48bd-9ec9-d7e233e93137"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "d9f61df1-e527-401c-afc2-5004f8c03483"
+	ref_filename = "core/units/primitives/cube_primitive.dcc_asset"
+	ref_id = null
+}
+old_unit_name = "core/units/primitives/cube_primitive"

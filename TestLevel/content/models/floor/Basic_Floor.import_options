@@ -1,0 +1,18 @@
+
+import_options = {
+	combine_meshes = false
+	combine_meshes_by_material = false
+	reverse_forward_axis = true
+	skip_animations = false
+	skip_cameras = false
+	skip_create_animations_folder = false
+	skip_create_extra_root = false
+	skip_create_textures_folder = false
+	skip_extract_root_motion = false
+	skip_lights = true
+	skip_lods = true
+	skip_materials = false
+	skip_mesh = false
+	skip_textures = false
+	test_want_failure = false
+}

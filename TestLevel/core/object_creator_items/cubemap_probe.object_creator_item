@@ -1,0 +1,14 @@
+category = "Helpers"
+subcategory = "Rendering"
+display_name = "Cubemap Probe"
+type = "unit"
+unit_resource = "core/units/cubemap_probe"
+icon = "icons/cubemap_probe.svg"
+menu_item = {
+    path = "Create/Cube Map Probe"
+    section = "LIGHTING"
+    order = 230
+}
+enabled = """
+    return Application.render_config_resource() == "core/rendering/renderer"
+"""

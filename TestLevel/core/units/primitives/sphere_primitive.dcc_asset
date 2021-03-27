@@ -1,0 +1,6 @@
+
+_data_root_version = 1
+_id = "64404b92-9a97-48e8-8e02-bf41fed9888b"
+_name = "core/units/primitives/sphere_primitive"
+asset = "core/units/primitives/sphere_primitive"
+extension = ".fbx"

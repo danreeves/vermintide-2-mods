@@ -1,0 +1,11 @@
+mod = [
+	"TestLevel"
+]
+
+package = [
+	"resource_packages/TestLevel/test_level"
+]
+
+* = [
+	"content/*"
+]

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 52 52" enable-background="new 0 0 52 52" xml:space="preserve">
+<g id="bounds_1_">
+	<rect id="bounds" fill-rule="evenodd" clip-rule="evenodd" fill="none" width="52" height="52"/>
+</g>
+<g id="list_obj">
+	<g id="directional_light_1_">
+		<g id="directional_light">
+			<path fill-rule="evenodd" clip-rule="evenodd" fill="#C2C5CC" d="M22.777,32.116c0,1.306-1.306,2.612-3.917,2.612
+				s-3.917-1.306-3.917-2.612v-2.612h7.835C22.777,29.505,22.777,31.391,22.777,32.116z"/>
+			<path fill-rule="evenodd" clip-rule="evenodd" fill="#C2C5CC" d="M22.777,26.893v1.306h-7.835v-1.306
+				c0-3.917-5.223-7.835-5.223-13.058S13.636,6,18.859,6S28,8.612,28,13.835S22.777,22.975,22.777,26.893z"/>
+		</g>
+		<polygon fill-rule="evenodd" clip-rule="evenodd" fill="#5DB8E6" points="33,40 27,34 24,37 30,43 27,46 36,46 36,37 		"/>
+		<polygon fill-rule="evenodd" clip-rule="evenodd" fill="#5DB8E6" points="43,30 37,24 34,27 40,33 37,36 46,36 46,27 		"/>
+	</g>
+</g>
+</svg>

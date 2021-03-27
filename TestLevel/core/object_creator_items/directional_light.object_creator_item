@@ -1,0 +1,14 @@
+category = "Lights"
+subcategory = "Lights"
+display_name = "Directional"
+type = "unit"
+unit_resource = "core/units/light"
+icon = "icons/directional_light.svg"
+menu_item = {
+    path = "Create/Directional Light"
+    section = "LIGHTING"
+    order = 210
+}
+enabled = """
+    return false
+"""

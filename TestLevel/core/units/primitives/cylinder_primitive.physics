@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "Cylinder_Primitive"
+		node = "Cylinder_Primitive"
+		shapes = [
+			{
+				material = "default"
+				shape = "Cylinder_Primitive"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

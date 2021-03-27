@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "Stair_CollisionMesh"
+		node = "Stair_CollisionMesh"
+		shapes = [
+			{
+				material = "default"
+				shape = "Stair_CollisionMesh"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

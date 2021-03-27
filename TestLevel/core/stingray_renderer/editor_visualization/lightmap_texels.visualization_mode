@@ -1,0 +1,33 @@
+category = "Lighting"
+render_configs = ["core/stingray_renderer/renderer"]
+display_name = "Lightmap Texels"
+activate = """
+	Console.renderer("settings", "taa_enabled", "false")
+	local units = World.units(LevelEditing.world)
+	for _, unit in ipairs(units) do
+		local last_mesh_index = Unit.num_meshes(unit)
+		for mesh_index = 1, last_mesh_index do
+			local mesh = Unit.mesh(unit, mesh_index)
+			local last_material_index = Mesh.num_materials(mesh)
+			for material_index = 1, last_material_index do
+				local material = Mesh.material(mesh, material_index)
+				Material.set_shader_pass_flag(material, "dev_lightmap_texel_visualization", true)
+			end
+		end
+	end
+"""
+deactivate = """
+	Console.renderer("settings", "taa_enabled", "true")
+	local units = World.units(LevelEditing.world)
+	for _, unit in ipairs(units) do
+		local last_mesh_index = Unit.num_meshes(unit)
+		for mesh_index = 1, last_mesh_index do
+			local mesh = Unit.mesh(unit, mesh_index)
+			local last_material_index = Mesh.num_materials(mesh)
+			for material_index = 1, last_material_index do
+				local material = Mesh.material(mesh, material_index)
+				Material.set_shader_pass_flag(material, "dev_lightmap_texel_visualization", false)
+			end
+		end
+	end
+"""

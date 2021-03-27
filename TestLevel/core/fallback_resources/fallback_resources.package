@@ -1,0 +1,11 @@
+texture = [
+	"core/fallback_resources/missing_texture"
+]
+
+material  = [
+	"core/fallback_resources/missing_material"
+]
+
+unit  = [
+	"core/fallback_resources/missing_unit"
+]

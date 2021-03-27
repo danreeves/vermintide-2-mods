@@ -1,0 +1,7 @@
+
+parent_material = "core/stingray_renderer/shaders/deferred_reflection_box"
+textures = {
+	reflection_map = "content/levels/test_level-cubemaps/reflection_probe_specular"
+}
+variables = {
+}

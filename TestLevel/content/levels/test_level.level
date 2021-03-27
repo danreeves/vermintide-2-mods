@@ -1,0 +1,700 @@
+
+editor_metadata = {
+	Entities = [
+		{
+			id = "39df5144-4de7-476d-88eb-d9b7e62a12b0"
+			layer = "Default"
+			modified_components = {
+				"06c78e06-c921-4208-8069-d377b6415d30" = {
+					data = {
+						fog_enabled = false
+					}
+				}
+				"3eb1ba63-3a53-4846-970b-57e3d4d75d2b" = {
+					data = {
+						global_diffuse_map = {
+							"$resource_name" = "content/levels/test_level-cubemaps/reflection_probe_diffuse"
+							"$resource_type" = "texture"
+						}
+						global_specular_map = {
+							"$resource_name" = "content/levels/test_level-cubemaps/reflection_probe_specular"
+							"$resource_type" = "texture"
+						}
+					}
+				}
+				"cd8f2898-5821-4e3f-8348-a7d2f3c869d2" = {
+					data = {
+						motion_blur_enabled = false
+					}
+				}
+				"dd1dccf2-6f2f-4b8c-9199-290c069ab62b" = {
+					data = {
+						vignette_enabled = false
+					}
+				}
+			}
+			name = "midday_shading_environment"
+			prefab = {
+				"$resource_name" = "core/stingray_renderer/environments/midday/midday_shading_environment"
+				"$resource_type" = "entity"
+			}
+		}
+	]
+	Flow = {
+		Connections = [
+		]
+		Groups = [
+		]
+		Nodes = [
+		]
+	}
+	Groups = [
+	]
+	Layers = [
+		"Default"
+	]
+	LevelObjectSets = {
+		NestedSetNamesBySetName = {
+		}
+		ObjectIdsBySetName = {
+		}
+		VisibleSetNames = [
+		]
+	}
+	LevelReferences = [
+	]
+	LightBakeSettings = {
+		ExcludedObjectSets = [
+		]
+		FilterGain = 20
+		FilterType = "Both"
+		IlluminationType = "Both"
+		Layers = [
+		]
+		LightmapType = "Standard"
+		MaxSamples = 96
+		MinSamples = 32
+		QualityPreset = "Low"
+		SkylightIntensityRGB = {
+			X = 1
+			Y = 1
+			Z = 1
+		}
+		TexelScale = 10
+		Variance = 0.5
+	}
+	LuaPluginObjects = [
+	]
+	Navmeshes = [
+	]
+	Notes = [
+	]
+	ParticleEffects = [
+	]
+	PositionMarkers = [
+	]
+	Prototypes = [
+	]
+	Scatter = {
+		PoolSettings = {
+		}
+		ScatterData = {
+		}
+	}
+	Settings = {
+		FrozenLayers = [
+		]
+		HiddenLayers = [
+		]
+		HiddenObjects = [
+		]
+		LastHiddenObjects = [
+		]
+		SkydomeUnit = "core/editor_slave/units/skydome/skydome"
+		SoundEnvironment = ""
+		TimpaniSoundEnvironment = "default"
+	}
+	Sounds = [
+	]
+	Splines = [
+	]
+	Stories = [
+	]
+	Triggers = [
+	]
+	Units = [
+		{
+			Cameras = {
+			}
+			Id = "f6747d7e-5ebd-40c6-ac1f7b6afe7bada8"
+			Layer = "Default"
+			Lights = {
+			}
+			Materials = {
+			}
+			Name = "Basic_Floor"
+			OverridePoses = {
+			}
+			Pivot = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Pos = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Rot = {
+				W = -1
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Scl = {
+				X = 1
+				Y = 1
+				Z = 1
+			}
+			ScriptData = {
+			}
+			StoryOverridePoses = {
+			}
+			Type = "content/models/floor/Basic_Floor"
+		}
+		{
+			Cameras = {
+			}
+			Id = "e1a17142-4951-4a47-84dab8b946feb94f"
+			Layer = "Default"
+			Lights = {
+			}
+			Material = "content/materials/white"
+			Materials = {
+			}
+			Name = "Wall"
+			OverridePoses = {
+			}
+			Pivot = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Pos = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Rot = {
+				W = -1
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Scl = {
+				X = 1
+				Y = 1
+				Z = 1
+			}
+			ScriptData = {
+			}
+			Type = "content/models/props/Wall"
+		}
+		{
+			Cameras = {
+			}
+			Id = "8cee6959-d210-4de0-8cfc-a9d2f5dae107"
+			Layer = "Default"
+			Lights = {
+			}
+			Materials = {
+				ChamfBox_01 = "content/materials/yellow"
+			}
+			Name = "ChamfBox"
+			OverridePoses = {
+			}
+			Pivot = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Pos = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Rot = {
+				W = -1
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Scl = {
+				X = 0.5
+				Y = 0.5
+				Z = 0.5
+			}
+			ScriptData = {
+			}
+			Type = "content/models/props/ChamfBox"
+		}
+		{
+			Cameras = {
+			}
+			Id = "642b83f4-2369-4b09-a650-0a5ded28a10d"
+			Layer = "Default"
+			Lights = {
+				omni = {
+					Baked = false
+					BoxMax = {
+						X = 10
+						Y = 10
+						Z = 10
+					}
+					BoxMin = {
+						X = -10
+						Y = 0
+						Z = -10
+					}
+					CastShadows = true
+					Color = {
+						A = 255
+						B = 255
+						G = 255
+						R = 255
+					}
+					FalloffEnd = 8
+					FalloffExponent = 1
+					FalloffStart = 0
+					Intensity = 5
+					Material = ""
+					MaterialResource = ""
+					SpotAngleEnd = 59.9999999984761
+					SpotAngleStart = 0
+					Type = "directional"
+				}
+			}
+			Materials = {
+			}
+			Name = "light"
+			OverridePoses = {
+			}
+			Pivot = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Pos = {
+				X = 0
+				Y = 0
+				Z = 18
+			}
+			Rot = {
+				W = 0.763975290896141
+				X = -0.639397251709014
+				Y = 0.0662214468735578
+				Z = 0.0559252123919916
+			}
+			Scl = {
+				X = 1
+				Y = 1
+				Z = 1
+			}
+			ScriptData = {
+			}
+			Type = "core/units/light"
+		}
+		{
+			Cameras = {
+			}
+			Id = "00d7b621-f021-4f43-814e-02234478059f"
+			Layer = "Default"
+			Lights = {
+			}
+			Materials = {
+			}
+			Name = "spawner"
+			OverridePoses = {
+			}
+			Pivot = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Pos = {
+				X = 6.438687
+				Y = 6.504379
+				Z = 0.858066
+			}
+			Rot = {
+				W = -1
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Scl = {
+				X = 1
+				Y = 1
+				Z = 1
+			}
+			ScriptData = {
+			}
+			Type = "content/models/props/spawner"
+		}
+		{
+			Cameras = {
+			}
+			Id = "65a9096d-4e19-49b4-a6b8-a1fe5b2c6ede"
+			Layer = "Default"
+			Lights = {
+			}
+			Materials = {
+			}
+			Name = "reflection_probe"
+			OverridePoses = {
+			}
+			Pivot = {
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Pos = {
+				X = -0.05524
+				Y = -3.812954
+				Z = 3.850029
+			}
+			Rot = {
+				W = -1
+				X = 0
+				Y = 0
+				Z = 0
+			}
+			Scl = {
+				X = 1
+				Y = 1
+				Z = 1
+			}
+			ScriptData = {
+				"LevelEditor.is_cubemap_probe" = false
+				"LevelEditor.is_gizmo_unit" = false
+				"light_baking.enabled" = false
+			}
+			Type = "core/stingray_renderer/helper_units/reflection_probe/reflection_probe"
+		}
+	]
+	Volumes = [
+	]
+}
+entities = [
+	{
+		id = "39df5144-4de7-476d-88eb-d9b7e62a12b0"
+		modified_components = {
+			"06c78e06-c921-4208-8069-d377b6415d30" = {
+				data = {
+					fog_enabled = false
+				}
+			}
+			"3eb1ba63-3a53-4846-970b-57e3d4d75d2b" = {
+				data = {
+					global_diffuse_map = {
+						"$resource_name" = "content/levels/test_level-cubemaps/reflection_probe_diffuse"
+						"$resource_type" = "texture"
+					}
+					global_specular_map = {
+						"$resource_name" = "content/levels/test_level-cubemaps/reflection_probe_specular"
+						"$resource_type" = "texture"
+					}
+				}
+			}
+			"cd8f2898-5821-4e3f-8348-a7d2f3c869d2" = {
+				data = {
+					motion_blur_enabled = false
+				}
+			}
+			"dd1dccf2-6f2f-4b8c-9199-290c069ab62b" = {
+				data = {
+					vignette_enabled = false
+				}
+			}
+		}
+		name = "midday_shading_environment"
+		prefab = {
+			"$resource_name" = "core/stingray_renderer/environments/midday/midday_shading_environment"
+			"$resource_type" = "entity"
+		}
+	}
+]
+flow = {
+	nodes = [
+	]
+}
+level_references = [
+]
+level_settings = {
+	num_background_units = 1
+	sound_environment = ""
+	timpani_sound_environment = "default"
+}
+navmeshes = [
+]
+object_sets = {
+}
+particle_effects = [
+]
+prototypes = [
+]
+scatter = [
+]
+sounds = [
+]
+splines = [
+]
+stories = [
+]
+triggers = [
+]
+units = [
+	{
+		cameras = {
+		}
+		data = {
+		}
+		id = "f6747d7e-5ebd-40c6-ac1f7b6afe7bada8"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "Basic_Floor"
+		pos = [
+			0
+			0
+			0
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/floor/Basic_Floor"
+	}
+	{
+		cameras = {
+		}
+		data = {
+		}
+		id = "e1a17142-4951-4a47-84dab8b946feb94f"
+		lights = {
+		}
+		material = "content/materials/white"
+		materials = {
+		}
+		name = "Wall"
+		pos = [
+			0
+			0
+			0
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/Wall"
+	}
+	{
+		cameras = {
+		}
+		data = {
+		}
+		id = "8cee6959-d210-4de0-8cfc-a9d2f5dae107"
+		lights = {
+		}
+		material = ""
+		materials = {
+			ChamfBox_01 = "content/materials/yellow"
+		}
+		name = "ChamfBox"
+		pos = [
+			0
+			0
+			0
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			0.5
+			0.5
+			0.5
+		]
+		type = "content/models/props/ChamfBox"
+	}
+	{
+		cameras = {
+		}
+		data = {
+		}
+		id = "642b83f4-2369-4b09-a650-0a5ded28a10d"
+		lights = {
+			omni = {
+				baked = false
+				box_max = [
+					10
+					10
+					10
+				]
+				box_min = [
+					-10
+					0
+					-10
+				]
+				cast_shadows = true
+				color = [
+					1
+					1
+					1
+				]
+				falloff_end = 8
+				falloff_exponent = 1
+				falloff_start = 0
+				intensity = 5
+				material = ""
+				spot_angle_end = 1.04719755117
+				spot_angle_start = 0
+				type = "directional"
+			}
+		}
+		material = ""
+		materials = {
+		}
+		name = "light"
+		pos = [
+			0
+			0
+			18
+		]
+		rot = [
+			-0.639397251709014
+			0.0662214468735578
+			0.0559252123919916
+			0.763975290896141
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "core/units/light"
+	}
+	{
+		cameras = {
+		}
+		data = {
+		}
+		id = "00d7b621-f021-4f43-814e-02234478059f"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner"
+		pos = [
+			6.438687
+			6.504379
+			0.858066
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"LevelEditor.is_cubemap_probe" = false
+			"LevelEditor.is_gizmo_unit" = false
+			"light_baking.enabled" = false
+		}
+		id = "65a9096d-4e19-49b4-a6b8-a1fe5b2c6ede"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "reflection_probe"
+		pos = [
+			-0.05524
+			-3.812954
+			3.850029
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "core/stingray_renderer/helper_units/reflection_probe/reflection_probe"
+	}
+	{
+		cameras = {
+		}
+		data = {
+		}
+		id = "skydome-unit"
+		lights = {
+		}
+		material = "core/editor_slave/units/skydome/skydome"
+		materials = {
+		}
+		name = ""
+		pos = [
+			0
+			0
+			0
+		]
+		rot = [
+			0
+			0
+			0
+			1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "core/editor_slave/units/skydome/skydome"
+	}
+]
+volumes = [
+]

@@ -1,0 +1,20 @@
+
+_data_root_version = 1
+_id = "b014230c-3757-47a7-984c-500b5df250e4"
+_name = "core/units/primitives/cylinder_primitive"
+anim_controller_ref = {
+	_id = "998ede40-e344-492e-b4f0-5ce34a64f95e"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "c3b26e3b-2f94-4b00-a7f2-0fd49c214884"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "efa695d9-dedd-4895-ac5b-cf07de16f47d"
+	ref_filename = "core/units/primitives/cylinder_primitive.dcc_asset"
+	ref_id = null
+}
+old_unit_name = "core/units/primitives/cylinder_primitive"

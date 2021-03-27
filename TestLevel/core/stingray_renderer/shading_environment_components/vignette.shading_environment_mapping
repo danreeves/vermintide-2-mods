@@ -1,0 +1,4 @@
+shading_component_mapping = {
+	vignette_enabled = { type="scalar" path=["vignette_enabled"]  }
+	vignette_properties = { type="vector3" path={ x=["vignette_radius"] y=["vignette_falloff"] z=["vignette_opacity"] } }
+}

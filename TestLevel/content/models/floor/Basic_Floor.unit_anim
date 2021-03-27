@@ -1,0 +1,20 @@
+
+_data_root_version = 1
+_id = "f5fc35c4-0e13-4c50-b499-69cb335615d1"
+_name = "content/models/floor/Basic_Floor"
+anim_controller_ref = {
+	_id = "9dad86e8-bdd1-4c71-beae-ea0357cdad84"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "2febeb68-4846-4ddb-bfef-b58654c88726"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "38b28afa-d757-4f72-ae54-b575ad3e0051"
+	ref_filename = "content/models/floor/Basic_Floor.dcc_asset"
+	ref_id = null
+}
+old_unit_name = "content/models/floor/Basic_Floor"

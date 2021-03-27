@@ -1,0 +1,78 @@
+// ----------------------------------------------------------------------------------------------------
+// Configures per platform render caps block
+
+win_caps = {
+	feature_level = ""
+	use_deferred_contexts = false
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Configures render settings
+
+render_settings = {
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Setup predefined shader pass flags, all flags prefixed with dev_ are used by the tools
+
+shader_pass_flags = [
+]
+
+// ---------------------------------------------------------------------------------------------------
+// This is meta data only used by the editors for exposing different debug visualization modes supported by the rendering pipe
+
+editor_visualization = {
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Specifies which shader libraries to load at boot up.
+
+shader_libraries = [
+	"core/stingray_renderer/shader_libraries/lighting"
+]
+
+// Mapping between between default shaders needed by the engine and their implementation in data.
+// By default these shaders are implemented in the core/stingray_renderer/default_shaders library
+default_shaders = {
+	// If boot ini-file configures the engine to not crash on missing shaders, the missing_shader will be used as a replacement shader
+	missing_shader = "missing_shader"
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Specifies global resources to allocate at start up
+
+global_resources = [
+	{ name="ibl_brdf_lut" type="render_target" width=128 height=128 format="R16G16B16A16F" hint_needs_clearing = false }
+]
+
+// ---------------------------------------------------------------------------------------------------
+// Layer configurations
+
+layer_configs = {
+	default = [
+	]
+}
+
+// ---------------------------------------------------------------------------------------------------
+// resource generators
+
+resource_generators = {
+	lookup_tables = {
+		modifiers = [
+			{ type = "fullscreen_pass" shader = "brdf_lut" output = "ibl_brdf_lut" }
+		]
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------
+// Lookup table generation - resource generators specified in this array will run _once_ after the renderer has completed its boot process
+
+lookup_tables = [ "lookup_tables" ]
+
+// ---------------------------------------------------------------------------------------------------
+// Viewports
+
+viewports = {	
+}
+
+default_shading_environment = ""

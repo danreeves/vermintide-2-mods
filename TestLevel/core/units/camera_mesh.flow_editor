@@ -1,0 +1,51 @@
+
+Connections = [
+	{
+		Class = "Stingray.Flow.EventConnection"
+		FromItem = "Out"
+		FromNode = "9182c345-311b-41c1-9724-dff5f597bf11"
+		Id = "d189a9ab-f8b0-46ef-9ff7-83f17b0694cb"
+		Priority = 0
+		ToItem = "In"
+		ToNode = "11831b79-b41f-4220-a5c4-abdac52d5786"
+	}
+]
+Groups = [
+]
+Nodes = [
+	{
+		Class = "Stingray.Flow.UnitSpawned"
+		Id = "9182c345-311b-41c1-9724-dff5f597bf11"
+		NodeLocation = {
+			X = 240
+			Y = 440
+		}
+		Out = {
+		}
+		Unit = {
+		}
+		Width = 160
+	}
+	{
+		Class = "Stingray.Flow.SetUnitVisibility"
+		Group = {
+			Value = "camera"
+		}
+		Id = "11831b79-b41f-4220-a5c4-abdac52d5786"
+		In = {
+		}
+		NodeLocation = {
+			X = 460
+			Y = 420
+		}
+		Out = {
+		}
+		Unit = {
+			UseMyUnit = true
+		}
+		Width = 160
+		Visible = {
+			Value = false
+		}
+	}
+]

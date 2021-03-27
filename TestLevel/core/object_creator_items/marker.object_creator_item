@@ -1,0 +1,11 @@
+category = "Helpers"
+subcategory = "Misc"
+display_name = "Marker"
+type = "tool"
+tool_name = "marker"
+icon = "icons/marker.svg"
+menu_item = {
+    path = "Create/Marker"
+    section = "GENERAL"
+    order = 120
+}

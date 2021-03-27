@@ -1,0 +1,15 @@
+group = "Math"
+display_name = "Sawtooth Wave"
+inputs = {
+	"3e680647-451b-4766-a897-725b6e1890cf" = { name = "a" display_name = "Angle" type = "auto" }
+}
+
+output = {
+	type = { typeof: "a" }
+}
+
+// ref https://en.wikipedia.org/wiki/Sawtooth_wave
+code = """
+	static const float INV_2PI = 0.15915494309;
+	RESULT(2.0 * frac(a * INV_2PI + 0.5) - 1.0); 
+"""

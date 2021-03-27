@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Objects"
+display_name = "Terrain"
+type = "tool"
+tool_name = "terrain_create"
+icon = "icons/terrain.svg"
+menu_item = {
+    path = "Create/Terrain"
+    section = "GENERAL"
+    order = 170
+}

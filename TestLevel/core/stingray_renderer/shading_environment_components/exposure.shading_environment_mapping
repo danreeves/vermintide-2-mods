@@ -1,0 +1,3 @@
+shading_component_mapping = {
+	exposure = { type="scalar" path=["exposure"]  }
+}

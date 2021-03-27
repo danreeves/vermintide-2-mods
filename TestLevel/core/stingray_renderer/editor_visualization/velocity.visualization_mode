@@ -1,0 +1,11 @@
+category = "Debug"
+render_configs = ["core/stingray_renderer/renderer"]
+display_name = "Velocity X 100"
+activate = """
+    Application.set_render_setting("debug_rendering", "true")
+    Application.set_render_setting("gbuffer_velocity_visualization", "true")
+"""
+deactivate = """
+    Application.set_render_setting("gbuffer_velocity_visualization", "false")
+    Application.set_render_setting("debug_rendering", "false")
+"""

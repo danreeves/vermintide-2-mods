@@ -1,0 +1,20 @@
+
+_data_root_version = 1
+_id = "21aef407-e618-4882-a062-14346bac26c7"
+_name = "core/units/primitives/stairs_primitive"
+anim_controller_ref = {
+	_id = "3cb7de0c-19a0-4cc8-bb40-f46afabba7e0"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "eaad4ffc-fcd2-4938-abac-807c51f03613"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "62e87241-cc52-457f-82a9-be34792aabd1"
+	ref_filename = "core/units/primitives/stairs_primitive.dcc_asset"
+	ref_id = null
+}
+old_unit_name = "core/units/primitives/stairs_primitive"

@@ -1,0 +1,680 @@
+nodes = [
+
+	/*
+		@adoc flow
+		@node Audio/Wwise/Banks/Wwise Load Bank
+		@des Loads the given bank if not already loaded. Name must be the full resource name including project path, but without the file type extension. 
+			Banks are automatically loaded when a package containing the bank is loaded.
+		@in Name		The name of the sound bank to load.
+	*/
+	{
+		name = "Wwise Load Bank"
+		args = {
+			Name = {
+			    type = "resource"
+			    extension = "wwise_bank_metadata"
+			}
+		}
+		function = "WwiseFlowCallbacks.wwise_load_bank"
+		category = "Audio/Wwise/Banks"
+		brief = "Loads the given bank if not already loaded."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Banks/Internal/Wwise Unit Load Bank
+		@des Loads the given bank if not already loaded to the given unit. Name must be the full resource name including project path, but without the file type extension. 
+			Banks are automatically loaded when a package containing the bank is loaded.
+		@in Name		The name of the sound bank to load.
+		@in Unit		The unit to which a sound bank is loaded.
+	*/
+	{
+		name = "Wwise Unit Load Bank"
+		args = {
+			Name = {
+				type = "resource"
+				extension = "wwise_bank_metadata"
+			}
+			Unit = "unit"
+		}
+		function = "WwiseFlowCallbacks.wwise_unit_load_bank"
+		category = "Audio/Wwise/Banks/Internal"
+		visibility = "none"
+		brief = "Uses a unit script data Wwise.bank_name to get the resource name of a bank and load it."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Banks/Wwise Unload Bank
+		@des Unloads the specified bank by resource name. Banks are unloaded when their packages are unloaded, so this is only necessary when manually 
+			loading and unloading banks or when autoload resources is enabled.
+		@in Name		The name of the sound bank to unload.
+	*/
+	{
+		name = "Wwise Unload Bank"
+		args = {
+			Name = {
+				type = "resource"
+				extension = "wwise_bank_metadata"
+			}
+		}
+		function = "WwiseFlowCallbacks.wwise_unload_bank"
+		category = "Audio/Wwise/Banks"
+		brief = "Unloads the specified bank by resource name."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Global/Wwise Set Language
+		@des Sets the localization language setting to the given language.
+		@in Name		The language to use for the sound bank.
+	*/
+	{
+		name = "Wwise Set Language"
+		args = {
+			Name = "string"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_language"
+		category = "Audio/Wwise/Global"
+		brief = "Sets the localization language setting to the given language."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Global/Wwise Set Listener Pose
+		@des Sets the world space transform of the listener. The transform is absolute - it is not relative to the world's transform. Listener at index 0 is the default listener.
+		@in Listener	The Id of the listener.
+		@in Position	The new position of the listener.
+		@in Rotation	The new rotation of the listener.
+	*/
+	{
+		name = "Wwise Set Listener Pose"
+		args = {
+			Listener = {
+				type = "enum"
+				choices = [
+					"Listener0"
+					"Listener1"
+					"Listener2"
+					"Listener3"
+					"Listener4"
+					"Listener5"
+					"Listener6"
+					"Listener7"
+				]
+				default = "Listener0"
+			}
+			Position = "vector3"
+			Rotation = "quaternion"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_listener_pose"
+		category = "Audio/Wwise/Global"
+		brief = "Sets the world space transform of the listener. The transform is absolute."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Global/Wwise Move Listener To Unit
+		@des Teleport the listener to a given unit location.	
+		@in Listener	The Id of the listener.
+		@in Unit		The unit to which the listener is moved.
+		@in Unit_node	The name of the object within the given unit.
+	*/
+	{
+		name = "Wwise Move Listener To Unit"
+		args = {
+			Listener = {
+				type = "enum"
+				choices = [
+					"Listener0"
+					"Listener1"
+					"Listener2"
+					"Listener3"
+					"Listener4"
+					"Listener5"
+					"Listener6"
+					"Listener7"
+				]
+				default = "Listener0"
+			}
+			Unit = "unit"
+			Unit_Node = "string"
+		}
+		function = "WwiseFlowCallbacks.wwise_move_listener_to_unit"
+		category = "Audio/Wwise/Global"
+		brief = "Teleport listener to given unit location."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Sources/Wwise Make Auto Source
+		@des Creates a world-owned Wwise game object that can have properties set on it and events played on it. The source will be automatically removed if there are no sounds playing on it.
+		@in Unit		A Unit used to create a new source.
+		@in Unit_Node	The name of an object within the given unit.
+		@in Position	A Vector3 to create a new Wwise source.
+		@out Source_Id	The Id of the source.
+	*/
+	{
+		name = "Wwise Make Auto Source"
+		args = {
+			Unit = "unit"
+			Unit_Node = "string"
+			Position = "vector3"
+		}
+		returns = {
+			Source_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_make_auto_source"
+		category = "Audio/Wwise/Sources"
+		brief = "Creates a world-owned wwise game object that can have properties set on it and events played on it. The source will be automatically removed if there are no sounds playing on it."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Sources/Wwise Make Manual Source
+		@des Creates a world-owned Wwise game object that can have properties set on it and events played on it. The source must be manually removed via [Wwise Destroy Manual Source]. 
+			Manual Sources are useful for sources that are created once and then used to store persistent state or switch information and trigger multiple events over time on.
+		@in Unit		A Unit used to create a new source.
+		@in Unit_Node	The name of an object within the given unit.
+		@in Position	A Vector3 to create a new Wwise source.
+		@out Source_Id	The Id of the source.
+	*/
+	{
+		name = "Wwise Make Manual Source"
+		args = {
+			Unit = "unit"
+			Unit_Node = "string"
+			Position = "vector3"
+		}
+		returns = {
+			Source_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_make_manual_source"
+		category = "Audio/Wwise/Sources"
+		brief = "Creates a world-owned wwise game object that can have properties set on it and events played on it. The source must be manually removed via Wwise Destroy Manual Source."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Sources/Wwise Destroy Manual Source
+		@des Destroys a source created via [Wwise Make Manual Source].
+		@in Source_Id	The Id of the source.		
+	*/
+	{
+		name = "Wwise Destroy Manual Source"
+		args = {
+			Source_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_destroy_manual_source"
+		category = "Audio/Wwise/Sources"
+		brief = "Destroys a Source created via Wwise Make Manual Source."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Wwise Trigger Event
+		@des Posts the given event to the Wwise engine. If an existing source is not provided, then a source will be created either at the given location, 
+			attached to the given unit, or as an unpositioned source if neither are provided. The returned Playing Id can be used to work with the playing sound while 
+			the returned Source Id can be used to work with the game object the sound is associated with.
+		@in Name				The name of the event.
+		@in Unit				A Unit that will be used to create a new source or to find an existing source matching the given unit.
+		@in Unit_Node			The name of the object within the given unit.
+		@in Position 			A Vector3 to create a new Wwise source.
+		@in Existing_Source_Id	The Id of the existing source.
+		@out Playing_Id			The Id of the new playing event.
+		@out Source_Id			The Id of the source playing the event.
+	*/
+	{
+		name = "Wwise Trigger Event"
+		args = {
+			Name = {
+				type = "element"
+				filter = "wwise_event"
+			}
+			Unit = "unit"
+			Unit_Node = "string"
+			Position = "vector3"
+			Existing_Source_Id = "float"
+		}
+		returns = {
+			Playing_Id = "float"
+			Source_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_trigger_event"
+		category = "Audio/Wwise"
+		brief = "Posts the given event to the Wwise engine, creating a source if none is provided."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Wwise Stop Event
+		@des Explicitly kills the given playing sound. To stop sounds, Wwise recommends using a Stop event and triggering it via [Wwise Trigger Event].
+		@in Playing_Id	The Id of the event to stop.		
+	*/
+	{
+		name = "Wwise Stop Event"
+		args = {
+			Playing_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_stop_event"
+		category = "Audio/Wwise"
+		brief = "Explicitly kills the given playing sound. To stop sounds, Wwise recommends using a Stop event and triggering it via Wwise Trigger Event."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Wwise Pause Event
+		@des Explicitly pauses the given playing sound. To pause sounds, Wwise recommends using a Pause event and triggering it via [Wwise Trigger Event].
+		@in Playing_Id	The Id of the event to pause.		
+	*/
+	{
+		name = "Wwise Pause Event"
+		args = {
+			Playing_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_pause_event"
+		category = "Audio/Wwise"
+		brief = "Explicitly pauses the given playing sound. To pause sounds, Wwise recommends using a Pause event and triggering it via Wwise Trigger Event."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Wwise Resume Event
+		@des Explicitly resumes the given playing sound. To resume sounds, Wwise recommends using a Resume event and triggering it via [Wwise Trigger Event].
+		@in Playing_Id	The Id of the event to resume.		
+	*/
+	{
+		name = "Wwise Resume Event"
+		args = {
+			Playing_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_resume_event"
+		category = "Audio/Wwise"
+		brief = "Explicitly resumes the given playing sound. To resume sounds, Wwise recommends using a Resume event and triggering it via Wwise Trigger Event."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Sources/Wwise Set Source Position
+		@des For position-based sources, this node teleports the given source to the specified location.
+		@in Source_Id	The Id of the source to move.	
+		@in Position	The new position for the specified source.
+	*/
+	{
+		name = "Wwise Set Source Position"
+		args = {
+			Source_Id = "float"
+			Position = "vector3"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_source_position"
+		category = "Audio/Wwise/Sources"
+		brief = "For position-based Sources, teleports the given source to the specified location."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Sources/Wwise Set Source Parameter
+		@des Sets the Wwise parameter for the given source to the given value.
+		@in Source_Id		The Id of the source.	
+		@in Parameter_Name	The name of the parameter to set for the source.
+		@in Value			The numeric value for the parameter.
+	*/
+	{
+		name = "Wwise Set Source Parameter"
+		args = {
+			Source_Id = "float"
+			Parameter_Name = {
+				type = "element"
+				filter = "wwise_parameter"
+			}
+			Value = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_source_parameter"
+		category = "Audio/Wwise/Sources"
+		brief = "Sets the Wwise parameter for the given source to the given value."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Game Syncs/Wwise Set State
+		@des Sets the Wwise state for the given source to the given value.
+		@in Group		The state group set for the source. 
+		@in State		The switch state set for the source. 			
+	*/
+	{
+		name = "Wwise Set State"
+		args = {
+			Group = "string"
+			State = "string"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_state"
+		category = "Audio/Wwise/Game Syncs"
+		brief = "Sets the Wwise state for the given source to the given value."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Game Syncs/Wwise Set Switch
+		@des Sets the Wwise switch for the given source and switch group to the given switch state.
+		@in Group		The state group. Must match Wwise project state setup	
+		@in State		The current state. Must match Wwise project state setup.
+		@in Source_Id	The Id of the source.
+	*/
+	{
+		name = "Wwise Set Switch"
+		args = {
+			Group = "string"
+			State = "string"
+			Source_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_switch"
+		category = "Audio/Wwise/Game Syncs"
+		brief = "Sets the Wwise switch for the given source and switch group to the given switch state."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Game Syncs/Wwise Post Trigger
+		@des Posts the given music trigger to Wwise. Alternatively a Trigger Event can be posted via the [Wwise Trigger Event].		
+		@in Source_Id	The Id of the source.
+		@in Name		The name of the trigger.
+			
+	*/
+	{
+		name = "Wwise Post Trigger"
+		args = {
+			Source_Id = "float"
+			Name = "string"
+		}
+		function = "WwiseFlowCallbacks.wwise_post_trigger"
+		category = "Audio/Wwise/Game Syncs"
+		brief = "Posts the given music trigger to Wwise. Alternatively a Trigger Event can be posted via the Wwise Trigger Event function."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Game Syncs/Wwise Set Global Parameter
+		@des Sets the Wwise parameter to the given value.	
+		@in Parameter_Name	The name of the parameter.
+		@in Value			The numeric value for the parameter.
+			
+	*/
+	{
+		name = "Wwise Set Global Parameter"
+		args = {
+			Parameter_Name = {
+				type = "element"
+				filter = "wwise_parameter"
+			}
+			Value = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_global_parameter"
+		category = "Audio/Wwise/Game Syncs"
+		brief = "Sets the Wwise parameter to the given value."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Sources/Wwise Is Source Active
+		@des Returns whether the source exists or not.	
+		@in Source_Id		The Id of the source to check.
+		@out Yes			Returns this if a source exists with the specified id.
+		@out No				Returns this if a source doesn't exist.
+			
+	*/
+	{
+		name = "Wwise Is Source Active"
+		args = {
+			Source_Id = "float"
+		}
+		returns = {
+			Yes = "event"
+			No = "event"
+		}
+		function = "WwiseFlowCallbacks.wwise_has_source"
+		category = "Audio/Wwise/Sources"
+		brief = "Returns whether the source exists or not."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Sources/Wwise Is Playing
+		@des Returns whether the sound is playing or not.
+		@in Playing_Id	The Id of the playing event.
+		@out Yes		Returns this if the specified Id corresponds to the currently playing event.
+		@out No			Returns this if the specified Id doesn't correspond to the playing event.
+			
+	*/
+	{
+		name = "Wwise Is Playing"
+		args = {
+			Playing_Id = "float"
+		}
+		returns = {
+			Yes = "event"
+			No = "event"
+		}
+		function = "WwiseFlowCallbacks.wwise_is_playing"
+		category = "Audio/Wwise/Sources"
+		brief = "Returns with the given sounds id is playing or not."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Sources/Wwise Get Playing Elapsed
+		@des Returns the elapsed time in seconds since the sound started playing. Returns 0 if the given sound is not playing.
+		@in Playing_Id	The Id of the playing event.
+		@out Seconds	Time in seconds since start of event play.			
+			
+	*/
+	{
+		name = "Wwise Get Playing Elapsed"
+		args = {
+			Playing_Id = "float"
+		}
+		returns = {
+			Seconds = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_get_playing_elapsed"
+		category = "Audio/Wwise/Sources"
+		brief = "Returns the elapsed time in seconds since the sound started playing. Returns 0 if the given sound is not playing."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Soundscapes/Wwise Add Soundscape Source
+		@des Adds a Stingray Soundscape unit source object to the level. This object handles automatically triggering and stopping an event at a given location relative to the listener position.	
+		@in Event_name		The Wwise event name to trigger when the source is active.
+		@in Unit			The unit to use for positioning.
+		@in Unit_Node		The unit object node name.
+		@in Shape			The shape for the sound scape.
+		@in Sphere_Radius	The radius of the sound source.
+		@in Box_Scale		The position of the listener where the sound is played.
+		@in Trigger_Range	The range to use to trigger the event.
+		@out SS_Source_Id	The Id of the Soundscape source.
+	*/
+	{
+		name = "Wwise Add Soundscape Source"
+		args = {
+			Event_Name = "string"
+			Unit = "unit"
+			Unit_Node = "string"
+			Positioning = "float"
+			Shape = "float"
+			Sphere_Radius = "float"
+			Box_Scale = "vector3"
+			Trigger_Range = "float"
+		}
+		returns = {
+			SS_Source_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_add_soundscape_source"
+		category = "Audio/Wwise/Soundscapes"
+		brief = "Adds a Soundscape unit source object to the level, which handles automatically triggering and stopping an event at a given location relative to the listener position."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Soundscapes/Wwise Remove Soundscape Source
+		@des Removes the given Stingray Soundscape unit source object from the level.
+		@in SS_Source_Id	The Id of the SoundScape source to remove.
+	*/
+	{
+		name = "Wwise Remove Soundscape Source"
+		args = {
+			SS_Source_Id = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_remove_soundscape_source"
+		category = "Audio/Wwise/Soundscapes"
+		brief = "Removes the given Stingray Soundscape unit source object from the level."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Soundscapes/Wwise Set Obstruction and Occlusion for Soundscape Source
+		@des Sets the Wwise values for Obstruction and Occlusion for the given Soundscape unit.		
+		@in SS_Source_Id	The Id of the Soundscape source.
+		@in Obstruction		The value specifying how much the source is obstructed, values between 0 and 1.
+		@in Occlusion		The value specifying how much the source is occluded, values between 0 and 1.
+	*/
+	{
+		name = "Wwise Set Obstruction and Occlusion for Soundscape Source"
+		args = {
+			SS_Source_Id = "float"
+			Obstruction = "float"
+			Occlusion = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_obstruction_and_occlusion_for_soundscape_source"
+		category = "Audio/Wwise/Soundscapes"
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Soundscapes/Internal/Wwise Add Soundscape Render Unit
+		@des Adds a Stingray Soundscape source object to the render unit.
+		@in Unit		The unit to which the Soundscape object is added.
+	*/
+	{
+		name = "Wwise Add Soundscape Render Unit"
+		args = {
+			Unit = "unit"
+		}
+		function = "WwiseFlowCallbacks.wwise_add_soundscape_render_unit"
+		category = "Audio/Wwise/Soundscapes/Internal"
+		visibility = "none"
+		brief = "Adds a unit with soundscape script data to the Wwise level editor visualization manager."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Post Process/Wwise Set Env Bus
+		@des Sets the given auxiliary bus to the given value between 0 and 1.
+		@in Aux_Bus		The auxiliary bus name.
+		@in Value		The bus value, between 0 and 1.
+	*/
+	{
+		name = "Wwise Set Env Bus"
+		args = {
+			Aux_Bus = "string"
+			Value = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_environment"
+		category = "Audio/Wwise/Post Process"
+		brief = "Sets the given auxiliary bus to the given value between 0 and 1."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Post Process/Wwise Set Dry Env
+		@des Sets the dry environment to the given value between 0 and 1. Default is 1.			
+		@in Value		The dry bus value, between 0 and 1.
+	*/
+	{
+		name = "Wwise Set Dry Env"
+		args = {
+			Value = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_dry_environment"
+		category = "Audio/Wwise/Post Process"
+		brief = "Sets the Dry environment to the given value between 0 and 1. Default is 1."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Post Process/Wwise Reset Env
+		@des Sets the given aux bus to 0 for all sources.		
+		@in Aux_Bus		The auxiliary bus name.
+		@in Value		The bus value.
+	*/
+	{
+		name = "Wwise Reset Env"
+		args = {
+			Aux_Bus = "string"
+			Value = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_environment"
+		category = "Audio/Wwise/Post Process"
+		brief = "Sets given aux bus to 0 for all sources."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Post Process/Wwise Set Source Env Bus
+		@des Sets the auxiliary bus value for a given source to the given value between 0 and 1.
+		@in Source_Id	The Id of the specified source.
+		@in Aux_Bus		The auxiliary bus name.
+		@in Value		The bus value, between 0 and 1.
+	*/
+	{
+		name = "Wwise Set Source Env Bus"
+		args = {
+			Source_Id = "float"
+			Aux_Bus = "string"
+			Value = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_source_environment"
+		category = "Audio/Wwise/Post Process"
+		brief = "Set the auxiliary bus value for a given source to the given value between 0 and 1."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Post Process/Wwise Set Source Dry Env
+		@des Sets the dry environment value for a given source to the given value between 0 and 1. Default is 1.
+		@in Source_Id	The Id of the specified source.		
+		@in Value		The dry bus value, between 0 and 1.
+	*/
+	{
+		name = "Wwise Set Source Dry Env"
+		args = {
+			Source_Id = "float"
+			Value = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_source_dry_environment"
+		category = "Audio/Wwise/Post Process"
+		brief = "Set the Dry Environment value for a given source to the given value between 0 and 1. Default is 1."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Post Process/Wwise Reset Source Env
+		@des Sets the aux bus value to 0 for a given source.
+		@in Source_Id	The Id of the specified source.
+		@in Aux_Bus		The auxiliary bus name.
+		@in Value		The bus value.
+	*/
+	{
+		name = "Wwise Reset Source Env"
+		args = {
+			Source_Id = "float"
+			Aux_Bus = "string"
+			Value = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_reset_source_environment"
+		category = "Audio/Wwise/Post Process"
+		brief = "Sets aux bus value to 0 for given source."
+	}
+	/*
+		@adoc flow
+		@node Audio/Wwise/Post Process/Wwise Set Obstruction and Occlusion
+		@des Sets the Wwise values for Obstruction and Occlusion for the given source and listener.
+		@in Listener	The Id of the listener.
+		@in Source_Id	The Id of the specified source.
+		@in Obstruction	The value specifying how much the source is obstructed, values between 0 and 1.
+		@in Occlusion	The value specifying how much the source is occluded, values between 0 and 1.
+	*/
+	{
+		name = "Wwise Set Obstruction and Occlusion"
+		args = {
+			Listener = {
+				type = "enum"
+				choices = [
+					"Listener0"
+					"Listener1"
+					"Listener2"
+					"Listener3"
+					"Listener4"
+					"Listener5"
+					"Listener6"
+					"Listener7"
+				]
+				default = "Listener0"
+			}
+			Source_Id = "float"
+			Obstruction = "float"
+			Occlusion = "float"
+		}
+		function = "WwiseFlowCallbacks.wwise_set_obstruction_and_occlusion"
+		category = "Audio/Wwise/Post Process"
+		brief = "Sets the Wwise values for Obstruction and Occlusion for the given Source and Listener."
+	}
+]

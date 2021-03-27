@@ -1,0 +1,4 @@
+shading_component_mapping = {
+	motion_blur_enabled = { type="scalar" path=["motion_blur_enabled"]  }
+	motion_blur_amount = { type="scalar" path=["motion_blur_amount"]  }
+}

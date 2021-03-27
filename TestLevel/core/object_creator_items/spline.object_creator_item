@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Objects"
+display_name = "Spline"
+type = "tool"
+tool_name = "spline"
+icon = "icons/spline.svg"
+menu_item = {
+    path = "Create/Spline"
+    section = "GENERAL"
+    order = 140
+}

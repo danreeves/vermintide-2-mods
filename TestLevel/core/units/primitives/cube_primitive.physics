@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "Cube_Primitive2"
+		node = "Cube_Primitive2"
+		shapes = [
+			{
+				material = "default"
+				shape = "Cube_Primitive2"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

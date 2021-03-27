@@ -1,0 +1,12 @@
+export = "#range"
+types = {
+    range = {
+        type = ":array"
+        value = ":number"
+        size = 2
+        default = [0 1]
+        editor = {
+            control = "adskPropertyRange"
+        }
+    }
+}

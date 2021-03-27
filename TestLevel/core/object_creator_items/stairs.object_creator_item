@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Primitives"
+display_name = "Stairs"
+type = "unit"
+unit_resource = "core/units/primitives/stairs_primitive"
+icon = "icons/stair.svg"
+menu_item = {
+    path = "Create/Primitives/Stairs"
+    section = "GENERAL"
+    order = 110
+}

@@ -1,0 +1,24 @@
+group = "Input"
+display_name = "Last Time"
+
+imports = {
+	time = {
+		type = "float"
+		domain = "global"
+		source = "engine"
+	}
+	delta_time = {
+		type = "float"
+		domain = "global"
+		source = "engine"
+	}
+}
+
+output = {
+	name = "Out"
+	type = { typeof: "time" }
+}
+
+code = """
+	RESULT(time - delta_time);
+"""

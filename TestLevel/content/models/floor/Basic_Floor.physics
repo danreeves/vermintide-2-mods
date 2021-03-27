@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "Basic_Floor"
+		node = "Basic_Floor"
+		shapes = [
+			{
+				material = "default"
+				shape = "Basic_Floor"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

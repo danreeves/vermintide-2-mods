@@ -1,0 +1,9 @@
+category = "Debug"
+render_configs = ["core/stingray_renderer/renderer"]
+display_name = "Atlased Shadow Mapping"
+activate = """
+    Application.set_render_setting("shadow_atlas_visualization", "true")
+"""
+deactivate = """
+    Application.set_render_setting("shadow_atlas_visualization", "false") 
+"""

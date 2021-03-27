@@ -1,0 +1,15 @@
+// ---------------------------------------------------------------------------------------------------
+// resource generators
+
+resource_generators = {
+	diffuse_filter = {
+		modifiers = [
+			{ type="compute_kernel" shader="filter_cubemap:DIFFUSE" input="output" thread_count_x="output" thread_count_y="output" thread_count_z=1 thread_count_divider=[16 16 1]  }			
+		]
+	}
+	specular_filter = {
+		modifiers = [
+			{ type="compute_kernel" shader="filter_cubemap:SPECULAR" input="output" thread_count_x="output" thread_count_y="output" thread_count_z=1 thread_count_divider=[16 16 1]  }			
+		]		
+	}
+}

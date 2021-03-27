@@ -1,0 +1,4 @@
+shading_component_mapping = {
+	lens_quality_enabled = { type="scalar" path=["lens_quality_enabled"]  }
+	lens_quality_properties = { type="vector3" ype="vector3" path={ x = ["lens_quality_distortion"] y = ["lens_quality_fringe_intensity"] z = ["lens_quality_fringe_color"] }  }
+}

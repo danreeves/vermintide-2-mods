@@ -1,0 +1,45 @@
+
+data = {
+	from_game_mode = "default"
+}
+editor_metadata = {
+	camera_settings = {
+		far_range = 1000
+		interest_point_distance = 0.045198
+		orthographic_plane = [
+			0
+			0
+			1
+			0
+		]
+		orthographic_zoom = 10
+		position = [
+			0.026095
+			0.026095
+			0.026095
+		]
+		projection_type = "perspective"
+		rotation = [
+			-0.115917
+			-0.279848
+			0.880476
+			0.364705
+		]
+		rotation_speed = 0.003
+		translation_speed = 0.05
+	}
+}
+materials = [
+	"content/models/props/spawner"
+]
+renderables = {
+	pCone1 = {
+		always_keep = false
+		culling = "bounding_volume"
+		generate_uv_unwrap = false
+		occluder = false
+		shadow_caster = false
+		surface_queries = false
+		viewport_visible = false
+	}
+}

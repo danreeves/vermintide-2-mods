@@ -1,0 +1,15 @@
+
+_data_root_version = 1
+_id = "ad9e2664-53f9-4642-b286-fdbe2423a40c"
+_name = "content/models/character/character"
+asset = "content/models/character/character"
+extension = ".FBX"
+import_options = {
+	combine_meshes = false
+	combine_meshes_by_material = false
+	reverse_forward_axis = true
+	skip_animations = false
+	skip_cameras = false
+	skip_lights = true
+	skip_lods = true
+}

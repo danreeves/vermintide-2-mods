@@ -1,0 +1,10 @@
+category = "Helpers"
+subcategory = "Rendering"
+display_name = "SH Light Probe"
+type = "unit"
+unit_resource = "core/stingray_renderer/helper_units/sh_light_probe/sh_light_probe"
+icon = "icons/sh_light_probe.svg"
+render_configs = ["core/stingray_renderer/renderer"]
+enabled = """
+    return false --Application.render_config_resource() == "core/stingray_renderer/renderer"
+"""

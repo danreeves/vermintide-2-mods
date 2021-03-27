@@ -1,0 +1,24 @@
+
+camera = {
+	shader = "base"
+	textures = {
+	}
+	variables = {
+		diffuse_rgb = {
+			type = "vector3"
+			value = [
+				0.082
+				0.912
+				0.22
+			]
+		}
+		glossiness = {
+			type = "scalar"
+			value = 0.1
+		}
+		specular = {
+			type = "scalar"
+			value = 0.001
+		}
+	}
+}

@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Primitives"
+display_name = "Sphere"
+type = "unit"
+unit_resource = "core/units/primitives/sphere_primitive"
+icon = "icons/sphere.svg"
+menu_item = {
+    path = "Create/Primitives/Sphere"
+    section = "GENERAL"
+    order = 110
+}

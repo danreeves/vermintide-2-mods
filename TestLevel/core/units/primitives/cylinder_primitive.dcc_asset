@@ -1,0 +1,6 @@
+
+_data_root_version = 1
+_id = "c96604e1-6876-4db2-8520-5ab70565152e"
+_name = "core/units/primitives/cylinder_primitive"
+asset = "core/units/primitives/cylinder_primitive"
+extension = ".fbx"

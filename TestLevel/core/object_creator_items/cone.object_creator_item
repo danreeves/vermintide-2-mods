@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Primitives"
+display_name = "Cone"
+type = "unit"
+unit_resource = "core/units/primitives/cone_primitive"
+icon = "icons/cone.svg"
+menu_item = {
+    path = "Create/Primitives/Cone"
+    section = "GENERAL"
+    order = 110
+}

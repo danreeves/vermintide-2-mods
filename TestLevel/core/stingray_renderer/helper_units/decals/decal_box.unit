@@ -1,0 +1,15 @@
+
+materials = {
+	decal = "core/stingray_renderer/helper_units/decals/decal"
+}
+renderables = {
+	g_box = {
+		always_keep = false
+		culling = "bounding_volume"
+		generate_uv_unwrap = false
+		occluder = false
+		shadow_caster = false
+		surface_queries = false
+		viewport_visible = true
+	}
+}

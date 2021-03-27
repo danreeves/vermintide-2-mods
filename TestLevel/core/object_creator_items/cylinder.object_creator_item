@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Primitives"
+display_name = "Cylinder"
+type = "unit"
+unit_resource = "core/units/primitives/cylinder_primitive"
+icon = "icons/cylinder.svg"
+menu_item = {
+    path = "Create/Primitives/Cylinder"
+    section = "GENERAL"
+    order = 110
+}

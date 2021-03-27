@@ -1,0 +1,84 @@
+
+data = {
+	LevelEditor = {
+		is_cubemap_probe = true
+		is_gizmo_unit = true
+	}
+	probe = {
+		falloff = [
+			2
+			2
+			2
+		]
+		trace_box_max = [
+			10
+			10
+			10
+		]
+		trace_box_min = [
+			-10
+			-10
+			-10
+		]
+	}
+}
+editor_metadata = {
+	camera_settings = {
+		far_range = 1000
+		interest_point_distance = 4.024692
+		orthographic_plane = [
+			0
+			0
+			1
+			0
+		]
+		orthographic_zoom = 10
+		position = [
+			-0.933378
+			-3.068886
+			2.43083
+		]
+		projection_type = "perspective"
+		rotation = [
+			0.315124
+			-0.046861
+			0.139426
+			-0.937583
+		]
+		rotation_speed = 0.003
+		translation_speed = 0.05
+	}
+	flow_framing = {
+		scale = 1.2
+		x = 493.277440000001
+		y = 181.08608
+	}
+}
+import_options = {
+	combine_meshes = false
+	combine_meshes_by_material = false
+	reverse_forward_axis = false
+	skip_animations = false
+	skip_cameras = false
+	skip_lights = false
+	skip_lods = false
+}
+materials = [
+	"core/units/cubemap_probe"
+]
+renderables = {
+	g_gizmo = {
+		always_keep = false
+		culling = "disabled"
+		light_baking = "none"
+		occluder = false
+		shadow_caster = false
+		surface_queries = false
+		viewport_visible = true
+	}
+}
+visibility_groups = {
+	gizmo = [
+		"g_gizmo"
+	]
+}

@@ -1,0 +1,6 @@
+
+_data_root_version = 1
+_id = "acc876f4-850f-4906-9309-64b09c86813d"
+_name = "core/units/primitives/cube_primitive"
+asset = "core/units/primitives/cube_primitive"
+extension = ".fbx"

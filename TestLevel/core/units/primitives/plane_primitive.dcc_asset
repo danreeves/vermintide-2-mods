@@ -1,0 +1,6 @@
+
+_data_root_version = 1
+_id = "02626e91-2273-4131-9208-b7ba18a17de9"
+_name = "core/units/primitives/plane_primitive"
+asset = "core/units/primitives/plane_primitive"
+extension = ".fbx"

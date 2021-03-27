@@ -1,0 +1,114 @@
+
+shader = {
+	connections = [
+		{
+			destination = {
+				connector_id = "1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3"
+				instance_id = "9df5b0c5-25be-45f6-bbaf-791b4228402c"
+			}
+			source = {
+				instance_id = "f7b21acc-990b-4a55-8403-8577997fd133"
+			}
+		}
+		{
+			destination = {
+				connector_id = "aca690cb-6305-4a2f-bf3d-69183a493db3"
+				instance_id = "8325c1d3-8023-4052-a731-72f4ebeb62c2"
+			}
+			select = [
+				"rgb"
+			]
+			source = {
+				instance_id = "9df5b0c5-25be-45f6-bbaf-791b4228402c"
+			}
+		}
+		{
+			destination = {
+				connector_id = "ad5e052f-d316-4a0f-8b79-53c38204d61b"
+				instance_id = "8325c1d3-8023-4052-a731-72f4ebeb62c2"
+			}
+			select = [
+				"a"
+			]
+			source = {
+				instance_id = "9df5b0c5-25be-45f6-bbaf-791b4228402c"
+			}
+		}
+	]
+	constants = [
+	]
+	groups = [
+	]
+	nodes = [
+		{
+			content_size = [
+				160
+				0
+			]
+			export = {
+			}
+			id = "8325c1d3-8023-4052-a731-72f4ebeb62c2"
+			options = [
+			]
+			position = [
+				920
+				280
+			]
+			samplers = {
+			}
+			type = "core/stingray_renderer/output_nodes/decal_base"
+		}
+		{
+			content_size = [
+				160
+				0
+			]
+			export = {
+			}
+			id = "f7b21acc-990b-4a55-8403-8577997fd133"
+			options = [
+			]
+			position = [
+				360
+				280
+			]
+			samplers = {
+			}
+			type = "core/shader_nodes/decal_uv"
+		}
+		{
+			content_size = [
+				160
+				0
+			]
+			export = {
+			}
+			id = "9df5b0c5-25be-45f6-bbaf-791b4228402c"
+			options = [
+				"fb3f709b-a54a-4e93-ac9f-e9fc76fb8bcd"
+				"1e067464-12d8-4826-9b72-cfd5765003e3"
+				"acb6ef9d-5ba0-42e4-85f3-2924b4b4be25"
+			]
+			position = [
+				620
+				280
+			]
+			samplers = {
+				texture_map = {
+					display_name = "Color Map"
+					slot_name = "color_map"
+					ui = {
+					}
+				}
+			}
+			title = "Color Map"
+			type = "core/shader_nodes/sample_texture"
+		}
+	]
+	version = 3
+}
+textures = {
+	color_map = "core/fallback_resources/missing_texture"
+}
+variables = {
+}

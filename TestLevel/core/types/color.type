@@ -1,0 +1,31 @@
+export = "#color"
+types = {
+    color = {
+        type = ":struct"
+        fields = {
+            rgb = {
+                type = ":array"
+                value = "#component"
+                size = 3
+                default = [0, 0, 0]
+            }
+            alpha = {
+                type = "#component"
+                default = 1
+            }
+            intensity = {
+                type = ":number"
+                default = 1
+                min = 0
+            }
+        }
+        editor = {
+            control = "adskPropertyColor"
+        }
+    }
+    component = {
+        type = ":number"
+        min = 0
+        max = 1
+    }
+}

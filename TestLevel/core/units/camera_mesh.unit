@@ -1,0 +1,51 @@
+
+data = {
+	LevelEditor = {
+		is_gizmo_unit = true
+	}
+}
+editor_metadata = {
+	camera_settings = {
+		far_range = 1000
+		interest_point_distance = 1.850533
+		orthographic_plane = [
+			0
+			0
+			1
+			0
+		]
+		orthographic_zoom = 10
+		position = [
+			1.068406
+			0.636636
+			1.298658
+		]
+		projection_type = "perspective"
+		rotation = [
+			-0.115917
+			-0.279848
+			0.880476
+			0.364705
+		]
+		rotation_speed = 0.003
+		translation_speed = 0.05
+	}
+}
+materials = [
+	"core/units/camera_mesh"
+]
+renderables = {
+	g_camera_mesh = {
+		culling = "bounding_volume"
+		light_baking = "none"
+		occluder = false
+		shadow_caster = false
+		surface_queries = false
+		viewport_visible = true
+	}
+}
+visibility_groups = {
+	camera = [
+		"g_camera_mesh"
+	]
+}

@@ -1,0 +1,19 @@
+data = {
+	gwnavgenexcluded = true
+}
+lights = {
+}
+materials = [
+]
+name = "skydome"
+renderables = {
+	g_skydome = {
+		culling = "disabled"
+		shadow_caster = false
+		viewport_visible = true
+	}
+}
+snap_points = [
+]
+visibility_groups = {
+}

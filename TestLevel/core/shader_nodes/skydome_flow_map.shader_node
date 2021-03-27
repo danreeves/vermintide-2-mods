@@ -1,0 +1,116 @@
+group = "Sampling"
+display_name = "Skydome Flow Map"
+inputs = {
+	"a0288526-0604-4e50-a338-2066814827a3" = { name = "_texcoord" display_name = "UV" type = "vector2" domain = "pixel" }
+	"6b721204-1732-4941-8135-97c17ac20972" = { name = "mip_level" is_required = false display_name = "Mip Level" type = { scalar: ["HAS_MIPLEVEL"] } }
+	"8f070990-aabb-4643-8bd9-100c69aafca4" = { name = "time" display_name = "Time" type = "scalar" }
+	"4d2bf32e-f463-4886-a97b-359da2e68111" = { name = "flow_vector" display_name = "Flow Vector" type = "vector2" }
+	"dd2e2c0e-c39a-4894-8719-84ade6096d4b" = { name = "scale" display_name = "Flow Scale" type = { auto: ["HAS_SCALE"] } }
+}
+
+imports = {
+	skydome_u_offset = {
+		type = "float"
+		domain = "global"
+		source = "shading_environment"
+	}
+
+	skydome_intensity = {
+		type = "float"
+		domain = "global"
+		source = "shading_environment"
+	}
+}
+
+domain = "pixel"
+output = {
+	type = "float4"
+}
+
+options = {
+	"6b826b8d-40a6-40eb-a8dd-c20c0c7e69e3" = "ADDRESS_CLAMP"
+	"b2314d1a-c8dc-4530-a3a0-8c41420db673" = "ADDRESS_WRAP"
+	"6952bd75-4c9d-4322-965a-9f388ec158a5" = "LINEAR"
+	"5ca984b5-18d1-4489-9609-669b2ee866c6" = "SRGB"
+    "bb3b14c9-5e82-45a4-9e24-1a09d8fad061" = "RGBM_DECODE"
+    "72f0d17d-c1ae-4b98-ab36-d1f63dd88dd0" = "FILTER_ANISOTROPIC"
+    "91aba3c7-422f-4a01-bb4e-c3c2b553a337" = "FILTER_LINEAR"
+    "fe2b683f-4053-4b34-bd2e-621c14c9fb6d" = "FILTER_POINT"
+}
+
+ui = [
+	{
+		type = "drop_down"
+		display_name = "Encoding"
+		options = {
+			"Linear Color" 			= "6952bd75-4c9d-4322-965a-9f388ec158a5"
+			"sRGB Color" 			= "5ca984b5-18d1-4489-9609-669b2ee866c6"
+			"RGBM Color" 			= "bb3b14c9-5e82-45a4-9e24-1a09d8fad061"
+		}
+		default = "6952bd75-4c9d-4322-965a-9f388ec158a5"
+	}
+	{
+		type = "drop_down"
+		display_name = "Address mode"
+		options = {
+			"Clamp" = "6b826b8d-40a6-40eb-a8dd-c20c0c7e69e3"
+			"Wrap" 	= "b2314d1a-c8dc-4530-a3a0-8c41420db673"
+		}
+		default = "b2314d1a-c8dc-4530-a3a0-8c41420db673"
+	}
+	{
+		type = "drop_down"
+		display_name = "Filter mode"
+		options = {
+			"Anisotropic"	= "72f0d17d-c1ae-4b98-ab36-d1f63dd88dd0"
+			"Linear" 		= "91aba3c7-422f-4a01-bb4e-c3c2b553a337"
+			"Point" 		= "fe2b683f-4053-4b34-bd2e-621c14c9fb6d"
+		}
+		default = "91aba3c7-422f-4a01-bb4e-c3c2b553a337"
+	}
+]
+
+code_blocks = {
+	default = {
+		include: ["core/stingray_renderer/shader_libraries/flow_common#flow_common"]
+		language = "hlsl"
+		samplers = {
+			skydome_map = {
+				sampler_state = "core/shader_nodes/graph_common#default_node_sampler"
+				source = "resource_set"
+				slot_name = "skydome_map"
+				type = "2d"
+			}
+		}
+
+		code = """
+			_texcoord += float2(skydome_u_offset, 0);
+
+			float2 x = time + float2(0.0, 0.5);
+			float4 offsets = scale * flow_scale(x).xxyy * flow_vector.xyxy;
+			float weight = flow_weight(x.x);
+
+			float4 texcoords = _texcoord.xyxy + offsets;
+
+			float4 result0;
+			float4 result1;
+			#if defined(HAS_MIPLEVEL)
+				result0 = TEX2DLOD(skydome_map, texcoords.xy, mip_level);
+				result1 = TEX2DLOD(skydome_map, texcoords.zw, mip_level);
+			#else
+				result0 = TEX2D(skydome_map, texcoords.xy);
+				result1 = TEX2D(skydome_map, texcoords.zw);
+			#endif
+
+			#if defined(RENDERER_GL) && defined(SRGB)
+				result0 = fast_gamma_to_linear_rgb(result0);
+				result1 = fast_gamma_to_linear_rgb(result1);
+			#elif defined(RGBM_DECODE)
+				result0 = float4(rgbm_decode(result0), result0.a);
+				result1 = float4(rgbm_decode(result1), result1.a);
+			#endif
+
+			RESULT(lerp(result1, result0, weight) * skydome_intensity);
+		"""
+	}
+}

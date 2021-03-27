@@ -1,0 +1,11 @@
+category = "Lights"
+subcategory = "Lights"
+display_name = "Light"
+type = "unit"
+unit_resource = "core/units/light_source"
+icon = "icons/omni_light.svg"
+menu_item = {
+    path = "Create/Light"
+    section = "LIGHTING"
+    order = 210
+}

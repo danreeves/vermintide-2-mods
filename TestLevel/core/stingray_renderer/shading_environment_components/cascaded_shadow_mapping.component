@@ -1,0 +1,49 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/cascaded_shadow_mapping"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            shadow_max_distance = {
+                type = ":number"
+                default = 80
+                min = 0
+                editor = {
+                    label = "Shadow Distance"
+                    description = "Maximum distance directional light shadows will be casted"
+                }
+            }
+            shadow_log_linear_blend = {
+                type = ":number"
+                default = 0.4
+                min = 0
+                max = 1
+                editor = {
+                    label = "Log/Linear Blend"
+                    step = 0.001
+                }
+            }
+        }
+        editor = {
+            category = "Cascaded Shadow Mapping"
+            priority = 1050
+            icon = "signal"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+}

@@ -1,0 +1,19 @@
+
+_data_root_version = 1
+_id = "29c295b6-6e8c-4d1b-b62e-9a90f222a6d3"
+_name = "content/models/character/character"
+anim_controller_ref = {
+	_id = "6a26363b-cae9-4870-a7a0-9df6b24c7454"
+	ref_filename = null
+	ref_id = null
+}
+anim_skeleton_ref = {
+	_id = "7966a38a-f57d-4472-aa39-fdb022c1b3f8"
+	ref_filename = null
+	ref_id = null
+}
+dcc_asset_ref = {
+	_id = "97f1174d-50fa-4e01-871a-79a2751d4e45"
+	ref_filename = "content/models/character/character.dcc_asset"
+	ref_id = null
+}

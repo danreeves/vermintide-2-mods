@@ -1,0 +1,6 @@
+
+_data_root_version = 1
+_id = "7504ff35-44fe-4f1d-9832-2f5587019ef7"
+_name = "core/units/primitives/stairs_primitive"
+asset = "core/units/primitives/stairs_primitive"
+extension = ".fbx"

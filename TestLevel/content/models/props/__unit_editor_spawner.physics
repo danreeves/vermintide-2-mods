@@ -1,0 +1,111 @@
+
+actors = [
+	{
+		data_compiler = {
+			silence_transform_warnings = true
+		}
+		enabled = false
+		mass = 0
+		name = "__unit_editor_box_pCone1"
+		node = "pCone1"
+		shapes = [
+			{
+				material = "default"
+				shape = "pCone1"
+				template = "default"
+				type = "box"
+			}
+		]
+		template = "keyframed"
+	}
+	{
+		data_compiler = {
+			silence_transform_warnings = true
+		}
+		enabled = false
+		mass = 0
+		name = "__unit_editor_capsule_pCone1"
+		node = "pCone1"
+		shapes = [
+			{
+				material = "default"
+				shape = "pCone1"
+				template = "default"
+				type = "capsule"
+			}
+		]
+		template = "keyframed"
+	}
+	{
+		data_compiler = {
+			silence_transform_warnings = true
+		}
+		enabled = false
+		mass = 0
+		name = "__unit_editor_convex_pCone1"
+		node = "pCone1"
+		shapes = [
+			{
+				material = "default"
+				shape = "pCone1"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+	{
+		data_compiler = {
+			silence_transform_warnings = true
+		}
+		enabled = false
+		mass = 0
+		name = "__unit_editor_mesh_pCone1"
+		node = "pCone1"
+		shapes = [
+			{
+				material = "default"
+				shape = "pCone1"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+	{
+		data_compiler = {
+			silence_transform_warnings = true
+		}
+		enabled = false
+		mass = 0
+		name = "__unit_editor_sphere_pCone1"
+		node = "pCone1"
+		shapes = [
+			{
+				material = "default"
+				shape = "pCone1"
+				template = "default"
+				type = "sphere"
+			}
+		]
+		template = "keyframed"
+	}
+	{
+		data_compiler = {
+			silence_transform_warnings = true
+		}
+		enabled = false
+		mass = 0
+		name = "__unit_editor_convex_computed_pCone1"
+		node = "pCone1"
+		shapes = [
+			{
+				material = "default"
+				shape = "pCone1"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

@@ -1,0 +1,33 @@
+
+data = {
+	LevelEditor = {
+		is_gizmo_unit = true
+	}
+}
+materials = [
+	"core/units/camera"
+]
+renderables = {
+	g_camera = {
+		culling = "bounding_volume"
+		light_baking = "none"
+		occluder = false
+		shadow_caster = false
+		surface_queries = false
+		viewport_visible = true
+	}
+}
+visibility_groups = {
+	camera = [
+		"g_camera"
+	]
+}
+cameras = {
+	camera = {
+		vertical_fov = 0.7854
+		near_range = 0.1
+		far_range = 1000
+		projection_type = "perspective"
+		node = "rp_root"
+	}
+}

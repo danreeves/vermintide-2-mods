@@ -1,0 +1,14 @@
+
+ColorMaterial = {
+	variables = {
+		specular = {
+			value = 0.55
+			type = "scalar"
+		}
+		glossiness = {
+			value = 0.567
+			type = "scalar"
+		}
+	}
+	shader = "base"
+}

@@ -1,0 +1,10 @@
+shading_component_mapping = {
+	skydome_map = { type="resource" path=["skydome_map"] }
+	skydome_intensity = { type="scalar" path=["skydome_intensity"]  }
+	emissive_particle_intensity = { type="scalar" path=["emissive_particle_intensity"]  }
+
+	global_diffuse_map = { type="resource" path=["global_diffuse_map"] }
+	global_specular_map = { type="resource" path=["global_specular_map"] }
+	baked_diffuse_tint = { type="color" path={ rgb = ["baked_diffuse_tint", "rgb"] intensity = ["baked_diffuse_tint", "intensity"] } }
+	reflections_tint = { type="color" path={ rgb = ["reflections_tint", "rgb"] intensity = ["reflections_tint", "intensity"] } }
+}

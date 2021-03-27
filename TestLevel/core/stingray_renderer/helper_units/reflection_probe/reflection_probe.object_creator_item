@@ -1,0 +1,14 @@
+category = "Helpers"
+subcategory = "Rendering"
+display_name = "Reflection Probe"
+type = "unit"
+unit_resource = "core/stingray_renderer/helper_units/reflection_probe/reflection_probe"
+icon = "reflection_probe.svg"
+menu_item = {
+    path = "Create/Reflection Probe"
+    section = "LIGHTING"
+    order = 240
+}
+enabled = """
+    return Application.render_config_resource() == "core/stingray_renderer/renderer"
+"""

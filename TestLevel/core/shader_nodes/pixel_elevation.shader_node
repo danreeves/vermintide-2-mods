@@ -1,0 +1,26 @@
+group = "Fatshark"
+display_name = "Pixel Elevation"
+
+imports = {
+	pixel_elevation = {
+		type = "float"
+		domain = "pixel"
+		output_channel = "pixel_elevation"
+	}
+}
+
+defines = ["NEEDS_PIXEL_ELEVATION" "NEEDS_LINEAR_DEPTH"]
+
+domain = "pixel"
+output = {
+	type = "float"
+}
+
+language = "hlsl"
+code = """
+	#if defined(HAS_PIXEL_ELEVATION)
+		RESULT(pixel_elevation);
+	#else
+		RESULT(0.0);
+	#endif
+"""

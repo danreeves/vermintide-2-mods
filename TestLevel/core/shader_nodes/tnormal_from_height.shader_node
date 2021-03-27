@@ -1,0 +1,23 @@
+group = "Utility"
+display_name = "tNormal from Heightmap"
+inputs = {
+	"6e305b63-11fe-499d-ac95-6a656c054471" = { name = "height" display_name = "Height" is_required = true type = "scalar" }
+	"e52ed2a6-2a27-47f4-b6d0-b85d77c0d1b9" = { name = "wp" display_name = "World Position" is_required = false type = { vector3: ["HAS_WORLD_POSITION"] } }
+}
+
+output = {
+	type = "float3"
+}
+
+code = """
+	float dx = ddx(height);
+	float dy = ddy(height);
+	float2 h_derivates = float2(ddx(height), ddy(height));
+	#if defined(HAS_WORLD_POSITION)
+		// make sure that the derivative is stable when zooming out.
+		float2 p_derivates = float2(length(ddx(wp)), length(ddy(wp)));
+		h_derivates /= p_derivates * 500.0 + 1.0; // 500 looks good, but can we calculate this factor from the camera?
+	#endif
+	float3 tnormal = normalize(float3(h_derivates, 1));
+	RESULT(tnormal);
+"""

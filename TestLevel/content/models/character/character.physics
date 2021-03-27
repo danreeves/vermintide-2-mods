@@ -1,0 +1,27 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "character"
+		node = "character"
+		shapes = [
+			{
+				material = "default"
+				shape = "character"
+				template = "character"
+				type = "mesh"
+			}
+		]
+		template = "keyframed"
+	}
+]
+movers = [
+	{
+		collision_filter = "default"
+		height = 2
+		name = "body"
+		radius = 0.35
+		slope_limit = 0.785398163397448
+	}
+]

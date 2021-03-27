@@ -1,0 +1,97 @@
+includes = [ "core/stingray_renderer/shader_libraries/common.shader_source" ]
+
+render_states = {
+	depth_write = {
+		inherits = "default"
+		states = {
+			cull_mode = "cull_none"
+			z_enable = "true"
+			z_write_enable = "true"
+			z_func = "always"
+		}
+	}
+}
+
+sampler_states = {
+	clamp_point = {
+		inherits="clamp"
+		states = {
+			filter = "min_mag_mip_point"
+		}
+	}
+}
+
+hlsl_shaders = {
+	shadow_clear_mask = {
+		includes = [ "common" ]
+		samplers = {
+			input_texture0 = { sampler_states = "clamp_point" }
+		}
+		
+		code = """
+			DECLARE_SAMPLER_2D(input_texture0);
+			
+			struct VS_INPUT {
+				float4 position : POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			struct PS_INPUT {
+				float4 position : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+
+			CBUFFER_START(c0)
+				float4x4 world_view_proj;
+				float2 input_texture0_size;
+			CBUFFER_END
+
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			PS_INPUT vs_main(VS_INPUT input) {
+				PS_INPUT o;
+				o.position = mul(input.position, world_view_proj);
+				o.position.z = 0; // clamp to max depth
+				o.uv = input.uv;
+				return o;
+			}
+			
+			DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
+			float ps_main(PS_INPUT input) : SV_DEPTH {
+				
+				
+				float4 tex = TEX2D(input_texture0, input.uv);
+				if(tex.r == 0)
+					discard;
+					
+				return 1;
+			}			
+			
+		"""
+	}
+	
+	
+}
+
+shaders = {
+	shadow_clear_mask = {
+
+		contexts = {
+			default = {
+				passes_sort_mode="immediate"
+				passes = [
+						{ hlsl_shader="shadow_clear_mask" render_states="depth_write" }
+				]
+			}
+		}
+
+		compile = {
+			default = [
+				{ defines=[] }
+			]
+		}
+	}	
+}
+
+static_compile= [
+	{ shader="shadow_clear_mask" }
+]

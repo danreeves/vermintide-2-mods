@@ -1,0 +1,7 @@
+gizmo = {
+	shader = "base"
+	textures = {
+	}
+	variables = {
+	}
+}

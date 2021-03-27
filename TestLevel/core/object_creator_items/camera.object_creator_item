@@ -1,0 +1,11 @@
+category = "Camera"
+subcategory = "Camera"
+display_name = "Camera"
+type = "unit"
+unit_resource = "core/units/camera"
+icon = "icons/camera.svg"
+menu_item = {
+    path = "Create/Camera"
+    section = "GENERAL"
+    order = 110
+}

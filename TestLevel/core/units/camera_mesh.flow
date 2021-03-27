@@ -1,0 +1,41 @@
+
+nodes = [
+	{
+		id = "9182c345-311b-41c1-9724-dff5f597bf11"
+		out_events = {
+			out = [
+				{
+					event = 0
+					id = "11831b79-b41f-4220-a5c4-abdac52d5786:0"
+					node = "11831b79-b41f-4220-a5c4-abdac52d5786"
+				}
+			]
+		}
+		type = "unit_spawned"
+		variable_values = {
+			unit = null
+		}
+	}
+	{
+		id = "11831b79-b41f-4220-a5c4-abdac52d5786"
+		in_variables = {
+			group = {
+				type = "id"
+			}
+			unit = {
+				node = "9182c345-311b-41c1-9724-dff5f597bf11"
+				type = "unit"
+				variable = "unit"
+			}
+			visible = {
+				type = "bool"
+			}
+		}
+		type = "set_unit_visibility"
+		variable_values = {
+			group = "camera"
+			unit = null
+			visible = false
+		}
+	}
+]

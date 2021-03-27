@@ -1,0 +1,68 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/lens_quality"
+                    "$resource_type" = "shading_environment_mapping"
+                }               
+                editor = {
+                    visible = false
+                }
+            }
+            lens_quality_enabled = {
+                type = ":bool"
+                default = false
+                editor = {
+                    label = "Enabled"
+                    description = "Is Lens Quality Enabled?"
+                }
+            }
+            lens_quality_distortion = {
+                type = ":number"
+                default = 0.0
+                min = -0.6
+                max = 0.9
+                editor = {
+                    label = "Distortion"
+                    step = 0.001
+                }
+            }
+            lens_quality_fringe_color = {
+                type = ":number"
+                default = 0.0
+                min = 0.0
+                max = 1.0
+                editor = {
+                    label = "Fringe Color"
+                    step = 0.001
+                }
+            }
+            lens_quality_fringe_intensity = {
+                type = ":number"
+                default = 0.0
+                min = 0.0
+                max = 1.0
+                editor = {
+                    label = "Fringe Intensity"
+                    step = 0.001
+                }
+            }
+        }
+        editor = {
+            category = "Lens Quality"
+            priority = 1700
+            icon = "camera"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+}

@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "Cone_Primitive"
+		node = "Cone_Primitive"
+		shapes = [
+			{
+				material = "default"
+				shape = "Cone_Primitive"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

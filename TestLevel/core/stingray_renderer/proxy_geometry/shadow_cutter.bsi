@@ -1,0 +1,46 @@
+
+geometries = {
+	g_box = {
+		indices = {
+			size = 36
+			streams = [ [ 3 1 0 0 2 3 7 6 4 4 5 7 5 4 0 0 1 5 7 5 1 1 3 7 6 7 3 3 2 6 4 6 2 2 0 4 ] [ 0 1 2 2 3 0 4 5 6 6 7 4 7 6 2 2 1 7 4 7 1 1 0 4 5 4 0 0 3 5 6 5 3 3 2 6 ] ]
+			type = "TRIANGLE_LIST"
+		}
+		materials = [ {
+				name = "ColorMaterial"
+				primitives = [ 0 1 2 3 4 5 6 7 8 9 10 11 ]
+			} ]
+		streams = [ {
+				channels = [ {
+						index = 0
+						name = "POSITION"
+						type = "CT_FLOAT3"
+					} ]
+				data = [ -0.5 -0.0 -0.5 0.5 -0.0 -0.5 -0.5 1.0 -0.5 0.5 1.0 -0.5 -0.5 0.0 0.5 0.5 0.0 0.5 -0.5 1.0 0.5 0.5 1.0 0.5 ]
+				size = 8
+				stride = 12
+			} {
+				channels = [ {
+						index = 0
+						name = "NORMAL"
+						type = "CT_FLOAT3"
+					} ]
+				data = [ 0.57735 0.57735 -0.57735 0.57735 -0.57735 -0.57735 -0.57735 -0.57735 -0.57735 -0.57735 0.57735 -0.57735 0.57735 0.57735 0.57735 -0.57735 0.57735 0.57735 -0.57735 -0.57735 0.57735 0.57735 -0.57735 0.57735 ]
+				size = 8
+				stride = 12
+			} ]
+	}
+}
+nodes = {
+	rp_box = {
+		children = {
+			g_box = {
+				geometries = [ "g_box" ]
+				local = [ 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ]
+				parent = "rp_box"
+			}
+		}
+		local = [ 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 ]
+	}
+}
+source_path = ""

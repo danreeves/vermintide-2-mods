@@ -1,0 +1,5 @@
+shading_component_mapping = {
+	ssr_enabled = { type="scalar" path=["ssr_enabled"]  }
+	ssr_screen_edge_threshold = { type="scalar" path=["ssr_screen_edge_threshold"]  }
+	ssr_surface_thickness_threshold = { type="vector2" path=["ssr_surface_thickness_threshold"] }
+}

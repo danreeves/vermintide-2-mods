@@ -1,0 +1,5 @@
+category = "Post"
+render_configs = ["core/stingray_renderer/renderer"]
+display_name = "Bloom"
+activate = """Application.set_render_setting("bloom_visualization", "true")"""
+deactivate = """Application.set_render_setting("bloom_visualization", "false")"""

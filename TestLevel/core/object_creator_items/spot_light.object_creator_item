@@ -1,0 +1,14 @@
+category = "Lights"
+subcategory = "Lights"
+display_name = "Spot"
+type = "unit"
+unit_resource = "core/units/light"
+icon = "icons/spot_light.svg"
+menu_item = {
+    path = "Create/Spot Light"
+    section = "LIGHTING"
+    order = 210
+}
+enabled = """
+    return false
+"""

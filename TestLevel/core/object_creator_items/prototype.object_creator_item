@@ -1,0 +1,11 @@
+category = "Objects"
+subcategory = "Objects"
+display_name = "Prototype"
+type = "tool"
+tool_name = "prototype"
+icon = "icons/prototype.svg"
+menu_item = {
+    path = "Create/Prototype"
+    section = "GENERAL"
+    order = 130
+}

@@ -1,0 +1,63 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+            shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/ssr"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            ssr_enabled = {
+                type = ":bool"
+                default = true
+                editor = {
+                    label = "Enabled"
+                    description = "Are Screen-Space Reflections Enabled?"
+                }
+            }
+            ssr_surface_thickness_threshold = {
+                type = "core/types/range"
+                default = [0.001, 5]
+                value = {
+                    type = ":number"
+                    min = 0.0001
+                    max = 20
+                    editor = {
+                        step = 0.000001
+                    }
+                }
+                editor = {
+                    label = "Surface Thickness Threshold"
+                }
+            }
+            ssr_screen_edge_threshold = {
+                type = ":number"
+                default = 0.05
+                min = 0.01
+                max = 0.2
+                editor = {
+                    label = "Screen Edge Threshold"
+                    step = 0.00001
+                }
+            }
+        }
+        editor = {
+            category = "Screen-Space Reflections"
+            priority = 1400
+            icon = "picture-o"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+}

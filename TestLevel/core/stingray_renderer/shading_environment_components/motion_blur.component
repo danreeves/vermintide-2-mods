@@ -1,0 +1,48 @@
+export = "#component"
+types = {
+    component = {
+        type = ":struct"
+        implements = {
+            "core/types/component" = true
+        }
+        fields = {
+             shading_environment_mapping = {
+                type = ":resource"
+                extension = "shading_environment_mapping"
+                default = {
+                    "$resource_name" = "core/stingray_renderer/shading_environment_components/motion_blur"
+                    "$resource_type" = "shading_environment_mapping"
+                }
+                editor = {
+                    visible = false
+                }
+            }
+            motion_blur_enabled = {
+                type = ":bool"
+                default = false
+                editor = {
+                    label = "Enabled"
+                    description = "Is Motion Blur Enabled?"
+                }
+            }
+            motion_blur_amount = {
+                type = ":number"
+                default = 2.0
+                min = 0
+                max = 5
+                editor = {
+                    label = "Amount"
+                    step = 0.001
+                }
+            }
+        }
+        editor = {
+            category = "Motion Blur"
+            priority = 1600
+            icon = "forward"
+        }
+        metadata = {
+            component = "data"
+        }
+    }
+}

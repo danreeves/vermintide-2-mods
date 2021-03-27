@@ -1,0 +1,7 @@
+shading_component_mapping = {
+	bloom_enabled = { type="scalar" path=["bloom_enabled"]  }
+	bloom_threshold_offset_falloff = { type="vector3" ype="vector3" path={ x = ["bloom_threshold"] y = ["bloom_offset"] z = ["bloom_falloff"] }  }
+	global_lens_dirt_map = { type="resource" path=["global_lens_dirt_map"] }
+	bloom_lens_dirt_amount = { type="scalar" path=["bloom_lens_dirt_amount"]  }
+	bloom_tint = { type="color" path={ rgb = ["bloom_tint", "rgb"] intensity = ["bloom_tint", "intensity"] } }
+}

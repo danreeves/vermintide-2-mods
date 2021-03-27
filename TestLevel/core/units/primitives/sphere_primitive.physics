@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "Sphere_Primitive"
+		node = "Sphere_Primitive"
+		shapes = [
+			{
+				material = "default"
+				shape = "Sphere_Primitive"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]
