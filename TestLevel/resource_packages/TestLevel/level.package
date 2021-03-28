@@ -1,0 +1,10 @@
+/*  */
+/* level = [ */
+/*     "levels/mods/example_level/world" */
+/* ] */
+/*  */
+/* lua = [ */
+/*     "levels/mods/example_level/world_nav_tag_volumes" */
+/*     "levels/mods/example_level/world_smartobjects" */
+/*     "levels/mods/example_level/world_spawn_zones" */
+/* ] */

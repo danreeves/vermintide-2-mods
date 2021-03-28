@@ -111,6 +111,7 @@ editor_metadata = {
 		LastHiddenObjects = [
 		]
 		SkydomeUnit = "core/editor_slave/units/skydome/skydome"
+		ShadingEnvironment = "environment/default_honduras_02"
 		SoundEnvironment = ""
 		TimpaniSoundEnvironment = "default"
 	}
@@ -434,6 +435,7 @@ level_settings = {
 	num_background_units = 1
 	sound_environment = ""
 	timpani_sound_environment = "default"
+	/* shading_environment = "environment/default_honduras_02" */
 }
 navmeshes = [
 ]

@@ -97,3 +97,9 @@ mod:hook(AdventureSpawning, "get_spawn_point", function(func, self)
 
 	return func(self)
 end)
+
+mod:command("load", "", function()
+	Managers.package:load("resource_packages/breeds/skaven", "TestLevel", function()
+		mod:echo("loaded")
+	end)
+end)

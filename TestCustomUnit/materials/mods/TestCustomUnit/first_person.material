@@ -1113,6 +1113,7 @@ shader = {
 				"2b136447-676e-4943-997b-04a28ae68497"
 				"b2c7c0d2-beff-4b1a-a9d4-068a507625a2"
 				"b5bb2062-c8fa-43c5-8657-493a0be6860c"
+				"901b44ce-d128-498a-9912-32cd9635c556"
 			]
 			position = [
 				1360
@@ -1120,7 +1121,7 @@ shader = {
 			]
 			samplers = {
 			}
-			type = "core/stingray_renderer/output_nodes/standard_base"
+			type = "materials/mods/TestCustomUnit/shadowless_standard_base"
 		}
 	]
 	version = 2
