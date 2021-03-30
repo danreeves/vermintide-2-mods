@@ -1,0 +1,11 @@
+mod = [
+	"WeaponEditor"
+]
+
+package = [
+	"resource_packages/WeaponEditor/WeaponEditor"
+]
+
+lua = [
+	"scripts/mods/WeaponEditor/*"
+]
