@@ -99,6 +99,9 @@ function UnitExplorerUi.draw(self)
     Imgui.text(string.format("Hash: %s", data.hash))
     Imgui.text("Pos: " .. tostring(data.position:unbox()))
     Imgui.text("Rot: " .. tostring(data.rotation:unbox()))
+    -- Imgui.text("Has idle anim: " .. (data.has_idle_anim and "true" or "false"))
+    -- Imgui.text("Has state machine: " .. (data.has_animation_state_machine and "true" or "false"))
+    -- Imgui.text("Bone mode: " .. data.bone_mode)
 
     if Imgui.tree_node("Extensions", #data.extensions > 0) then
         for _, extension in ipairs(data.extensions) do

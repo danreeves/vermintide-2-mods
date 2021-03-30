@@ -1,0 +1,10 @@
+
+bones = "units/Badger/Badger"
+tolerance = {
+	"" = [
+		0.001
+		0.001
+		true
+		true
+	]
+}

@@ -1,0 +1,18 @@
+group = "Input/Skydome"
+display_name = "Skydome Tint Color"
+
+imports = {
+	skydome_tint_color = {
+		type = "float3"
+		domain = "global"
+		source = "shading_environment"
+	}
+}
+
+output = {
+	type = { typeof: "skydome_tint_color" }
+}
+
+code = """
+	RESULT(skydome_tint_color);
+"""

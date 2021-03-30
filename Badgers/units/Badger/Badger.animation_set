@@ -1,0 +1,12 @@
+
+animations = [
+	"units/Badger/anims/idle_eating"
+	"units/Badger/anims/idle_look"
+	"units/Badger/anims/idle"
+	"units/Badger/anims/run"
+	"units/Badger/anims/idle_kick"
+	"units/Badger/anims/walk"
+]
+offset_base = "units/Badger/anims/idle"
+preview_unit = "units/Badger/Badger"
+root_driving = "ignore"

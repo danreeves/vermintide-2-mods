@@ -1,0 +1,18 @@
+group = "Input/Skydome"
+display_name = "Skydome Flow Direction"
+
+imports = {
+	skydome_flow_direction = {
+		type = "float3"
+		domain = "global"
+		source = "shading_environment"
+	}
+}
+
+output = {
+	type = { typeof: "skydome_flow_direction" }
+}
+
+code = """
+	RESULT(skydome_flow_direction);
+"""

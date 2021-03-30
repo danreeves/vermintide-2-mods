@@ -1,0 +1,255 @@
+
+bones = "units/Badger/Badger"
+events = {
+	alerted = {
+	}
+	death = {
+	}
+	hit_reaction = {
+	}
+	idle = {
+	}
+	move_fwd = {
+	}
+	ragdoll = {
+	}
+	to_passive = {
+	}
+	walk = {
+	}
+}
+layers = [
+	{
+		default_state = "base/idle"
+		states = [
+			{
+				animations = [
+					"units/Badger/anims/idle_look"
+					"units/Badger/anims/idle"
+					"units/Badger/anims/idle_kick"
+				]
+				loop_animation = true
+				name = "base/idle"
+				randomization_type = "every_loop"
+				root_driving = "ignore"
+				speed = "1"
+				state_type = "regular"
+				transitions = [
+					{
+						blend_time = 0.2
+						event = "idle"
+						mode = "direct"
+						on_beat = ""
+						to = "base/idle"
+					}
+					{
+						blend_time = 0.2
+						event = "move_fwd"
+						mode = "direct"
+						on_beat = ""
+						to = "base/run"
+					}
+					{
+						blend_time = 0.2
+						event = "death"
+						mode = "direct"
+						on_beat = ""
+						to = "base/death"
+					}
+					{
+						blend_time = 0.2
+						event = "ragdoll"
+						mode = "direct"
+						on_beat = ""
+						to = "base/death"
+					}
+					{
+						blend_time = 0.2
+						event = "walk"
+						mode = "direct"
+						on_beat = ""
+						to = "base/walk"
+					}
+				]
+				weights = [
+					"1.0"
+					"3"
+					"3"
+				]
+			}
+			{
+				animations = [
+					"units/Badger/anims/run"
+				]
+				loop_animation = true
+				name = "base/run"
+				randomization_type = "every_loop"
+				root_driving = "ignore"
+				speed = "1"
+				state_type = "regular"
+				transitions = [
+					{
+						blend_time = 0.2
+						event = "idle"
+						mode = "direct"
+						on_beat = ""
+						to = "base/idle"
+					}
+					{
+						blend_time = 0.2
+						event = "move_fwd"
+						mode = "direct"
+						on_beat = ""
+						to = "base/run"
+					}
+					{
+						blend_time = 0.2
+						event = "death"
+						mode = "direct"
+						on_beat = ""
+						to = "base/death"
+					}
+					{
+						blend_time = 0.2
+						event = "ragdoll"
+						mode = "direct"
+						on_beat = ""
+						to = "base/death"
+					}
+					{
+						blend_time = 0.2
+						event = "walk"
+						mode = "direct"
+						on_beat = ""
+						to = "base/walk"
+					}
+				]
+				weights = [
+					"1.0"
+				]
+			}
+			{
+				animations = [
+					"units/Badger/anims/walk"
+				]
+				loop_animation = true
+				name = "base/walk"
+				randomization_type = "every_loop"
+				root_driving = "ignore"
+				speed = "1"
+				state_type = "regular"
+				transitions = [
+					{
+						blend_time = 0.2
+						event = "idle"
+						mode = "direct"
+						on_beat = ""
+						to = "base/idle"
+					}
+					{
+						blend_time = 0.2
+						event = "move_fwd"
+						mode = "direct"
+						on_beat = ""
+						to = "base/run"
+					}
+					{
+						blend_time = 0.2
+						event = "death"
+						mode = "direct"
+						on_beat = ""
+						to = "base/death"
+					}
+					{
+						blend_time = 0.2
+						event = "ragdoll"
+						mode = "direct"
+						on_beat = ""
+						to = "base/death"
+					}
+					{
+						blend_time = 0.2
+						event = "walk"
+						mode = "direct"
+						on_beat = ""
+						to = "base/walk"
+					}
+				]
+				weights = [
+					"1.0"
+				]
+			}
+			{
+				name = "base/death"
+				ragdoll = "ragdoll"
+				state_type = "ragdoll"
+				transitions = [
+					{
+						blend_time = 0.2
+						event = "idle"
+						mode = "direct"
+						on_beat = ""
+						to = "base/idle"
+					}
+					{
+						blend_time = 0.2
+						event = "move_fwd"
+						mode = "direct"
+						on_beat = ""
+						to = "base/run"
+					}
+					{
+						blend_time = 0.2
+						event = "death"
+						mode = "direct"
+						on_beat = ""
+						to = "base/death"
+					}
+					{
+						blend_time = 0.2
+						event = "ragdoll"
+						mode = "direct"
+						on_beat = ""
+						to = "base/death"
+					}
+					{
+						blend_time = 0.2
+						event = "walk"
+						mode = "direct"
+						on_beat = ""
+						to = "base/walk"
+					}
+				]
+			}
+		]
+	}
+]
+ragdolls = {
+	ragdoll = {
+		actors = [
+			"j_head"
+			"j_hips"
+			"j_leftfoot"
+			"j_leftforearm"
+			"j_lefthand"
+			"j_leftleg"
+			"j_leftshoulder"
+			"j_leftupleg"
+			"j_neck"
+			"j_rightfoot"
+			"j_rightforearm"
+			"j_righthand"
+			"j_rightleg"
+			"j_rightshoulder"
+			"j_rightupleg"
+			"j_spine"
+			"j_spine1"
+			"j_spine2"
+		]
+		keyframed = [
+		]
+	}
+}
+variables = {
+	move_speed = 0
+}

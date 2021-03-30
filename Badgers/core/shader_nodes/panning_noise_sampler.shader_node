@@ -1,0 +1,46 @@
+group = "Sampling"
+display_name = "Panning Noise"
+inputs = {
+	"6748e838-7e98-4e9b-86bf-fff7190b34d7" = { name = "texcoord" display_name = "UV" type = "vector2" domain = "pixel" }
+	"7f8a43d0-4bc4-46cc-b690-64bf6c4d5e0a" = { name = "time" display_name = "Time" type = "scalar" }
+	"321b69cb-08b3-4f4f-b176-b2f51d6db80b" = { name = "speed" display_name = "Speed" type = "vector2" }
+	"4a31468f-40ca-4f72-a51d-7880d9cfc248" = { name = "octaves" display_name = "Octaves" type = "vector3" }
+	"da77d86d-3899-439b-ade6-7c9f5f2fab5a" = { name = "gradients" display_name = "Gradients" type = "vector3" }
+}
+
+domain = "pixel"
+output = {
+	type = "float4"
+}
+
+ui = [
+
+]
+
+code_blocks = {
+	default = {
+		language = "hlsl"
+		samplers = {
+			texture_map = {
+				display_name = "Texture"
+				type = "2d"
+				sampler_state = "core/shader_nodes/graph_common#default_node_sampler"
+				source = "material"
+			}
+		}
+
+		code = """
+			float4 result = 0;
+			half2 perlin0_uv = texcoord * octaves.x + speed * time;
+			half2 perlin1_uv = texcoord * octaves.y + speed * time;
+			half2 perlin2_uv = texcoord * octaves.z + speed * time;				
+			float4 perlin0 = TEX2D(texture_map, perlin0_uv);
+			float4 perlin1 = TEX2D(texture_map, perlin1_uv);
+			float4 perlin2 = TEX2D(texture_map, perlin2_uv);
+			
+			float4 perlin = perlin0 * gradients.x + perlin1 * gradients.y + perlin2 * gradients.z;	
+
+			RESULT(perlin);
+		"""
+	}
+}

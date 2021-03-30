@@ -1,0 +1,27 @@
+group = "Decode&Encode"
+display_name = "Decode Normal Map"
+
+inputs = {
+	"e796d926-3c92-46c5-8aa4-0351529e310e" = { name = "normal" display_name = "Normal (Reconstruct Z)" type = { vector2: ["HAS_NORMAL2"] } is_required = false }
+	"e53657b4-36f9-48d5-8bfd-572552b56fdf" = { name = "normal" display_name = "Normal" type = { vector3: ["HAS_NORMAL3"] } is_required = false }
+}
+
+output = {
+	type = "float3"
+}
+
+language = "hlsl"
+code = """
+	#if defined(HAS_NORMAL2) && defined(HAS_NORMAL3)
+		#error You can't have a normal in both inputs in Decode Normal Map 
+	#elif defined(HAS_NORMAL2)
+		// TODO: move to common
+		float2 temp = 2.0 * (normal - 0.5); 
+		float3 reconstructed_normal = new_half3(temp.x, temp.y, sqrt(max(1.0 - dot(temp.xy, temp.xy), 0.0)));
+		RESULT(reconstructed_normal);
+	#elif defined(HAS_NORMAL3)
+		RESULT(decode_signed_normal(normal));
+	#else
+		#error You need a normal input to Decode Normal Map 
+	#endif
+"""

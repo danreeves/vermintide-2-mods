@@ -1,0 +1,15 @@
+mod = [
+	"Badgers"
+]
+
+package = [
+	"resource_packages/Badgers/Badgers"
+]
+
+lua = [
+	"scripts/mods/Badgers/*"
+]
+
+unit = [
+	"units/Badger/*"
+]

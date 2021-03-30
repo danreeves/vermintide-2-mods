@@ -30,6 +30,9 @@ function mod.extract_unit_data(unit)
         end
 
         data.from_game_mode = Unit.get_data(unit, "from_game_mode")
+        -- data.has_idle_anim = Unit.has_animation_event(unit, "idle")
+        -- data.has_animation_state_machine = Unit.has_animation_state_machine(unit)
+        -- data.bone_mode = Unit.animation_bone_mode(unit)
     end
 
     return data

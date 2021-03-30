@@ -1,0 +1,20 @@
+group = "Input"
+display_name = "Emissive Intensity"
+
+imports = {
+	emissive_intensity = {
+		type = "float"
+		domain = "global"
+		source = "engine"
+	}
+}
+
+defines = ["NEEDS_EMISSIVE_INTENSITY"]
+
+output = {
+	type = { typeof: "emissive_intensity" }
+}
+
+code = """
+	RESULT(emissive_intensity);
+"""

@@ -1,0 +1,18 @@
+group = "Input/Environment"
+display_name = "Sun Color"
+
+imports = {
+	sun_color = {
+		type = "float3"
+		domain = "global"
+		source = "engine"
+	}
+}
+
+output = {
+	type = { typeof: "sun_color" }
+}
+
+code = """
+	RESULT(sun_color);
+"""

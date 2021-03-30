@@ -1,0 +1,222 @@
+hlsl_shaders ={
+	volumetric_lighting_common = {
+		vp_code = { ref = "code" }
+		fp_code = { ref = "code" }
+		code = """
+
+			// Space Conversion:
+			// • 	Local space is a resolution-independent coordinate system that maps the full extents of the voxel buffer
+			// 		to a [0, 1] space.
+			//
+			// Fog volume Dimensions
+			// near plane = camera near
+			// far place = camera near + volumetric_distance
+
+
+			uint continous_to_discrete(float cont_coord)
+			{
+				return uint(floor(cont_coord));
+			}
+
+			float discrete_to_continous(uint disc_coord)
+			{
+				return float(disc_coord) + 0.5;
+			}
+
+
+			// UNIFORM
+			float world_to_local_uniform(float z_w, float dist)
+			{
+				float z_local = z_w / dist;
+				return z_local;
+			}
+			float local_to_world_uniform(float z_local, float dist)
+			{
+				float z_w = z_local * dist;
+				return z_w;
+			}
+
+			// LOGARITHMIC
+			float world_to_local_log(float z_w, float dist)
+			{
+					float first_slice_depth = 2.5;
+					float z_local = log(z_w) / log(dist);
+					//float z_local = (log(z_w / first_slice_depth) / log(dist / first_slice_depth));
+					return z_local;
+			}
+			float local_to_world_log(float z_local, float dist)
+			{
+				float z_w = pow(dist, z_local);
+				return z_w;
+			}
+
+			// LOGARITHMIC, Special Slice
+			float world_to_local_log_special(float z_w, float dist)
+			{
+					float first_slice_depth = 5.0;
+					float z_local = log(z_w / first_slice_depth) / log(dist / first_slice_depth);
+					return z_local;
+			}
+			float local_to_world_log_special(float z_local, float dist)
+			{
+				float first_slice_depth = 5.0;
+				float z_w = pow(first_slice_depth, 1.0 - z_local) * pow(dist, z_local);
+				return z_w;
+			}
+
+			// conversion interface
+			float linear_to_froxel_depth(float linear_depth, float dist, float2 uv)
+			{
+				float z_w = linear_depth - camera_near_far.x;
+				return world_to_local_log(z_w, dist);
+			}
+			float froxel_to_linear_depth(float froxel_z, float inv_froxel_size_z, float dist, float2 uv)
+			{
+				float z_local = froxel_z * inv_froxel_size_z;
+				return local_to_world_log(z_local, dist) + camera_near_far.x;
+			}
+
+
+			
+			#define MIN_EXTINCTION 0.0000003
+
+			float calculate_height_fog_extinction(float3 wp, float3 fog_settings)
+			{
+				return fog_settings.x*max((fog_settings.y - wp.z)/fog_settings.z, 0.0);
+			}
+
+			float global_extinction(float3 wp)
+			{
+				float ot = volumetric_extinction;
+				ot += calculate_height_fog_extinction(wp, fog0_settings);
+				ot += calculate_height_fog_extinction(wp, fog1_settings);
+				return ot;
+			}
+
+			void calculate_global_volumetric_data(
+									const float3 L,
+									const float3 V,
+									SamplerCube global_diffuse_map,
+									const half sun_shadow,
+									const half phase,
+									out float3 sun_scattering, 
+									out float3 ambient)
+			{
+				// TODO: pass ambient and sun intensity... since we can reuse them from the global lighting
+
+				sun_scattering = volumetric_bsdf(L, V, sun_color, sun_enabled*sun_shadow, phase);
+				
+				half3 ambient_tint_color = (ambient_tint_top_enabled > 0.0 ? lerp(ambient_tint, ambient_tint_top, -V.z*phase*0.5+0.5) : ambient_tint) * ambient_global_tint;
+				#if defined(D3D11)
+					// Remove ambient tint from cube map baking, since will have an exponential effect on the result.
+					ambient_tint_color = (capture_cubemap == 1) ? 1.0 : ambient_tint_color;
+				#endif
+
+				// TODO: maybe we want to sample the global diffuse two times and then lerp on the phase, since now get can get a ZERO length normal
+				ambient = (global_probe_rgbm_encoded ? 
+					rgbm_decode(TEXCUBELOD(global_diffuse_map, -phase * V, 0)) :
+					TEXCUBELOD(global_diffuse_map, -phase * V, 0)) * ambient_tint_color;
+			}
+
+			void calculate_volumetric_lighting(const float dx,
+									const float3 sun_scattering,
+									const float3 local_light_scattering,
+									const float3 ambient,
+									const float3 emissive,
+									const float3 albedo,
+									const float extinction,
+									out float3 S_int, 
+									out float exp_sigma_dx)
+			{
+				float3 S = (
+					sun_scattering * volumetric_global_light_multiplier + 
+					local_light_scattering * volumetric_local_light_multiplier + 
+					ambient * volumetric_ambient_multiplier + 
+					emissive) * albedo;
+				exp_sigma_dx = exp(-extinction * dx);
+				S_int = extinction < MIN_EXTINCTION ? 0.0 : (S - S * exp_sigma_dx);
+			}
+
+			void calculate_volumetric_lighting_simple(
+					const float3 V,
+					SamplerCube global_diffuse_map,
+					const float dx,
+					const float extinction,
+					const float sun_shadow,
+					out float3 S_int, 
+					out float exp_sigma_dx)
+			{
+				float3 L = sun_direction;
+				
+				float3 sun_scattering = 0.0;
+				float3 ambient = 0.0;
+				calculate_global_volumetric_data(L, V, global_diffuse_map, sun_shadow, volumetric_phase, sun_scattering, ambient);
+
+				const float3 local_light_scattering = 0.0;
+				const float3 emissive = 0.0;
+				const float3 albedo = fog_color;
+				calculate_volumetric_lighting(dx, sun_scattering, local_light_scattering, ambient, emissive, albedo, extinction, S_int, exp_sigma_dx);
+			}
+			
+			float4 calc_volumetric_fog_data(SamplerCube global_diffuse_map, float3 wp, float3 V, float start, float end) {
+				const float dx = end - start;
+
+				float3 S_int;
+				float exp_sigma_dx;
+				const half shadow_mask = 1.0;
+				calculate_volumetric_lighting_simple(V, global_diffuse_map, dx, global_extinction(wp), shadow_mask, S_int, exp_sigma_dx);
+
+				float3 scattering = S_int;
+				float transmittance = exp_sigma_dx;
+
+				return float4(scattering, saturate(1.0 - transmittance));
+			}
+
+			float4 sample_fog_volume(Sampler3D fog_volume, float2 uv, float depth)
+			{
+				float layer = linear_to_froxel_depth(depth, volumetric_distance, uv);
+				float3 uvw = float3(uv, layer);
+				float4 fog_data = TEX3DLOD(fog_volume, uvw, 0.0);
+				return fog_data;
+			}
+
+			float4 apply_fog_data(float4 color, float4 fog_data) {
+				return float4(color.rgb * (1.0 - fog_data.a) + fog_data.rgb, color.a);
+			}
+
+			float4 calc_fog_data(Sampler3D fog_volume, SamplerCube global_diffuse_map, float3 wp, float d, float2 uv) {
+				if (fog_enabled < 1.0)
+					return float4(0,0,0,0);
+				
+				const float3 V = normalize(camera_world._m30_m31_m32 - wp);
+
+				float4 result = 0;
+				[branch]
+				if (volumetric_lighting_enabled) {
+					result = sample_fog_volume(fog_volume, uv, d);
+					
+					// sample outside volume
+					[branch]
+					if (d > (camera_near_far.x + volumetric_distance)) {
+						float3 scattering = result.rgb;
+						float transmittance = 1.0 - result.a;
+						float4 new_result = calc_volumetric_fog_data(global_diffuse_map, wp, V, camera_near_far.x + volumetric_distance, d);
+						scattering += transmittance * new_result.rgb;
+						transmittance *= (1.0 - new_result.a);
+						result = float4(scattering, saturate(1.0 - transmittance));
+					}
+				} else {
+					result = calc_volumetric_fog_data(global_diffuse_map, wp, V, camera_near_far.x, d);
+				}
+
+				return result;
+			}
+
+			half4 apply_fog(Sampler3D fog_volume, SamplerCube global_diffuse_map, half4 c, float3 wp, float d, float2 uv) {
+				float4 fog_data = calc_fog_data(fog_volume, global_diffuse_map, wp, d, uv);
+				return apply_fog_data(c, fog_data);
+			}
+
+		"""
+	}
+}

@@ -1,0 +1,18 @@
+group = "Input/Skydome"
+display_name = "Skydome Intensity"
+
+imports = {
+	skydome_intensity = {
+		type = "float"
+		domain = "global"
+		source = "shading_environment"
+	}
+}
+
+output = {
+	type = { typeof: "skydome_intensity" }
+}
+
+code = """
+	RESULT(skydome_intensity);
+"""

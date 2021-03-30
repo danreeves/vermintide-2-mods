@@ -1,0 +1,151 @@
+group = "Sampling"
+display_name = "Flow Sampler"
+inputs = {
+	"df634903-4aac-42b7-8669-204baecd7d52" = { name = "_texcoord" display_name = "UV" type = "vector2" domain = "pixel" }
+	"571d3d20-57c8-4602-887f-fd66848ce65e" = { name = "mip_level" is_required = false display_name = "Mip Level" type = { scalar: ["HAS_MIPLEVEL"] } }
+	"07bde80a-6386-407b-83ac-a38dc527c0ee" = { name = "time" display_name = "Time" type = "scalar" }
+	"af2b0495-37d8-4675-8a09-191a6e45de8d" = { name = "flow_vector" display_name = "Flow Vector" type = "vector2" }
+	"28774a97-bf5e-462f-b56e-790d84fd12f9" = { name = "scale" display_name = "Flow Scale" type = { auto: ["HAS_SCALE"] } }
+}
+
+domain = "pixel"
+output = {
+	type = "float4"
+}
+
+options = {
+	"f04cc500-7190-4b7a-8067-0befb31391b9" = "ADDRESS_CLAMP"
+	"b4f49704-4213-4d6e-b7e9-fb52bed1c70a" = "ADDRESS_WRAP"
+	"c8b88589-9193-4f95-9e02-28bedb7fc739" = "FILTER_LINEAR"
+	"237d9efe-2ad5-4777-aa75-d7c619687f2e" = "FILTER_POINT"
+	"6cf60ff3-8096-49fc-baf9-fa0ddaee86ea" = "FILTER_ANISOTROPIC"
+	"8523c557-fbd3-4f4c-bd74-b63386a28542" = "SRGB"
+    "f229b3d5-8fe8-43e0-a6ac-ab980f951718" = "NORMAL_MAP_DECODE"
+    "8bc2b4b4-7432-449a-b8ed-ca5d0aacd7af" = "RGBM_DECODE"
+    "5c98add5-3762-45a3-926e-cdf58647ab5d" = "LINEAR"
+    "d2019219-17bb-44c7-a6d7-60a9b86412e4" = "FLIP_GREEN"
+    "849897fa-8ec9-4ad7-883f-ea9bcc5c7430" = "NORMAL_ROUGHNESS_DECODE"
+}
+
+ui = [
+	{
+		type = "drop_down"
+		display_name = "Encoding"
+		options = {
+			"Linear Color" 			= "5c98add5-3762-45a3-926e-cdf58647ab5d"
+			"sRGB Color" 			= "8523c557-fbd3-4f4c-bd74-b63386a28542"
+			"Normal Map" 			= "f229b3d5-8fe8-43e0-a6ac-ab980f951718"
+			"Normal Roughness Map" 	= "849897fa-8ec9-4ad7-883f-ea9bcc5c7430"
+			"RGBM Color" 			= "8bc2b4b4-7432-449a-b8ed-ca5d0aacd7af"
+		}
+		default = "8523c557-fbd3-4f4c-bd74-b63386a28542"
+	}
+	{
+		type = "drop_down"
+		display_name = "Address mode"
+		options = {
+			"Clamp" = "f04cc500-7190-4b7a-8067-0befb31391b9"
+			"Wrap" 	= "b4f49704-4213-4d6e-b7e9-fb52bed1c70a"
+		}
+		default = "b4f49704-4213-4d6e-b7e9-fb52bed1c70a"
+	}
+	{
+		type = "drop_down"
+		display_name = "Filter mode"
+		options = {
+			"Anisotropic"	= "6cf60ff3-8096-49fc-baf9-fa0ddaee86ea"
+			"Linear" 		= "c8b88589-9193-4f95-9e02-28bedb7fc739"
+			"Point" 		= "237d9efe-2ad5-4777-aa75-d7c619687f2e"
+		}
+		default = "c8b88589-9193-4f95-9e02-28bedb7fc739"
+	}
+	{ type = "checkbox" display_name = "Invert Green Channel" option = "0268506C-B417-49DC-BBBE-3D5949595940" }
+]
+
+code_blocks = {
+	default = {
+		include: ["core/stingray_renderer/shader_libraries/flow_common#flow_common"]
+		language = "hlsl"
+		samplers = {
+			texture_map = {
+				display_name = "Texture"
+				type = "2d"
+				sampler_state = "core/shader_nodes/graph_common#default_node_sampler"
+				source = "material"
+			}
+		}
+
+		code = """
+			float2 x = time + float2(0.0, 0.5);
+			float4 offsets = scale * flow_scale(x).xxyy * flow_vector.xyxy;
+			float weight = flow_weight(x.x);
+
+			float4 texcoords = _texcoord.xyxy + offsets;
+
+			float4 result0;
+			float4 result1;
+			#if defined(HAS_MIPLEVEL)
+				result0 = TEX2DLOD(texture_map, texcoords.xy, mip_level);
+				result1 = TEX2DLOD(texture_map, texcoords.zw, mip_level);
+			#else
+				result0 = TEX2D(texture_map, texcoords.xy);
+				result1 = TEX2D(texture_map, texcoords.zw);
+			#endif
+				
+			#if defined(FLIP_GREEN)
+				result0.y = 1.0-result0.y;
+				result1.y = 1.0-result1.y;
+			#endif
+
+			#if defined(RENDERER_GL) && defined(SRGB)
+				result0 = fast_gamma_to_linear_rgb(result0);
+				result1 = fast_gamma_to_linear_rgb(result1);
+			#endif
+
+			#if defined(NORMAL_MAP_DECODE)
+				result0 = float4(decode_normal_map(result0), result0.a);
+				result1 = float4(decode_normal_map(result1), result1.a);
+			#elif defined(RGBM_DECODE)
+				result0 = float4(rgbm_decode(result0), result0.a);
+				result1 = float4(rgbm_decode(result1), result1.a);
+			#elif defined(NORMAL_ROUGHNESS_DECODE)
+				{
+					float3 N = 2.0*result0.rgb - 1.0;
+					float roughness = result0.a;
+					#if 0
+						// Specular AA
+						// TODO: Pre-bake this code
+						// http://blog.selfshadow.com/publications/s2013-shading-course/rad/s2013_pbs_rad_notes.pdf
+						float r = length(N);
+						if (r < 1.0) {
+							float rr = r * r ;
+							float kappa = (3.0 * r - r * rr) / (1.0 - rr) ;
+							float variance = 1.0 / (2.0 * kappa) ;
+							roughness = sqrt (roughness * roughness + variance);
+						 }
+					#endif
+					result0 = float4(normalize(N), roughness);
+				}
+				{
+					float3 N = 2.0*result1.rgb - 1.0;
+					float roughness = result1.a;
+					#if 0
+						// Specular AA
+						// TODO: Pre-bake this code
+						// http://blog.selfshadow.com/publications/s2013-shading-course/rad/s2013_pbs_rad_notes.pdf
+						float r = length(N);
+						if (r < 1.0) {
+							float rr = r * r ;
+							float kappa = (3.0 * r - r * rr) / (1.0 - rr) ;
+							float variance = 1.0 / (2.0 * kappa) ;
+							roughness = sqrt (roughness * roughness + variance);
+						 }
+					#endif
+					result1 = float4(normalize(N), roughness);
+				}
+			#endif
+
+			RESULT(lerp(result1, result0, weight));
+		"""
+	}
+}

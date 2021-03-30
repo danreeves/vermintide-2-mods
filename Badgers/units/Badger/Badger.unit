@@ -1,0 +1,228 @@
+
+animation_state_machine = "units/Badger/Badger"
+data = {
+}
+materials = {
+	BadgerMat = "units/Badger/Badger"
+}
+renderables = {
+	Badger = {
+		always_keep = false
+		culling = "bounding_volume"
+		generate_uv_unwrap = false
+		occluder = false
+		shadow_caster = true
+		surface_queries = false
+		viewport_visible = true
+	}
+}
+lod = [
+	{
+		bounding_volume = "Badger"
+		name = "lod"
+		orientation = "Badger"
+		steps = [
+			{
+				renderables = [
+					"Badger"
+				]
+				visible_height_range = [
+					100
+					0
+				]
+			}
+		]
+	}
+]
+movers = [
+	{
+		collision_filter = "filter_ai_mover"
+		height = 1.2
+		name = "mover"
+		radius = 1
+		slope_limit = 0.785398163397448
+	}
+]
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "Badger"
+		node = "Badger"
+		shapes = [
+			{
+				material = "units/Badger/Badger"
+				shape = "Badger"
+				template = "enemy_hit_box"
+				type = "sphere"
+			}
+		]
+		template = "keyframed_no_collision"
+	}
+]
+physx_scene = {
+	actors = {
+		j_head = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_hips = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_leftfoot = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_leftforearm = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_lefthand = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_leftleg = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_leftshoulder = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_leftupleg = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_neck = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_rightfoot = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_rightforearm = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_righthand = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_rightleg = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_rightshoulder = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_rightupleg = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_spine = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_spine1 = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+		j_spine2 = {
+			enabled = false
+			shapes = {
+				Badger = {
+					material = "flesh"
+					template = "ragdoll"
+				}
+			}
+		}
+	}
+}

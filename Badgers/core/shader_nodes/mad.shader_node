@@ -1,0 +1,15 @@
+group = "Math"
+display_name = "Multiply and Add"
+inputs = {
+	"bba139ea-6d8c-43c8-8211-4c566e9c6e52" = { name = "a" display_name = "X" type = "auto" }
+	"e7a05b7b-e563-44ad-b328-e882d4adc6f9" = { name = "b" display_name = "Mul" type = "auto" }
+	"e2b41105-c0e5-4f6e-a2a2-0aa9649e403b" = { name = "c" display_name = "Add" type = "auto" }
+}
+
+output = {
+	type = { largestof: ["a", "b", "c"] }
+}
+
+code = """
+	RESULT(a * b + c);
+"""

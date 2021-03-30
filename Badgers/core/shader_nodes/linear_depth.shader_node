@@ -1,0 +1,34 @@
+group = "Fatshark"
+display_name = "Background Depth"
+
+depends_on = [
+	"core/stingray_renderer/output_nodes/standard_base"
+	"core/stingray_renderer/output_nodes/unlit_base", 
+	"core/stingray_renderer/output_nodes/particle_base", 
+	"core/stingray_renderer/output_nodes/particle_gbuffer_base", 
+	"core/stingray_renderer/output_nodes/particle_distortion_base"]
+
+imports = {
+	screen_pos = {
+		type = "float2"
+		domain = "pixel"
+		output_channel = "screen_pos"
+	}
+}
+
+defines = ["NEEDS_LINEAR_DEPTH", "NEEDS_SCREEN_POS"]
+
+domain = "pixel"
+output = {
+	type = "float"
+}
+
+language = "hlsl"
+code = """
+	#if defined(HAS_LINEAR_DEPTH)
+		float result = gbuffer_decode_depth(TEX2D(linear_depth, screen_pos.xy));
+	#else
+		float result = 0.0;
+	#endif
+	RESULT(result);
+"""

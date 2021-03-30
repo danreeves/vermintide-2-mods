@@ -1,0 +1,15 @@
+group = "Decode&Encode"
+display_name = "Decode RGBM"
+
+inputs = {
+	"1386312f-da3c-46f7-af9e-5cbaf8ca133d" = { name = "value" display_name = "RGBM" type = "vector4" }
+}
+
+output = {
+	type = "float3"
+}
+
+language = "hlsl"
+code = """
+	RESULT(rgbm_decode(value));
+"""

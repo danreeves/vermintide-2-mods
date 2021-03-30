@@ -1,0 +1,20 @@
+group = "Transform"
+display_name = "Tangent YZ Projection"
+inputs = {
+	"e64f1ed2-7ce3-4727-8716-069a3cb12a2d" = { name = "N" display_name = "World Normal" type="vector3" }
+	"b8a09136-c1f4-4b64-a873-7f399f40e1ab" = { name = "tnormal" display_name = "Tangent Normal" type="vector3" }
+
+}
+
+output = {
+	type = "float3"
+}
+
+// Code based on Unreal Engine WolrdAlignedNormals node
+code = """
+	//float cosN = dot(N, float3(1.0, 0.0, 0.0));
+	float cosN = N.x;
+	float m = cosN > 0.0 ? 1.0 : -1.0;
+	float3 result = float3(m, -1.0, 1.0) * tnormal;
+	RESULT(result);
+"""
