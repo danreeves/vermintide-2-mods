@@ -1,0 +1,31 @@
+group = "Sampling"
+display_name = "Sample Offscreen Buffer"
+inputs = {
+	"1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3" = { name = "texcoord" display_name = "UV" type = "vector2" domain = "pixel" }
+}
+
+domain = "pixel"
+output = {
+	type = "float4"
+}
+
+code_blocks = {
+	default = {
+		language = "hlsl"
+		samplers = {
+			offscreen_buffer = {
+				sampler_state = "core/stingray_renderer/shader_libraries/common#clamp_linear"
+				source = "resource_set"
+				slot_name = "offscreen_buffer"
+				type = "2d"
+			}
+		}
+
+		code = """
+			float4 result;
+			result = TEX2D(offscreen_buffer, texcoord);
+
+			RESULT(result);
+		"""
+	}
+}

@@ -3,12 +3,12 @@ materials = {
 }
 renderables = {
 	pumpkin = {
-		always_keep = false
+		always_keep = true
 		culling = "bounding_volume"
 		generate_uv_unwrap = false
-		occluder = false
+		occluder = true
 		shadow_caster = true
-		surface_queries = false
+		surface_queries = true
 		viewport_visible = true
 	}
 }

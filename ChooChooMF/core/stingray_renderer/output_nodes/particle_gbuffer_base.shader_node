@@ -1,0 +1,332 @@
+group = "Output/Particles"
+display_name = "GBuffer Base"
+output_node = true
+render_configs = ["core/stingray_renderer/renderer"]
+
+inputs = {
+	"f47209cb-36b0-499c-8c37-857888098e1c" = {
+		name = "base_color"
+		is_required = false
+		display_name = "Base Color"
+		type = { vector3: ["HAS_BASE_COLOR"] }
+		domain = "pixel"
+	}
+
+	"2edbfd6b-4985-4acd-ad0e-cbafb0272a27" = {
+		name = "opacity"
+		is_required = false
+		display_name = "Opacity"
+		type = { scalar: ["HAS_OPACITY"] }
+		domain = "pixel"
+	}
+
+	"9b191b4d-05f1-4f21-b883-d34d9c440b99" = {
+		name = "opacity_threshold"
+		is_required = false
+		display_name = "Opacity Threshold"
+		type = { scalar: ["HAS_OPACITY_THRESHOLD"] }
+		domain = "pixel"
+	}
+
+	"4d3bf516-a2b7-4709-b973-707ebf593845" = {
+		is_required = false
+		name = "normal"
+		display_name = "Normal"
+		type = { vector3: ["HAS_NORMAL"] }
+		domain = "pixel"
+	}
+
+	"98d6ab4a-2569-415d-82c4-ab8115438a28" = {
+		is_required = false
+		name = "metallic"
+		display_name = "Metallic"
+		type = { scalar: ["HAS_METALLIC"] }
+		domain = "pixel"
+	}
+
+	"2a34232c-88b9-485e-b009-9d3470d02943" = {
+		is_required = false
+		name = "roughness"
+		display_name = "Roughness"
+		type = { scalar: ["HAS_ROUGHNESS"] }
+		domain = "pixel"
+	}
+
+	"de457689-fece-4f4d-87fd-4660cbbf0473" = {
+		is_required = false
+		name = "emissive"
+		display_name = "Emissive"
+		type = { vector3: ["HAS_EMISSIVE"] }
+		domain = "pixel"
+	}
+
+	"cfd2c734-e369-47db-b315-41a9bcacc441" = {
+		is_required = false
+		name = "ambient_occlusion"
+		display_name = "Ambient Occlusion"
+		type = { scalar: ["HAS_AMBIENT_OCCLUSION"] }
+		domain = "pixel"
+	}
+
+	"0b98dd24-58ac-4ffc-b12f-43c68c4a3b79" = {
+		is_required = false
+		name = "sss_strength"
+		display_name = "Skin SSS"
+		type = { scalar: ["HAS_SKIN_SSS_STRENGTH"] }
+		domain = "pixel"
+	}
+
+	"09b560d7-08e0-429b-b8fd-dcb53fad87d6" = {
+		is_required = false
+		name = "refraction"
+		display_name = "Refraction"
+		type = { scalar: ["HAS_REFRACTION"] }
+		domain = "pixel"
+	}
+
+	"cda3c961-3e1c-4068-a369-64549b30b130" = {
+		is_required = false
+		name = "density"
+		display_name = "Density"
+		type = { scalar: ["HAS_DENSITY"] }
+		domain = "pixel"
+	}
+
+	"8403467c-9cd5-4422-9e00-351764f4a976" = {
+		is_required = false
+		name = "density_shadow_bias"
+		display_name = "Density Shadow Bias"
+		type = { scalar: ["HAS_DENSITY_SHADOW_BIAS"] }
+		domain = "pixel"
+	}
+
+	"f2bce69a-2a07-46e3-abf7-00914d588bd4" = {
+		is_required = false
+		name = "clear_coat"
+		display_name = "Clear Coat Roughness"
+		type = { scalar: ["HAS_CLEARCOAT_ROUGHNESS"] }
+		domain = "pixel"
+	}
+
+	"3516fdea-c7af-449e-a1fc-d916922d4ba5" = {
+		is_required = false
+		name = "cloth_falloff"
+		display_name = "Cloth Falloff"
+		type = { scalar: ["HAS_CLOTH_FALLOFF"] }
+		domain = "pixel"
+	}
+}
+
+options = {
+	"2b136447-676e-4943-997b-04a28ae68497" = "WORLD_SPACE_NORMAL"
+	"f38425db-9f78-4f2c-95ba-634a367b7aed" = "SCREEN_SPACE"
+	"3eca2035-4349-4d1a-ae8b-6b1d8b91033f" = "HAS_CUSTOM_FOV"
+
+	"ad2675d1-aa34-4258-818b-7abaedf1c57c" = "TRANSPARENT"
+	"10e303eb-3a07-40b2-aee1-2412d02e9755" = "TRANSPARENT_FADE"
+	"915ce650-2005-4060-ba0a-79c2f715ece1" = "DEFERRED_DECALS_GROUP_1"
+	"04496bf4-e0a8-4e71-aa25-52eaf7e70536" = "DEFERRED_DECALS_GROUP_2"
+	"ca021d6d-328c-4b3e-a18b-8d7e96b84bac" = "DEFERRED_DECALS_GROUP_3"
+
+	"f8a9e2d0-d0c6-4c9e-8645-34c04db1a3d8" = "TRANSLUCENT_MATERIAL"
+	"38ec0f9e-9f99-4162-b267-7e6b78fa2f9a" = "CLOTH_MATERIAL"
+	"e0e38010-1b45-4a46-9cc9-3ab53ad72c60" = "HAIR_MATERIAL"
+	"5a787813-d96e-465e-a546-68ad2fc659c6" = "CLEAR_COAT_MATERIAL"
+	"3ecee496-fc29-4617-bdfa-58d77a05c4ff" = "SKIN"
+}
+
+ui = [
+	{
+		type = "drop_down"
+		display_name = "Turn-up Algorithms"
+		options = {
+			"Disabled"		= "00000000-0000-0000-0000-000000000000"
+			"Screen Space"	= "f38425db-9f78-4f2c-95ba-634a367b7aed"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{
+		type = "drop_down"
+		display_name = "Material Type"
+		options = {
+			"Default"			= "00000000-0000-0000-0000-000000000000"
+			"Translucent"		= "f8a9e2d0-d0c6-4c9e-8645-34c04db1a3d8"
+			"Cloth"				= "38ec0f9e-9f99-4162-b267-7e6b78fa2f9a"
+			"Fur/Hair"			= "e0e38010-1b45-4a46-9cc9-3ab53ad72c60"
+			"Clear Coat"		= "5a787813-d96e-465e-a546-68ad2fc659c6"
+			"Skin"				= "3ecee496-fc29-4617-bdfa-58d77a05c4ff"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{
+		type = "drop_down"
+		display_name = "Normals In"
+		options = {
+			"Tangent Space"	= "00000000-0000-0000-0000-000000000000"
+			"World Space"	= "2b136447-676e-4943-997b-04a28ae68497"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{
+		type = "drop_down"
+		display_name = "Blend Mode"
+		options = {
+			"Opaque"			= "00000000-0000-0000-0000-000000000000"
+			"Transparent"		= "ad2675d1-aa34-4258-818b-7abaedf1c57c"
+			"Transparent Fade"	= "10e303eb-3a07-40b2-aee1-2412d02e9755"
+
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{
+		type = "drop_down"
+		display_name = "Decal Group"
+		options = {
+			"Group 0" = "00000000-0000-0000-0000-000000000000"
+			"Group 1" = "915ce650-2005-4060-ba0a-79c2f715ece1"
+			"Group 2" = "04496bf4-e0a8-4e71-aa25-52eaf7e70536"
+			"Group 3" = "ca021d6d-328c-4b3e-a18b-8d7e96b84bac"
+		}
+		default = "00000000-0000-0000-0000-000000000000"
+	}
+	{ type = "checkbox" display_name = "Use Global Roughness Multiplier" 		option = "524a5842-23b7-46d1-ab22-cb3a14746ce0" }
+	{ type = "checkbox" display_name = "Custom FOV" option = "3eca2035-4349-4d1a-ae8b-6b1d8b91033f" }
+]
+
+render_state = {
+}
+
+channels = 	{
+	"(defined(HAS_NORMAL) && !defined(WORLD_SPACE_NORMAL)) || defined(NEEDS_TANGENT_SPACE)": {
+		tsm0 = { type = "float3" domains = ["vertex", "pixel"] }
+		tsm1 = { type = "float3" domains = ["vertex", "pixel"] }
+		tsm2 = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(NEEDS_EYE_VECTOR)": {
+		eye_vector = { type = "float3" domain = "vertex" }
+	}
+
+	"defined(NEEDS_WORLD_SPACE_PLANE_NORMAL)": {
+		world_space_plane_normal = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"!defined(HAS_NORMAL) || defined(NEEDS_WORLD_SPACE_NORMAL)": {
+		world_space_normal = { type = "float3" domains = ["vertex", "pixel"] }
+	}
+
+	"defined(NEEDS_PIXEL_DEPTH)": {
+		pixel_depth = { type = "float" domain = "pixel" }
+	}
+
+	"defined(NEEDS_SCREEN_POS)": {
+		screen_pos = { type = "float2" domain = "pixel" }
+	}
+
+	"on_platform(GL)": {
+		vertex_corner_info = { type = "float2" semantic = "COLOR1" domain = "vertex" }
+	}
+	"!on_platform(GL)": {
+		vertex_corner_info = { type = "float2" semantic = "POSITION1" domain = "vertex" }
+	}
+	vertex_size = { type = "float2" semantic = "TEXCOORD7" domain = "vertex" }
+	"defined(ROTATION)": {
+		vertex_rotation = { type = "float" semantic = "TEXCOORD1" domains = ["vertex"] }
+	}
+	"defined(NEEDS_UV_SCALE)": {
+		"defined(NEEDS_UV_ANIMATION)": {
+			vertex_uv_data = { type = "float3" semantic = "TEXCOORD0" domains = ["vertex"] }
+			uv_frame = { type = "float" domains = ["vertex"] }
+		}
+		"!defined(NEEDS_UV_ANIMATION)": {
+			vertex_uv_data = { type = "float2" semantic = "TEXCOORD0" domains = ["vertex"] }
+		}
+		uv_scale = { type = "float2" domains = ["vertex"] }
+	}
+	"!defined(NEEDS_UV_SCALE)": {
+		"defined(NEEDS_UV_ANIMATION)": {
+			vertex_uv_frame = { type = "float" semantic = "TEXCOORD0" domains = ["vertex"] }
+			uv_frame = { type = "float" domains = ["vertex"] }
+		}
+	}
+	"defined(PIVOT)": {
+		vertex_pivot = { type = "float3" semantic = "TEXCOORD6" domains = ["vertex"] }
+	}
+	"defined(EXTERNAL_ROTATION) || defined(TANGENT_LOCKED)": {
+		vertex_tangent = { type = "float3" semantic = "TANGENT" domains = ["vertex"] }
+		"defined(EXTERNAL_ROTATION)": {
+			vertex_binormal = { type = "float3" semantic = "BINORMAL" domains = ["vertex"] }
+		}
+	}
+}
+
+log_permutations = false
+permutation_sets = {
+   	pivot = [
+		{ if: "has_visualizer_channels(pivot)" define: { "macros": ["PIVOT"] stages: ["vertex"] } }
+		{ default = true }
+	]
+
+    rotation = [
+		{ if: "has_visualizer_channels(rotation)" define: { "macros": ["ROTATION"] stages: ["vertex"] } permute_with: "pivot" }
+		{ permute_with: "pivot" }
+	]
+
+	axis_aligment = [
+		{ if: "has_visualizer_channels(tangent, binormal)" define: { "macros": ["EXTERNAL_ROTATION"] stages: ["vertex"] } permute_with: "rotation" }
+		{ if: "has_visualizer_channels(tangent)" define: { "macros": ["TANGENT_LOCKED"] stages: ["vertex"] } permute_with: "rotation" }
+		{ permute_with: "rotation" }
+	]
+
+    default = [
+  	 	{ if: "on_renderer(D3D11, D3D12, GNM, GL) && (defined(TRANSPARENT) || defined(TRANSPARENT_FADE)) && render_setting(low_res_transparency)" defines=["LOW_RES_ENABLED"] permute_with: "axis_aligment" }
+    	{ permute_with: "axis_aligment" }
+    ]
+}
+
+shader_contexts = {
+	shadow_caster = {
+		passes_sort_mode = "immediate"
+		compile_with = [
+			{ if: "on_renderer(D3D11, D3D12, GNM, GL)" permute_with: "default" }
+		]
+
+		passes = [
+			{ code_block="core/stingray_renderer/output_nodes/particle_base#depth_only" define="GBUFFER_PARTICLES" render_state="core/stingray_renderer/output_nodes/standard_base#shadow_caster" }
+		]
+	}
+
+	default = {
+		passes_sort_mode = "deferred"
+		compile_with = [				
+			{ if: "on_renderer(D3D11, D3D12, GNM, GL)" permute_with: "default" }
+		]
+
+		passes = [	
+			{ if: "(defined(TRANSPARENT) || defined(TRANSPARENT_FADE))" then: [
+				{ layer="hdr_transparent" code_block="core/stingray_renderer/output_nodes/particle_base#billboard" defines=["GBUFFER_PARTICLES" "CALCULATE_LIGHTING" "LOCAL_LIGHT_SHADOWS_ENABLED" "CALCULATE_FOG"] render_state="core/stingray_renderer/output_nodes/standard_base#transparent" }
+			] else: [
+				{ if: "defined(HAS_CUSTOM_FOV)" then: [
+						{ layer="gbuffer_fpr" code_block="core/stingray_renderer/output_nodes/particle_base#billboard" defines=["GBUFFER_PARTICLES" /*"MOTION_BLUR"*/] render_state="core/stingray_renderer/output_nodes/standard_base#gbuffer_material" }
+					] else: [
+						{ if: "defined(HAS_OPACITY) || defined(JITTER_TRANSPARENCY)" then: [
+							{ layer="gbuffer_alpha_masked" code_block="core/stingray_renderer/output_nodes/particle_base#billboard" defines=["GBUFFER_PARTICLES" /*"MOTION_BLUR"*/] render_state="core/stingray_renderer/output_nodes/standard_base#gbuffer_material" }
+						] else: [
+							{ layer="gbuffer" code_block="core/stingray_renderer/output_nodes/particle_base#billboard" defines=["GBUFFER_PARTICLES" /*"MOTION_BLUR"*/] render_state="core/stingray_renderer/output_nodes/standard_base#gbuffer_material" }
+						]}
+					]}
+				
+				// This bit of logic is a bit complicated. The gist of it is that we want to disable this pass
+				// for materials that has a value connected on emissive for all permutations, but should have it
+				// discarded for all but the special permutations with the define FBX_EMISSIVE
+				{ if: "defined(HAS_EMISSIVE) && (!defined(USE_FBX_PERMUTATIONS) || defined(FBX_EMISSIVE))" then: [
+					{ layer="emissive" code_block="core/stingray_renderer/output_nodes/particle_base#billboard" defines=["EMISSIVE_PASS"] render_state="core/stingray_renderer/output_nodes/standard_base#emissive" }
+				]}
+
+				{ if: "!defined(OPAQUE_FORWARD_DISABLED)" then: [
+					{ layer="opaque_forward" code_block="core/stingray_renderer/output_nodes/particle_base#billboard" defines=["GBUFFER_PARTICLES" "OPAQUE_FORWARD" "CALCULATE_LIGHTING" "LOCAL_LIGHT_SHADOWS_ENABLED" /*"MOTION_BLUR"*/] render_state="core/stingray_renderer/output_nodes/standard_base#culling_base_default" }
+				]}
+			]}
+		]
+	}
+}

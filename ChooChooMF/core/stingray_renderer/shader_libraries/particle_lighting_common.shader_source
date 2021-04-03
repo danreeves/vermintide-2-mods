@@ -1,0 +1,166 @@
+hlsl_shaders = {
+	particle_debug = {
+		code="""
+			#define LIT_PARTICLES_DEBUG_COLOR float4(0.01, 0.0, 0.0, 0.01)
+			#define DISTORTION_PARTICLES_DEBUG_COLOR float4(0.0, 0.01, 0.0, 0.01)
+			#define EMISSIVE_PARTICLES_DEBUG_COLOR float4(0.0, 0.0, 0.01, 0.01)
+		"""
+	}
+
+	radiosity_normal_mapping = {
+		code="""		
+			#if defined(PARTICLE_LIGHTING)
+				#if defined(D3D11) || defined(D3D12) || defined(GNM)
+					#define BACK_LIGHTING
+				#endif
+
+				#define NEEDS_WORLD_POS
+
+				#if defined(TESSELLATION) && defined(DISABLE_TESSELLATION)
+					#undef TESSELLATION
+				#endif
+
+				#if !(defined(DISABLE_SHADOWS) || defined(DISABLE_SUN))
+					#define SHADOW_RECEIVING
+				#endif
+
+				#if !defined(DISABLE_LOCAL_LIGHTS)
+					#define LOCAL_LIGHTS
+				#endif
+
+				#define INV_PI 0.31830988618379067153
+
+				#if defined(SHADOW_RECEIVING)
+					DECLARE_COMPARISON_SAMPLER_2D(sun_shadow_map);
+	 				DECLARE_COMPARISON_SAMPLER_2D_SHARED(static_sun_shadow_map, sun_shadow_map);
+ 				#endif
+
+				#if defined(LOCAL_LIGHTS)
+					DECLARE_CLUSTER_DATA(cs_cluster_buffer);
+					DECLARE_LIGHT_INDEX_DATA(cs_light_index_buffer);
+					DECLARE_LIGHT_DATA(cs_light_data_buffer);
+					#if defined(SHADOW_RECEIVING)
+						DECLARE_LIGHT_SHADOW_MATRICES(cs_light_shadow_matrices_buffer);
+						DECLARE_LIGHT_SHADOW_LOOKUP(cs_light_shadow_lookup_buffer);
+						DECLARE_COMPARISON_SAMPLER_2D_SHARED(local_lights_shadow_atlas, sun_shadow_map);
+						DECLARE_COMPARISON_SAMPLER_2D_SHARED(cached_local_lights_shadow_atlas, sun_shadow_map);
+					#endif
+				#endif
+
+				void calc_basis_lighting(out float4 basis0, out float4 basis1, out float4 basis2, out float3 back_lighting, float3 wp, float3 N, float4x4 view, float4 position, SamplerCube global_diffuse_map) {
+					basis0 = float4(0.0, 0.0, 0.0, 1.0);
+					basis1 = float4(0.0, 0.0, 0.0, 1.0);
+					basis2 = float4(0.0, 0.0, 0.0, 1.0);
+					back_lighting = float3(0.0, 0.0, 0.0);
+
+					basis0.w = N.x;
+					basis1.w = N.y;
+					basis2.w = N.z;
+
+					#ifdef SCREEN_SPACE
+						//wp = camera_pos + view._m01_m11_m21 * camera_near_far.x + 0.3*mul(normalize(float3(wp.x, 1.f, wp.y)), to_mat3(camera_world));
+						// do some form of spherical projection of the screen space particles onto the near plane
+						wp = camera_pos + camera_near_far.x * mul(normalize(new_half3(wp.x, 1.f, wp.y)), to_mat3(camera_world));
+					#endif
+
+					const float3 view_dir = camera_world._m30_m31_m32 - wp;
+					const float3 V = normalize(view_dir);
+					#if defined(SHADOW_RECEIVING) || defined(LOCAL_LIGHTS)
+						const float3 camera_dir = camera_world._m10_m11_m12;
+						const float depth = dot(-view_dir, camera_dir);
+						// const float3 shadow_biased_pos = wp - (depth - apply_shadow_bias(depth)) * (-V);
+					#endif
+
+					#if !defined(DISABLE_SUN)
+						[branch]
+						if (sun_enabled) {
+							#if defined(SHADOW_RECEIVING)
+								[branch]
+								if (particles_receive_shadows) {
+									half shadow = calculate_shadow_intensity(sun_shadow_map, static_sun_shadow_map, wp, depth);
+									sun_color *= shadow;
+								}
+							#endif
+
+							// setup global lighting
+							float3 L = normalize(-sun_direction);
+							float3 sun_weights = saturate(new_half3(dot(L, cs_hl2_basis0), dot(L, cs_hl2_basis1), dot(L, cs_hl2_basis2)));
+							basis0.xyz = sun_weights.x * sun_color;
+							basis1.xyz = sun_weights.y * sun_color;
+							basis2.xyz = sun_weights.z * sun_color;
+
+							#if defined(BACK_LIGHTING)
+								#if defined(SCREEN_SPACE)
+									back_lighting = saturate(dot(L, -V)) * sun_color;
+								#else
+									back_lighting = saturate(dot(L, V)) * sun_color;
+								#endif
+
+								#if defined(SHADOW_RECEIVING) && defined(SUN_SCATTER_FALLOFF)
+									float sf = scatter_falloff(sm_pos);
+									back_lighting *= sun_shadow;
+									sf = pow(sf + 0.001, 0.3);
+									back_lighting *= sf; //saturate(0.05 + sf*0.95);
+								#else
+									back_lighting *= 0.25f;
+								#endif
+							#endif
+						}
+					#endif
+					
+					half3 ambient_tint_color = (ambient_tint_top_enabled > 0.0 ? lerp(ambient_tint, ambient_tint_top, N.z*0.5+0.5) : ambient_tint) * ambient_global_tint;
+					#if defined(D3D11)
+						ambient_tint_color = (capture_cubemap == 1) ? 1.0 : ambient_tint_color;
+					#endif
+
+					basis0.xyz += (global_probe_rgbm_encoded ? 
+						rgbm_decode(TEXCUBELOD(global_diffuse_map, cs_hl2_basis0, 0.0)) :
+						TEXCUBELOD(global_diffuse_map, cs_hl2_basis0, 0.0)) * ambient_tint_color;
+					basis1.xyz += (global_probe_rgbm_encoded ? 
+						rgbm_decode(TEXCUBELOD(global_diffuse_map, cs_hl2_basis1, 0.0)) :
+						TEXCUBELOD(global_diffuse_map, cs_hl2_basis1, 0.0)) * ambient_tint_color;
+					basis2.xyz += (global_probe_rgbm_encoded ? 
+						rgbm_decode(TEXCUBELOD(global_diffuse_map, cs_hl2_basis2, 0.0)) :
+						TEXCUBELOD(global_diffuse_map, cs_hl2_basis2, 0.0)) * ambient_tint_color;
+
+					#if defined(LOCAL_LIGHTS)
+						[branch]
+						if (local_lights && particles_local_lighting) {
+							// Transform Normalized Display Coordinates to view port coordinates 
+							const float2 clip_space = (float2(position.x, -position.y)/position.w + 1.0)*0.5;
+							const float2 view_space = clip_space * (output_rt_size * viewport.xy - 1.0) + 0.5; // I assume that SV_POSITION is in range of 0.5 to viewport.width - 0.5
+							//particles_receive_shadows
+							#if defined(SHADOW_RECEIVING)
+								[branch]
+								if (particles_receive_shadows) {
+									clustered_shading(cs_cluster_buffer, cs_light_index_buffer, cs_light_data_buffer, 
+										cs_light_shadow_matrices_buffer,
+										cs_light_shadow_lookup_buffer,
+										local_lights_shadow_atlas,
+										cached_local_lights_shadow_atlas,
+										wp, V, N, view_space, depth, basis0, basis1, basis2, back_lighting);
+								} else 
+							#endif
+							{
+								clustered_shading(cs_cluster_buffer, cs_light_index_buffer, cs_light_data_buffer, wp, V, N, view_space, depth, basis0, basis1, basis2, back_lighting);
+							}
+						}
+					#endif
+				}
+
+				float3 calc_lighting(const float4 base_color_alpha, const float3 N, const float3 back_lighting, const float3 basis0, const float3 basis1, const float3 basis2) {
+					float3 weights = saturate(float3(dot(N, hl2_basis0), dot(N, hl2_basis1), dot(N, hl2_basis2)));						
+					float3 light = weights.x * basis0 + weights.y * basis1 + weights.z * basis2;						
+
+					#if defined(BACK_LIGHTING)
+						float back_light_scale = saturate(1.0-(base_color_alpha.a*0.5+0.25));
+						back_light_scale *= back_light_scale;
+						light += back_lighting * back_light_scale;
+					#endif
+
+					return base_color_alpha.rgb * light * INV_PI;
+				}
+			#endif
+		"""	
+	}
+}

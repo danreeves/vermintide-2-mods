@@ -1,0 +1,33 @@
+collision_filters = {
+	filter_pumpkin = {
+		is = [
+			"default"
+			"type_default"
+			"type_simple"
+			"type_detailed"
+			"type_destructible"
+			"type_mover_blocker"
+			"type_default_no_ladder_block"
+			"type_player"
+			"type_player_mover"
+		]
+		collides_with = [
+			"default"
+			"type_default"
+			"type_simple"
+			"type_detailed"
+			"type_destructible"
+			"type_mover_blocker"
+			"type_default_no_ladder_block"
+			"type_player"
+			"type_player_mover"
+		]
+	}
+}
+
+
+shapes = {
+	pumpkin = {
+		collision_filter = "filter_pumpkin"
+	}
+}

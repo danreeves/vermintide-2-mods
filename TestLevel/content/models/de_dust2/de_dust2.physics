@@ -1,0 +1,18 @@
+
+actors = [
+	{
+		enabled = true
+		mass = 0
+		name = "de_dust2"
+		node = "de_dust2"
+		shapes = [
+			{
+				material = "default"
+				shape = "de_dust2"
+				template = "default"
+				type = "mesh"
+			}
+		]
+		template = "static"
+	}
+]

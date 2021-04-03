@@ -1,0 +1,20 @@
+group = "Vertex Inputs"
+display_name = "Unskinned Position"
+
+imports = {
+	pos = {
+		type = "float4"
+		domain = "vertex"
+		output_channel = "unskinned_vertex_position"
+	}
+}
+
+defines = ["NEEDS_UNSKINNED_VERTEX_POSITION"]
+
+output = {
+	type = { typeof: "pos" }
+}
+
+code = """
+	RESULT(pos);
+"""

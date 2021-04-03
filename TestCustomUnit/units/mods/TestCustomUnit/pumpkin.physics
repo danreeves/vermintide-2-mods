@@ -2,17 +2,17 @@
 actors = [
 	{
 		enabled = true
-		mass = 0
+		mass = 10
 		name = "pumpkin"
 		node = "pumpkin"
 		shapes = [
 			{
 				material = "default"
 				shape = "pumpkin"
-				template = "default"
-				type = "mesh"
+				template = "pickup"
+				type = "convex_computed"
 			}
 		]
-		template = "static"
+		template = "dynamic"
 	}
 ]

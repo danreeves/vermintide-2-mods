@@ -1,0 +1,436 @@
+
+entities = [
+]
+flow = {
+	nodes = [
+	]
+}
+level_references = [
+]
+level_settings = {
+	num_background_units = 1
+	sound_environment = ""
+	timpani_sound_environment = "default"
+}
+navmeshes = [
+]
+object_sets = {
+}
+particle_effects = [
+]
+prototypes = [
+]
+scatter = [
+]
+sounds = [
+]
+splines = [
+]
+stories = [
+]
+triggers = [
+]
+units = [
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "642b83f4-2369-4b09-a650-0a5ded28a10d"
+		lights = {
+			omni = {
+				baked = false
+				box_max = [
+					10
+					10
+					10
+				]
+				box_min = [
+					-10
+					0
+					-10
+				]
+				cast_shadows = true
+				color = [
+					1
+					1
+					1
+				]
+				falloff_end = 8
+				falloff_exponent = 1
+				falloff_start = 0
+				intensity = 5
+				material = ""
+				spot_angle_end = 1.04719755117
+				spot_angle_start = 0
+				type = "directional"
+			}
+		}
+		material = ""
+		materials = {
+		}
+		name = "light"
+		pos = [
+			0
+			0
+			18
+		]
+		rot = [
+			-0.639397251709014
+			0.0662214468735578
+			0.0559252123919916
+			0.763975290896141
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "core/units/light"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"LevelEditor.is_cubemap_probe" = false
+			"LevelEditor.is_gizmo_unit" = false
+			"light_baking.enabled" = false
+		}
+		id = "65a9096d-4e19-49b4-a6b8-a1fe5b2c6ede"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "reflection_probe"
+		pos = [
+			-0.05524
+			-3.812954
+			3.850029
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "core/stingray_renderer/helper_units/reflection_probe/reflection_probe"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "29a1baef-711c-445d-9429-983448bbc6c4"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "de_dust2"
+		pos = [
+			0
+			0
+			0
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/de_dust2/de_dust2"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "3f96237f-2dac-4209-b24e-814a6566baf4"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner"
+		pos = [
+			15
+			19.4
+			3.5
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "e82d1925-4d9e-4c65-bdb6-a406a0785e95"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner1"
+		pos = [
+			14.9
+			21
+			3.5
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "66280de9-2dc0-49e7-9c85-09c1e51f6667"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner2"
+		pos = [
+			13.6
+			21
+			3.5
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "64b0a3fe-2fd4-4f8d-85d7-4ce710af266a"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner3"
+		pos = [
+			13.5
+			18.2
+			3.5
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "51eef75b-94fa-4db4-a9e4-824a0ca87bb3"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner4"
+		pos = [
+			-7.6
+			-57.3
+			-3
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "238b3a50-bd36-4875-bb2e-d9d2bb07d2dd"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner5"
+		pos = [
+			-8.1
+			-55.2
+			-3
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "18c6a166-3dac-4f4e-9e45-6274e459ebb5"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner6"
+		pos = [
+			-5.9
+			-54.7
+			-3
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+			"light_baking.enabled" = false
+		}
+		id = "2aee55c9-8dd6-4402-bfbc-9794c995045c"
+		lights = {
+		}
+		material = ""
+		materials = {
+		}
+		name = "spawner7"
+		pos = [
+			-5
+			-57
+			-3
+		]
+		rot = [
+			0
+			0
+			0
+			-1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "content/models/props/spawner"
+	}
+	{
+		cameras = {
+		}
+		data = {
+		}
+		id = "skydome-unit"
+		lights = {
+		}
+		material = "core/editor_slave/units/skydome/skydome"
+		materials = {
+		}
+		name = ""
+		pos = [
+			0
+			0
+			0
+		]
+		rot = [
+			0
+			0
+			0
+			1
+		]
+		scl = [
+			1
+			1
+			1
+		]
+		type = "core/editor_slave/units/skydome/skydome"
+	}
+]
+volumes = [
+]

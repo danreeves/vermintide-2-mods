@@ -1,0 +1,58 @@
+group = "Input/Skydome"
+display_name = "Fog Color/Sun Blend"
+
+imports = {
+	eye_vector = { 
+		type = "float3"
+		domain = "vertex"
+		output_channel = "eye_vector"
+	}
+
+	fog_color = {
+		type = "float3"
+		domain = "global"
+		source = "engine"
+	}
+
+	sun_direction = {
+		type = "float3"
+		domain = "global"
+		source = "engine"
+	}
+
+	sun_color = {
+		type = "float3"
+		domain = "global"
+		source = "engine"
+	}
+
+}
+
+defines = ["NEEDS_EYE_VECTOR" "NEEDS_GLOBAL_DIFFUSE_MAP"] 
+
+domain = "pixel"
+output = {
+	type = "float4"
+}
+
+options = {
+	"44123bdc-7a38-4a69-b738-ad93e819f28c" = "SECONDARY_SUN_BLEND"
+	"f169202d-4a88-4347-8f26-af46d249a5f6" = "CUSTOM_FOG_BLEND"
+}
+
+ui = [
+	{ type = "checkbox" display_name = "Secondary sun blend" 	option = "44123bdc-7a38-4a69-b738-ad93e819f28c" }
+	{ type = "checkbox" display_name = "Custom fog blend" 		option = "f169202d-4a88-4347-8f26-af46d249a5f6" }
+]
+
+language = "hlsl"
+code = """
+	float3 L = sun_direction;
+	float3 V = normalize(eye_vector);
+	float phase_value = PHASE_FUNCTION(cos_theta(L, V), volumetric_phase);
+	float sun_shadow = 1.0;
+	float3 sun_scattering, ambient;
+	calculate_global_volumetric_data(L, V, global_diffuse_map, sun_enabled*sun_shadow, volumetric_phase, sun_scattering, ambient);
+	float3 S = (sun_scattering * volumetric_global_light_multiplier + ambient * volumetric_ambient_multiplier) * fog_color;
+	RESULT(float4(S, 1.0 - saturate(phase_value)));
+"""

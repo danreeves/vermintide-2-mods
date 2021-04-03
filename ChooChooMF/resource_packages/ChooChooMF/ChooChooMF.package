@@ -1,0 +1,19 @@
+mod = [
+	"ChooChooMF"
+]
+
+package = [
+	"resource_packages/ChooChooMF/ChooChooMF"
+]
+
+lua = [
+	"scripts/mods/ChooChooMF/*"
+]
+
+material = [
+	"materials/*"
+]
+
+unit = [
+	"units/*"
+]

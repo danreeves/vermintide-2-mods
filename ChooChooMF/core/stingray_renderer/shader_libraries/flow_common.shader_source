@@ -1,0 +1,9 @@
+hlsl_shaders = {
+	flow_common = {
+		code="""
+			// TODO: make sure all functions behave on negative numbers on all platforms
+			#define flow_weight(x) (1.0 - abs(abs(fmod(x*2.0, 2.0)) - 1.0))
+			#define flow_scale(x) frac(x)
+		"""
+	}
+}

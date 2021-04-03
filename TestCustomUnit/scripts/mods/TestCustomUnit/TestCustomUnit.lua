@@ -41,91 +41,91 @@ local function get_hash(unit)
   return string.gsub(id, "%]'%]", "")
 end
 
-local unit_path = "units/mods/TestCustomUnit/we_spear"
--- local unit_path = "units/mods/TestCustomUnit/pumpkin"
+-- local unit_path = "units/mods/TestCustomUnit/we_spear"
+local unit_path = "units/mods/TestCustomUnit/pumpkin"
 -- local unit_hash = "db0a68cb4cb20b05"
 
 -- Breeds.critter_rat.base_unit = unit_path
---
--- local nwlid = #NetworkLookup.husks + 1
--- NetworkLookup.husks[nwlid] = unit_path
--- NetworkLookup.husks[unit_path] = nwlid
---
--- mod:hook(Unit, "set_animation_root_mode", function(func, unit, mode)
---   if get_hash(unit) == unit_hash then
---     return
---   end
---   func(unit, mode)
--- end)
---
--- mod:hook(Unit, "animation_event", function(func, unit, event, ...)
---   if get_hash(unit) == unit_hash then
---     return
---   end
---   func(unit, event, ...)
--- end)
 
--- ItemMasterList.questing_knight_hat_0001.unit = unit_path
+local nwlid = #NetworkLookup.husks + 1
+NetworkLookup.husks[nwlid] = unit_path
+NetworkLookup.husks[unit_path] = nwlid
 
--- mod:hook(PackageManager, "load", function (func, self, package_name, reference_name, callback, asynchronous, prioritize)
---   if package_name ~= unit_path then
---     func(self, package_name, reference_name, callback, asynchronous, prioritize)
---   end
--- end)
---
--- mod:hook(PackageManager, "unload", function (func, self, package_name, reference_name)
---   if package_name ~= unit_path then
---     func(self, package_name, reference_name)
---   end
--- end)
---
--- mod:hook(PackageManager, "has_loaded", function (func, self, package, reference_name)
---   if package == unit_path then
---     return true
---   end
---   return func(self, package, reference_name)
--- end)
---
--- mod:hook(PackageManager, "force_load", function (func, self, package_name)
---   if package_name ~= unit_path then
---     return func(self, package_name)
---   end
--- end)
+mod:hook(Unit, "set_animation_root_mode", function(func, unit, mode)
+  if get_hash(unit) == unit_hash then
+    return
+  end
+  func(unit, mode)
+end)
 
+mod:hook(Unit, "animation_event", function(func, unit, event, ...)
+  if get_hash(unit) == unit_hash then
+    return
+  end
+  func(unit, event, ...)
+end)
+
+ItemMasterList.questing_knight_hat_0001.unit = unit_path
 
 mod:hook(PackageManager, "load", function (func, self, package_name, reference_name, callback, asynchronous, prioritize)
-  mod:echo(package_name)
-  if package_name ~= unit_path and package_name ~= unit_path .. "_3p" then
+  if package_name ~= unit_path then
     func(self, package_name, reference_name, callback, asynchronous, prioritize)
   end
 end)
 
 mod:hook(PackageManager, "unload", function (func, self, package_name, reference_name)
-  if package_name ~= unit_path and package_name ~= unit_path .. "_3p"then
+  if package_name ~= unit_path then
     func(self, package_name, reference_name)
   end
 end)
 
 mod:hook(PackageManager, "has_loaded", function (func, self, package, reference_name)
-  if package == unit_path or package == unit_path .. "_3p" then
+  if package == unit_path then
     return true
   end
   return func(self, package, reference_name)
 end)
 
-for k, v in pairs(WeaponSkins.skins) do
-  if string.starts_with(k,"we_spear_skin") then
-    v["right_hand_unit"] = unit_path
+mod:hook(PackageManager, "force_load", function (func, self, package_name)
+  if package_name ~= unit_path then
+    return func(self, package_name)
   end
-end
+end)
 
-local nwlid = #NetworkLookup.inventory_packages + 1
-NetworkLookup.inventory_packages[nwlid] = unit_path
-NetworkLookup.inventory_packages[unit_path] = nwlid
 
-nwlid = #NetworkLookup.inventory_packages + 1
-NetworkLookup.inventory_packages[nwlid] = unit_path .. "_3p"
-NetworkLookup.inventory_packages[unit_path .. "_3p"] = nwlid
+-- mod:hook(PackageManager, "load", function (func, self, package_name, reference_name, callback, asynchronous, prioritize)
+--   mod:echo(package_name)
+--   if package_name ~= unit_path and package_name ~= unit_path .. "_3p" then
+--     func(self, package_name, reference_name, callback, asynchronous, prioritize)
+--   end
+-- end)
+--
+-- mod:hook(PackageManager, "unload", function (func, self, package_name, reference_name)
+--   if package_name ~= unit_path and package_name ~= unit_path .. "_3p"then
+--     func(self, package_name, reference_name)
+--   end
+-- end)
+--
+-- mod:hook(PackageManager, "has_loaded", function (func, self, package, reference_name)
+--   if package == unit_path or package == unit_path .. "_3p" then
+--     return true
+--   end
+--   return func(self, package, reference_name)
+-- end)
+
+-- for k, v in pairs(WeaponSkins.skins) do
+--   if string.starts_with(k,"we_spear_skin") then
+--     v["right_hand_unit"] = unit_path
+--   end
+-- end
+--
+-- local nwlid = #NetworkLookup.inventory_packages + 1
+-- NetworkLookup.inventory_packages[nwlid] = unit_path
+-- NetworkLookup.inventory_packages[unit_path] = nwlid
+--
+-- nwlid = #NetworkLookup.inventory_packages + 1
+-- NetworkLookup.inventory_packages[nwlid] = unit_path .. "_3p"
+-- NetworkLookup.inventory_packages[unit_path .. "_3p"] = nwlid
 
 
 -- local nwlid = #NetworkLookup.husks + 1
@@ -153,6 +153,14 @@ mod:command("spawn", "", function()
   spawn_package_to_player(unit_path)
 end)
 
-mod:command("time", "", function(scale)
-  Managers.state.debug:set_time_scale(tonumber(scale))
+mod:command("clear", "", function()
+    local world = Managers.world:world("level_world")
+    local units = World.units_by_resource(world, unit_path)
+    for i, unit in ipairs(units) do
+      World.destroy_unit(world, unit)
+    end
 end)
+
+-- mod:command("time", "", function(scale)
+--   Managers.state.debug:set_time_scale(tonumber(scale))
+-- end)

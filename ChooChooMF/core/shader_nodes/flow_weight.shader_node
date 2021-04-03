@@ -1,0 +1,19 @@
+group = "Utility"
+display_name = "Flow Weight"
+inputs = {
+	"2080b90f-7e82-4358-b802-c134385d4458" = { name = "x" display_name = "A" type = "auto" }
+}
+
+output = {
+	type = { typeof: "x" }
+}
+
+code_blocks = {
+	default = {
+		include: ["core/stingray_renderer/shader_libraries/flow_common#flow_common"]
+		language = "hlsl"
+		code = """
+			RESULT(flow_weight(x));
+		"""
+	}
+}

@@ -1,0 +1,16 @@
+group = "Math"
+display_name = "Triangle Wave"
+inputs = {
+	"dd73de52-a7fd-4aba-8e4f-4462fb0f5911" = { name = "a" display_name = "Angle" type = "auto" }
+}
+
+output = {
+	type = { typeof: "a" }
+}
+
+// ref https://en.wikipedia.org/wiki/Triangle_wave
+code = """
+	static const float INV_PI = 0.31830988618;
+	// adding an extra abs around fmod since it can return negative numbers
+	RESULT(1.0 - 2.0*abs(abs(fmod(a*INV_PI + 0.5, 2.0)) - 1.0));
+"""
