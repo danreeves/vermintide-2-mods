@@ -1,10 +1,8 @@
-parent_material = "core/stingray_renderer/shader_import/standard"
+parent_material = "materials/mods/TestCustomUnit/emissive"
 textures = {
-    color_map = "textures/mods/TestCustomUnit/pumpkin_color"
+	color_map = "textures/mods/TestCustomUnit/pumpkin_color"
 	normal_map = "textures/mods/TestCustomUnit/pumpkin_normal"
-}
-material_contexts = {
-	surface_material = ""
+	emissive_map = "textures/mods/TestCustomUnit/pumpkin_emissive"
 }
 variables = {
 	base_color = {
@@ -23,6 +21,10 @@ variables = {
 			0
 		]
 	}
+	/* opacity = { */
+	/*     type = "scalar" */
+	/*     value = 0.9 */
+	/* } */
 	emissive_intensity = {
 		type = "scalar"
 		value = 1
@@ -33,7 +35,7 @@ variables = {
 	}
 	roughness = {
 		type = "scalar"
-		value = 0.8
+		value = 0.85
 	}
 	use_ao_map = {
 		type = "scalar"
@@ -45,7 +47,7 @@ variables = {
 	}
 	use_emissive_map = {
 		type = "scalar"
-		value = 0
+		value = 1
 	}
 	use_metallic_map = {
 		type = "scalar"

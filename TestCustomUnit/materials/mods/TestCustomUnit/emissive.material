@@ -1110,9 +1110,31 @@ shader = {
 			}
 			id = "f8bf5438-b06f-4d56-ae0c-e4abd31c1dc1"
 			options = [
-				"2b136447-676e-4943-997b-04a28ae68497"
-				"b2c7c0d2-beff-4b1a-a9d4-068a507625a2"
-				"b5bb2062-c8fa-43c5-8657-493a0be6860c"
+				"2b136447-676e-4943-997b-04a28ae68497" // = "WORLD_SPACE_NORMAL"
+				"b2c7c0d2-beff-4b1a-a9d4-068a507625a2" // = "USE_FBX_PERMUTATIONS"
+				"b5bb2062-c8fa-43c5-8657-493a0be6860c" // = "SKINNED_DISABLED"
+				"dd7fcf97-0627-48ab-b29a-95b5685bb123" // = "TRANSPARENT"
+				"8248aaf6-a6ac-40bf-9c1c-9a2377d4faed" // = "HAS_WRITE_LINEAR_Z_DEPTH"
+				/* "d1a42a54-0794-4d57-9aa0-eb35acb6b35c" // = "INSTANCED" */
+				/* "8df1b8f7-17c2-4ae4-8c4e-25517ec1df46" // = "CULL_NONE" */
+				/* "c198c109-2cdf-49ee-af18-a982c23e2729" // = "CULL_FRONT" */
+				/* "3b55d6c6-4398-4dbc-b9ef-570aff8696ae" // = "TRANSPARENT_FADE" */
+				/* "da4e717b-5d0d-47fa-93b0-01c988f8f3ff" // = "LOCK_NORMAL_ROTATION" */
+				/* "979cb7cf-c255-42d0-a389-78fc0fb0539f" // = "DEFERRED_DECALS_GROUP_1" */
+				/* "d557b597-fa90-46b4-a751-eb51ae61ba5b" // = "DEFERRED_DECALS_GROUP_2" */
+				/* "fe20cc01-4cec-4217-98a0-07220ad3add9" // = "DEFERRED_DECALS_GROUP_3" */
+				/* "524a5842-23b7-46d1-ab22-cb3a14746ce0" // = "USE_GLOBAL_ROUGHNESS_MULTIPLIER" */
+				/* "11256995-4805-4018-bd6b-9214414fd363" // = "NORMAL_FLIP_DISABLED" */
+				/* "580cc6eb-3591-4c71-aa50-528af18ba160" // = "JITTER_TRANSPARENCY" */
+				/* "b649332d-7a8a-42b3-a809-6d0eb9c7c070" // = "GBUFFER_POST_OUTLINE" */
+				/* "08e965b9-90ed-4046-b314-c97ea7e7f30e" // = "OPAQUE_FORWARD_DISABLED" */
+				/* "86069823-3e07-4fdd-b95f-423d30b06df6" // = "HAS_WRITE_LINEAR_DEPTH" */
+
+				/* "8cfab86a-7e97-466d-8e01-95af7f5cebb4" // = "TRANSLUCENT_MATERIAL" */
+				/* "a12c2c04-48dc-47c8-9f48-7f3a91d54817" // = "CLOTH_MATERIAL" */
+				/* "f619f708-c19f-479e-95f0-7b57f32f39f6" // = "HAIR_MATERIAL" */
+				/* "04cb0038-e705-4512-b5fa-fdd32ce4ee57" // = "CLEAR_COAT_MATERIAL" */
+				/* "8700c670-feb5-4189-aa35-2289d80fc206" // = "SKIN" */
 			]
 			position = [
 				1360
@@ -1120,7 +1142,7 @@ shader = {
 			]
 			samplers = {
 			}
-			type = "core/stingray_renderer/output_nodes/standard_base"
+			type = "materials/mods/TestCustomUnit/emissive_standard_base"
 		}
 	]
 	version = 2

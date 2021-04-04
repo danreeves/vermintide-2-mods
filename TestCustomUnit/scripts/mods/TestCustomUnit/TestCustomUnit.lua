@@ -141,9 +141,9 @@ local function spawn_package_to_player (package_name)
 
     local position = Unit.local_position(player_unit, 0) + Vector3(0, 0, 1)
     local rotation = Unit.local_rotation(player_unit, 0)
-    local unit = World.spawn_unit(world, package_name, position, rotation)
-
-    return unit
+    --- hacky may crash
+    local unit_template_name = "interaction_unit" -- UnitResource.get_data(package_name, "unit_template")
+    return Managers.state.unit_spawner:spawn_network_unit(package_name, unit_template_name, nil, position, rotation)
   end
 
   return nil
@@ -154,11 +154,11 @@ mod:command("spawn", "", function()
 end)
 
 mod:command("clear", "", function()
-    local world = Managers.world:world("level_world")
-    local units = World.units_by_resource(world, unit_path)
-    for i, unit in ipairs(units) do
-      World.destroy_unit(world, unit)
-    end
+  local world = Managers.world:world("level_world")
+  local units = World.units_by_resource(world, unit_path)
+  for i, unit in ipairs(units) do
+    World.destroy_unit(world, unit)
+  end
 end)
 
 -- mod:command("time", "", function(scale)

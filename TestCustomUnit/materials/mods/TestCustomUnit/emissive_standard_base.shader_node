@@ -685,7 +685,7 @@ shader_contexts = {
 		]
 
 		passes = [
-			{ code_block="depth_only" render_state="shadow_caster" }
+			//{ code_block="depth_only" render_state="shadow_caster" }
 		]
 	}
 
@@ -1317,13 +1317,17 @@ code_blocks = {
 							#if defined(HAS_OPACITY)
 								opacity = graph.opacity;
 							#else
-								opacity = 0.5;
+								// CHANGED
+								/* opacity = 0.5; */
+								opacity = 1.0;
 							#endif
 						#elif defined(HAS_OPACITY)
 							#if defined(HAS_OPACITY_THRESHOLD)
 								float threshold = graph.opacity_threshold;
 							#else
-								float threshold = 0.5f;
+								// CHANGED
+								/* float threshold = 0.5f; */
+								float threshold = 1.0f;
 							#endif
 							if (graph.opacity < threshold)
 								opacity = 0;
@@ -1394,7 +1398,9 @@ code_blocks = {
 								#if defined(HAS_OPACITY_THRESHOLD)
 									float threshold = graph.opacity_threshold;
 								#else
-									float threshold = 0.5f;
+									// CHANGED
+									/* float threshold = 0.5f; */
+									float threshold = 1.0f;
 								#endif
 								if (graph.opacity < threshold)
 									discard;
@@ -1485,7 +1491,9 @@ code_blocks = {
 							#if defined(HAS_OPACITY_THRESHOLD)
 								float threshold = graph.opacity_threshold;
 							#else
-								float threshold = 0.5f;
+								// CHANGED
+								/* float threshold = 0.5f; */
+								float threshold = 1.0f;
 							#endif
 							if (graph.opacity < threshold)
 								discard;
@@ -1647,7 +1655,9 @@ code_blocks = {
 							#if defined(HAS_OPACITY)
 								half opacity_to_use = graph.opacity;
 							#else
-								half opacity_to_use = 0.5;
+								// CHANGED
+								/* half opacity_to_use = 0.5; */
+								half opacity_to_use = 1.0;
 							#endif
 
 							#if defined(TRANSLUCENT_MATERIAL) || defined(CLOTH_MATERIAL) || defined(HAIR_MATERIAL) || defined(SKIN)
@@ -2106,7 +2116,9 @@ code_blocks = {
 								#if defined(HAS_OPACITY_THRESHOLD)
 									float threshold = graph.opacity_threshold;
 								#else
-									float threshold = 0.5f;
+									// CHANGED
+									/* float threshold = 0.5f; */
+									float threshold = 1.0f;
 								#endif
 
 								if (graph.opacity < threshold) {
@@ -2159,7 +2171,9 @@ code_blocks = {
 								#if defined(HAS_OPACITY_THRESHOLD)
 									float threshold = graph.opacity_threshold;
 								#else
-									float threshold = 0.5f;
+									// CHANGED
+									/* float threshold = 0.5f; */
+									float threshold = 1.0f;
 								#endif
 
 								if (graph.opacity < threshold)

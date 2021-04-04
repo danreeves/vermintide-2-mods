@@ -102,7 +102,7 @@ render_states = {
 			}
 		}
 	}
-	
+
 
 	ambient = {
 		inherits = "default"
@@ -250,7 +250,7 @@ render_states = {
 		inherits = "opacity"
 		states = {
 			cull_mode = "cull_none"
-			fill_mode = "fill_wireframe"	
+			fill_mode = "fill_wireframe"
 			defined_D3D11 = {
 				depth_bias = "-1"
 				depth_bias_clamp = "-0.00015"
@@ -261,7 +261,7 @@ render_states = {
 				depth_bias_clamp = "-0.00015"
 				slope_scale_depth_bias = "-2.0"
 			}
-		}		
+		}
 	}
 }
 
@@ -493,7 +493,7 @@ hlsl_shaders = {
 			#elif defined(RENDERER_GNM)
 				#pragma warning(disable: 5609) // On ps4, halfs are treated as floats. Let's disable the warning.
 				#pragma warning(disable: 5203) // Todo: Remove this warning when GAME-6418 is closed.
-		
+
 				#pragma warning(disable: 5202)
 				#pragma warning(disable: 5206)
 				#pragma warning(disable: 6002)
@@ -533,7 +533,7 @@ hlsl_shaders = {
 
 				#define RWTexture2D RW_Texture2D
 				#define RWTexture3D RW_Texture3D
-				
+
 				#define SV_GroupID S_GROUP_ID
 				#define SV_GroupIndex S_GROUP_INDEX
 				#define SV_DispatchThreadID S_DISPATCH_THREAD_ID
@@ -553,7 +553,7 @@ hlsl_shaders = {
 				precision highp float;
 				precision highp int;
 				precision highp usampler2D;
-				
+
 				#define PRECISION precision
 				#define LOWP lowp
 				#define MEDIUMP mediump
@@ -646,7 +646,7 @@ hlsl_shaders = {
 			#endif
 
 			#if defined(RENDERER_D3D12)
-			
+
 				#define RS1	"RootFlags (ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT), " \
 					"CBV(b0, visibility = SHADER_VISIBILITY_VERTEX), " \
 					"CBV(b1, visibility = SHADER_VISIBILITY_VERTEX), " \
@@ -658,7 +658,7 @@ hlsl_shaders = {
 					"DescriptorTable( SRV(t0, numDescriptors = 24), visibility = SHADER_VISIBILITY_PIXEL), " \
 					"DescriptorTable( Sampler(s0, numDescriptors = 24), visibility = SHADER_VISIBILITY_VERTEX), " \
 					"DescriptorTable( Sampler(s0, numDescriptors = 24), visibility = SHADER_VISIBILITY_PIXEL) "
-				
+
 				#if defined(PLATFORM_XB12)
 					#define ROOT_SIGNATURE_ATTRIBUTE(root_signature) [RootSignature(root_signature)]
 					#define DEFAULT_ROOT_SIGNATURE_ATTRIBUTE ROOT_SIGNATURE_ATTRIBUTE(RS1)
@@ -670,8 +670,8 @@ hlsl_shaders = {
 				#define ROOT_SIGNATURE_ATTRIBUTE(root_signature)
 				#define DEFAULT_ROOT_SIGNATURE_ATTRIBUTE
 			#endif
-			
-			
+
+
 			#if defined(RENDERER_GL)
 				#define DECLARE_SAMPLER_2D(name) uniform sampler2D name
 				#define Sampler2D sampler2D
@@ -716,13 +716,13 @@ hlsl_shaders = {
 						Texture2D TEXTURE_NAME(name); \
 						SamplerState SAMPLER_NAME(name); \
 						static Sampler2D name = { TEXTURE_NAME(name), SAMPLER_NAME(name) };
-				
+
 				#define DECLARE_SAMPLER_2D_SHARED(name, share_from)		\
 						Texture2D TEXTURE_NAME(name);	\
 						static Sampler2D name = { TEXTURE_NAME(name), SAMPLER_NAME(share_from) };
-				
-				
-				
+
+
+
 				struct SamplerCube { TextureCube tex; SamplerState state; };
 
 				#define TEXCUBE(s, uv) s.tex.Sample(s.state, uv)
@@ -740,8 +740,8 @@ hlsl_shaders = {
 				#define DECLARE_SAMPLER_CUBE_SHARED(name, share_from) \
 						TextureCube TEXTURE_NAME(name);	\
 						static SamplerCube name = { TEXTURE_NAME(name), SAMPLER_NAME(share_from) };
-						
-						
+
+
 				struct Sampler3D { Texture3D tex; SamplerState state; };
 
 				#define TEX3D(s, uv) s.tex.Sample(s.state, uv)
@@ -759,7 +759,7 @@ hlsl_shaders = {
 				#define DECLARE_SAMPLER_3D_SHARED(name, share_from)	\
 						Texture3D TEXTURE_NAME(name); \
 						static Sampler3D name = { TEXTURE_NAME(name), SAMPLER_NAME(share_from) };
-						
+
 
 				struct ComparisonSampler2D { Texture2D tex; SamplerComparisonState state; };
 
@@ -791,7 +791,7 @@ hlsl_shaders = {
 				#define DECLARE_COMPARISON_SAMPLER_CUBE(name)	\
 						TextureCube TEXTURE_NAME(name); \
 						SamplerComparisonState SAMPLER_NAME(name); \
-						static ComparisonSamplerCube name = { TEXTURE_NAME(name), SAMPLER_NAME(name) };						
+						static ComparisonSamplerCube name = { TEXTURE_NAME(name), SAMPLER_NAME(name) };
 
 				inline float4 Sample(Sampler2D s, float2 uv, int2 offset)
 				{
@@ -811,7 +811,7 @@ hlsl_shaders = {
 				inline float4 Sample(Sampler3D s, float3 uvw)
 				{
 					return s.tex.Sample(s.state, uvw);
-				}				
+				}
 			#else
 				#define DECLARE_SAMPLER_2D(name) sampler2D name;
 				#define Sampler2D sampler2D
@@ -842,7 +842,7 @@ hlsl_shaders = {
 
 			#define MATERIAL_ID_TYPE half
 
-			// TODO: make this as 0x0, 0x1, 0x2 etc?	
+			// TODO: make this as 0x0, 0x1, 0x2 etc?
 			#define DEFAULT_MATERIAL_ID 	0.0f
 			#define TRANSLUCENT_MATERIAL_ID 1.0f/255.0f
 			#define CLOTH_MATERIAL_ID 		2.0f/255.0f
@@ -912,7 +912,7 @@ hlsl_shaders = {
 			{
 			    return ( 1.0 - abs( v.yx ) ) * ( v.xy >= 0.0 ? 1.0 : -1.0 );
 			}
-			 
+
 			float2 encode_octahedron_normal(float3 n)
 			{
 			    n /= ( abs( n.x ) + abs( n.y ) + abs( n.z ) );
@@ -920,11 +920,11 @@ hlsl_shaders = {
 			    n.xy = n.xy * 0.5 + 0.5;
 			    return n.xy;
 			}
-			 
+
 			float3 decode_octahedron_normal( float2 encN )
 			{
 			    encN = encN * 2.0 - 1.0;
-			 
+
 			    float3 n;
 			    n.z = 1.0 - abs( encN.x ) - abs( encN.y );
 			    n.xy = n.z >= 0.0 ? encN.xy : oct_wrap( encN.xy );
@@ -944,7 +944,7 @@ hlsl_shaders = {
 
 			inline float3 rgbm_decode(half4 rgbm) {
 				float3 c = 6.0 * rgbm.rgb * rgbm.a;
-				return c * c;				
+				return c * c;
 			}
 
 			inline void tspace_transform_transpose(out float3 tangent_out, out float3 binormal_out, out float3 normal_out, in float3 tangent, in float3 binormal, in float3 normal, float3x3 mat) {
@@ -1028,7 +1028,7 @@ hlsl_shaders = {
 				UNIFORM float frame_number;
 				UNIFORM float2 back_buffer_size;	// Actual back buffer size
 				UNIFORM float2 output_rt_size; 		// The size of output_rt defined by the viewport
-				
+
 				UNIFORM float taa_enabled;
 				UNIFORM float debug_rendering;
 				UNIFORM float gamma;
@@ -1054,7 +1054,7 @@ hlsl_shaders = {
 			CBUFFER_START(global_camera)
 				UNIFORM float3 camera_near_far;
 			CBUFFER_END
-			
+
 			CBUFFER_START(c_environment_settings)
 				#if defined(NEEDS_EMISSIVE_INTENSITY)
 					float emissive_intensity;
@@ -1167,7 +1167,7 @@ hlsl_shaders = {
 					#define NORMAL_CHANNELS rgb
 					#define NORMAL_TYPE float3
 				#endif
-				
+
 				#define BASE_COLOR(gbuffer) 		gbuffer.buffer0.rgb
 				#define MATERIAL_ID(gbuffer) 		gbuffer.buffer0.a
 				#define NORMAL(gbuffer) 			gbuffer.buffer1.NORMAL_CHANNELS //  ] SHARED
@@ -1191,10 +1191,10 @@ hlsl_shaders = {
 				#endif
 				#define VELOCITY(gbuffer) 			gbuffer.buffer4.rg
 			#endif
-			
+
 			inline float3 gbuffer_encode_base_color(float3 color) { return color; }
 			inline float3 gbuffer_decode_base_color(half4 c) { return c.rgb; }
-			
+
 			inline float3 gbuffer_encode_normal_hiquality(float3 normal, Sampler2D nft) {
 				normal = new_half3_xyz(normalize(normal));
 				float3 abs_normal = abs(normal);
@@ -1217,19 +1217,19 @@ hlsl_shaders = {
 
 			// SHARED GBUFFER1 RGB
 
-			inline half gbuffer_encode_density_shadow_bias(half c) { return c; }							
+			inline half gbuffer_encode_density_shadow_bias(half c) { return c; }
 			inline half gbuffer_decode_density_shadow_bias(half4 c, half material_id) { return c.b; }
 
-			inline NORMAL_TYPE gbuffer_encode_normal(float3 normal) { 
+			inline NORMAL_TYPE gbuffer_encode_normal(float3 normal) {
 				#if defined(TRANSLUCENT_MATERIAL)
 					return encode_octahedron_normal(normal);
 				#else
 					return encode_signed_normal(normal);
 				#endif
 			}
-			
-			inline float3 gbuffer_decode_normal(half4 c, half material_id) 
-			{ 
+
+			inline float3 gbuffer_decode_normal(half4 c, half material_id)
+			{
 				if (material_id != TRANSLUCENT_MATERIAL_ID)
 					return normalize(decode_signed_normal(c.rgb));
 				return decode_octahedron_normal(c.rg);
@@ -1237,17 +1237,17 @@ hlsl_shaders = {
 
 			// SHARED GBUFFER2 G
 
-			inline half gbuffer_encode_density(half c) { return c; }							
+			inline half gbuffer_encode_density(half c) { return c; }
 			inline half gbuffer_decode_density(half4 c, half material_id){ return c.g; }
-			inline half gbuffer_encode_skin(half c) { return c; }							
+			inline half gbuffer_encode_skin(half c) { return c; }
 			inline half gbuffer_decode_skin(half4 c, half material_id) { return c.g; }
-			inline half gbuffer_encode_clear_coat(half c) { return c; }							
-			inline half gbuffer_decode_clear_coat(half4 c, half material_id) { return c.g;}		
-			inline half gbuffer_encode_cloth_falloff(half c) { return c; }						
-			inline half gbuffer_decode_cloth_falloff(half4 c, half material_id) { return c.g; }	
-			
+			inline half gbuffer_encode_clear_coat(half c) { return c; }
+			inline half gbuffer_decode_clear_coat(half4 c, half material_id) { return c.g;}
+			inline half gbuffer_encode_cloth_falloff(half c) { return c; }
+			inline half gbuffer_decode_cloth_falloff(half4 c, half material_id) { return c.g; }
+
 			inline half gbuffer_encode_metallic_mask(half s) { return s; }
-			inline half gbuffer_decode_metallic_mask(half4 c, half material_id) 
+			inline half gbuffer_decode_metallic_mask(half4 c, half material_id)
 			{
 				// TODO:
 				[branch]
@@ -1255,10 +1255,10 @@ hlsl_shaders = {
 				{
 					return 1.0;
 				}
-				else if (	material_id == TRANSLUCENT_MATERIAL_ID || 
-							material_id == CLOTH_MATERIAL_ID || 
+				else if (	material_id == TRANSLUCENT_MATERIAL_ID ||
+							material_id == CLOTH_MATERIAL_ID ||
 							material_id == HAIR_MATERIAL_ID ||
-							material_id == SKIN_MATERIAL_ID) 
+							material_id == SKIN_MATERIAL_ID)
 				{
 					return 0.0;
 				}
@@ -1281,7 +1281,7 @@ hlsl_shaders = {
 
 				return DEFAULT_MATERIAL_ID;
 			}
-			
+
 			inline half gbuffer_decode_material_id(half4 c) { return c.a; }
 
 			// SCALE_VELOCITY represents the maximum component size of a motion vector (in pixels).
@@ -1342,7 +1342,7 @@ hlsl_shaders = {
 		//               (1,1)
 		//     .-----------.   (Z=1)
 		//     |           |   /
-		//     |     0     |  / 
+		//     |     0     |  /
 		//     |           | /
 		//     .-----------.(Z=0)
 		//  (-1,-1)
@@ -1351,7 +1351,7 @@ hlsl_shaders = {
 		//               (1,0)
 		//     0-----------.   (Z=1)
 		//     |           |   /
-		//     |           |  / 
+		//     |           |  /
 		//     |           | /
 		//     .-----------.(Z=0)
 		//   (0,1)
@@ -1360,7 +1360,7 @@ hlsl_shaders = {
 		//               (+,+)
 		//     .-----------.    (Z=Far Plane)
 		//     |           |   /
-		//     |     0     |  / 
+		//     |     0     |  /
 		//     |           | /
 		//     .-----------.(Z=Near Plane)
 		//   (-,-)
@@ -1379,7 +1379,7 @@ hlsl_shaders = {
 			float3 ss_to_view(float3 ss_vector, bool is_point) {
 				float x = ss_vector.x * 2 - 1;
 				float y = (1 - ss_vector.y) * 2 - 1;
-				float4 view_vector = mul(float4(x, y, ss_vector.z, is_point), camera_inv_projection);  
+				float4 view_vector = mul(float4(x, y, ss_vector.z, is_point), camera_inv_projection);
 				view_vector.xyz /= view_vector.w;
 				return view_vector.xyz;
 			}
@@ -1582,7 +1582,7 @@ hlsl_shaders = {
 				#if defined(SKINNED) && defined(SKINNED_DISABLED)
 					#undef SKINNED
 				#endif
-	
+
 				#if defined(SKINNED)
 					CBUFFER_START(c_skin_matrices)
 						#if defined(RENDERER_GL2)
@@ -1603,7 +1603,7 @@ hlsl_shaders = {
 
 						#if defined(GNM)
 							// Avoids 'unreferenced variable' warning on ps4
-							#define WEIGHT_PARAM_NAME 
+							#define WEIGHT_PARAM_NAME
 						#else
 							#define WEIGHT_PARAM_NAME bw
 						#endif
@@ -1675,7 +1675,7 @@ hlsl_shaders = {
 						#define WeightType half4
 
 						inline float3 skin_point(in float4 p, in IndexType bi, in WeightType bw) {
-							return bw.x * mul(p, (bones[bi & 0xFF])).xyz 
+							return bw.x * mul(p, (bones[bi & 0xFF])).xyz
 									+ bw.y * mul(p, (bones[(bi & 0xFF00) >> 8])).xyz
 									+ bw.z * mul(p, (bones[(bi & 0xFF0000) >> 16])).xyz
 									+ bw.w * mul(p, (bones[(bi & 0xFF000000) >> 24])).xyz;
@@ -1687,15 +1687,15 @@ hlsl_shaders = {
 										+ bw.z * mul(p, (last_bones[(bi & 0xFF0000) >> 16])).xyz
 										+ bw.w * mul(p, (last_bones[(bi & 0xFF000000) >> 24])).xyz;
 							}
-						#endif						
+						#endif
 						inline float3 skin_vector(in float3 v, in IndexType bi, in WeightType bw) {
-							return normalize(bw.x * mul(v, (float3x3)(bones[bi & 0xFF])) 
+							return normalize(bw.x * mul(v, (float3x3)(bones[bi & 0xFF]))
 									+ bw.y * mul(v, (float3x3)(bones[(bi & 0xFF00) >> 8]))
 									+ bw.z * mul(v, (float3x3)(bones[(bi & 0xFF0000) >> 16]))
 									+ bw.w * mul(v, (float3x3)(bones[(bi & 0xFF000000) >> 24])));
 						}
 						inline float3 skin_displacement_delta(in float3 v, in IndexType bi, in WeightType bw) {
-							return bw.x * mul(v, (float3x3)(bones[bi & 0xFF])) 
+							return bw.x * mul(v, (float3x3)(bones[bi & 0xFF]))
 									+ bw.y * mul(v, (float3x3)(bones[(bi & 0xFF00) >> 8]))
 									+ bw.z * mul(v, (float3x3)(bones[(bi & 0xFF0000) >> 16]))
 									+ bw.w * mul(v, (float3x3)(bones[(bi & 0xFF000000) >> 24]));
@@ -1782,7 +1782,7 @@ hlsl_shaders = {
 
 	billboard_transformation = {
 		code = """
-			void get_billboard_data(in float3 direction, in float4x4 camera_view, in float4 position, inout float4 wp, out float4 offset, out float3 normal, out float3 tangent, out float3 binormal) 
+			void get_billboard_data(in float3 direction, in float4x4 camera_view, in float4 position, inout float4 wp, out float4 offset, out float3 normal, out float3 tangent, out float3 binormal)
 			{
 				#if defined(BILLBOARD_TANGENT_ALIGNED)
 					#if defined(BILLBOARD_TANGENT_ALIGNED_X_LOCKED)
@@ -1814,7 +1814,7 @@ hlsl_shaders = {
 				#endif
 				#if defined(BILLBOARD_SPHERICAL_NORMAL)
 					// TODO: re-calculate tangent and binormal?
-					normal = normalize(lerp(offset, normal, 0.5)); 	
+					normal = normalize(lerp(offset, normal, 0.5));
 				#endif
 				tangent = x_axis;
 				binormal = y_axis;
@@ -1837,13 +1837,13 @@ hlsl_shaders = {
 				get_billboard_data_from_position(world_pos, camera_pos, camera_view, position, wp, offset, normal, tangent, binormal);
 			}
 
-			void get_billboard_data_from_direction(in float3 direction, in float4x4 camera_view, in float4 position, inout float4 wp, out float4 offset, out float3 normal, out float3 tangent, out float3 binormal) 
+			void get_billboard_data_from_direction(in float3 direction, in float4x4 camera_view, in float4 position, inout float4 wp, out float4 offset, out float3 normal, out float3 tangent, out float3 binormal)
 			{
 				wp = float4(-direction, 1.0);
 				get_billboard_data(direction, camera_view, position, wp, offset, normal, tangent, binormal);
 			}
 
-			void get_billboard_positions_from_direction(in float3 direction, in float4x4 camera_view, in float4 position, inout float4 wp, out float4 offset) 
+			void get_billboard_positions_from_direction(in float3 direction, in float4x4 camera_view, in float4 position, inout float4 wp, out float4 offset)
 			{
 				float3 normal, tangent, binormal;
 				get_billboard_data_from_direction(direction, camera_view, position, wp, offset, normal, tangent, binormal);
@@ -1901,15 +1901,15 @@ hlsl_shaders = {
 					neighbor_offsets_i[8]
 				};
 
-				static const float blackman_harris_sum0 = 
-					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[0]) + 
-					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[0]) + 
-					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[0]) + 
-					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[0]) + 
-					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[0]) + 
-					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[0]) + 
-					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[0]) + 
-					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[0]) + 
+				static const float blackman_harris_sum0 =
+					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[0]) +
+					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[0]) +
+					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[0]) +
+					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[0]) +
+					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[0]) +
+					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[0]) +
+					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[0]) +
+					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[0]) +
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[0]);
 
 				static const float blackman_harris_weights0[9] = {
@@ -1924,15 +1924,15 @@ hlsl_shaders = {
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[0]) / blackman_harris_sum0
 				};
 
-				static const float blackman_harris_sum1 = 
-					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[1]) + 
-					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[1]) + 
-					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[1]) + 
-					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[1]) + 
-					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[1]) + 
-					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[1]) + 
-					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[1]) + 
-					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[1]) + 
+				static const float blackman_harris_sum1 =
+					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[1]) +
+					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[1]) +
+					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[1]) +
+					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[1]) +
+					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[1]) +
+					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[1]) +
+					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[1]) +
+					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[1]) +
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[1]);
 
 				static const float blackman_harris_weights1[9] = {
@@ -1947,15 +1947,15 @@ hlsl_shaders = {
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[1]) / blackman_harris_sum1
 				};
 
-				static const float blackman_harris_sum2 = 
-					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[2]) + 
-					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[2]) + 
-					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[2]) + 
-					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[2]) + 
-					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[2]) + 
-					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[2]) + 
-					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[2]) + 
-					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[2]) + 
+				static const float blackman_harris_sum2 =
+					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[2]) +
+					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[2]) +
+					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[2]) +
+					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[2]) +
+					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[2]) +
+					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[2]) +
+					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[2]) +
+					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[2]) +
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[2]);
 
 				static const float blackman_harris_weights2[9] = {
@@ -1970,15 +1970,15 @@ hlsl_shaders = {
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[2]) / blackman_harris_sum2
 				};
 
-				static const float blackman_harris_sum3 = 
-					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[3]) + 
-					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[3]) + 
-					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[3]) + 
-					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[3]) + 
-					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[3]) + 
-					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[3]) + 
-					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[3]) + 
-					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[3]) + 
+				static const float blackman_harris_sum3 =
+					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[3]) +
+					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[3]) +
+					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[3]) +
+					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[3]) +
+					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[3]) +
+					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[3]) +
+					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[3]) +
+					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[3]) +
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[3]);
 
 				static const float blackman_harris_weights3[9] = {
@@ -1993,15 +1993,15 @@ hlsl_shaders = {
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[3]) / blackman_harris_sum3
 				};
 
-				static const float blackman_harris_sum4 = 
-					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[4]) + 
-					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[4]) + 
-					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[4]) + 
-					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[4]) + 
-					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[4]) + 
-					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[4]) + 
-					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[4]) + 
-					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[4]) + 
+				static const float blackman_harris_sum4 =
+					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[4]) +
+					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[4]) +
+					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[4]) +
+					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[4]) +
+					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[4]) +
+					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[4]) +
+					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[4]) +
+					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[4]) +
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[4]);
 
 				static const float blackman_harris_weights4[9] = {
@@ -2016,15 +2016,15 @@ hlsl_shaders = {
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[4]) / blackman_harris_sum4
 				};
 
-				static const float blackman_harris_sum5 = 
-					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[5]) + 
-					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[5]) + 
-					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[5]) + 
-					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[5]) + 
-					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[5]) + 
-					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[5]) + 
-					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[5]) + 
-					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[5]) + 
+				static const float blackman_harris_sum5 =
+					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[5]) +
+					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[5]) +
+					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[5]) +
+					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[5]) +
+					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[5]) +
+					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[5]) +
+					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[5]) +
+					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[5]) +
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[5]);
 
 				static const float blackman_harris_weights5[9] = {
@@ -2039,15 +2039,15 @@ hlsl_shaders = {
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[5]) / blackman_harris_sum5
 				};
 
-				static const float blackman_harris_sum6 = 
-					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[6]) + 
-					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[6]) + 
-					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[6]) + 
-					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[6]) + 
-					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[6]) + 
-					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[6]) + 
-					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[6]) + 
-					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[6]) + 
+				static const float blackman_harris_sum6 =
+					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[6]) +
+					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[6]) +
+					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[6]) +
+					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[6]) +
+					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[6]) +
+					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[6]) +
+					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[6]) +
+					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[6]) +
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[6]);
 
 				static const float blackman_harris_weights6[9] = {
@@ -2062,15 +2062,15 @@ hlsl_shaders = {
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[6]) / blackman_harris_sum6
 				};
 
-				static const float blackman_harris_sum7 = 
-					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[7]) + 
-					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[7]) + 
-					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[7]) + 
-					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[7]) + 
-					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[7]) + 
-					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[7]) + 
-					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[7]) + 
-					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[7]) + 
+				static const float blackman_harris_sum7 =
+					gaussian_blackman_harris(neighbor_offsets[0] + halton_offsets[7]) +
+					gaussian_blackman_harris(neighbor_offsets[1] + halton_offsets[7]) +
+					gaussian_blackman_harris(neighbor_offsets[2] + halton_offsets[7]) +
+					gaussian_blackman_harris(neighbor_offsets[3] + halton_offsets[7]) +
+					gaussian_blackman_harris(neighbor_offsets[4] + halton_offsets[7]) +
+					gaussian_blackman_harris(neighbor_offsets[5] + halton_offsets[7]) +
+					gaussian_blackman_harris(neighbor_offsets[6] + halton_offsets[7]) +
+					gaussian_blackman_harris(neighbor_offsets[7] + halton_offsets[7]) +
 					gaussian_blackman_harris(neighbor_offsets[8] + halton_offsets[7]);
 
 				static const float blackman_harris_weights7[9] = {
@@ -2099,7 +2099,7 @@ hlsl_shaders = {
 
 				inline float2 get_vs_halton_offset(uint frame_number, float2 output_rt_size)
 				{
-					// Multiply the halton offset by 2 since we are adding the offset in view space (non projected frustrum width and height ranges [-1, 1]) 
+					// Multiply the halton offset by 2 since we are adding the offset in view space (non projected frustrum width and height ranges [-1, 1])
 					#if !defined(RENDERER_GL)
 						float enabled = taa_enabled * !debug_rendering;
 						//#if defined(D3D11)/* || defined(D3D12)*/ // we don't have baking support for D3D12

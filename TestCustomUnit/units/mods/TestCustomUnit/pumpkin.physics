@@ -9,10 +9,10 @@ actors = [
 			{
 				material = "default"
 				shape = "pumpkin"
-				template = "pickup"
+				template = "interact_collision_shape"
 				type = "convex_computed"
 			}
 		]
-		template = "dynamic"
+		template = "static"
 	}
 ]

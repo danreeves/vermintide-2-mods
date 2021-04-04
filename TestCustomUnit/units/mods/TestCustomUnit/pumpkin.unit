@@ -4,11 +4,26 @@ materials = {
 renderables = {
 	pumpkin = {
 		always_keep = true
-		culling = "bounding_volume"
-		generate_uv_unwrap = false
-		occluder = true
-		shadow_caster = true
-		surface_queries = true
-		viewport_visible = true
+			culling = "bounding_volume"
+			generate_uv_unwrap = false
+			occluder = true
+			shadow_caster = true
+			surface_queries = true
+			viewport_visible = true
+	}
+}
+data = {
+	unit_template = "interaction_unit"
+	/* extensions = [ */
+	/*     "GenericUnitInteractableExtension" */
+	/*     "GenericOutlineExtension" */
+	/* ] */
+	interaction_data = {
+		hud_description = "interact_open_inventory_chest"
+		interaction_length = 0
+		interaction_type = "inventory_access"
+		interactor_animation = "interaction_start"
+		interactor_animation_time_variable = "revive_time"
+		only_once = false
 	}
 }
