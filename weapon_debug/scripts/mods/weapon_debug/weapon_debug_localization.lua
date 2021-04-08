@@ -1,5 +1,5 @@
 return {
 	mod_description = {
-		en = "weapon_debug description",
+		en = "Draws the hitboxes for most weapons and enemy attacks with various options"
 	},
 }

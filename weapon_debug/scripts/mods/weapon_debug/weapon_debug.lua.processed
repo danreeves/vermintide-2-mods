@@ -1273,21 +1273,26 @@ mod:hook_origin(ActionFlamethrower, "_select_targets", function (self, world, sh
 
   if mod:get("show_attack_boxes") then
     local dot_threshold = self.dot_check or 0.99
-    local angle = 0.01
+    local angle = 0.1
     local rotation = Quaternion.axis_angle(Vector3.up(), angle)
     local test_direction = Quaternion.rotate(rotation, player_direction)
     local test_dot = Vector3.dot(player_direction, test_direction)
     local iterations = 0
-    while (test_dot ~= dot_threshold) and (test_dot > dot_threshold) and (iterations < 100) do
+    mod:echo('start')
+    mod:echo(string.format("%.3f < %.3f = %s", test_dot, dot_threshold, test_dot < dot_threshold))
+
+    while (test_dot ~= dot_threshold) and (test_dot > dot_threshold) and (iterations < 25) do
       iterations = iterations + 1
-      test_direction = Quaternion.rotate(rotation, test_direction)
+      test_direction = Quaternion.rotate(rotation, player_direction)
       test_dot = Vector3.dot(player_direction, test_direction)
+      mod:echo(string.format("%s %s %s", (test_dot ~= dot_threshold) , (test_dot > dot_threshold) , (iterations < 25))
+      -- mod:echo(string.format("%.3f < %.3f = %s", test_dot, dot_threshold, test_dot < dot_threshold))
     end
 
     local deg = Vector3.flat_angle(player_direction, test_direction)
     local r = SPRAY_RANGE * math.tan(deg)
 
-    QuickDrawerStay:cone(player_position, player_position + (player_direction * SPRAY_RANGE), r, Color(255, 0, 0), 20, 10)
+    QuickDrawerStay:cone(player_position, start_point + (player_direction * SPRAY_RANGE), r, Color(255, 0, 0), 20, 10)
   end
 
   if ai_units_n > 0 then
@@ -1376,16 +1381,19 @@ mod:hook_origin(ActionBulletSpray, "_select_targets", function (self, world, sho
   if mod:get("show_attack_boxes") then
     local flamethrower_range = current_action.spray_range or SPRAY_RANGE
     local dot_threshold = self.CONE_COS_ALPHA
-    local angle = 0.01
+    local angle = math.pi / 10
     local rotation = Quaternion.axis_angle(Vector3.up(), angle)
     local test_direction = Quaternion.rotate(rotation, player_direction)
     local test_dot = Vector3.dot(player_direction, test_direction)
     local iterations = 0
-    while test_dot ~= dot_threshold and test_dot > dot_threshold and iterations < 100 do
+    mod:echo('start')
+    while to2(test_dot) ~= to2(dot_threshold) and to2(test_dot) > to2(dot_threshold) and iterations < 5 do
       iterations = iterations + 1
-      test_direction = Quaternion.rotate(rotation, test_direction)
+      test_direction = Quaternion.rotate(rotation, player_direction)
       test_dot = Vector3.dot(player_direction, test_direction)
+      mod:echo(test_dot)
     end
+    mod:echo(string.format("%.3f . %.3f", dot_threshold, test_dot))
 
     local deg = Vector3.flat_angle(player_direction, test_direction)
     local r = flamethrower_range * math.tan(deg)

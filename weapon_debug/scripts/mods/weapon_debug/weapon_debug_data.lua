@@ -1,7 +1,7 @@
 local mod = get_mod("weapon_debug")
 
 return {
-  name = "weapon_debug",
+  name = "Hitbox Debugger",
   description = mod:localize("mod_description"),
   is_togglable = true,
   options = {
