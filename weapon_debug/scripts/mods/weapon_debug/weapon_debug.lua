@@ -1,7 +1,8 @@
 -- luacheck: no max line length
--- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable Script BLACKBOARDS ActionFlamethrower
+-- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable Script BLACKBOARDS ActionFlamethrower Development DebugManager DebugDrawer IngameHud
 local mod = get_mod("weapon_debug")
-mod:dofile("scripts/mods/weapon_debug/game_code/debug_drawer")
+
+Development._hardcoded_dev_params.disable_debug_draw = false
 script_data.disable_debug_draw = false
 
 mod.prev_start_pos = nil
@@ -36,6 +37,40 @@ local time = 0
 --     jump_height_calibrated = true
 --   end
 -- end)
+
+DebugManager.drawer = function(self, options)
+  options = options or {}
+  local drawer_name = options.name
+  local drawer
+  local drawer_api = DebugDrawer -- MODIFIED. We just want debug drawer
+
+  if drawer_name == nil then
+    local line_object = World.create_line_object(self._world)
+    drawer = drawer_api:new(line_object, options.mode)
+    self._drawers[#self._drawers + 1] = drawer
+  elseif self._drawers[drawer_name] == nil then
+    local line_object = World.create_line_object(self._world)
+    drawer = drawer_api:new(line_object, options.mode)
+    self._drawers[drawer_name] = drawer
+  else
+    drawer = self._drawers[drawer_name]
+  end
+
+  return drawer
+end
+
+mod:hook_safe(IngameHud, "update", function(self)
+  if not self._currently_visible_components.EquipmentUI then
+    local enabled = false
+    Development._hardcoded_dev_params.disable_debug_draw = not enabled
+    script_data.disable_debug_draw = not enabled
+  else
+    local enabled = true
+    Development._hardcoded_dev_params.disable_debug_draw = not enabled
+    script_data.disable_debug_draw = not enabled
+  end
+
+end)
 
 function mod.update ()
   if Managers.state.debug then
@@ -1271,20 +1306,22 @@ mod:hook_origin(ActionFlamethrower, "_select_targets", function (self, world, sh
 
   PhysicsWorld.prepare_actors_for_overlap(physics_world, start_point, SPRAY_RANGE * SPRAY_RANGE)
 
+
   if mod:get("show_attack_boxes") then
+    local forward = Vector3.forward()
     local dot_threshold = self.dot_check or 0.99
     local angle = 0.01
     local rotation = Quaternion.axis_angle(Vector3.up(), angle)
-    local test_direction = Quaternion.rotate(rotation, player_direction)
-    local test_dot = Vector3.dot(player_direction, test_direction)
+    local test_direction = Quaternion.rotate(rotation, forward)
+    local test_dot = Vector3.dot(forward, test_direction)
     local iterations = 0
     while (test_dot ~= dot_threshold) and (test_dot > dot_threshold) and (iterations < 100) do
       iterations = iterations + 1
       test_direction = Quaternion.rotate(rotation, test_direction)
-      test_dot = Vector3.dot(player_direction, test_direction)
+      test_dot = Vector3.dot(forward, test_direction)
     end
 
-    local deg = Vector3.flat_angle(player_direction, test_direction)
+    local deg = Vector3.flat_angle(forward, test_direction)
     local r = SPRAY_RANGE * math.tan(deg)
 
     QuickDrawerStay:cone(player_position, player_position + (player_direction * SPRAY_RANGE), r, Color(255, 0, 0), 20, 10)
@@ -1374,20 +1411,21 @@ mod:hook_origin(ActionBulletSpray, "_select_targets", function (self, world, sho
   end)
 
   if mod:get("show_attack_boxes") then
+    local forward = Vector3.forward()
     local flamethrower_range = current_action.spray_range or SPRAY_RANGE
     local dot_threshold = self.CONE_COS_ALPHA
     local angle = 0.01
     local rotation = Quaternion.axis_angle(Vector3.up(), angle)
-    local test_direction = Quaternion.rotate(rotation, player_direction)
-    local test_dot = Vector3.dot(player_direction, test_direction)
+    local test_direction = Quaternion.rotate(rotation, forward)
+    local test_dot = Vector3.dot(forward, test_direction)
     local iterations = 0
     while test_dot ~= dot_threshold and test_dot > dot_threshold and iterations < 100 do
       iterations = iterations + 1
       test_direction = Quaternion.rotate(rotation, test_direction)
-      test_dot = Vector3.dot(player_direction, test_direction)
+      test_dot = Vector3.dot(forward, test_direction)
     end
 
-    local deg = Vector3.flat_angle(player_direction, test_direction)
+    local deg = Vector3.flat_angle(forward, test_direction)
     local r = flamethrower_range * math.tan(deg)
 
     QuickDrawerStay:cone(player_position, end_point + (player_direction * SPRAY_RANGE), r, Color(255, 0, 0), 20, 10)
