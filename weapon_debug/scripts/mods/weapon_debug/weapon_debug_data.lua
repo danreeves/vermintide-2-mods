@@ -48,6 +48,17 @@ return {
 		type = "checkbox",
 		default_value = false,
 	  },
+	  {
+		setting_id = "show_navmesh",
+		type = "checkbox",
+		default_value = false,
+	  },
+	  {
+		setting_id = "nav_mesh_distance",
+		type = "numeric",
+		default_value = 15,
+		range = {1, 30},
+	  },
 	},
   },
 }

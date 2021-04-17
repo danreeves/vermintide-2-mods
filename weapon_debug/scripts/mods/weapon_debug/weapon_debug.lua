@@ -1,5 +1,5 @@
 -- luacheck: no max line length
--- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable Script BLACKBOARDS ActionFlamethrower Development DebugManager DebugDrawer IngameHud
+-- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable Script BLACKBOARDS ActionFlamethrower Development DebugManager DebugDrawer IngameHud LineObject GwNavTraversal Gui
 local mod = get_mod("weapon_debug")
 
 Development._hardcoded_dev_params.disable_debug_draw = false
@@ -72,12 +72,101 @@ mod:hook_safe(IngameHud, "update", function(self)
 
 end)
 
+mod._world = nil
+mod._nav_world = nil
+mod._world_gui = nil
+mod._line_object = nil
+local color_table = {}
+for i = 1, 25, 1 do
+    color_table[i] = math.random(1, 15)
+end
+
+function mod.draw_nav_mesh()
+
+  if not mod:get("show_navmesh") then
+    return
+  end
+  local player_unit = Managers.player:local_player().player_unit
+  local position = Unit.world_position(player_unit, 0)
+  local offset = Vector3(0, 0, 0.2)
+
+  if not mod._line_object then
+    mod.on_setting_changed()
+  end
+
+  LineObject.reset(mod._line_object)
+
+  local nav_world = mod._nav_world
+  local triangle = GwNavTraversal.get_seed_triangle(mod._nav_world, position)
+
+  if triangle == nil then
+    return
+  end
+
+  local triangles = {
+    triangle
+  }
+  local num_triangles = 1
+  local i = 0
+
+  while num_triangles > i do
+    i = i + 1
+    triangle = triangles[i]
+    local p1, p2, p3 = GwNavTraversal.get_triangle_vertices(nav_world, triangle)
+    local triangle_center = p1 + p2 + p3
+    local table_index = math.ceil((triangle_center.x + triangle_center.y) % 24 + 1)
+    local green = color_table[table_index] * 10
+
+    Gui.triangle(mod._world_gui, p1 + offset, p2 + offset, p3 + offset, 0, Color(150, 0, green, 255))
+
+    local neighbors = {
+      GwNavTraversal.get_neighboring_triangles(triangle)
+    }
+
+    for j = 1, #neighbors, 1 do
+      local neighbor = neighbors[j]
+      local is_in_list_already = false
+
+      for k = 1, num_triangles, 1 do
+        local triangle2 = triangles[k]
+
+        if GwNavTraversal.are_triangles_equal(neighbor, triangle2) then
+          is_in_list_already = true
+
+          break
+        end
+      end
+
+      if not is_in_list_already then
+        local p2_1, p2_2, p2_3 = GwNavTraversal.get_triangle_vertices(nav_world, triangle)
+
+        if Vector3.distance((p2_1 + p2_2 + p2_3) * 0.33, position) < tonumber(mod:get("nav_mesh_distance")) then
+          num_triangles = num_triangles + 1
+          triangles[num_triangles] = neighbor
+        end
+      end
+    end
+  end
+
+  LineObject.dispatch(mod._world, mod._line_object)
+end
+
+function mod.on_game_state_changed (status, state)
+  if status == "enter" and state == "StateIngame" then
+    mod._world = Managers.world:world("level_world")
+    mod._nav_world = Managers.state.entity:system("ai_system"):nav_world()
+    mod._world_gui = World.create_world_gui(mod._world, Matrix4x4.identity(), 1, 1, "immediate", "material", "materials/fonts/gw_fonts")
+    mod._line_object = World.create_line_object(mod._world, false)
+  end
+end
+
 function mod.update ()
   if Managers.state.debug then
     for _, drawer in pairs(Managers.state.debug._drawers) do
       drawer:update(Managers.state.debug._world)
     end
   end
+  mod.draw_nav_mesh()
 end
 
 function mod.clear_lines()
@@ -86,6 +175,10 @@ end
 
 function mod.on_setting_changed()
   QuickDrawerStay:reset()
+  mod._world = Managers.world:world("level_world")
+  mod._nav_world = Managers.state.entity:system("ai_system"):nav_world()
+  mod._world_gui = World.create_world_gui(mod._world, Matrix4x4.identity(), 1, 1, "immediate", "material", "materials/fonts/gw_fonts")
+  mod._line_object = World.create_line_object(mod._world, false)
 end
 
 function mod.timescale_up()
