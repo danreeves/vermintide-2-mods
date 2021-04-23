@@ -1,4 +1,4 @@
--- luacheck: globals get_mod Managers Unit Vector3 POSITION_LOOKUP IngameUI ScriptWorld ScriptViewport Camera UIRenderer Color UIResolution Gui VMFOptionsView ColorPicker ScriptUnit CameraStateFollowThirdPerson CameraStateObserver Application
+-- luacheck: globals get_mod Managers Unit Vector3 POSITION_LOOKUP IngameUI ScriptWorld ScriptViewport Camera UIRenderer Color UIResolution Gui VMFOptionsView ColorPicker ScriptUnit CameraStateFollowThirdPerson CameraStateObserver Application math.clamp
 local mod = get_mod("MMONames2")
 mod.player_colors = {}
 
@@ -89,7 +89,7 @@ local function draw_icon(renderer, unit, camera, player_position)
     local career_ext = ScriptUnit.extension(unit.player_unit, "career_system")
     if career_ext then
       -- Offset by half the icon width
-      position = position + Vector3(font_size / 2, 0, 0)
+      position = position + Vector3(font_size / 3, 0, 0)
 
       local career_name = career_ext:career_name()
       local icon = "store_tag_icon_" .. career_name
@@ -112,6 +112,10 @@ end
 
 function mod.get_player_color(player)
   local current_player = Managers.player:local_player()
+  -- Bots are white
+  if not player:is_player_controlled() then
+    return {255, 255, 255}
+  end
   if player == current_player or mod:get("color_override") then
     return { mod:get("user_color_r"), mod:get("user_color_g"), mod:get("user_color_b") }
   end
