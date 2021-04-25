@@ -18,11 +18,13 @@ end)
 mod.connected_players = {}
 mod.rpc_name = "custom_mutator_unstable_teleport_update_players"
 mod:network_register(mod.rpc_name, function(_, connected_player_peer_ids)
+  mod:echo(cjson.encode(connected_player_peer_ids))
   mod.connected_players = {}
   for player1_peer_id, player2_peer_id in pairs(connected_player_peer_ids) do
     local player1 = Managers.player:player_from_peer_id(player1_peer_id)
     local player2 = Managers.player:player_from_peer_id(player2_peer_id)
     mod.connected_players[player1] = player2
+    mod:echo(mod.connected_players)
   end
 end)
 
@@ -32,8 +34,12 @@ function mod.sync_connected_players()
     local player1 = Managers.player:unit_owner(player1_unit)
     local player2 = Managers.player:unit_owner(player2_unit)
     connected_player_peer_ids[player1.peer_id] = player2.peer_id
+    mod:echo(cjson.encode(connected_player_peer_ids))
   end
-  mod:network_send(mod.rpc_name, "others", connected_player_peer_ids)
+  local human_players = Managers.player:players()
+  for _, player in ipairs(human_players) do
+    mod:network_send(mod.rpc_name, player.peer_id, connected_player_peer_ids)
+  end
 end
 
 function mod.on_user_joined()
@@ -83,13 +89,12 @@ local unstable_teleport = {
 
   teleport_player = function(player_unit, to)
     local player = Managers.player:unit_owner(player_unit)
-    if player.is_server then
+    if not player.remote then
       ScriptUnit.extension(player_unit, "locomotion_system"):teleport_to(to)
     else
       local player_unit_id = Managers.state.network:unit_game_object_id(player_unit)
-      Managers.state.network.network_transmit:send_rpc(
+      Managers.state.network.network_transmit:send_rpc_clients(
         "rpc_teleport_unit_to",
-        player.peer_id,
         player_unit_id,
         to,
         Unit.local_rotation(player_unit, 0)
@@ -323,7 +328,7 @@ mod.add_mutator_template(name, unstable_teleport)
 mod:hook(BackendInterfaceLiveEventsPlayfab, "get_game_mode_data", function(func, ...)
   local game_mode_data = func(...)
   game_mode_data.level_key = "dlc_castle"
-  game_mode_data.level_key = "farmlands"
+  -- game_mode_data.level_key = "farmlands"
   game_mode_data.mutators = { name }
   return game_mode_data
 end)
