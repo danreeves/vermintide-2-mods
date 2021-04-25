@@ -1,6 +1,7 @@
 -- luacheck: globals get_mod Vector3 ScriptUnit ALIVE POSITION_LOOKUP Managers
 -- luacheck: globals World WwiseWorld WwiseUtils Quaternion Unit BackendInterfaceLiveEventsPlayfab
--- luacheck: globals Math
+-- luacheck: globals Math FrameTable table.clone table.shuffle table.is_empty
+-- luacheck: globals math.lerp
 local mod = get_mod("MutatorUnstableTeleport")
 mod:dofile("scripts/mods/MutatorUnstableTeleport/add_mutator_template")
 
@@ -13,9 +14,6 @@ mod:hook(_G, 'Localize', function(func, key, ...)
   end
   return func(key, ...)
 end)
-
-
-
 
 mod.connected_players = {}
 mod.rpc_name = "custom_mutator_unstable_teleport_update_players"
@@ -42,21 +40,21 @@ function mod.on_user_joined()
   mod.sync_connected_players()
 end
 
-function mod.on_user_left(player)
+-- function mod.on_user_left(player)
 -- cleanup connected_ysers
-end
+-- end
 
 local name = "unstable_teleport"
 local unstable_teleport = {
   beam_material_name = "cloud_1",
   display_name = "custom_mutator_unstable_teleport",
   beam_effect_name = "fx/leash_beam_01",
-  center_sound_event = "Play_mutator_leash_center",
+  center_sound_event = "Play_mutator_leash_loop",
   icon = "mutator_icon_nurgle_storm",
   description = "description_custom_mutator_unstable_teleport",
   center_effect_name = "fx/leash_beam_center_01",
-  teleport_cooldown = 2,
-  warning_time = 1,
+  teleport_cooldown = 5,
+  warning_time = 5,
 
   get_player_effect_position = function (player_unit, local_player)
     local player_effect_position
@@ -64,7 +62,10 @@ local unstable_teleport = {
     if player == local_player then
       local first_person_extension = ScriptUnit.extension(player_unit, "first_person_system")
       local first_person_unit = first_person_extension.first_person_unit
-      player_effect_position = Unit.world_position(first_person_unit, Unit.node(first_person_unit, "root_point")) - 0.5 * Vector3.up()
+      player_effect_position = Unit.world_position(
+        first_person_unit,
+        Unit.node(first_person_unit, "root_point")
+      ) - 0.5 * Vector3.up()
     else
       local effect_node = Unit.node(player_unit, "j_spine")
       player_effect_position = Unit.world_position(player_unit, effect_node)
@@ -92,11 +93,11 @@ local unstable_teleport = {
         player_unit_id,
         to,
         Unit.local_rotation(player_unit, 0)
-      )
+        )
     end
   end,
 
-  server_start_function = function (context, data)
+  server_start_function = function (_, data)
     mod.connected_players = {}
     data.hero_side = Managers.state.side:get_side_from_name("heroes")
     data.has_left_safe_zone = false
@@ -105,7 +106,7 @@ local unstable_teleport = {
     data.teleport_at = t + data.template.teleport_cooldown + data.template.warning_time
   end,
 
-  server_update_function = function (context, data)
+  server_update_function = function (_, data)
     local t = Managers.time:time("game")
     local hero_side = data.hero_side
     local PLAYER_UNITS = hero_side.PLAYER_AND_BOT_UNITS
@@ -113,7 +114,6 @@ local unstable_teleport = {
     if #PLAYER_UNITS < 2 then
       return
     end
-
 
     if data.start_teleport_at < t then
       mod.connected_players = {}
@@ -133,21 +133,21 @@ local unstable_teleport = {
 
       -- do the teleport
       for player1, player2 in pairs(mod.connected_players) do
-        local position1 = POSITION_LOOKUP[player1]
-        local position2 = POSITION_LOOKUP[player2]
-        data.template.teleport_player(player1, position2)
-        data.template.teleport_player(player2, position1)
-        local player1_dialogue = ScriptUnit.extension_input(player1, "dialogue_system")
+          local position1 = POSITION_LOOKUP[player1]
+          local position2 = POSITION_LOOKUP[player2]
+          data.template.teleport_player(player1, position2)
+          data.template.teleport_player(player2, position1)
 
-        local profile_name = ScriptUnit.extension(player1, "dialogue_system").context.player_profile
-        local event_data = FrameTable.alloc_table()
-        event_data.player_profile = profile_name
-        event_data.source_name = profile_name
-        event_data.concept = "generic_falling"
-        if player1_dialogue and profile_name then
-          player1_dialogue:trigger_dialogue_event("generic_falling", event_data)
+        -- Trigger voice line
+        -- Currently only works on Castle Drachenfels I think
+        for _, player in ipairs({player1, player2}) do
+          local player_dialogue = ScriptUnit.extension_input(player, "dialogue_system")
+          local event_data = FrameTable.alloc_table()
+          event_data.source_name = ScriptUnit.extension(player, "dialogue_system").context.player_profile
+          player_dialogue:trigger_networked_dialogue_event("generic_falling", event_data)
         end
       end
+
       mod.connected_players = {}
       mod.sync_connected_players()
       data.start_teleport_at = t + data.template.teleport_cooldown
@@ -166,13 +166,15 @@ local unstable_teleport = {
     data.local_player = player_manager:local_player()
     data.beam_start_variable_id = World.find_particles_variable(world, beam_effect_name, "start")
     data.beam_end_variable_id = World.find_particles_variable(world, beam_effect_name, "end")
-    data.beam_sound = nil
+    data.own_beam_sound = nil
+    data.center_beam_sound = nil
     data.beam_effects = {}
     data.hero_side = hero_side
     mod.connected_players = {}
   end,
 
   client_update_function = function (context, data)
+    local t = Managers.time:time("game")
     local world = context.world
     local wwise_world = data.wwise_world
     local template = data.template
@@ -204,9 +206,24 @@ local unstable_teleport = {
 
     local connected_players = mod.connected_players
 
+    if data.own_beam_sound or data.center_beam_sound then
+      local audio_system = Managers.state.entity:system("audio_system")
+      local time_until = data.teleport_at - t
+      local scalar = time_until / data.template.warning_time
+      local audio_value = math.lerp(0.4, 1, 1 - scalar)
+      audio_system:set_global_parameter("leash_distance", audio_value )
+    end
+
     if not table.is_empty(connected_players) then
       for player1, player2 in pairs(connected_players) do
         if is_player_alive(player1) and is_player_alive(player2) then
+
+          if data.beam_sound1 then
+            local player1_position = POSITION_LOOKUP[player1]
+            local player2_position = POSITION_LOOKUP[player2]
+            local center_position = (player1_position + player2_position) / 2
+            WwiseWorld.set_source_position(wwise_world, data.beam_sound1.source_id, center_position)
+          end
 
           if not beam_effects[player1] then
             local beam_effect_id = World.create_particles(world, beam_effect_name, Vector3.zero(), Quaternion.identity())
@@ -234,52 +251,64 @@ local unstable_teleport = {
           World.set_particles_material_scalar(world, beam_effect_id, beam_material_name, "intensity", 5)
           World.set_particles_material_scalar(world, beam_effect_id, beam_material_name, "softness", 0)
 
-          local player_position = POSITION_LOOKUP[local_player.player_unit]
-          if data.beam_sound == nil then
-            local event_id, source_id, _ = WwiseUtils.trigger_position_event(world, center_sound_event, player_position)
-            data.beam_sound = {
-              source_id = source_id,
-              event_id = event_id
-            }
+          if data.own_beam_sound == nil then
+            if player1 == local_player.player_unit or player2 == local_player.player_unit then
+              local sound_id = WwiseWorld.trigger_event(wwise_world, "Play_mutator_leash_loop")
+              data.own_beam_sound = sound_id
+            end
           end
 
-          WwiseWorld.set_source_position(wwise_world, data.beam_sound.source_id, player_position)
+          if data.center_beam_sound == nil then
+              local player1_position = POSITION_LOOKUP[player1]
+              local player2_position = POSITION_LOOKUP[player2]
+              local center_position = (player1_position + player2_position) / 2
+              local event_id, source_id, _ = WwiseUtils.trigger_position_event(
+                world,
+                center_sound_event,
+                center_position
+                )
+              data.center_beam_sound = {
+                source_id = source_id,
+                event_id = event_id
+              }
+              WwiseWorld.set_source_position(wwise_world, data.center_beam_sound.source_id, center_position)
+          end
+
         end
       end
     else
-      -- Clean up sound
-      if data.beam_sound then
-        local event_id = data.beam_sound.event_id
-
-        WwiseWorld.stop_event(wwise_world, event_id)
-
-        data.beam_sound = nil
-      end
-
-      -- Clean up beams
-      for _, beam_effect in pairs(data.beam_effects) do
-        World.destroy_particles(world, beam_effect.beam_effect_id)
-        World.destroy_particles(world, beam_effect.player1_effect_id)
-        World.destroy_particles(world, beam_effect.player2_effect_id)
-      end
-      data.beam_effects = {}
+    -- Clean up sounds
+    template.clean_up_sounds(context, data)
+    -- Clean up beams
+    template.clean_up_beams(context, data)
     end
   end,
 
   client_stop_function = function (context, data)
-    local world = context.world
+    local template = data.template
+    -- Clean up sounds
+    template.clean_up_sounds(context, data)
+    -- Clean up beams
+    template.clean_up_beams(context, data)
+  end,
+
+  clean_up_sounds = function(_, data)
     local wwise_world = data.wwise_world
-
-    -- Clean up sound
-    if data.beam_sound then
-      local event_id = data.beam_sound.event_id
-
+    if data.own_beam_sound then
+      local event_id = data.own_beam_sound
       WwiseWorld.stop_event(wwise_world, event_id)
-
-      data.beam_sound = nil
+      data.own_beam_sound = nil
     end
 
-    -- Clean up beams
+    if data.center_beam_sound then
+      local event_id = data.center_beam_sound.event_id
+      WwiseWorld.stop_event(wwise_world, event_id)
+      data.center_beam_sound = nil
+    end
+  end,
+
+  clean_up_beams = function(context, data)
+    local world = context.world
     for _, beam_effect in pairs(data.beam_effects) do
       World.destroy_particles(world, beam_effect.beam_effect_id)
       World.destroy_particles(world, beam_effect.player1_effect_id)
@@ -289,10 +318,11 @@ local unstable_teleport = {
   end
 }
 
-mod.add_mutator_template(name, unstable_teleport, 69)
+mod.add_mutator_template(name, unstable_teleport)
 
 mod:hook(BackendInterfaceLiveEventsPlayfab, "get_game_mode_data", function(func, ...)
   local game_mode_data = func(...)
+  game_mode_data.level_key = "dlc_castle"
   game_mode_data.level_key = "farmlands"
   game_mode_data.mutators = { name }
   return game_mode_data
