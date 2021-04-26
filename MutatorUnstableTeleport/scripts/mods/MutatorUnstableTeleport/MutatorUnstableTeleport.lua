@@ -51,10 +51,16 @@ local unstable_teleport = {
   teleport_cooldown = 15,
   warning_time = 5,
 
+
   server_start_function = function (_, data)
-    local t = Managers.time:time("game")
-    -- TODO: Implement has_left_safe_zone logic
     data.has_left_safe_zone = false
+    data.start_teleport_at = nil
+    data.teleport_at = nil
+  end,
+
+  server_players_left_safe_zone = function (_, data)
+    local t = Managers.time:time("game")
+    data.has_left_safe_zone = true
     data.start_teleport_at = t + data.template.teleport_cooldown
     data.teleport_at = t + data.template.teleport_cooldown + data.template.warning_time
   end,
@@ -69,6 +75,10 @@ local unstable_teleport = {
     local cursed_players_key = data._shared_state:get_key("cursed_players")
 
     if #PLAYER_UNITS < 2 then
+      return
+    end
+
+    if not data.has_left_safe_zone then
       return
     end
 
