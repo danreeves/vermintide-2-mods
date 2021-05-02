@@ -1,15 +1,6 @@
 -- luacheck: globals get_mod PassiveAbilityQuestingKnight InGameChallengeTemplates
 local mod = get_mod("ChooseGrailKnightQuests")
-
-local old = Managers.mechanism
-Managers.mechanism = {
-  current_mechanism_name = function()end
-}
-local quests = PassiveAbilityQuestingKnight:new({},{},{player={unique_id = function()end}})
-quests._tomes_allowed = true
-quests._grims_allowed  = true
-local all_quests = quests:_generate_quest_pool()
-Managers.mechanism = old
+local all_quests = require("scripts/mods/ChooseGrailKnightQuests/get_quests")
 
 local quest_names = {}
 local options = {}
