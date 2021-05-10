@@ -73,7 +73,7 @@ function mod.on_all_mods_loaded()
   mod.set_diffuse_maps()
 end
 
-mod:hook_safe(UnitFramesHandler, "_sync_player_stats", function (self, unit_frame)
+mod:hook_safe(UnitFramesHandler, "_sync_player_stats", function (_, unit_frame)
 	local player_data = unit_frame.player_data
 	local player = player_data.player
     if player == Managers.player:local_player() then
