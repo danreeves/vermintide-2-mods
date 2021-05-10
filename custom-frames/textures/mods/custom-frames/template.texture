@@ -1,6 +1,6 @@
 common = {
   input = {
-    filename = "textures/mods/custom-frames/frames"
+    filename = "textures/mods/custom-frames/template"
   }
 
   output = {

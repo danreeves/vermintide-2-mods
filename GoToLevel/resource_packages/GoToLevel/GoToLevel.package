@@ -1,0 +1,11 @@
+mod = [
+	"GoToLevel"
+]
+
+package = [
+	"resource_packages/GoToLevel/GoToLevel"
+]
+
+lua = [
+	"scripts/mods/GoToLevel/*"
+]

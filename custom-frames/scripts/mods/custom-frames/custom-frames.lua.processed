@@ -1,0 +1,82 @@
+-- luacheck: globals get_mod callback Managers Material Gui UnitFrameUI UIUtils
+local mod = get_mod("custom-frames")
+local vmf = get_mod("VMF")
+
+mod:command("set_frame", "Set your custom frame URL", function(url)
+  -- Fix for double paste
+  local len = url:len()
+  local first_half = url:sub(1, len / 2)
+  local second_half = url:sub((len / 2) + 1, len)
+  if first_half == second_half then
+    url = first_half
+  end
+
+  mod:set("frame", url)
+end)
+
+local MAT_NAME = "template"
+
+mod.loaded = {}
+local loading_id = 0
+
+function mod.load_frame(gui)
+  local texture_url = mod:get("frame")
+
+  if not texture_url then
+    return
+  end
+
+  if not mod.loaded[texture_url] then
+    loading_id = loading_id + 1
+    mod.loaded[texture_url] = true
+
+    mod:echo(texture_url)
+    mod:echo('Custom frame loading...')
+
+    local cb = callback(mod, "cb_on_image_loaded", gui, texture_url)
+    Managers.url_loader:load_resource(
+      "custom_frames_" .. tostring(loading_id),
+      texture_url,
+      cb,
+      texture_url -- cache key
+      )
+  end
+end
+
+function mod.cb_on_image_loaded(_, gui, texture_url, texture_resource)
+  local material = Gui.material(gui, MAT_NAME)
+
+  mod:echo('Custom frame loaded...')
+
+  if texture_resource then
+    mod.texture_resources[texture_url] = texture_resource
+
+  if material and texture_resource then
+    mod:echo('Setting diffuse_map...')
+    Material.set_resource(material, "diffuse_map", texture_resource)
+  end
+end
+
+local time = 0
+function mod.on_all_mods_loaded()
+  time = Managers.time:time("main");
+  mod:echo("all mods loaded")
+end
+
+mod:hook_safe(vmf, "inject_materials", function ()
+  mod:echo("done injecting materials")
+end)
+
+mod:hook_safe(UnitFrameUI, "update", function(self)
+  local ui_renderer = self.ui_renderer
+  local gui = ui_renderer.gui_retained
+  local t = Managers.time:time("main");
+
+  if time ~= 0 and t - time > 1 then
+    mod.load_frame(gui)
+  end
+
+  self._widgets.portrait_static.content.texture_1 = MAT_NAME
+  self._widgets.portrait_static.style.texture_1.size = {164, 186}
+  self._widgets.portrait_static.style.texture_1.offset = { -83, -77, 10}
+end)

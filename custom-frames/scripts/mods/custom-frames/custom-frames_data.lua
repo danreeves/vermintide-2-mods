@@ -5,29 +5,14 @@ return {
   description = mod:localize("mod_description"),
   is_togglable = true,
   custom_gui_textures = {
-    atlases = {
-      {
-        "materials/mods/custom-frames/frames",
-        "frames",
-        "frames_masked",
-        "frames_point_sample",
-        "frames_point_sample_masked",
-      },
-    },
     ui_renderer_injections = {
       {
         "ingame_ui",
-        "materials/mods/custom-frames/frames",
-        "materials/mods/custom-frames/frames_masked",
-        "materials/mods/custom-frames/frames_point_sample",
-        "materials/mods/custom-frames/frames_point_sample_masked",
+        "materials/mods/custom-frames/template",
       },
       {
         "level_end_view_wrapper",
-        "materials/mods/custom-frames/frames",
-        "materials/mods/custom-frames/frames_masked",
-        "materials/mods/custom-frames/frames_point_sample",
-        "materials/mods/custom-frames/frames_point_sample_masked",
+        "materials/mods/custom-frames/template",
       },
     },
   },
