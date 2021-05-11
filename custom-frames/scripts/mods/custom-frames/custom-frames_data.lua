@@ -8,11 +8,17 @@ return {
     ui_renderer_injections = {
       {
         "ingame_ui",
-        "materials/mods/custom-frames/template",
+        "materials/mods/custom-frames/custom_frame_1",
+        "materials/mods/custom-frames/custom_frame_2",
+        "materials/mods/custom-frames/custom_frame_3",
+        "materials/mods/custom-frames/custom_frame_4",
       },
       {
         "level_end_view_wrapper",
-        "materials/mods/custom-frames/template",
+        "materials/mods/custom-frames/custom_frame_1",
+        "materials/mods/custom-frames/custom_frame_2",
+        "materials/mods/custom-frames/custom_frame_3",
+        "materials/mods/custom-frames/custom_frame_4",
       },
     },
   },

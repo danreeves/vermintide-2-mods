@@ -1,0 +1,12 @@
+custom_frame_3 = {
+  material_contexts = {
+    surface_material = ""
+  }
+
+  shader = "gui:DIFFUSE_MAP"
+
+  textures = {
+    /* diffuse_map = "" */
+    diffuse_map = "textures/mods/custom-frames/template"
+  }
+}

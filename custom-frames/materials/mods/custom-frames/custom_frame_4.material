@@ -1,4 +1,4 @@
-template = {
+custom_frame_4 = {
   material_contexts = {
     surface_material = ""
   }
