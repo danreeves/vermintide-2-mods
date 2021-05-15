@@ -1,5 +1,5 @@
 -- luacheck: globals get_mod callback Managers Material Gui UIUtils
--- luacheck: globals UnitFramesHandler
+-- luacheck: globals UnitFramesHandler Steam Application Boot table.contains
 local mod = get_mod("custom-frames")
 local vmf = get_mod("VMF")
 local ui_renderers = vmf:persistent_table("_ui_renderers")
@@ -9,6 +9,9 @@ local peer_id_to_frame = mod:persistent_table("peer_id_to_frame")
 local peer_id_to_mat = mod:persistent_table("peer_id_to_mat")
 local loading_id = 0
 local MAT_NAME = "custom_frame_"
+local BANNED_IDS = {
+  "76561198169033588", -- iLooking123
+}
 
 mod:command("set_frame", "Set your custom frame URL", function(url)
   if not url then
@@ -90,6 +93,15 @@ end
 
 function mod.on_game_state_changed(status, state)
   if status == "enter" and state == "StateIngame" then
+    local steam_id = Steam.id_hex_to_dec(Steam.user_id())
+
+    if table.contains(BANNED_IDS, steam_id) then
+      print("This player is banned from using the custom-frames mod")
+      Application.force_silent_exit_policy()
+      Boot:shutdown()
+      return
+    end
+
     local player = Managers.player:local_player()
     local peer_id = player.peer_id
 
