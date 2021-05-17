@@ -1,5 +1,4 @@
 -- luacheck: globals Localize
-
 local all_quests = require("scripts/mods/ChooseGrailKnightQuests/get_quests")
 
 local localizations = {
@@ -14,7 +13,7 @@ local localizations = {
   },
   quest3 = {
     en = "Quest 3",
-  }
+  },
 }
 
 local function strim(s)
@@ -22,9 +21,9 @@ local function strim(s)
 end
 
 for _, quest in pairs(all_quests) do
-  local name = tostring(strim(string.format(Localize(quest.reward), "")))
-  localizations[quest.reward] = {
-	en = name
+  local name = tostring(strim(string.format(Localize(quest), "")))
+  localizations[quest] = {
+    en = name
   }
 end
 
