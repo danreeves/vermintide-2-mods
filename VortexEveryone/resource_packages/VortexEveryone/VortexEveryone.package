@@ -1,0 +1,11 @@
+mod = [
+	"VortexEveryone"
+]
+
+package = [
+	"resource_packages/VortexEveryone/VortexEveryone"
+]
+
+lua = [
+	"scripts/mods/VortexEveryone/*"
+]
