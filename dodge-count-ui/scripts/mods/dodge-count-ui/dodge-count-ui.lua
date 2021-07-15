@@ -1,14 +1,12 @@
 local mod = get_mod("dodge-count-ui")
 local always_on = mod:get("always_on")
 
-local SCREEN_WIDTH = 1920
-local SCREEN_HEIGHT = 1080
-
 local function get_x()
+  local w, h = Application.screen_resolution()
   local x =  mod:get("offset_x")
-  local x_limit = SCREEN_WIDTH / 2
-  local max_x = math.min(mod:get("offset_x"), x_limit)
-  local min_x = math.max(mod:get("offset_x"), -x_limit)
+  local x_limit = w / 2
+  local max_x = math.min(x, x_limit)
+  local min_x = math.max(x, -x_limit)
   if x == 0 then
 	return 0
   end
@@ -17,10 +15,11 @@ local function get_x()
 end
 
 local function get_y()
+  local w, h = Application.screen_resolution()
   local y =  mod:get("offset_y")
-  local y_limit = SCREEN_HEIGHT / 2
-  local max_y = math.min(mod:get("offset_y"), y_limit)
-  local min_y = math.max(mod:get("offset_y"), -y_limit)
+  local y_limit = h / 2
+  local max_y = math.min(y, y_limit)
+  local min_y = math.max(y, -y_limit)
   if y == 0 then
 	return 0
   end
