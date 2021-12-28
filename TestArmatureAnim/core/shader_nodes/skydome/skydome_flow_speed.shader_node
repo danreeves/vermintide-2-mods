@@ -1,0 +1,18 @@
+group = "Input/Skydome"
+display_name = "Skydome Flow Speed"
+
+imports = {
+	skydome_flow_speed = {
+		type = "float"
+		domain = "global"
+		source = "shading_environment"
+	}
+}
+
+output = {
+	type = { typeof: "skydome_flow_speed" }
+}
+
+code = """
+	RESULT(skydome_flow_speed);
+"""

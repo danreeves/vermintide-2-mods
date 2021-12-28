@@ -1,0 +1,118 @@
+	bones = "content/units/connie"
+	events = {
+		"Anim End" = {
+		}
+		to_idle = {
+		}
+		to_run = {
+		}
+		to_walk = {
+		}
+	}
+	layers = [
+		{
+			default_state = "walk"
+			states = [
+				{
+					animations = [
+						"content/units/animations/connie_Armature_walk"
+					]
+					loop_animation = true
+					name = "walk"
+					randomization_type = "every_loop"
+					root_driving = "ignore"
+					speed = "1"
+					state_type = "regular"
+					transitions = [
+						{
+							blend_time = 0.2
+							event = "to_idle"
+							mode = "direct"
+							on_beat = ""
+							to = "idle"
+						}
+						{
+							blend_time = 0.2
+							event = "to_run"
+							mode = "direct"
+							on_beat = ""
+							to = "run"
+						}
+					]
+					weights = [
+						"1.0"
+					]
+				}
+				{
+					animations = [
+						"content/units/animations/connie_Armature_run"
+					]
+					loop_animation = true
+					name = "run"
+					randomization_type = "every_loop"
+					root_driving = "ignore"
+					speed = "1"
+					state_type = "regular"
+					transitions = [
+						{
+							blend_time = 0.2
+							event = "to_idle"
+							mode = "direct"
+							on_beat = ""
+							to = "idle"
+						}
+						{
+							blend_time = 0.2
+							event = "to_walk"
+							mode = "direct"
+							on_beat = ""
+							to = "walk"
+						}
+					]
+					weights = [
+						"1.0"
+					]
+				}
+				{
+					animations = [
+						"content/units/animations/connie_Armature_default"
+					]
+					exit_event = "Anim End"
+					exit_event_blend = 0
+					loop_animation = false
+					name = "idle"
+					randomization_type = "every_loop"
+					root_driving = "ignore"
+					speed = "1"
+					state_type = "regular"
+					transitions = [
+						{
+							blend_time = 0.2
+							event = "to_run"
+							mode = "direct"
+							on_beat = ""
+							to = "run"
+						}
+						{
+							blend_time = 0.2
+							event = "to_walk"
+							mode = "direct"
+							on_beat = ""
+							to = "walk"
+						}
+					]
+					weights = [
+						"0.89"
+					]
+				}
+			]
+		}
+	]
+	ragdolls = {
+		Ragdoll = {
+			actors = [
+			]
+			keyframed = [
+			]
+		}
+	}

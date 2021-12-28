@@ -1,4 +1,4 @@
-flower = {
+store_copy = {
   material_contexts = {
     surface_material = ""
   }
@@ -6,6 +6,6 @@ flower = {
   shader = "gui:DIFFUSE_MAP"
 
     textures = {
-      diffuse_map = "textures/mods/MMONames2/flower"
+      diffuse_map = "textures/mods/MMONames2/store_copy"
     }
 }

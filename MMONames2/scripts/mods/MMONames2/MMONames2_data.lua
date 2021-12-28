@@ -6,11 +6,16 @@ return {
   description = mod:localize("mod_description"),
   is_togglable = true,
   custom_gui_textures = {
+    atlases = {
+      {
+        "atlases/mods/MMONames2/store_copy",
+        "store_copy",
+      },
+    },
     ui_renderer_injections = {
       {
         "ingame_ui",
-        "materials/ui/ui_1080p_store_menu",
-        "materials/mods/MMONames2/flower",
+        "materials/mods/MMONames2/store_copy",
       },
     },
   },

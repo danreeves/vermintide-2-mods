@@ -1,0 +1,31 @@
+
+parent_material = "core/stingray_renderer/shader_import/standard"
+textures = {
+	color_map = "content/units/connie"
+}
+variables = {
+	base_color = {
+		type = "vector3"
+		value = [
+			0.8
+			0.8
+			0.8
+		]
+	}
+	emissive = {
+		type = "vector3"
+		value = [
+			0
+			0
+			0
+		]
+	}
+	roughness = {
+		type = "scalar"
+		value = 0.64
+	}
+	use_color_map = {
+		type = "scalar"
+		value = 1
+	}
+}

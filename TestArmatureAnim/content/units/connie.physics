@@ -1,0 +1,17 @@
+actors = [
+	{
+		enabled = true
+		mass = 10
+		name = "Connie"
+		node = "Connie"
+		shapes = [
+			{
+				material = "default"
+				shape = "Connie"
+				template = "interact_collision_shape"
+				type = "convex_computed"
+			}
+		]
+		template = "static"
+	}
+]

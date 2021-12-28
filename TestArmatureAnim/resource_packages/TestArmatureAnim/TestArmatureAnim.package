@@ -1,0 +1,15 @@
+mod = [
+	"TestArmatureAnim"
+]
+
+package = [
+	"resource_packages/TestArmatureAnim/TestArmatureAnim"
+]
+
+lua = [
+	"scripts/mods/TestArmatureAnim/*"
+]
+
+* = [
+	"content/*"
+]

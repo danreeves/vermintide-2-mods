@@ -1,0 +1,74 @@
+group = "Sampling"
+display_name = "Sample World Interaction"
+inputs = {
+	"1ee9af1f-65f2-4739-ad28-5ea6a0e68fc3" = { name = "world_position" display_name = "World Pos" type = "vector3" domain = "pixel" }
+}
+
+domain = "pixel"
+output = {
+	type = "float4"
+}
+
+options = {
+	"acb6ef9d-5ba0-42e4-85f3-2924b4b4be25" = "ADDRESS_CLAMP"
+	"5dd59b3d-1762-4a14-9930-7500230ef3db" = "ADDRESS_WRAP"
+	"f669a3a6-0376-4187-840e-80000e2939d5" = "FILTER_LINEAR"
+	"43dea0e2-a77d-410d-88bb-945dac9139d8" = "FILTER_POINT"
+	"1e067464-12d8-4826-9b72-cfd5765003e3" = "FILTER_ANISOTROPIC"
+}
+
+ui = [
+	{
+		type = "drop_down"
+		display_name = "Address mode"
+		options = {
+			"Clamp" = "acb6ef9d-5ba0-42e4-85f3-2924b4b4be25"
+			"Wrap" = "5dd59b3d-1762-4a14-9930-7500230ef3db"
+		}
+		default = "5dd59b3d-1762-4a14-9930-7500230ef3db"
+	}
+	{
+		type = "drop_down"
+		display_name = "Filter mode"
+		options = {
+			"Anisotropic" = "1e067464-12d8-4826-9b72-cfd5765003e3"
+			"Linear" = "f669a3a6-0376-4187-840e-80000e2939d5"
+			"Point" = "43dea0e2-a77d-410d-88bb-945dac9139d8"
+		}
+		default = "1e067464-12d8-4826-9b72-cfd5765003e3"
+	}
+]
+
+code_blocks = {
+	default = {
+		language = "hlsl"
+		samplers = {
+			world_interaction = {
+				type = "2d"
+				sampler_state = "core/shader_nodes/graph_common#default_node_sampler"
+				source = "resource_set"
+				slot_name = "world_interaction"
+			}
+		}
+
+		code = """
+			float4 result;
+			float window_size = world_interaction_water_window_size;
+			float2 vec = camera_pos.xy - world_position.xy;
+			float window_radius = (window_size*0.5) * (window_size * 0.5);
+
+			[branch]
+			if( dot(vec, vec) < window_radius) {
+				float2 texcoord = fmod(world_position.rg, float2(window_size, window_size)) / float2(window_size, window_size);
+
+				result = TEX2DLOD(world_interaction, texcoord, 0);
+				result = float4(decode_normal_map(result), result.a);
+				RESULT(result);
+			}
+			else {
+				result = float4(decode_normal_map(float4(0.5,0.5,1.0,1.0)), 1.0);
+				RESULT(result);
+			}			
+		"""
+	}
+}

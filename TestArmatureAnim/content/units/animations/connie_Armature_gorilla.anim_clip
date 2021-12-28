@@ -1,0 +1,42 @@
+
+_data_root_version = 2
+_id = "3e5f2f9e-0101-474e-8ec2-d83fd952c70b"
+_name = "content/units/animations/connie_Armature_gorilla"
+anim_skeleton_ref = {
+	_id = "cd5d38f6-134a-46cf-9131-a46523c57ec4"
+	ref_filename = "content/units/connie.anim_skeleton"
+	ref_id = null
+}
+autostep = {
+	_id = "05f846a3-c113-4fdd-9b27-4ae45f3ce811"
+	autostep = false
+	rotation = 0.174532925199433
+	translation = 1
+}
+base_offset_preview_animation_clip_ref = {
+	_id = "f78b74b9-44d6-4aae-ac8c-eab586075871"
+	ref_filename = null
+	ref_id = null
+}
+beats = [
+]
+custom_compression_settings = [
+]
+dcc_asset_ref = {
+	_id = "0e60685a-f7b8-42e5-bf56-8749292eec93"
+	ref_filename = "content/units/connie.dcc_asset"
+	ref_id = null
+}
+flow_events = [
+]
+global_compression_settings = {
+	_id = "38b05f4b-a23e-424e-8b20-836379d37dd2"
+	do_pack_positions = true
+	do_pack_rotations = true
+	do_pack_scales = true
+	position_tolerance = 0.001
+	rotation_tolerance = 0.001
+	scale_tolerance = 0.001
+}
+offset_animation = false
+take_name = "Armature_gorilla"

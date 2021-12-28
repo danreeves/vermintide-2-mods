@@ -1,0 +1,144 @@
+
+_data_root_version = 1
+_id = "7142bcf1-e8c7-4fde-b2e2-eef2c97bc184"
+_name = "content/units/connie"
+anim_blend_sets = [
+]
+anim_bones = [
+	{
+		_id = "843c0345-cf7c-4cdc-84f8-50a28f5efd3f"
+		_name = "StingrayEntityRoot"
+		lod_level = 5
+	}
+	{
+		_id = "d5b874f3-dabf-4137-9e98-3b96b60663b4"
+		_name = "FbxAxisSystem_ConvertNode"
+		lod_level = 5
+	}
+	{
+		_id = "7b06e49d-2ed3-43db-be06-119431111a11"
+		_name = "Connie"
+		lod_level = 5
+	}
+	{
+		_id = "ec0090f8-63b5-4437-b8e7-f1a1f340d9a7"
+		_name = "Armature"
+		lod_level = 5
+	}
+	{
+		_id = "a1cee19e-b256-4828-a0ec-c8a73af8d4c5"
+		_name = "Body"
+		lod_level = 5
+	}
+	{
+		_id = "dd2cf880-4a17-45fa-bec7-f9302cd40eaa"
+		_name = "Head"
+		lod_level = 5
+	}
+	{
+		_id = "cc44e62e-46d4-429f-a3fd-d15b488a621c"
+		_name = "ShoulderFBXASC046L"
+		lod_level = 5
+	}
+	{
+		_id = "6a9bdaf0-1b20-4b02-8d5f-b3c08e9285cf"
+		_name = "UpperLegFBXASC046L"
+		lod_level = 5
+	}
+	{
+		_id = "36968eb3-4ddf-4fc0-9880-b60e8c79787c"
+		_name = "ShoulderFBXASC046R"
+		lod_level = 5
+	}
+	{
+		_id = "9c5bdd66-ca39-447f-befb-230794c110de"
+		_name = "UpperLegFBXASC046R"
+		lod_level = 5
+	}
+	{
+		_id = "f1cfbb02-380c-42be-9374-81fa248058e2"
+		_name = "Head_end"
+		lod_level = 5
+	}
+	{
+		_id = "5b6060e5-81eb-4844-b60c-4af6cf8a0a94"
+		_name = "UpperArmFBXASC046L"
+		lod_level = 5
+	}
+	{
+		_id = "c585eec7-83b5-4e3d-9df9-8dfd5fe6813c"
+		_name = "LowerLegFBXASC046L"
+		lod_level = 5
+	}
+	{
+		_id = "ac84448c-30ab-408e-b04e-3c43ec94d587"
+		_name = "UpperArmFBXASC046R"
+		lod_level = 5
+	}
+	{
+		_id = "f275c28d-11f7-4e16-bce9-536eb508b24b"
+		_name = "LowerLegFBXASC046R"
+		lod_level = 5
+	}
+	{
+		_id = "6b4abc55-e314-49aa-a4a3-ea153ea5c643"
+		_name = "ForeArmFBXASC046L"
+		lod_level = 5
+	}
+	{
+		_id = "3f2df1a6-047d-45fe-9b7c-dfb7fe150ed4"
+		_name = "FootFBXASC046L"
+		lod_level = 5
+	}
+	{
+		_id = "8f9cbbb0-4beb-443b-9a07-d726b8ab70b0"
+		_name = "ForeArmFBXASC046R"
+		lod_level = 5
+	}
+	{
+		_id = "de81388b-2f37-4b4a-b6b6-439bc6ac7b29"
+		_name = "FootFBXASC046R"
+		lod_level = 5
+	}
+	{
+		_id = "25480a42-b97e-4df2-b0d2-4d0908a61f4a"
+		_name = "HandFBXASC046L"
+		lod_level = 5
+	}
+	{
+		_id = "b6127221-120e-4011-ad93-08c4b1eb2f92"
+		_name = "FootFBXASC046L_end"
+		lod_level = 5
+	}
+	{
+		_id = "7fa59b05-9df7-4ced-9279-f5ae545ee381"
+		_name = "HandFBXASC046R"
+		lod_level = 5
+	}
+	{
+		_id = "ba21d5da-8651-43bd-aa43-ce5085f3e1cc"
+		_name = "FootFBXASC046R_end"
+		lod_level = 5
+	}
+	{
+		_id = "be665a75-1df8-455d-8609-0811fcd01328"
+		_name = "HandFBXASC046L_end"
+		lod_level = 5
+	}
+	{
+		_id = "e25e2f3d-6fbf-4748-9278-3cf249292190"
+		_name = "HandFBXASC046R_end"
+		lod_level = 5
+	}
+]
+dcc_asset_ref = {
+	_id = "d6c71182-e421-4ae0-a289-e171c520ba71"
+	ref_filename = "content/units/connie.dcc_asset"
+	ref_id = null
+}
+default_bonelod_and_maxlod_count = 5
+locomotion_root_bone_ref = {
+	_id = "d91a95cc-ab61-4b86-b6ea-613795420171"
+	ref_filename = null
+	ref_id = null
+}

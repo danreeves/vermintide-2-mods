@@ -1,6 +1,6 @@
 common = {
   input = {
-    filename = "textures/mods/MMONames2/flower"
+    filename = "textures/mods/MMONames2/store_copy"
   }
 
   output = {

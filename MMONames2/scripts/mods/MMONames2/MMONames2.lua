@@ -92,10 +92,13 @@ local function draw_icon(renderer, unit, camera, player_position)
       position = position + Vector3(font_size / 3, 0, 0)
 
       local career_name = career_ext:career_name()
-      local icon = "store_tag_icon_" .. career_name
-      if name:lower() == "hello" then
-        icon = "flower"
+
+      if career_name == "wh_priest" then
+        career_name = "wh_warriorpriest"
       end
+
+      local icon = "copy_store_tag_icon_" .. career_name
+
       local icon_position = position - Vector3(font_size, font_size / 3, 0)
       local icon_size = { font_size, font_size }
       UIRenderer.draw_texture(renderer, icon, icon_position, icon_size, color)

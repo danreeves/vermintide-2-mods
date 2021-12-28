@@ -1,0 +1,42 @@
+
+_data_root_version = 2
+_id = "99770695-d75e-4545-829c-1699633274ef"
+_name = "content/units/animations/connie_Armature_walk"
+anim_skeleton_ref = {
+	_id = "424152ac-275f-43b1-91f2-8b4b634da5aa"
+	ref_filename = "content/units/connie.anim_skeleton"
+	ref_id = null
+}
+autostep = {
+	_id = "07362bc3-de82-49d9-86af-26f3e8f1cc46"
+	autostep = false
+	rotation = 0.174532925199433
+	translation = 1
+}
+base_offset_preview_animation_clip_ref = {
+	_id = "1f6cf39c-9694-4e03-a5c9-4c1efb8ca7f0"
+	ref_filename = null
+	ref_id = null
+}
+beats = [
+]
+custom_compression_settings = [
+]
+dcc_asset_ref = {
+	_id = "0c00411f-080a-4236-bb31-1b2bc61d57dc"
+	ref_filename = "content/units/connie.dcc_asset"
+	ref_id = null
+}
+flow_events = [
+]
+global_compression_settings = {
+	_id = "e44d603f-1fca-4660-9390-5c3e2fb1df53"
+	do_pack_positions = true
+	do_pack_rotations = true
+	do_pack_scales = true
+	position_tolerance = 0.001
+	rotation_tolerance = 0.001
+	scale_tolerance = 0.001
+}
+offset_animation = false
+take_name = "Armature_walk"
