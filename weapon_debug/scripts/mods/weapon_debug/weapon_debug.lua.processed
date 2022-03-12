@@ -1,7 +1,8 @@
 -- luacheck: no max line length
--- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable Script BLACKBOARDS ActionFlamethrower
+-- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable Script BLACKBOARDS ActionFlamethrower Development DebugManager DebugDrawer IngameHud LineObject GwNavTraversal Gui
 local mod = get_mod("weapon_debug")
-mod:dofile("scripts/mods/weapon_debug/game_code/debug_drawer")
+
+Development._hardcoded_dev_params.disable_debug_draw = false
 script_data.disable_debug_draw = false
 
 mod.prev_start_pos = nil
@@ -37,12 +38,139 @@ local time = 0
 --   end
 -- end)
 
+DebugManager.drawer = function(self, options)
+  options = options or {}
+  local drawer_name = options.name
+  local drawer
+  local drawer_api = DebugDrawer -- MODIFIED. We just want debug drawer
+
+  if drawer_name == nil then
+    local line_object = World.create_line_object(self._world)
+    drawer = drawer_api:new(line_object, options.mode)
+    self._drawers[#self._drawers + 1] = drawer
+  elseif self._drawers[drawer_name] == nil then
+    local line_object = World.create_line_object(self._world)
+    drawer = drawer_api:new(line_object, options.mode)
+    self._drawers[drawer_name] = drawer
+  else
+    drawer = self._drawers[drawer_name]
+  end
+
+  return drawer
+end
+
+mod:hook_safe(IngameHud, "update", function(self)
+  if not self._currently_visible_components.EquipmentUI then
+    local enabled = false
+    Development._hardcoded_dev_params.disable_debug_draw = not enabled
+    script_data.disable_debug_draw = not enabled
+  else
+    local enabled = true
+    Development._hardcoded_dev_params.disable_debug_draw = not enabled
+    script_data.disable_debug_draw = not enabled
+  end
+
+end)
+
+mod._world = nil
+mod._nav_world = nil
+mod._world_gui = nil
+mod._line_object = nil
+local color_table = {}
+for i = 1, 25, 1 do
+    color_table[i] = math.random(1, 15)
+end
+
+function mod.draw_nav_mesh()
+
+  if not mod:get("show_navmesh") then
+    return
+  end
+  local player = Managers.player:local_player()
+  if not player
+    return
+  end
+  local player_unit = player.player_unit
+  local position = Unit.world_position(player_unit, 0)
+  local offset = Vector3(0, 0, 0.2)
+
+  if not mod._line_object then
+    mod.on_setting_changed()
+  end
+
+  LineObject.reset(mod._line_object)
+
+  local nav_world = mod._nav_world
+  local triangle = GwNavTraversal.get_seed_triangle(mod._nav_world, position)
+
+  if triangle == nil then
+    return
+  end
+
+  local triangles = {
+    triangle
+  }
+  local num_triangles = 1
+  local i = 0
+
+  while num_triangles > i do
+    i = i + 1
+    triangle = triangles[i]
+    local p1, p2, p3 = GwNavTraversal.get_triangle_vertices(nav_world, triangle)
+    local triangle_center = p1 + p2 + p3
+    local table_index = math.ceil((triangle_center.x + triangle_center.y) % 24 + 1)
+    local green = color_table[table_index] * 10
+
+    Gui.triangle(mod._world_gui, p1 + offset, p2 + offset, p3 + offset, 0, Color(150, 0, green, 255))
+
+    local neighbors = {
+      GwNavTraversal.get_neighboring_triangles(triangle)
+    }
+
+    for j = 1, #neighbors, 1 do
+      local neighbor = neighbors[j]
+      local is_in_list_already = false
+
+      for k = 1, num_triangles, 1 do
+        local triangle2 = triangles[k]
+
+        if GwNavTraversal.are_triangles_equal(neighbor, triangle2) then
+          is_in_list_already = true
+
+          break
+        end
+      end
+
+      if not is_in_list_already then
+        local p2_1, p2_2, p2_3 = GwNavTraversal.get_triangle_vertices(nav_world, triangle)
+
+        if Vector3.distance((p2_1 + p2_2 + p2_3) * 0.33, position) < tonumber(mod:get("nav_mesh_distance")) then
+          num_triangles = num_triangles + 1
+          triangles[num_triangles] = neighbor
+        end
+      end
+    end
+  end
+
+  LineObject.dispatch(mod._world, mod._line_object)
+end
+
+function mod.on_game_state_changed (status, state)
+  if status == "enter" and state == "StateIngame" then
+    mod._world = Managers.world:world("level_world")
+    mod._nav_world = Managers.state.entity:system("ai_system"):nav_world()
+    mod._world_gui = World.create_world_gui(mod._world, Matrix4x4.identity(), 1, 1, "immediate", "material", "materials/fonts/gw_fonts")
+    mod._line_object = World.create_line_object(mod._world, false)
+  end
+end
+
 function mod.update ()
   if Managers.state.debug then
     for _, drawer in pairs(Managers.state.debug._drawers) do
       drawer:update(Managers.state.debug._world)
     end
   end
+  mod.draw_nav_mesh()
 end
 
 function mod.clear_lines()
@@ -51,6 +179,10 @@ end
 
 function mod.on_setting_changed()
   QuickDrawerStay:reset()
+  mod._world = Managers.world:world("level_world")
+  mod._nav_world = Managers.state.entity:system("ai_system"):nav_world()
+  mod._world_gui = World.create_world_gui(mod._world, Matrix4x4.identity(), 1, 1, "immediate", "material", "materials/fonts/gw_fonts")
+  mod._line_object = World.create_line_object(mod._world, false)
 end
 
 function mod.timescale_up()
@@ -1271,28 +1403,25 @@ mod:hook_origin(ActionFlamethrower, "_select_targets", function (self, world, sh
 
   PhysicsWorld.prepare_actors_for_overlap(physics_world, start_point, SPRAY_RANGE * SPRAY_RANGE)
 
-  if mod:get("show_attack_boxes") then
-    local dot_threshold = self.dot_check or 0.99
-    local angle = 0.1
-    local rotation = Quaternion.axis_angle(Vector3.up(), angle)
-    local test_direction = Quaternion.rotate(rotation, player_direction)
-    local test_dot = Vector3.dot(player_direction, test_direction)
-    local iterations = 0
-    mod:echo('start')
-    mod:echo(string.format("%.3f < %.3f = %s", test_dot, dot_threshold, test_dot < dot_threshold))
 
-    while (test_dot ~= dot_threshold) and (test_dot > dot_threshold) and (iterations < 25) do
+  if mod:get("show_attack_boxes") then
+    local forward = Vector3.forward()
+    local dot_threshold = self.dot_check or 0.99
+    local angle = 0.01
+    local rotation = Quaternion.axis_angle(Vector3.up(), angle)
+    local test_direction = Quaternion.rotate(rotation, forward)
+    local test_dot = Vector3.dot(forward, test_direction)
+    local iterations = 0
+    while (test_dot ~= dot_threshold) and (test_dot > dot_threshold) and (iterations < 100) do
       iterations = iterations + 1
-      test_direction = Quaternion.rotate(rotation, player_direction)
-      test_dot = Vector3.dot(player_direction, test_direction)
-      mod:echo(string.format("%s %s %s", (test_dot ~= dot_threshold) , (test_dot > dot_threshold) , (iterations < 25))
-      -- mod:echo(string.format("%.3f < %.3f = %s", test_dot, dot_threshold, test_dot < dot_threshold))
+      test_direction = Quaternion.rotate(rotation, test_direction)
+      test_dot = Vector3.dot(forward, test_direction)
     end
 
-    local deg = Vector3.flat_angle(player_direction, test_direction)
+    local deg = Vector3.flat_angle(forward, test_direction)
     local r = SPRAY_RANGE * math.tan(deg)
 
-    QuickDrawerStay:cone(player_position, start_point + (player_direction * SPRAY_RANGE), r, Color(255, 0, 0), 20, 10)
+    QuickDrawerStay:cone(player_position, player_position + (player_direction * SPRAY_RANGE), r, Color(255, 0, 0), 20, 10)
   end
 
   if ai_units_n > 0 then
@@ -1379,23 +1508,21 @@ mod:hook_origin(ActionBulletSpray, "_select_targets", function (self, world, sho
   end)
 
   if mod:get("show_attack_boxes") then
+    local forward = Vector3.forward()
     local flamethrower_range = current_action.spray_range or SPRAY_RANGE
     local dot_threshold = self.CONE_COS_ALPHA
-    local angle = math.pi / 10
+    local angle = 0.01
     local rotation = Quaternion.axis_angle(Vector3.up(), angle)
-    local test_direction = Quaternion.rotate(rotation, player_direction)
-    local test_dot = Vector3.dot(player_direction, test_direction)
+    local test_direction = Quaternion.rotate(rotation, forward)
+    local test_dot = Vector3.dot(forward, test_direction)
     local iterations = 0
-    mod:echo('start')
-    while to2(test_dot) ~= to2(dot_threshold) and to2(test_dot) > to2(dot_threshold) and iterations < 5 do
+    while test_dot ~= dot_threshold and test_dot > dot_threshold and iterations < 100 do
       iterations = iterations + 1
-      test_direction = Quaternion.rotate(rotation, player_direction)
-      test_dot = Vector3.dot(player_direction, test_direction)
-      mod:echo(test_dot)
+      test_direction = Quaternion.rotate(rotation, test_direction)
+      test_dot = Vector3.dot(forward, test_direction)
     end
-    mod:echo(string.format("%.3f . %.3f", dot_threshold, test_dot))
 
-    local deg = Vector3.flat_angle(player_direction, test_direction)
+    local deg = Vector3.flat_angle(forward, test_direction)
     local r = flamethrower_range * math.tan(deg)
 
     QuickDrawerStay:cone(player_position, end_point + (player_direction * SPRAY_RANGE), r, Color(255, 0, 0), 20, 10)

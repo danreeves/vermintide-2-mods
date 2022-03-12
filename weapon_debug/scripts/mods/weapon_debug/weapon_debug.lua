@@ -1,5 +1,5 @@
 -- luacheck: no max line length
--- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable Script BLACKBOARDS ActionFlamethrower Development DebugManager DebugDrawer IngameHud LineObject GwNavTraversal Gui
+-- luacheck: globals get_mod ActionSweep Quaternion Vector3 SweepRangeMod SweepWidthMod SweepHeigthMod script_data Managers QuickDrawerStay Color Matrix4x4 global_is_inside_inn Vector3Box PlayerProjectileImpactUnitExtension ActionUtils Unit PhysicsWorld fassert PlayerProjectileUnitExtension Actor NetworkLookup ScriptUnit AiUtils DamageUtils ActorBox ActionShieldSlam World POSITION_LOOKUP math.degrees_to_radians table.contains BTMeleeOverlapAttackAction PlayerCharacterStateJumping BTStormVerminAttackAction SurroundingAwareSystem DialogueSettings slot22 FrameTable Script BLACKBOARDS ActionFlamethrower Development DebugManager DebugDrawer IngameHud LineObject GwNavTraversal Gui ActionCareerESQuestingKnightActionCareerESQuestingKnight DamageBlobExtension BTWarpfireThrowerShootAction
 local mod = get_mod("weapon_debug")
 
 Development._hardcoded_dev_params.disable_debug_draw = false
@@ -86,7 +86,13 @@ function mod.draw_nav_mesh()
   if not mod:get("show_navmesh") then
     return
   end
-  local player_unit = Managers.player:local_player().player_unit
+
+  local player = Managers.player:local_player_safe()
+  if not player or not player.player_unit then
+    return
+  end
+
+  local player_unit = player.player_unit
   local position = Unit.world_position(player_unit, 0)
   local offset = Vector3(0, 0, 0.2)
 
@@ -182,6 +188,9 @@ function mod.on_setting_changed()
 end
 
 function mod.timescale_up()
+  if not Managers.state.debug then
+    return
+  end
   local timescale_index = Managers.state.debug.time_scale_index
   local timescales = Managers.state.debug.time_scale_list
   if timescale_index == #timescales then
@@ -198,6 +207,9 @@ function mod.timescale_up()
 end
 
 function mod.timescale_down()
+  if not Managers.state.debug then
+    return
+  end
   local timescale_index = Managers.state.debug.time_scale_index
   local timescales = Managers.state.debug.time_scale_list
   if timescale_index == 1 then
@@ -246,7 +258,7 @@ local actor_node = Actor.node
 local action_hitbox_vertical_fov = math.degrees_to_radians(120)
 local action_hitbox_horizontal_fov = math.degrees_to_radians(115.55)
 local SWEEP_RESULTS = {}
-mod:hook_origin(ActionSweep, "_do_overlap", function (self, dt, t, unit, owner_unit, current_action, physics_world, is_within_damage_window, current_position, current_rotation)
+local function do_overlap (self, dt, t, unit, owner_unit, current_action, physics_world, is_within_damage_window, current_position, current_rotation)
   if self._attack_aborted then
     return
   end
@@ -788,7 +800,8 @@ mod:hook_origin(ActionSweep, "_do_overlap", function (self, dt, t, unit, owner_u
     PhysicsWorld.stop_reusing_sweep_tables()
   end
 end
-)
+mod:hook_origin(ActionSweep, "_do_overlap", do_overlap)
+mod:hook_origin(ActionCareerESQuestingKnight, "_do_overlap", do_overlap)
 
 mod:hook_safe(ActionSweep, "_send_attack_hit", function (_, _, _, _, _, _, hit_position)
   if mod:get("show_attack_boxes") then
@@ -1565,4 +1578,29 @@ mod:hook_origin(ActionBulletSpray, "_select_targets", function (self, world, sho
 
     Script.set_temp_count(v, q, m)
   end
+end)
+
+mod:hook_safe(DamageBlobExtension, "insert_blob", function(_, position, radius)
+  if mod:get("show_attack_boxes") and mod:get("show_enemy_attacks") then
+    local pos1 = position
+    local pos2 = position - Vector3(0, 0, 1)
+    box_color = Color(255, 0, 0)
+    QuickDrawerStay:cylinder(pos1, pos2, radius, box_color, 1)
+  end
+end)
+
+mod:hook_safe(BTWarpfireThrowerShootAction, "_close_range_attack", function (_, _, attack_pattern_data, _, action)
+	local node_name = action.muzzle_node
+	local warpfire_unit = attack_pattern_data.warpfire_gun_unit
+	local muzzle_node = Unit.node(warpfire_unit, node_name)
+	local muzzle_pos = Unit.world_position(warpfire_unit, muzzle_node)
+	local forward = Vector3.flat(Quaternion.forward(Unit.world_rotation(warpfire_unit, muzzle_node)))
+	local forward_normalized = Vector3.normalize(forward)
+	local aim_pos = muzzle_pos + forward_normalized * action.close_attack_range
+	local radius = action.hit_radius
+	muzzle_pos = muzzle_pos - forward_normalized * 0.5
+    if mod:get("show_attack_boxes") and mod:get("show_enemy_attacks") then
+      box_color = Color(255, 0, 0)
+      QuickDrawerStay:capsule(muzzle_pos, aim_pos, radius, box_color)
+    end
 end)

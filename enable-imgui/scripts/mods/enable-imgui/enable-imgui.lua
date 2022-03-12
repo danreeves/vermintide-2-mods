@@ -4,7 +4,7 @@ local mod = get_mod("enable-imgui")
 function mod.on_all_mods_loaded()
   Managers.package:load("resource_packages/imgui/imgui", "raindish-mod", function()
 	mod:dofile("scripts/imgui/imgui")
-	mod:dofile("scripts/imgui/imgui_ui_editor") -- TODO
+	-- mod:dofile("scripts/imgui/imgui_ui_editor") -- TODO
 
 	ImguiManager.init = function (self)
 	  self._open = false
