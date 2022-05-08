@@ -10,7 +10,7 @@ function mod.on_setting_changed()
 end
 
 function mod.get_status()
-  local deathwish_mod = get_mod("Deathwish")
+  local deathwish_mod = get_mod("catas")
   local onslaught_mod = get_mod("Onslaught")
   local dw_enabled = false
   local ons_enabled = false
@@ -20,7 +20,7 @@ function mod.get_status()
   end
 
   if deathwish_mod then
-    local deathwish = deathwish_mod:persistent_table("Deathwish")
+    local deathwish = deathwish_mod:persistent_table("catas")
     dw_enabled = deathwish.active and true or false
   end
   if onslaught_mod then
@@ -116,14 +116,14 @@ end)
 -- COMMANDS
 mod.dwons_active = false
 function mod.toggle()
-  local deathwish_mod = get_mod("Deathwish")
+  local deathwish_mod = get_mod("catas")
   local onslaught_mod = get_mod("Onslaught")
   mod.dwons_active = not mod.dwons_active
 
   if not deathwish_mod then
     mod:chat_broadcast("SKIPPING. Deathwish is not installed.")
   else
-    local deathwish = deathwish_mod:persistent_table("Deathwish")
+    local deathwish = deathwish_mod:persistent_table("catas")
     if deathwish.active ~= mod.dwons_active then
       deathwish.toggle()
     else
@@ -192,11 +192,11 @@ function mod.sync_state()
 end
 
 local function hook_mods()
-  local deathwish_mod = get_mod("Deathwish")
+  local deathwish_mod = get_mod("catas")
   local onslaught_mod = get_mod("Onslaught")
 
   if deathwish_mod then
-    local deathwish = deathwish_mod:persistent_table("Deathwish")
+    local deathwish = deathwish_mod:persistent_table("catas")
     mod:hook_safe(deathwish, "start", mod.sync_state)
     mod:hook_safe(deathwish, "stop", mod.sync_state)
   end
@@ -208,10 +208,10 @@ local function hook_mods()
 end
 
 local function unhook_mods()
-  local deathwish_mod = get_mod("Deathwish")
+  local deathwish_mod = get_mod("catas")
   local onslaught_mod = get_mod("Onslaught")
   if deathwish_mod then
-    local deathwish = deathwish_mod:persistent_table("Deathwish")
+    local deathwish = deathwish_mod:persistent_table("catas")
     mod:hook_disable(deathwish, "start")
     mod:hook_disable(deathwish, "stop")
   end
