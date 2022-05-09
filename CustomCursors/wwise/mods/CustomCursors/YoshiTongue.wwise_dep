@@ -1,0 +1,9 @@
+
+win32 = {
+	banks = [
+		"wwise/mods/CustomCursors/YoshiTongue"
+	]
+	metadata = "wwise/mods/CustomCursors/project"
+	streams = [
+	]
+}

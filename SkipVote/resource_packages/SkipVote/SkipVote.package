@@ -1,0 +1,11 @@
+mod = [
+	"SkipVote"
+]
+
+package = [
+	"resource_packages/SkipVote/SkipVote"
+]
+
+lua = [
+	"scripts/mods/SkipVote/*"
+]

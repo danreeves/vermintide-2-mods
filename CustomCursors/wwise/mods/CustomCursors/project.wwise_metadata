@@ -1,0 +1,30 @@
+
+aux_buses = [
+]
+banks = {
+	YoshiTongue = {
+		events = [
+			"mlem"
+		]
+	}
+}
+buses = [
+	"Master Audio Bus"
+]
+events = {
+	mlem = {
+		attenuation_max = 0
+		duration_max = 0.200476
+		duration_min = 0.200476
+		duration_type = "OneShot"
+		positioning = "2D"
+	}
+}
+parameters = [
+]
+state_groups = {
+}
+switch_groups = {
+}
+triggers = [
+]

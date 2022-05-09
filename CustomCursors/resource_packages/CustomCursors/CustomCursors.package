@@ -13,3 +13,7 @@ lua = [
 mouse_cursor = [
   "cursors/mods/CustomCursors/Yoshi"
 ]
+
+wwise_dep = [
+	"wwise/mods/CustomCursors/*"
+]
