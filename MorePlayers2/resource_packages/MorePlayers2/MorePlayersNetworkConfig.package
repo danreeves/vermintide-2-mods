@@ -1,0 +1,11 @@
+mod = [
+	"MorePlayers2"
+]
+
+package = [
+	"resource_packages/MorePlayers2/MorePlayersNetworkConfig"
+]
+
+network_config = [
+	"content/MorePlayers2/global"
+]

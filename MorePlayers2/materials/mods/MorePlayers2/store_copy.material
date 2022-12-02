@@ -1,0 +1,11 @@
+moreplayers2_store_copy = {
+  material_contexts = {
+    surface_material = ""
+  }
+
+  shader = "gui:DIFFUSE_MAP"
+
+    textures = {
+      diffuse_map = "textures/mods/MorePlayers2/store_copy"
+    }
+}

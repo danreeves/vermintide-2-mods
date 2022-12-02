@@ -1,0 +1,5880 @@
+reliable_send_buffer_size=98304
+reliable_receive_buffer_size=32768
+
+game_object_max_update_size=512 // MODIFIED
+
+types = {
+	action = { type = "int", min = 1, max = 64 }
+	actor_index = { type = "int", min = 0, max = 255 }
+	B50A145B = { type = "array", max_size = 80, element = "weapon_id" }
+	angle = { type = "float", min = 0, max = 6.29, bits = 20 }
+	anim_event = { type = "int", min = 1, max = 2048 }
+	anim_state = { type = "int", min = 0, max = 4095 }
+	anim_variable_index = { type = "int", min = 0, max = 255 }
+	animation_rotation_scale = { type = "float", min = 0, max = 4 }
+	animation_translation_scale = { type = "vector3", min = -10, max = 10, bits = 16, tolerance = 0.01 }
+	animation_variable_float = { type = "float", min = -12, max = 12 }
+	aoe_push_mass = { type = "int", min = 0, max = 15 }
+	attack_arm = { type = "int", min = 1, max = 2 }
+	EC9DA88C = { type = "int", min = 1, max = 4 }
+	DB0F665E = { type = "int", min = 1, max = 32 }
+	backend_session_id = { type = "int", min = 0, max = 4294967295 }
+	backstab_multiplier = { type = "float", min = 1, max = 2.5, bits = 2 }
+	bool = { type = "bool" }
+	boost_curve_multiplier = { type = "float", min = 0, max = 20, tolerance = 0.1 }
+	breed = { type = "int", min = 0, max = 127 }
+	breed_array_lookup = { type = "array", max_size = 32, element = "lookup" }
+	breed_freezer_queue_data = { type = "array", max_size = 32, element = "uint_8" }
+	bt_action_name = { type = "int", min = 1, max = 256 }
+	buff_array = { type = "array", max_size = 16, element = "buff_lookup" }
+	buff_instances = { type = "int", min = 1, max = 16 }
+	buff_lookup = { type = "int", min = 1, max = 2048 }
+	buff_proc_attack_types = { type = "int", min = 1, max = 16 }
+	C17681CE = { type = "array", max_size = 11, element = "small_lookup" }
+	DB10249A = { type = "array", max_size = 11, element = "game_object_id" }
+	buff_value = { type = "float", min = 0, max = 1, tolerance = 0.05 }
+	buff_variable_data_array = { type = "array", max_size = 32, element = "buff_value" }
+	buff_variable_type_array = { type = "array", max_size = 32, element = "lookup" }
+	buff_weapon_types = { type = "int", min = 1, max = 8 }
+	career_id = { type = "int", min = 0, max = 31 }
+	challenge_unique_id = { type = "int", min = 0, max = 255 }
+	chat_channel_id = { type = "int", min = 1, max = 8 }
+	checkpoint_percentage_array = { type = "array", max_size = 32, element = "percentage" }
+	clock_time = { type = "float", min = 0, max = 36000, bits = 20 }
+	connection_fail_type = { type = "int", min = 1, max = 32 }
+	damage = { type = "float", min = 0, max = 255.75, bits = 10 }
+	damage_hotjoin_sync = { type = "float", min = 0, max = 16383, bits = 15 } // MODIFIED
+	damage_interval = { type = "int", min = 0, max = 31 }
+	damage_profile = { type = "int", min = 1, max = 1024 }
+	damage_source_id = { type = "int", min = 1, max = 16384 }
+	damage_type = { type = "int", min = 1, max = 256 }
+	debug_command_lookup = { type = "int", min = 1, max = 8 }
+	6B47E54D = { type = "string" }
+	32F03ED4 = { type = "string" }
+	dialogue_event_data = { type = "array", max_size = 8, element = "lookup" }
+	dialogue_event_data_type = { type = "array", max_size = 8, element = "bool" }
+	dialogue_index = { type = "int", min = 1, max = 32 }
+	dialogue_lookup = { type = "int", min = 1, max = 16384 }
+	difficulty_lookup = { type = "int", min = 1, max = 8 }
+	difficulty_tweak = { type = "int", min = -10, max = 21 }
+	direction = { type = "vector3", min = -1.01, max = 1.01, bits = 20, tolerance = 0.001 }
+	566FD8B7 = { type = "int", min = 1, max = 64 }
+	dummy_uniform_scale = { type = "float", min = 0.25, max = 16.125 }
+	dummy_yaw_rotation = { type = "float", min = -3.15, max = 3.15, bits = 8 }
+	enemy_package_loader_bitmask_array = { type = "array", max_size = 4, element = "uint_32" }
+	enemy_package_loader_connection_key = { type = "int", min = 0, max = 255 }
+	enemy_rotation = { type = "quaternion", bits = 16, tolerance = 0.05 }
+	enemy_uniform_scale = { type = "float", min = 0.5, max = 1.775, bits = 8 }
+	enemy_velocity = { type = "vector3", min = -81.915, max = 81.92, bits = 15, tolerance = 0.005 }
+	enemy_yaw_rotation = { type = "float", min = -3.15, max = 3.15, bits = 8 }
+	fall_distance = { type = "int", min = 0, max = 255 }
+	fatigue_cost_multiplier = { type = "float", min = 0, max = 4, tolerance = 0.5 }
+	fatigue_points = { type = "int", min = 1, max = 32 }
+	C477B705 = { type = "float", min = 0, max = 7.75, bits = 8 }
+	1E7C6F15 = { type = "float", min = 0, max = 15.75, bits = 6 }
+	flow_states = { type = "int", min = 1, max = 256 }
+	follow_result = { type = "bool" }
+	fuse_time = { type = "float", min = 0, max = 63.75, bits = 8 }
+	game_mode_state_id = { type = "int", min = 1, max = 8 }
+	game_object_id = { type = "int", min = 0, max = 65535 }
+	game_object_id_array = { type = "array", max_size = 128, element = "game_object_id" }
+	game_object_type = { type = "int", min = 1, max = 128 }
+	hash = { type = "int64" }
+	headshot_multiplier = { type = "int", min = 1, max = 8 }
+	health = { type = "float", min = 0, max = 16383, bits = 15 } // MODIFIED
+	health_status_lookup = { type = "int", min = 1, max = 8 }
+	hit_react_type = { type = "int", min = 1, max = 4 }
+	hit_zone = { type = "int", min = 0, max = 15 }
+	hooked_time = { type = "float", min = 0, max = 7 }
+	husk_unit = { type = "int", min = 1, max = 512 }
+	int_1_4 = { type = "int", min = 1, max = 4 }
+	int_32 = { type = "int", min = -2147483648, max = 2147483647 }
+	int_position = { type = "array", max_size = 3, element = "pos_int" }
+	int_rotation = { type = "array", max_size = 4, element = "rot_int" }
+	int_velocity = { type = "array", max_size = 3, element = "speed_int" }
+	interaction_lookup = { type = "int", min = 1, max = 64 }
+	interaction_state_lookup = { type = "int", min = 1, max = 8 }
+	inventory_lookup = { type = "int", min = 1, max = 64 }
+	A76883F7 = { type = "array", max_size = 80, element = "weapon_id" }
+	item_set_id = { type = "int", min = 0, max = 3 }
+	item_template_name = { type = "int", min = 1, max = 512 }
+	level_seed = { type = "int", min = 0, max = 4294967295 }
+	level_unit_index = { type = "int", min = 0, max = 65535 }
+	life_time = { type = "int", min = 0, max = 31 }
+	light_weight_projectile_index = { type = "int", min = 1, max = 128 }
+	light_weight_projectile_lookup = { type = "int", min = 1, max = 8 }
+	light_weight_projectile_speed = { type = "int", min = 1, max = 128 }
+	limited_item_index = { type = "int", min = 1, max = 16 }
+	lobby_id = { type = "int64" }
+	lobby_to_join = { type = "string" }
+	lobby_type = { type = "int", min = 1, max = 2 }
+	local_player_id = { type = "int", min = 0, max = 32 } // MODIFIED
+	104249E3 = { type = "int", min = 1, max = 4096 }
+	locked_directors_functions_array = { type = "array", max_size = 10, element = "small_lookup" }
+	lookup = { type = "int", min = 1, max = 4096 }
+	marker_lookup = { type = "int", min = 1, max = 128 }
+	max_energy = { type = "int", min = 0, max = 63 }
+	max_overcharge = { type = "int", min = 0, max = 63 }
+	mechanism_id = { type = "int", min = 1, max = 64 }
+	mechanism_state_id = { type = "int", min = 1, max = 32 }
+	medium_lookup = { type = "int", min = 1, max = 32 }
+	members_status_array = { type = "array", max_size = 16, element = "int_1_4" }
+	members_string_array = { type = "array", max_size = 16, element = "string" }
+	message_types = { type = "int", min = 0, max = 15 }
+	mission_data = { type = "array", max_size = 8, element = "time" }
+	multiplier = { type = "float", min = 0, max = 10 }
+	C87C807B = { type = "array", max_size = 8, element = "music_group_states" }
+	music_group_states = { type = "int", min = 1, max = 64 }
+	mutator_array = { type = "array", max_size = 4, element = "mutator_lookup" }
+	mutator_lookup = { type = "int", min = 1, max = 128 }
+	nav_tag_volume_layer_id = { type = "int", min = 20, max = 83 }
+	num_buffs = { type = "int", min = 1, max = 32 }
+	num_weave_buffs = { type = "int", min = 1, max = 32 }
+	number = { type = "int", min = -100, max = 155 }
+	objective_socket_id = { type = "int", min = 1, max = 16 }
+	packed_breed_go_ids = { type = "array", max_size = 128, element = "game_object_id" }
+	party_array = { type = "array", max_size = 32, element = "small_lookup" } // MODIFIED
+	party_id = { type = "int", min = 0, max = 32 } // MODIFIED
+	party_slot_id = { type = "int", min = 0, max = 63 }
+	payload_speed = { type = "float", min = -10, max = 10, bits = 20, tolerance = 0.01 }
+	payload_spline_index = { type = "int", min = 1, max = 256 }
+	payload_spline_subdivisions = { type = "int", min = 1, max = 16 }
+	payload_spline_t = { type = "float", min = 0, max = 1 }
+	peer_id = { type = "int64" }
+	peer_id_table = { type = "array", max_size = 32, element = "peer_id" } // MODIFIED
+	percent = { type = "int", min = 0, max = 127 }
+	percentage = { type = "float", min = 0, max = 1, bits = 20 }
+	percentage_array = { type = "array", max_size = 32, element = "percentage" } // MODIFIED
+	performance_title_amount_table = { type = "array", max_size = 4, element = "uint_16" }
+	performance_title_table = { type = "array", max_size = 4, element = "lookup" }
+	ping = { type = "int", min = 0, max = 1023 }
+	ping_float = { type = "float", min = 0, max = 1, bits = 8 }
+	ping_times = { type = "array", max_size = 4, element = "ping_float" }
+	player_id_array = { type = "array", max_size = 32, element = "local_player_id" }
+	player_level = { type = "int", min = 0, max = 65535 }
+	player_status = { type = "int", min = 1, max = 64 }
+	B29B54BE = { type = "array", max_size = 64, element = "uint_32" }
+	pos_int = { type = "int", min = -1000000, max = 1097151 }
+	position = { type = "vector3", min = -655.35, max = 655.36, bits = 17, tolerance = 0.01 }
+	position_array = { type = "array", max_size = 15, element = "position" }
+	position_single = { type = "float", min = -655.35, max = 655.36, bits = 17, tolerance = 0.01 }
+	power_level = { type = "int", min = 0, max = 2047 }
+	proc_function_lookup = { type = "int", min = 1, max = 512 }
+	profile_array = { type = "array", max_size = 32, element = "peer_id" } // MODIFIED
+	profile_index = { type = "int", min = 0, max = 31 }
+	progress = { type = "float", min = 0, max = 1 }
+	projectile_angle = { type = "int", min = -512, max = 1535 }
+	projectile_speed = { type = "int", min = 0, max = 65535 }
+	projectile_state = { type = "int", min = 0, max = 3 }
+	30585515 = { type = "array", max_size = 32, element = "lookup" }
+	9891894C = { type = "array", max_size = 32, element = "buff_value" }
+	radius = { type = "int", min = 0, max = 63 }
+	ragdoll_actor = { type = "int", min = 1, max = 32 }
+	range = { type = "int", min = 0, max = 127 }
+	ready_request_id = { type = "int", min = -1, max = 62 }
+	request_spawn_template_id = { type = "int", min = 0, max = 3 }
+	rot_int = { type = "int", min = -255, max = 256 }
+	rotation = { type = "quaternion", bits = 19 }
+	rotation_single = { type = "float", min = -3.15, max = 3.15, bits = 19, tolerance = 0.01 }
+	scale = { type = "int", min = 0, max = 127 }
+	server_controlled_buff_id = { type = "int", min = 0, max = 511 }
+	short_time = { type = "float", min = 0, max = 2, bits = 12 }
+	side_id = { type = "int", min = 0, max = 15 }
+	single_weapon_state_id = { type = "int", min = 0, max = 7 }
+	slot_id = { type = "int", min = 0, max = 31 }
+	C6516159 = { type = "array", max_size = 16, element = "game_object_id" }
+	small_lookup = { type = "int", min = 1, max = 16 }
+	small_lookup_from_zero = { type = "int", min = 0, max = 15 }
+	small_percentage = { type = "float", min = 0, max = 1 }
+	sound_event = { type = "int", min = 1, max = 512 }
+	sound_event_array = { type = "array", max_size = 15, element = "sound_event" }
+	spawn_rate = { type = "float", min = 0, max = 512, bits = 8 }
+	spawn_state = { type = "int", min = 0, max = 7 }
+	speed = { type = "float", min = -250, max = 250 }
+	speed_int = { type = "int", min = -10000, max = 22767 }
+	stagger_animation_scale = { type = "float", min = 0, max = 10, bits = 16, tolerance = 0.01 }
+	stagger_type = { type = "int", min = 0, max = 15 }
+	standard_template_id = { type = "int", min = 1, max = 4 }
+	9BF1C7B0 = { type = "float", min = 0, max = 255.75, bits = 10 }
+	statistics_path = { type = "array", max_size = 5, element = "statistics_path_lookup" }
+	statistics_path_lookup = { type = "int", min = 1, max = 1024 }
+	story_time = { type = "float", min = -3600, max = 3600, bits = 20 }
+	string = { type = "string" }
+	string_array = { type = "array", max_size = 3, element = "string" }
+	sub_action = { type = "int", min = 1, max = 256 }
+	surface_material_effect = { type = "int", min = 1, max = 128 }
+	switch_level_id = { type = "int", min = 0, max = 65535 }
+	sync_names = { type = "int", min = 1, max = 4 }
+	t_value = { type = "float", min = 0, max = 1 }
+	68C5F91E = { type = "int", min = 0, max = 3 }
+	9B9DDAF1 = { type = "array", max_size = 6, element = "68C5F91E" }
+	talent_id = { type = "int", min = 0, max = 511 }
+	849F665F = { type = "array", max_size = 32, element = "talent_id" }
+	taunt_duration = { type = "float", min = 0, max = 15.75, bits = 6 }
+	taunt_radius = { type = "float", min = 0, max = 15.75, bits = 6 }
+	teleports = { type = "int", min = 1, max = 8 }
+	tentacle_point_array = { type = "array", max_size = 8, element = "position" }
+	tentacle_reach_distance = { type = "float", min = 0, max = 31, bits = 16 }
+	tentacle_state = { type = "int", min = 1, max = 8 }
+	tentacle_template_id = { type = "int", min = 1, max = 4 }
+	terror_flow_event = { type = "int", min = 1, max = 512 }
+	time = { type = "int", min = -1, max = 65534 }
+	time_multiplier = { type = "float", min = 0.01, max = 2 }
+	EF9DD2D8 = { type = "array", max_size = 32, element = "lookup" }
+	twitch_lookup = { type = "int", min = 0, max = 1023 }
+	twitch_options = { type = "array", max_size = 5, element = "uint_16" }
+	twitch_template_lookup = { type = "array", max_size = 5, element = "twitch_lookup" }
+	uint_16 = { type = "int", min = 0, max = 65535 }
+	uint_19 = { type = "int", min = 0, max = 524287 }
+	uint_32 = { type = "int", min = 0, max = 4294967295 }
+	uint_8 = { type = "int", min = 0, max = 255 }
+	unit_node = { type = "int", min = 0, max = 511 }
+	unlocked_dlcs_array = { type = "array", max_size = 64, element = "566FD8B7" }
+	unsigned_speed = { type = "float", min = 0, max = 250 }
+	vector_scale = { type = "vector3", min = 0, max = 100, bits = 10 }
+	velocity = { type = "vector3", min = -250, max = 250, bits = 19, tolerance = 0.05 }
+	versus_objective_names = { type = "int", min = 1, max = 256 }
+	vfx = { type = "int", min = 1, max = 128 }
+	vfx_array = { type = "array", max_size = 15, element = "vfx" }
+	vortex_template_id = { type = "int", min = 1, max = 8 }
+	vote_data_deed = { type = "array", max_size = 12, element = "weapon_id" }
+	vote_data_lookup = { type = "array", max_size = 12, element = "lookup" }
+	vote_data_peer_id = { type = "array", max_size = 32, element = "peer_id" } // MODIFIED
+	weapon_id = { type = "int", min = 1, max = 16384 }
+	weave_bar_score = { type = "float", min = 0, max = 100 }
+	weave_buff_lookup_array = { type = "array", max_size = 32, element = "lookup" }
+	weave_buff_value_array = { type = "array", max_size = 32, element = "buff_value" }
+	weave_damage_taken = { type = "float", min = 0, max = 16383, bits = 15 }
+	weave_item_template_names = { type = "int", min = 1, max = 16 }
+	weave_num_players = { type = "int", min = 1, max = 32 } // MODIFIED
+	weave_objective_index = { type = "int", min = 0, max = 7 }
+	weave_objective_names = { type = "int", min = 1, max = 256 }
+	weave_score = { type = "int", min = 0, max = 32767 }
+	weight = { type = "float", min = -1, max = 16, bits = 6 }
+	weight_array = { type = "array", max_size = 1024, element = "weight" }
+	wounds = { type = "int", min = -1, max = 30 }
+}
+
+objects = {
+	thrown_weapon_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	orb_pickup_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "orb_flight_target_position", type = "position" }
+			{ name = "flight_enabled", type = "bool" }
+		]
+	}
+	positioned_prop_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	buff_aoe_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "life_time", type = "life_time" }
+			{ name = "removal_proc_function_id", type = "proc_function_lookup" }
+			{ name = "radius", type = "radius" }
+			{ name = "owner_player_id", type = "game_object_id" }
+		]
+	}
+	ai_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	deus_weapon_chest = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "server_chest_type", type = "uint_8" }
+			{ name = "collected_by_peers", type = "peer_id_table" }
+		]
+	}
+	sync_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "sync_name", type = "sync_names" }
+		]
+	}
+	player_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "target_vector", type = "direction" }
+			{ name = "initial_position", type = "position" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "trajectory_template_name", type = "lookup" }
+			{ name = "owner_unit", type = "game_object_id" }
+			{ name = "item_name", type = "weapon_id" }
+			{ name = "item_template_name", type = "item_template_name" }
+			{ name = "action_name", type = "action" }
+			{ name = "sub_action_name", type = "sub_action" }
+			{ name = "fast_forward_time", type = "short_time" }
+			{ name = "rotation_speed", type = "rot_int" }
+			{ name = "scale", type = "scale" }
+			{ name = "power_level", type = "power_level" }
+		]
+	}
+	horde_surge = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "progress", type = "uint_8" }
+		]
+	}
+	player_unit = {
+		priority = 1
+		update_rate = 0.05
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "skin_name", type = "lookup" }
+			{ name = "frame_name", type = "lookup" }
+			{ name = "wounds", type = "wounds" }
+			{ name = "level", type = "player_level" }
+			{ name = "prestige_level", type = "player_level" }
+			{ name = "position", type = "position" }
+			{ name = "pitch", type = "rotation_single" }
+			{ name = "yaw", type = "rotation_single" }
+			{ name = "aim_direction", type = "direction" }
+			{ name = "aim_position", type = "position" }
+			{ name = "local_player_id", type = "local_player_id" }
+			{ name = "owner_peer_id", type = "peer_id" }
+			{ name = "velocity", type = "velocity" }
+			{ name = "average_velocity", type = "velocity" }
+			{ name = "small_sample_size_average_velocity", type = "velocity" }
+			{ name = "profile_id", type = "slot_id" }
+			{ name = "career_id", type = "career_id" }
+			{ name = "ammo_percentage", type = "small_percentage" }
+			{ name = "current_ammo", type = "uint_8" }
+			{ name = "max_ammo", type = "uint_8" }
+			{ name = "ability_percentage", type = "small_percentage" }
+			{ name = "overcharge_percentage", type = "small_percentage" }
+			{ name = "overcharge_threshold_percentage", type = "small_percentage" }
+			{ name = "overcharge_max_value", type = "max_overcharge" }
+			{ name = "energy_percentage", type = "small_percentage" }
+			{ name = "energy_max_value", type = "max_energy" }
+			{ name = "is_on_depletion_cooldown", type = "bool" }
+			{ name = "linked_movement", type = "bool" }
+			{ name = "link_parent_id", type = "level_unit_index" }
+			{ name = "link_parent_is_level_unit", type = "bool" }
+			{ name = "link_node", type = "unit_node" }
+			{ name = "link_offset", type = "position" }
+			{ name = "moving_platform", type = "level_unit_index" }
+			{ name = "has_moved_from_start_position", type = "bool" }
+			{ name = "network_buff_ids", type = "buff_array" }
+		]
+	}
+	geheimnisnacht_2021_altar = {
+		priority = 2
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "health", type = "health" }
+			{ name = "state", type = "uint_8" }
+		]
+	}
+	ai_player = {
+		priority = 1
+		update_rate = 3
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "player_id", type = "game_object_id" }
+		]
+	}
+	belakor_crystal_socket = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	bot_player = {
+		priority = 1
+		update_rate = 3
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "network_id", type = "peer_id" }
+			{ name = "local_player_id", type = "local_player_id" }
+			{ name = "ping", type = "ping" }
+			{ name = "player_controlled", type = "bool" }
+			{ name = "clan_tag", type = "hash" }
+			{ name = "account_id", type = "hash" }
+		]
+	}
+	explosive_pickup_projectile_unit_limited = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "spawner_unit", type = "level_unit_index" }
+			{ name = "limited_item_id", type = "limited_item_index" }
+			{ name = "damage", type = "damage" }
+			{ name = "explode_time", type = "clock_time" }
+			{ name = "fuse_time", type = "fuse_time" }
+			{ name = "item_name", type = "weapon_id" }
+		]
+	}
+	versus_mission_objective_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "scale", type = "scale" }
+			{ name = "objective_name", type = "versus_objective_names" }
+		]
+	}
+	position_synched_dummy_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "position", type = "position" }
+		]
+	}
+	weave_objective = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "value", type = "weave_bar_score" }
+			{ name = "objective_name", type = "weave_objective_names" }
+		]
+	}
+	belakor_crystal_throw = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "60E099D7", type = "bool" }
+			{ name = "ECA01F48", type = "game_object_id" }
+		]
+	}
+	deus_belakor_locus = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "deus_belakor_locus_state", type = "uint_8" }
+		]
+	}
+	ai_true_flight_projectile_unit_without_raycast = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "true_flight_template_id", type = "lookup" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "initial_position", type = "position" }
+			{ name = "target_vector", type = "position" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "trajectory_template_id", type = "lookup" }
+			{ name = "impact_template_name", type = "lookup" }
+			{ name = "owner_unit", type = "game_object_id" }
+		]
+	}
+	shadow_flare_light = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "glow_time", type = "number" }
+			{ name = "owner_unit_id", type = "game_object_id" }
+		]
+	}
+	pickup_projectile_unit_limited = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "spawner_unit", type = "level_unit_index" }
+			{ name = "limited_item_id", type = "limited_item_index" }
+		]
+	}
+	ai_unit_stormfiend_boss = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "show_health_bar", type = "bool" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "aim_target", type = "position" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "attack_arm", type = "attack_arm" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "animation_synced_unit_id", type = "game_object_id" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	buffed_timed_explosion_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "explosion_template_name", type = "lookup" }
+			{ name = "follow_unit", type = "game_object_id" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_buff_ids", type = "buff_array" }
+		]
+	}
+	thornsister_thorn_wall_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "aoe_dot_damage", type = "damage" }
+			{ name = "aoe_init_damage", type = "damage" }
+			{ name = "aoe_dot_damage_interval", type = "damage_interval" }
+			{ name = "radius", type = "taunt_radius" }
+			{ name = "life_time", type = "life_time" }
+			{ name = "player_screen_effect_name", type = "lookup" }
+			{ name = "dot_effect_name", type = "lookup" }
+			{ name = "extra_dot_effect_name", type = "lookup" }
+			{ name = "area_damage_template", type = "lookup" }
+			{ name = "invisible_unit", type = "bool" }
+			{ name = "explosion_template_name", type = "lookup" }
+			{ name = "owner_player_id", type = "game_object_id" }
+			{ name = "health", type = "health" }
+			{ name = "wall_index", type = "small_lookup" }
+			{ name = "owner_unit_id", type = "game_object_id" }
+		]
+	}
+	liquid_aoe_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "liquid_area_damage_template", type = "lookup" }
+			{ name = "source_unit", type = "game_object_id" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	timed_explosion_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "explosion_template_name", type = "lookup" }
+			{ name = "follow_unit", type = "game_object_id" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	ai_unit_storm_vermin_warlord = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "is_blocking", type = "bool" }
+			{ name = "is_dodging", type = "bool" }
+			{ name = "show_health_bar", type = "bool" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	keep_decoration_painting = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "level_unit_index", type = "level_unit_index" }
+			{ name = "painting_index", type = "lookup" }
+		]
+	}
+	shadow_dagger_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "target_vector", type = "position" }
+			{ name = "initial_position", type = "position" }
+			{ name = "trajectory_template_name", type = "lookup" }
+			{ name = "owner_unit", type = "game_object_id" }
+			{ name = "source_attacker_unit", type = "game_object_id" }
+			{ name = "6A4C1C29", type = "bool" }
+			{ name = "rotation_speed", type = "rot_int" }
+			{ name = "C68C0018", type = "clock_time" }
+			{ name = "785825D3", type = "bool" }
+			{ name = "8E4D2AB1", type = "1E7C6F15" }
+			{ name = "collision_filter", type = "lookup" }
+			{ name = "impact_template_name", type = "lookup" }
+			{ name = "damage_source_id", type = "damage_source_id" }
+		]
+	}
+	ai_true_flight_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "true_flight_template_id", type = "lookup" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "initial_position", type = "position" }
+			{ name = "target_vector", type = "position" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "trajectory_template_id", type = "lookup" }
+			{ name = "impact_template_name", type = "lookup" }
+			{ name = "collision_filter", type = "lookup" }
+			{ name = "server_side_raycast", type = "bool" }
+			{ name = "owner_unit", type = "game_object_id" }
+		]
+	}
+	pickup_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+		]
+	}
+	arena_belakor_big_statue_health = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "health", type = "health" }
+		]
+	}
+	ai_unit_tentacle = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "enemy_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "reach_distance", type = "tentacle_reach_distance" }
+			{ name = "portal_unit_id", type = "game_object_id" }
+			{ name = "tentacle_template_id", type = "tentacle_template_id" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	explosive_pickup_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "damage", type = "damage" }
+			{ name = "explode_time", type = "clock_time" }
+			{ name = "fuse_time", type = "fuse_time" }
+			{ name = "item_name", type = "weapon_id" }
+		]
+	}
+	pickup_training_dummy_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "damage", type = "damage" }
+		]
+	}
+	keep_decoration_trophy = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "level_unit_index", type = "level_unit_index" }
+			{ name = "70F2CCDB", type = "lookup" }
+		]
+	}
+	versus_character_selection_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "timer", type = "clock_time" }
+		]
+	}
+	prop_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+		]
+	}
+	ai_unit_beastmen_bestigor = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "lean_target", type = "position" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	ai_unit_with_inventory = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	ai_unit_pack_master = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "aim_target", type = "position" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	deus_relic = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+		]
+	}
+	weave_kill_enemies_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "objective_name", type = "weave_objective_names" }
+			{ name = "amount", type = "uint_8" }
+		]
+	}
+	weave_limited_item_track_spawner_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "objective_name", type = "weave_objective_names" }
+		]
+	}
+	player_bot_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "skin_name", type = "lookup" }
+			{ name = "frame_name", type = "lookup" }
+			{ name = "wounds", type = "wounds" }
+			{ name = "level", type = "player_level" }
+			{ name = "prestige_level", type = "player_level" }
+			{ name = "position", type = "position" }
+			{ name = "pitch", type = "rotation_single" }
+			{ name = "yaw", type = "rotation_single" }
+			{ name = "aim_direction", type = "direction" }
+			{ name = "aim_position", type = "position" }
+			{ name = "local_player_id", type = "local_player_id" }
+			{ name = "owner_peer_id", type = "peer_id" }
+			{ name = "velocity", type = "velocity" }
+			{ name = "average_velocity", type = "velocity" }
+			{ name = "small_sample_size_average_velocity", type = "velocity" }
+			{ name = "profile_id", type = "slot_id" }
+			{ name = "career_id", type = "career_id" }
+			{ name = "ammo_percentage", type = "small_percentage" }
+			{ name = "current_ammo", type = "uint_8" }
+			{ name = "max_ammo", type = "uint_8" }
+			{ name = "ability_percentage", type = "small_percentage" }
+			{ name = "overcharge_percentage", type = "small_percentage" }
+			{ name = "overcharge_threshold_percentage", type = "small_percentage" }
+			{ name = "overcharge_max_value", type = "max_overcharge" }
+			{ name = "energy_percentage", type = "small_percentage" }
+			{ name = "energy_max_value", type = "max_energy" }
+			{ name = "is_on_depletion_cooldown", type = "bool" }
+			{ name = "linked_movement", type = "bool" }
+			{ name = "link_parent_id", type = "level_unit_index" }
+			{ name = "link_parent_is_level_unit", type = "bool" }
+			{ name = "link_node", type = "unit_node" }
+			{ name = "link_offset", type = "position" }
+			{ name = "moving_platform", type = "level_unit_index" }
+			{ name = "has_moved_from_start_position", type = "bool" }
+		]
+	}
+	ai_unit_warpfire_thrower = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "aim_target", type = "position" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	standard_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "health", type = "health" }
+			{ name = "standard_template_id", type = "standard_template_id" }
+			{ name = "always_pingable", type = "bool" }
+		]
+	}
+	limited_owned_pickup_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "owner_peer_id", type = "peer_id" }
+			{ name = "spawn_limit", type = "uint_8" }
+		]
+	}
+	aoe_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "aoe_dot_damage", type = "damage" }
+			{ name = "aoe_init_damage", type = "damage" }
+			{ name = "aoe_dot_damage_interval", type = "damage_interval" }
+			{ name = "radius", type = "radius" }
+			{ name = "life_time", type = "life_time" }
+			{ name = "player_screen_effect_name", type = "lookup" }
+			{ name = "dot_effect_name", type = "lookup" }
+			{ name = "extra_dot_effect_name", type = "lookup" }
+			{ name = "area_damage_template", type = "lookup" }
+			{ name = "invisible_unit", type = "bool" }
+			{ name = "explosion_template_name", type = "lookup" }
+			{ name = "owner_player_id", type = "game_object_id" }
+			{ name = "source_attacker_unit_id", type = "game_object_id" }
+		]
+	}
+	player_unit_health = {
+		priority = 1
+		update_rate = 0.05
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "unit_game_object_id", type = "game_object_id" }
+			{ name = "current_health", type = "health" }
+			{ name = "current_temporary_health", type = "health" }
+			{ name = "max_health", type = "health" }
+			{ name = "uncursed_max_health", type = "health" }
+			{ name = "current_wounds", type = "wounds" }
+			{ name = "max_wounds", type = "wounds" }
+		]
+	}
+	destructible_objective_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "health", type = "health" }
+		]
+	}
+	music_states = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "combat_intensity", type = "music_group_states" }
+			{ name = "game_state", type = "C87C807B" }
+			{ name = "boss_state", type = "music_group_states" }
+			{ name = "override", type = "music_group_states" }
+		]
+	}
+	damage_blob_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "position", type = "position" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "damage_blob_template_name", type = "lookup" }
+			{ name = "source_unit", type = "game_object_id" }
+			{ name = "rotation", type = "enemy_rotation" }
+		]
+	}
+	weave_capture_point_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "scale", type = "scale" }
+			{ name = "objective_name", type = "weave_objective_names" }
+			{ name = "timer", type = "time" }
+		]
+	}
+	vortex_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "inner_radius_percentage", type = "percentage" }
+			{ name = "fx_radius_percentage", type = "percentage" }
+			{ name = "height_percentage", type = "percentage" }
+			{ name = "vortex_template_id", type = "vortex_template_id" }
+			{ name = "inner_decal_unit_id", type = "game_object_id" }
+			{ name = "outer_decal_unit_id", type = "game_object_id" }
+			{ name = "owner_unit_id", type = "game_object_id" }
+		]
+	}
+	shadow_homing_skulls_spawner = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "health", type = "health" }
+		]
+	}
+	weave_target_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "objective_name", type = "weave_objective_names" }
+			{ name = "health", type = "health" }
+			{ name = "allow_melee_damage", type = "bool" }
+			{ name = "allow_ranged_damage", type = "bool" }
+		]
+	}
+	ai_unit_vortex = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "inner_radius_percentage", type = "percentage" }
+			{ name = "fx_radius_percentage", type = "percentage" }
+			{ name = "height_percentage", type = "percentage" }
+			{ name = "vortex_template_id", type = "vortex_template_id" }
+			{ name = "inner_decal_unit_id", type = "game_object_id" }
+			{ name = "outer_decal_unit_id", type = "game_object_id" }
+			{ name = "owner_unit_id", type = "game_object_id" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	ai_true_flight_killable_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "true_flight_template_id", type = "lookup" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "initial_position", type = "position" }
+			{ name = "target_vector", type = "position" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "trajectory_template_id", type = "lookup" }
+			{ name = "impact_template_name", type = "lookup" }
+			{ name = "collision_filter", type = "lookup" }
+			{ name = "server_side_raycast", type = "bool" }
+			{ name = "owner_unit", type = "game_object_id" }
+			{ name = "health", type = "health" }
+		]
+	}
+	ai_unit_chaos_troll = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "lean_target", type = "position" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	thorn_bush_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "aoe_dot_damage", type = "damage" }
+			{ name = "aoe_init_damage", type = "damage" }
+			{ name = "aoe_dot_damage_interval", type = "damage_interval" }
+			{ name = "radius", type = "radius" }
+			{ name = "life_time", type = "life_time" }
+			{ name = "player_screen_effect_name", type = "lookup" }
+			{ name = "dot_effect_name", type = "lookup" }
+			{ name = "extra_dot_effect_name", type = "lookup" }
+			{ name = "area_damage_template", type = "lookup" }
+			{ name = "invisible_unit", type = "bool" }
+			{ name = "explosion_template_name", type = "lookup" }
+			{ name = "owner_player_id", type = "game_object_id" }
+			{ name = "spawn_animation_time", type = "number" }
+			{ name = "despawn_animation_time", type = "number" }
+			{ name = "slow_modifier", type = "number" }
+		]
+	}
+	positioned_blob_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	ai_unit_beastmen_minotaur = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "lean_target", type = "position" }
+			{ name = "lean_downwards", type = "bool" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	objective_pickup_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	ai_unit_plague_wave_spawner = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	game_mode_data_carousel = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "round_timer", type = "clock_time" }
+			{ name = "5B8C80CA", type = "uint_8" }
+			{ name = "0562B60D", type = "bool" }
+		]
+	}
+	engineer_career_data = {
+		priority = 2
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "unit_game_object_id", type = "game_object_id" }
+			{ name = "visual_heat", type = "percentage" }
+		]
+	}
+	limited_owned_pickup_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "owner_peer_id", type = "peer_id" }
+			{ name = "spawn_limit", type = "uint_8" }
+		]
+	}
+	ai_unit_with_inventory_and_target = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	versus_dark_pact_climbing_interaction_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "smart_object_index", type = "uint_16" }
+			{ name = "EF95AB63", type = "bool" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	belakor_totem = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "health", type = "health" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	damage_wave_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "position", type = "position" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "damage_wave_template_name", type = "lookup" }
+			{ name = "source_unit", type = "game_object_id" }
+			{ name = "rotation", type = "enemy_rotation" }
+			{ name = "height_percentage", type = "percentage" }
+		]
+	}
+	priest_career_data = {
+		priority = 2
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "unit_game_object_id", type = "game_object_id" }
+			{ name = "fury_active", type = "bool" }
+		]
+	}
+	player = {
+		priority = 1
+		update_rate = 3
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "network_id", type = "peer_id" }
+			{ name = "local_player_id", type = "local_player_id" }
+			{ name = "ping", type = "ping" }
+			{ name = "player_controlled", type = "bool" }
+			{ name = "clan_tag", type = "hash" }
+			{ name = "account_id", type = "hash" }
+		]
+	}
+	pickup_unit = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "dropped_by_breed", type = "lookup" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	ai_lord_with_inventory_and_target = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "show_health_bar", type = "bool" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	ai_unit_with_inventory_and_shield_and_target = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "is_blocking", type = "bool" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	ai_unit_tentacle_portal = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "enemy_rotation" }
+			{ name = "health", type = "health" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	interest_point_level_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+		]
+	}
+	true_flight_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "true_flight_template_id", type = "lookup" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "initial_position", type = "position" }
+			{ name = "target_vector", type = "position" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "trajectory_template_id", type = "lookup" }
+			{ name = "collision_filter", type = "lookup" }
+			{ name = "server_side_raycast", type = "bool" }
+			{ name = "owner_unit", type = "game_object_id" }
+			{ name = "item_name", type = "weapon_id" }
+			{ name = "item_template_name", type = "item_template_name" }
+			{ name = "action_name", type = "action" }
+			{ name = "sub_action_name", type = "sub_action" }
+			{ name = "scale", type = "scale" }
+			{ name = "power_level", type = "power_level" }
+		]
+	}
+	prop_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+		]
+	}
+	network_synched_dummy_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "dummy_yaw_rotation" }
+			{ name = "uniform_scale", type = "dummy_uniform_scale" }
+		]
+	}
+	shadow_skull_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	weave_doom_wheel_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "objective_name", type = "weave_objective_names" }
+		]
+	}
+	payload = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "level_unit_index", type = "level_unit_index" }
+			{ name = "spline_index", type = "payload_spline_index" }
+			{ name = "subdivision_index", type = "payload_spline_subdivisions" }
+			{ name = "spline_t", type = "payload_spline_t" }
+			{ name = "speed", type = "payload_speed" }
+		]
+	}
+	ai_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "target_vector", type = "position" }
+			{ name = "initial_position", type = "position" }
+			{ name = "trajectory_template_name", type = "lookup" }
+			{ name = "owner_unit", type = "game_object_id" }
+			{ name = "server_side_raycast", type = "bool" }
+			{ name = "collision_filter", type = "lookup" }
+			{ name = "impact_template_name", type = "lookup" }
+			{ name = "damage_source_id", type = "damage_source_id" }
+		]
+	}
+	versus_volume_objective_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "scale", type = "scale" }
+			{ name = "objective_name", type = "versus_objective_names" }
+		]
+	}
+	ai_unit_rat_ogre = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	buff_objective_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_buff_ids", type = "buff_array" }
+		]
+	}
+	ai_unit_grey_seer = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "show_health_bar", type = "bool" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	objective_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+		]
+	}
+	interest_point_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+		]
+	}
+	deus_cursed_chest = {
+		priority = 1
+		update_rate = 10
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "deus_cursed_chest_state", type = "uint_8" }
+			{ name = "collected_by_peers", type = "peer_id_table" }
+		]
+	}
+	pickup_torch_unit_init = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+		]
+	}
+	lure_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "husk_unit", type = "husk_unit" }
+		]
+	}
+	aoe_projectile_unit_fixed_impact = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "target_vector", type = "position" }
+			{ name = "initial_position", type = "position" }
+			{ name = "trajectory_template_name", type = "lookup" }
+			{ name = "owner_unit", type = "game_object_id" }
+			{ name = "source_attacker_unit", type = "game_object_id" }
+			{ name = "impact_position", type = "position" }
+			{ name = "impact_time", type = "C477B705" }
+			{ name = "impact_unit", type = "game_object_id" }
+			{ name = "impact_actor", type = "actor_index" }
+			{ name = "impact_direction", type = "direction" }
+			{ name = "impact_normal", type = "direction" }
+			{ name = "impact_template_name", type = "lookup" }
+			{ name = "aoe_dot_damage", type = "damage" }
+			{ name = "aoe_init_damage", type = "damage" }
+			{ name = "aoe_dot_damage_interval", type = "damage_interval" }
+			{ name = "radius", type = "radius" }
+			{ name = "life_time", type = "life_time" }
+			{ name = "damage_players", type = "bool" }
+			{ name = "player_screen_effect_name", type = "lookup" }
+			{ name = "dot_effect_name", type = "lookup" }
+			{ name = "area_damage_template", type = "lookup" }
+			{ name = "damage_source_id", type = "damage_source_id" }
+		]
+	}
+	ai_unit_ratling_gunner = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "aim_target", type = "position" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "side_id", type = "side_id" }
+			{ name = "aim_position", type = "position" }
+		]
+	}
+	pickup_torch_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_position", type = "int_position" }
+			{ name = "network_rotation", type = "int_rotation" }
+			{ name = "network_velocity", type = "int_velocity" }
+			{ name = "network_angular_velocity", type = "int_velocity" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+		]
+	}
+	versus_capture_point_objective_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "scale", type = "scale" }
+			{ name = "objective_name", type = "versus_objective_names" }
+			{ name = "timer", type = "time" }
+		]
+	}
+	belakor_crystal = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "debug_pos", type = "position" }
+			{ name = "pickup_name", type = "lookup" }
+			{ name = "has_physics", type = "bool" }
+			{ name = "spawn_type", type = "lookup" }
+			{ name = "60E099D7", type = "bool" }
+			{ name = "ECA01F48", type = "game_object_id" }
+		]
+	}
+	overpowering_blob_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+		]
+	}
+	versus_objective = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "objective_name", type = "versus_objective_names" }
+			{ name = "specials_jumps_gamepad", type = "versus_objective_names" }
+			{ name = "value", type = "percent" }
+		]
+	}
+	projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "target_vector", type = "position" }
+			{ name = "initial_position", type = "position" }
+			{ name = "trajectory_template_name", type = "lookup" }
+			{ name = "impact_template_name", type = "lookup" }
+			{ name = "owner_unit", type = "game_object_id" }
+		]
+	}
+	player_sync_data = {
+		priority = 1
+		update_rate = 3
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "network_id", type = "peer_id" }
+			{ name = "local_player_id", type = "local_player_id" }
+			{ name = "is_dev", type = "bool" }
+			{ name = "power_level", type = "power_level" }
+			{ name = "best_aquired_power_level", type = "power_level" }
+			{ name = "highest_unlocked_difficulty", type = "difficulty_lookup" }
+			{ name = "slot_frame", type = "lookup" }
+			{ name = "slot_skin", type = "lookup" }
+			{ name = "slot_hat", type = "lookup" }
+			{ name = "slot_melee", type = "weapon_id" }
+			{ name = "slot_melee_skin", type = "lookup" }
+			{ name = "slot_ranged", type = "weapon_id" }
+			{ name = "slot_ranged_skin", type = "lookup" }
+			{ name = "playerlist_build_privacy", type = "lookup" }
+		]
+	}
+	weave_interaction_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "objective_name", type = "weave_objective_names" }
+			{ name = "num_times_to_complete", type = "uint_8" }
+			{ name = "duration", type = "time" }
+		]
+	}
+	ai_unit_stormfiend = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "aim_target", type = "position" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "attack_arm", type = "attack_arm" }
+			{ name = "target_unit_id", type = "game_object_id" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	aoe_projectile_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "speed", type = "projectile_speed" }
+			{ name = "angle", type = "projectile_angle" }
+			{ name = "gravity_settings", type = "lookup" }
+			{ name = "target_vector", type = "position" }
+			{ name = "initial_position", type = "position" }
+			{ name = "trajectory_template_name", type = "lookup" }
+			{ name = "owner_unit", type = "game_object_id" }
+			{ name = "source_attacker_unit", type = "game_object_id" }
+			{ name = "server_side_raycast", type = "bool" }
+			{ name = "collision_filter", type = "lookup" }
+			{ name = "impact_template_name", type = "lookup" }
+			{ name = "aoe_dot_damage", type = "damage" }
+			{ name = "aoe_init_damage", type = "damage" }
+			{ name = "aoe_dot_damage_interval", type = "damage_interval" }
+			{ name = "radius", type = "radius" }
+			{ name = "life_time", type = "life_time" }
+			{ name = "damage_players", type = "bool" }
+			{ name = "player_screen_effect_name", type = "lookup" }
+			{ name = "dot_effect_name", type = "lookup" }
+			{ name = "area_damage_template", type = "lookup" }
+			{ name = "damage_source_id", type = "damage_source_id" }
+		]
+	}
+	weave = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "bar_score", type = "weave_bar_score" }
+			{ name = "remaining_time", type = "time" }
+		]
+	}
+	egg_of_tzeentch_unit = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "network_buff_ids", type = "buff_array" }
+			{ name = "health", type = "health" }
+			{ name = "max_spawn_amount", type = "uint_16" }
+			{ name = "spawnable_breeds", type = "breed_array_lookup" }
+			{ name = "spawn_rate", type = "spawn_rate" }
+		]
+	}
+	twitch_vote = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "vote_key", type = "uint_8" }
+			{ name = "vote_type", type = "twitch_lookup" }
+			{ name = "options", type = "twitch_options" }
+			{ name = "vote_templates", type = "twitch_template_lookup" }
+			{ name = "time", type = "uint_8" }
+			{ name = "show_vote_ui", type = "bool" }
+		]
+	}
+	ai_unit_with_inventory_and_shield = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "health", type = "health" }
+			{ name = "has_teleported", type = "teleports" }
+			{ name = "position", type = "position" }
+			{ name = "yaw_rot", type = "enemy_yaw_rotation" }
+			{ name = "velocity", type = "enemy_velocity" }
+			{ name = "breed_name", type = "breed" }
+			{ name = "uniform_scale", type = "enemy_uniform_scale" }
+			{ name = "inventory_configuration", type = "inventory_lookup" }
+			{ name = "bt_action_name", type = "bt_action_name" }
+			{ name = "is_blocking", type = "bool" }
+			{ name = "side_id", type = "side_id" }
+		]
+	}
+	progress_timer = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "level_unit_index", type = "level_unit_index" }
+			{ name = "unit_in_progress", type = "bool" }
+			{ name = "progress_is_frozen", type = "bool" }
+			{ name = "counting_up", type = "bool" }
+			{ name = "progress_time", type = "percentage" }
+		]
+	}
+}
+
+messages = {
+	rpc_deus_set_initial_setup = {
+		session_bound = false
+		args = [
+			"profile_index"
+			"career_id"
+			"9B9DDAF1"
+			"string"
+			"string"
+		]
+	}
+	rpc_ping_unit = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"bool"
+			"lookup"
+			"lookup"
+		]
+	}
+	rpc_player_blocked_attack = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"fatigue_points"
+			"game_object_id"
+			"fatigue_cost_multiplier"
+			"bool"
+			"string"
+			"bool"
+		]
+	}
+	rpc_sync_anim_state_10 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_select_deed = {
+		session_bound = true
+		args = [
+			"weapon_id"
+			"peer_id"
+		]
+	}
+	rpc_client_audio_set_global_parameter_with_lerp = {
+		session_bound = true
+		args = [
+			"lookup"
+			"percentage"
+		]
+	}
+	rpc_debug_command = {
+		session_bound = true
+		args = [
+			"debug_command_lookup"
+			"number"
+		]
+	}
+	rpc_join_reserved_game_server = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_social_message = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"game_object_id"
+		]
+	}
+	rpc_request_enter_ghost_mode = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_sync_door_state = {
+		session_bound = true
+		args = [
+			"level_unit_index"
+			"lookup"
+		]
+	}
+	rpc_update_anim_variable_done = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_horde_surge_set_level = {
+		session_bound = true
+		args = [
+			"uint_8"
+			"uint_8"
+			"uint_8"
+		]
+	}
+	rpc_disable_linked_movement = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_reset_deed = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_buff_on_attack = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"buff_proc_attack_types"
+			"bool"
+			"lookup"
+			"uint_8"
+			"buff_weapon_types"
+		]
+	}
+	rpc_pre_game_request_ready = {
+		session_bound = true
+		args = [
+			"local_player_id"
+			"bool"
+			"ready_request_id"
+		]
+	}
+	rpc_deus_soft_currency_picked_up = {
+		session_bound = false
+		args = [
+			"uint_32"
+		]
+	}
+	rpc_matchmaking_request_quickplay_data = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_matchmaking_verify_dlc = {
+		session_bound = true
+		args = [
+			"unlocked_dlcs_array"
+		]
+	}
+	rpc_clear_game_mode_event_data = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_add_damage_wave_fx = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+		]
+	}
+	rpc_sync_talents = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"849F665F"
+		]
+	}
+	rpc_set_projectile_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"projectile_state"
+		]
+	}
+	rpc_server_reduce_activated_ability_cooldown_percent = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position_single"
+			"uint_8"
+			"bool"
+		]
+	}
+	rpc_set_on_moving_platform = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+		]
+	}
+	rpc_end_geiser = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_ping = {
+		session_bound = false
+		args = [
+			"string"
+			"string"
+			"ping_times"
+		]
+	}
+	rpc_spawn_and_link_units = {
+		session_bound = true
+		args = [
+			"lookup"
+			"position"
+			"rotation"
+			"game_object_id"
+			"unit_node"
+			"bool"
+		]
+	}
+	rpc_from_server_send_spawn_state = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"spawn_state"
+			"uint_16"
+			"clock_time"
+		]
+	}
+	rpc_complete_badge = {
+		session_bound = true
+		args = [
+			"lookup"
+			"peer_id"
+		]
+	}
+	rpc_create_explosion = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"position"
+			"rotation"
+			"lookup"
+			"small_percentage"
+			"damage_source_id"
+			"power_level"
+			"bool"
+			"game_object_id"
+		]
+	}
+	rpc_create_attachment = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"weapon_id"
+		]
+	}
+	rpc_request_join_party = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"local_player_id"
+			"party_id"
+			"party_slot_id"
+		]
+	}
+	rpc_server_update_ingame_challenge = {
+		session_bound = true
+		args = [
+			"challenge_unique_id"
+			"uint_16"
+			"small_lookup"
+			"small_lookup"
+		]
+	}
+	rpc_interaction_completed = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"int_1_4"
+		]
+	}
+	rpc_shared_state_set_server_int = {
+		session_bound = false
+		args = [
+			"hash"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"int_32"
+		]
+	}
+	rpc_spawn_orb = {
+		session_bound = true
+		args = [
+			"lookup"
+			"peer_id"
+			"position"
+			"position"
+			"angle"
+		]
+	}
+	rpc_set_animation_rotation_scale = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"animation_rotation_scale"
+		]
+	}
+	rpc_client_start_vote_lookup = {
+		session_bound = true
+		args = [
+			"lookup"
+			"vote_data_lookup"
+			"peer_id_table"
+		]
+	}
+	rpc_anim_set_variable_by_time = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_variable_index"
+			"uint_16"
+			"int_1_4"
+		]
+	}
+	rpc_add_equipment = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"weapon_id"
+			"lookup"
+		]
+	}
+	rpc_change_pre_game_seach_state = {
+		session_bound = true
+		args = [
+			"small_lookup"
+		]
+	}
+	rpc_start_mission_with_unit = {
+		session_bound = true
+		args = [
+			"lookup"
+			"level_unit_index"
+			"mission_data"
+		]
+	}
+	rpc_request_profile_reply = {
+		session_bound = true
+		args = [
+			"local_player_id"
+			"uint_16"
+			"profile_index"
+			"career_id"
+			"bool"
+			"int_1_4"
+		]
+	}
+	rpc_sync_end_of_weave_data = {
+		session_bound = true
+		args = [
+			"weave_score"
+			"time"
+			"weave_num_players"
+			"weave_damage_taken"
+		]
+	}
+	rpc_matchmaking_handshake_start = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_generic_impact_projectile_impact = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"level_unit_index"
+			"position"
+			"direction"
+			"direction"
+			"actor_index"
+		]
+	}
+	rpc_sync_player_loadout = {
+		session_bound = true
+		args = [
+			"party_id"
+			"small_lookup_from_zero"
+			"profile_index"
+			"career_id"
+			"lookup"
+			"lookup"
+			"lookup"
+			"lookup"
+		]
+	}
+	rpc_update_additional_slot = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"A76883F7"
+		]
+	}
+	rpc_server_audio_position_event = {
+		session_bound = true
+		args = [
+			"sound_event"
+			"position"
+		]
+	}
+	rpc_set_party_array = {
+		session_bound = true
+		args = [
+			"small_lookup_from_zero"
+			"party_array"
+			"uint_8"
+		]
+	}
+	rpc_send_painting = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_matchmaking_handshake_complete = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_player_projectile_impact_dynamic = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"position"
+			"direction"
+			"direction"
+			"actor_index"
+		]
+	}
+	rpc_disconnect_peer = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_to_client_sync_session_id = {
+		session_bound = true
+		args = [
+			"string"
+		]
+	}
+	rpc_deus_grant_end_of_level_power_ups = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_spawn_pickup = {
+		session_bound = true
+		args = [
+			"lookup"
+			"position"
+			"rotation"
+			"lookup"
+		]
+	}
+	rpc_start_mission = {
+		session_bound = true
+		args = [
+			"lookup"
+			"mission_data"
+		]
+	}
+	rpc_server_audio_event_at_pos = {
+		session_bound = true
+		args = [
+			"sound_event"
+			"position"
+		]
+	}
+	rpc_cancel_matchmaking = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_matchmaking_join_game = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_create_liquid_damage_area = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"direction"
+			"small_lookup"
+		]
+	}
+	rpc_client_despawn_light_weight_projectile = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"light_weight_projectile_index"
+			"uint_16"
+		]
+	}
+	rpc_start_leave_game_countdown = {
+		session_bound = false
+		args = [
+			"time"
+		]
+	}
+	rpc_ping_world_position = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"lookup"
+			"lookup"
+		]
+	}
+	rpc_play_2d_audio_event = {
+		session_bound = true
+		args = [
+			"sound_event"
+		]
+	}
+	rpc_matchmaking_request_selected_level_reply = {
+		session_bound = false
+		args = [
+			"lookup"
+		]
+	}
+	rpc_play_melee_hit_effects = {
+		session_bound = true
+		args = [
+			"sound_event"
+			"position"
+			"small_lookup"
+			"game_object_id"
+		]
+	}
+	rpc_remove_group_buff = {
+		session_bound = true
+		args = [
+			"lookup"
+			"buff_instances"
+		]
+	}
+	rpc_start_game_countdown_finished = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_add_buff_synced = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"server_controlled_buff_id"
+			"int_1_4"
+		]
+	}
+	rpc_sync_performance_titles = {
+		session_bound = true
+		args = [
+			"peer_id_table"
+			"player_id_array"
+			"performance_title_table"
+			"performance_title_amount_table"
+		]
+	}
+	rpc_sync_damage_taken = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"bool"
+			"damage_hotjoin_sync"
+			"health_status_lookup"
+		]
+	}
+	rpc_generic_impact_projectile_force_impact = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+		]
+	}
+	rpc_client_complete_vote = {
+		session_bound = true
+		args = [
+			"number"
+		]
+	}
+	rpc_matchmaking_sync_quickplay_data = {
+		session_bound = false
+		args = [
+			"weight_array"
+		]
+	}
+	rpc_constrain_ai = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"position_array"
+		]
+	}
+	rpc_gm_event_round_started = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_connection_failed = {
+		session_bound = false
+		args = [
+			"connection_fail_type"
+		]
+	}
+	rpc_shared_state_set_int = {
+		session_bound = false
+		args = [
+			"hash"
+			"peer_id"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"int_32"
+		]
+	}
+	rpc_pre_game_select_character = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"weapon_id"
+			"weapon_id"
+		]
+	}
+	rpc_hot_join_sync_linker_transport_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"story_time"
+		]
+	}
+	rpc_increment_stat = {
+		session_bound = true
+		args = [
+			"lookup"
+		]
+	}
+	rpc_matchmaking_verify_dlc_reply = {
+		session_bound = true
+		args = [
+			"bool"
+		]
+	}
+	rpc_server_audio_unit_event = {
+		session_bound = true
+		args = [
+			"sound_event"
+			"game_object_id"
+			"bool"
+			"unit_node"
+		]
+	}
+	rpc_set_party_picking_id = {
+		session_bound = true
+		args = [
+			"party_id"
+			"small_lookup_from_zero"
+		]
+	}
+	rpc_alert_enemies_within_range = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"radius"
+		]
+	}
+	rpc_set_stagger = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"uint_8"
+			"direction"
+			"taunt_duration"
+			"stagger_type"
+			"taunt_duration"
+			"stagger_animation_scale"
+			"bool"
+		]
+	}
+	rpc_shared_state_set_bool = {
+		session_bound = false
+		args = [
+			"hash"
+			"peer_id"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"bool"
+		]
+	}
+	rpc_sync_anim_state_1 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+		]
+	}
+	rpc_ai_weapon_shoot_end = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_sync_boss_door_state = {
+		session_bound = true
+		args = [
+			"level_unit_index"
+			"lookup"
+			"lookup"
+		]
+	}
+	rpc_remove_server_controlled_buff = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"server_controlled_buff_id"
+		]
+	}
+	rpc_matchmaking_request_profiles_data_reply = {
+		session_bound = false
+		args = [
+			"profile_array"
+			"player_id_array"
+		]
+	}
+	rpc_flow_state_number_changed = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"flow_states"
+			"number"
+			"bool"
+			"bool"
+		]
+	}
+	rpc_client_connection_state = {
+		session_bound = false
+		args = [
+			"string"
+			"small_lookup"
+		]
+	}
+	rpc_first_person_flow_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+		]
+	}
+	rpc_change_single_weapon_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"single_weapon_state_id"
+		]
+	}
+	rpc_payload_flow_event = {
+		session_bound = true
+		args = [
+			"level_unit_index"
+			"payload_spline_index"
+		]
+	}
+	rpc_deus_set_arena_interactable_state = {
+		session_bound = false
+		args = [
+			"level_unit_index"
+			"int_32"
+		]
+	}
+	rpc_server_request_emote = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_event"
+			"bool"
+		]
+	}
+	rpc_bot_unit_order = {
+		session_bound = true
+		args = [
+			"small_lookup"
+			"game_object_id"
+			"game_object_id"
+			"peer_id"
+			"local_player_id"
+		]
+	}
+	rpc_set_affected_by_gravity = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_carousel_set_local_match = {
+		session_bound = false
+		args = [
+			"bool"
+		]
+	}
+	rpc_start_beam = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"vfx"
+			"vfx"
+			"range"
+		]
+	}
+	rpc_client_start_vote_deed = {
+		session_bound = true
+		args = [
+			"lookup"
+			"vote_data_deed"
+			"peer_id_table"
+		]
+	}
+	rpc_pre_game_set_player_ready = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"bool"
+			"ready_request_id"
+		]
+	}
+	rpc_status_change_int_and_unit = {
+		session_bound = true
+		args = [
+			"player_status"
+			"small_lookup_from_zero"
+			"game_object_id"
+			"game_object_id"
+		]
+	}
+	rpc_from_client_sync_packages_load_done = {
+		session_bound = false
+		args = [
+			"enemy_package_loader_connection_key"
+		]
+	}
+	rpc_social_wheel_event = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"lookup"
+			"game_object_id"
+		]
+	}
+	rpc_hooked_sync = {
+		session_bound = true
+		args = [
+			"player_status"
+			"game_object_id"
+			"hooked_time"
+		]
+	}
+	rpc_request_profile = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"uint_16"
+			"profile_index"
+			"career_id"
+			"bool"
+		]
+	}
+	rpc_set_charge_blocking = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_drop_projectile = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_spawn_linked_pickup = {
+		session_bound = true
+		args = [
+			"lookup"
+			"position"
+			"rotation"
+			"lookup"
+			"game_object_id"
+			"unit_node"
+			"bool"
+			"uint_8"
+		]
+	}
+	rpc_flow_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+		]
+	}
+	rpc_anim_event = {
+		session_bound = true
+		args = [
+			"anim_event"
+			"game_object_id"
+		]
+	}
+	rpc_play_marker_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"marker_lookup"
+		]
+	}
+	rpc_matchmaking_request_profile_reply = {
+		session_bound = false
+		args = [
+			"number"
+			"bool"
+		]
+	}
+	rpc_event_manager_event = {
+		session_bound = false
+		args = [
+			"string"
+			"string"
+		]
+	}
+	rpc_remove_gromril_armour = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_delete_limited_owned_pickup_type = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"lookup"
+		]
+	}
+	rpc_ai_inventory_wield = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"item_set_id"
+		]
+	}
+	rpc_trigger_dialogue_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"dialogue_event_data"
+			"dialogue_event_data_type"
+		]
+	}
+	rpc_play_husk_unit_sound_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"unit_node"
+			"lookup"
+		]
+	}
+	rpc_set_teleport_target_type = {
+		session_bound = true
+		args = [
+			"small_lookup_from_zero"
+		]
+	}
+	rpc_loading_synced = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_assign_peer_to_profile = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"bool"
+		]
+	}
+	rpc_leap_finished = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_area_damage = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+		]
+	}
+	rpc_rejoin_parties = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_add_no_wield_required_equipment_buffs = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"num_buffs"
+			"buff_array"
+			"buff_variable_type_array"
+			"buff_variable_data_array"
+		]
+	}
+	rpc_start_network_timer = {
+		session_bound = true
+		args = [
+			"time"
+		]
+	}
+	rpc_sync_anim_state_9 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_thorn_bush_trigger_area_damage = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_network_clock_sync_request = {
+		session_bound = true
+		args = [
+			"clock_time"
+		]
+	}
+	rpc_anim_set_variable_by_distance = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_variable_index"
+			"position"
+			"int_1_4"
+			"bool"
+		]
+	}
+	rpc_summon_vortex = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+		]
+	}
+	rpc_server_cancel_emote = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_update_current_wind = {
+		session_bound = true
+		args = [
+			"lookup"
+		]
+	}
+	rpc_aggro_unit_changed = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_flow_state_story_stopped = {
+		session_bound = true
+		args = [
+			"flow_states"
+			"story_time"
+		]
+	}
+	rpc_switch_level_dedicated_server = {
+		session_bound = false
+		args = [
+			"switch_level_id"
+		]
+	}
+	rpc_set_equipped_frame = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+		]
+	}
+	rpc_add_volume_buff_multiplier = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"multiplier"
+		]
+	}
+	rpc_replenish_fatigue_other_players = {
+		session_bound = true
+		args = [
+			"lookup"
+		]
+	}
+	rpc_add_buff_synced_relay = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"server_controlled_buff_id"
+			"int_1_4"
+		]
+	}
+	rpc_set_player_state = {
+		session_bound = true
+		args = [
+			"small_lookup_from_zero"
+			"party_id"
+			"small_lookup_from_zero"
+		]
+	}
+	rpc_from_client_loading_breed_package_done = {
+		session_bound = false
+		args = [
+			"enemy_package_loader_connection_key"
+			"breed"
+		]
+	}
+	rpc_deus_chest_unlocked = {
+		session_bound = false
+		args = [
+			"uint_32"
+			"uint_8"
+			"uint_8"
+		]
+	}
+	rpc_remove_volume_buff = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+		]
+	}
+	rpc_link_pickup = {
+		session_bound = true
+		args = [
+			"lookup"
+			"position"
+			"rotation"
+			"game_object_id"
+			"unit_node"
+			"bool"
+		]
+	}
+	rpc_request_mission_with_unit = {
+		session_bound = true
+		args = [
+			"lookup"
+			"level_unit_index"
+		]
+	}
+	rpc_network_current_server_time_response = {
+		session_bound = true
+		args = [
+			"clock_time"
+			"clock_time"
+		]
+	}
+	rpc_create_damage_wave = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"position"
+			"small_lookup"
+		]
+	}
+	rpc_replenish_fatigue = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+		]
+	}
+	rpc_update_mission = {
+		session_bound = true
+		args = [
+			"lookup"
+			"mission_data"
+		]
+	}
+	rpc_from_server_load_breed_package = {
+		session_bound = false
+		args = [
+			"enemy_package_loader_connection_key"
+			"breed"
+		]
+	}
+	rpc_play_particle_effect_no_rotation = {
+		session_bound = true
+		args = [
+			"vfx"
+			"game_object_id"
+			"unit_node"
+			"position"
+			"bool"
+		]
+	}
+	rpc_server_request_start_vote_peer_id = {
+		session_bound = true
+		args = [
+			"lookup"
+			"vote_data_peer_id"
+		]
+	}
+	rpc_deus_shop_power_up_bought = {
+		session_bound = false
+		args = [
+			"string"
+			"string"
+			"uint_32"
+			"uint_16"
+		]
+	}
+	rpc_show_inventory = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_request_painting = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_set_attribute_bool = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"DB0F665E"
+			"EC9DA88C"
+			"bool"
+		]
+	}
+	rpc_enable_animation_movement_system = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_spawn_pickup_projectile = {
+		session_bound = true
+		args = [
+			"lookup"
+			"lookup"
+			"int_position"
+			"int_rotation"
+			"int_velocity"
+			"int_velocity"
+			"lookup"
+			"lookup"
+			"uint_8"
+		]
+	}
+	rpc_waystone_active = {
+		session_bound = true
+		args = [
+			"number"
+			"bool"
+			"uint_8"
+		]
+	}
+	rpc_server_add_ingame_challenge = {
+		session_bound = true
+		args = [
+			"challenge_unique_id"
+			"lookup"
+			"bool"
+			"small_lookup"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+			"uint_16"
+		]
+	}
+	rpc_client_spawn_light_weight_projectile = {
+		session_bound = true
+		args = [
+			"damage_source_id"
+			"game_object_id"
+			"position"
+			"direction"
+			"light_weight_projectile_speed"
+			"uint_8"
+			"uint_8"
+			"light_weight_projectile_lookup"
+			"bool"
+			"peer_id"
+			"uint_16"
+		]
+	}
+	rpc_set_beastmen_standard_unit_affected = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_allowed_to_enter_ghost_mode = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"small_lookup_from_zero"
+		]
+	}
+	rpc_flow_state_story_played = {
+		session_bound = true
+		args = [
+			"flow_states"
+			"story_time"
+		]
+	}
+	rpc_set_override_blocking = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_sync_adventure_data_to_peer = {
+		session_bound = false
+		args = [
+			"lookup"
+			"weave_objective_index"
+		]
+	}
+	rpc_client_vote_kick_enabled = {
+		session_bound = true
+		args = [
+			"bool"
+		]
+	}
+	rpc_entered_ghost_mode = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_sync_anim_state_7 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_bot_lookup_order = {
+		session_bound = true
+		args = [
+			"small_lookup"
+			"game_object_id"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+		]
+	}
+	rpc_attack_hit = {
+		session_bound = true
+		args = [
+			"damage_source_id"
+			"game_object_id"
+			"game_object_id"
+			"hit_zone"
+			"position"
+			"direction"
+			"damage_profile"
+			"power_level"
+			"uint_8"
+			"boost_curve_multiplier"
+			"bool"
+			"bool"
+			"bool"
+			"lookup"
+			"bool"
+			"bool"
+			"backstab_multiplier"
+			"bool"
+			"bool"
+			"uint_8"
+		]
+	}
+	rpc_spawn_explosive_pickup_projectile_limited = {
+		session_bound = true
+		args = [
+			"lookup"
+			"lookup"
+			"int_position"
+			"int_rotation"
+			"int_velocity"
+			"int_velocity"
+			"lookup"
+			"level_unit_index"
+			"limited_item_index"
+			"damage"
+			"clock_time"
+			"fuse_time"
+			"game_object_id"
+			"weapon_id"
+			"lookup"
+		]
+	}
+	rpc_sync_anim_state_2 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_request_heal_wounds = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_disable_locomotion = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"int_1_4"
+		]
+	}
+	rpc_heal = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"game_object_id"
+			"bool"
+			"damage"
+			"medium_lookup"
+		]
+	}
+	rpc_inn_room_destroyed = {
+		session_bound = false
+		args = [
+			"peer_id"
+		]
+	}
+	rpc_clients_continuous_shoot_stop = {
+		session_bound = false
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_delete_limited_owned_pickups = {
+		session_bound = true
+		args = [
+			"peer_id"
+		]
+	}
+	rpc_spawn_globadier_globe_fixed_impact = {
+		session_bound = false
+		args = [
+			"position"
+			"direction"
+			"projectile_angle"
+			"speed_int"
+			"radius"
+			"radius"
+			"life_time"
+			"game_object_id"
+			"damage_source_id"
+			"damage"
+			"damage"
+			"damage_interval"
+			"bool"
+			"bool"
+			"game_object_id"
+			"position"
+			"direction"
+			"direction"
+			"actor_index"
+			"C477B705"
+		]
+	}
+	rpc_set_difficulty = {
+		session_bound = false
+		args = [
+			"difficulty_lookup"
+			"difficulty_tweak"
+			"bool"
+		]
+	}
+	rpc_request_knock_down = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_shared_state_client_left = {
+		session_bound = false
+		args = [
+			"hash"
+			"peer_id"
+		]
+	}
+	rpc_end_beam = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_sync_anim_state_3 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_request_mission = {
+		session_bound = true
+		args = [
+			"lookup"
+		]
+	}
+	rpc_sync_anim_state_11 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_pacing_changed = {
+		session_bound = true
+		args = [
+			"lookup"
+		]
+	}
+	rpc_damage_taken_overcharge = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"damage"
+		]
+	}
+	rpc_request_character = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_deactivate_mutator_client = {
+		session_bound = true
+		args = [
+			"mutator_lookup"
+		]
+	}
+	rpc_sync_players_session_score = {
+		session_bound = false
+		args = [
+			"profile_array"
+			"player_id_array"
+			"B29B54BE"
+		]
+	}
+	rpc_set_animation_driven = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"rotation"
+			"bool"
+		]
+	}
+	rpc_request_heal = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"damage"
+			"medium_lookup"
+		]
+	}
+	rpc_trigger_round_over = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_vote = {
+		session_bound = true
+		args = [
+			"number"
+		]
+	}
+	rpc_peer_assigned_to_party = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"local_player_id"
+			"party_id"
+			"party_slot_id"
+			"bool"
+		]
+	}
+	rpc_ai_drop_single_item = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"small_lookup"
+		]
+	}
+	rpc_deus_shop_heal_player = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_spawn_pickup_projectile_limited = {
+		session_bound = true
+		args = [
+			"lookup"
+			"lookup"
+			"int_position"
+			"int_rotation"
+			"int_velocity"
+			"int_velocity"
+			"lookup"
+			"level_unit_index"
+			"limited_item_index"
+			"lookup"
+		]
+	}
+	rpc_carousel_set_private_lobby = {
+		session_bound = false
+		args = [
+			"bool"
+		]
+	}
+	rpc_play_first_person_sound = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"position"
+		]
+	}
+	rpc_deus_add_power_ups = {
+		session_bound = false
+		args = [
+			"string"
+			"string"
+		]
+	}
+	rpc_end_mission = {
+		session_bound = true
+		args = [
+			"lookup"
+			"bool"
+		]
+	}
+	rpc_backend_session_done = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_dedicated_or_player_hosted_search = {
+		session_bound = false
+		args = [
+			"bool"
+			"bool"
+			"bool"
+		]
+	}
+	rpc_level_load_started = {
+		session_bound = false
+		args = [
+			"int_32"
+		]
+	}
+	rpc_change_game_mode_state = {
+		session_bound = true
+		args = [
+			"game_mode_state_id"
+		]
+	}
+	rpc_shadow_flare_done = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_taunt = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"taunt_radius"
+			"taunt_duration"
+			"bool"
+			"bool"
+		]
+	}
+	rpc_set_current_mechanism_state = {
+		session_bound = false
+		args = [
+			"mechanism_state_id"
+		]
+	}
+	rpc_register_kill = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_client_character_picking_ready = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_client_respawn_player = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_weapon_blood = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"damage_source_id"
+		]
+	}
+	rpc_server_audio_event = {
+		session_bound = true
+		args = [
+			"sound_event"
+		]
+	}
+	rpc_breed_freezer_sync_breeds = {
+		session_bound = true
+		args = [
+			"breed_freezer_queue_data"
+			"packed_breed_go_ids"
+		]
+	}
+	rpc_clear_peer_state = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_set_observed_player_id = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+		]
+	}
+	rpc_remove_buff_synced = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"server_controlled_buff_id"
+		]
+	}
+	rpc_give_ammo_fraction_to_owner = {
+		session_bound = false
+		args = [
+			"game_object_id"
+			"t_value"
+			"bool"
+		]
+	}
+	rpc_set_script_driven = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_interrupt_dialogue_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_network_time_sync_response = {
+		session_bound = true
+		args = [
+			"clock_time"
+			"clock_time"
+		]
+	}
+	rpc_deus_chest_looted = {
+		session_bound = false
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_notify_lobby_joined = {
+		session_bound = false
+		args = [
+			"slot_id"
+			"career_id"
+			"party_id"
+			"hash"
+			"string"
+		]
+	}
+	rpc_destroy_slot = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+		]
+	}
+	rpc_chat_message = {
+		session_bound = false
+		args = [
+			"chat_channel_id"
+			"peer_id"
+			"local_player_id"
+			"string"
+			"string_array"
+			"bool"
+			"bool"
+			"bool"
+			"bool"
+			"bool"
+			"message_types"
+		]
+	}
+	rpc_shared_state_request_sync = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_add_group_buff = {
+		session_bound = true
+		args = [
+			"lookup"
+			"buff_instances"
+		]
+	}
+	rpc_game_server_reserve_slots = {
+		session_bound = false
+		args = [
+			"peer_id_table"
+		]
+	}
+	rpc_to_client_respawn_player = {
+		session_bound = true
+		args = [
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"game_object_id"
+			"party_slot_id"
+			"weapon_id"
+			"weapon_id"
+			"weapon_id"
+			"B50A145B"
+		]
+	}
+	rpc_server_remove_ingame_challenge = {
+		session_bound = true
+		args = [
+			"challenge_unique_id"
+		]
+	}
+	rpc_enable_area_damage = {
+		session_bound = true
+		args = [
+			"level_unit_index"
+			"bool"
+		]
+	}
+	rpc_add_external_velocity_with_upper_limit = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"velocity"
+			"speed"
+		]
+	}
+	rpc_server_hot_join_sync_ingame_challenge = {
+		session_bound = true
+		args = [
+			"challenge_unique_id"
+			"lookup"
+			"bool"
+			"small_lookup"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+			"uint_16"
+			"uint_16"
+			"small_lookup"
+			"small_lookup"
+		]
+	}
+	rpc_game_server_set_group_leader = {
+		session_bound = false
+		args = [
+			"peer_id"
+		]
+	}
+	rpc_leap_start = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_set_hit_reaction_template = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"string"
+		]
+	}
+	rpc_update_voters_list = {
+		session_bound = true
+		args = [
+			"peer_id_table"
+		]
+	}
+	rpc_interaction_abort = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_player_in_zone_end_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_sync_anim_state_6 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_set_migration_host = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"bool"
+		]
+	}
+	rpc_start_geiser = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"vfx"
+			"position_single"
+			"position_single"
+			"position_single"
+			"position_single"
+		]
+	}
+	rpc_gm_event_end_conditions_met = {
+		session_bound = true
+		args = [
+			"lookup"
+			"bool"
+			"profile_array"
+			"player_id_array"
+			"percentage_array"
+		]
+	}
+	rpc_enemy_is_alerted = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_play_dialogue_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"dialogue_lookup"
+			"dialogue_index"
+		]
+	}
+	rpc_play_husk_sound_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+		]
+	}
+	rpc_objective_entered_socket_zone = {
+		session_bound = true
+		args = [
+			"level_unit_index"
+			"objective_socket_id"
+			"bool"
+		]
+	}
+	rpc_set_allowed_nav_layer = {
+		session_bound = true
+		args = [
+			"nav_tag_volume_layer_id"
+			"bool"
+		]
+	}
+	rpc_projectile_stopped = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_tutorial_message = {
+		session_bound = true
+		args = [
+			"lookup"
+			"lookup"
+		]
+	}
+	rpc_hot_join_sync_linker_transporting = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+		]
+	}
+	rpc_party_slots_status = {
+		session_bound = false
+		args = [
+			"string"
+			"party_id"
+			"members_string_array"
+			"members_status_array"
+		]
+	}
+	rpc_set_current_location = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"104249E3"
+		]
+	}
+	rpc_add_buff_synced_relay_params = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"server_controlled_buff_id"
+			"int_1_4"
+			"C17681CE"
+			"DB10249A"
+		]
+	}
+	rpc_set_game_mode_event_data = {
+		session_bound = true
+		args = [
+			"mutator_array"
+		]
+	}
+	rpc_interaction_approved = {
+		session_bound = true
+		args = [
+			"interaction_lookup"
+			"game_object_id"
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_anim_event_variable_float = {
+		session_bound = true
+		args = [
+			"anim_event"
+			"game_object_id"
+			"anim_event"
+			"animation_variable_float"
+		]
+	}
+	rpc_set_wounded = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"small_lookup"
+		]
+	}
+	rpc_left_ghost_mode = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_gm_event_initial_peers_spawned = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_weave_objective_completed = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_play_fx = {
+		session_bound = true
+		args = [
+			"vfx_array"
+			"sound_event_array"
+			"position_array"
+		]
+	}
+	rpc_server_audio_unit_dialogue_event = {
+		session_bound = true
+		args = [
+			"sound_event"
+			"game_object_id"
+		]
+	}
+	rpc_sync_statistics_number = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"statistics_path"
+			"uint_16"
+			"uint_16"
+		]
+	}
+	rpc_enemy_has_target = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_take_falling_damage = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"fall_distance"
+		]
+	}
+	rpc_network_current_server_time_request = {
+		session_bound = true
+		args = [
+			"clock_time"
+		]
+	}
+	rpc_add_buff_synced_params = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"server_controlled_buff_id"
+			"int_1_4"
+			"C17681CE"
+			"DB10249A"
+		]
+	}
+	rpc_requirement_failed = {
+		session_bound = true
+		args = [
+			"lookup"
+			"string"
+		]
+	}
+	rpc_ladder_shake = {
+		session_bound = true
+		args = [
+			"level_unit_index"
+		]
+	}
+	rpc_sync_tentacle_path = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"tentacle_point_array"
+		]
+	}
+	rpc_on_timed_spawn = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_set_observer_camera = {
+		session_bound = true
+		args = [
+			"local_player_id"
+		]
+	}
+	rpc_set_forced_velocity = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"velocity"
+		]
+	}
+	rpc_sync_interaction_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"interaction_state_lookup"
+			"interaction_lookup"
+			"game_object_id"
+			"time"
+			"time"
+			"bool"
+		]
+	}
+	rpc_deus_shop_blessing_selected = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_to_client_spawn_player = {
+		session_bound = true
+		args = [
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"position"
+			"rotation"
+			"bool"
+			"percent"
+			"percent"
+			"percent"
+			"weapon_id"
+			"weapon_id"
+			"weapon_id"
+			"B50A145B"
+			"buff_array"
+		]
+	}
+	rpc_play_2d_audio_unit_event_for_peer = {
+		session_bound = true
+		args = [
+			"sound_event"
+		]
+	}
+	rpc_set_matchmaking = {
+		session_bound = false
+		args = [
+			"bool"
+			"bool"
+			"lookup"
+			"lookup"
+			"bool"
+			"lookup"
+		]
+	}
+	rpc_respawn_confirmed = {
+		session_bound = true
+		args = [
+			"local_player_id"
+		]
+	}
+	rpc_thorn_bush_trigger_despawn = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_damage_wave_set_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"int_1_4"
+		]
+	}
+	rpc_shared_state_full_sync_complete = {
+		session_bound = false
+		args = [
+			"hash"
+		]
+	}
+	rpc_ai_show_single_item = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"bool"
+		]
+	}
+	rpc_shared_state_start_atomic_set_server = {
+		session_bound = false
+		args = [
+			"hash"
+		]
+	}
+	rpc_link_unit = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"unit_node"
+			"game_object_id"
+			"unit_node"
+		]
+	}
+	rpc_breed_unfreeze_breed = {
+		session_bound = true
+		args = [
+			"breed"
+			"position"
+			"rotation"
+			"side_id"
+			"game_object_id"
+		]
+	}
+	rpc_add_buff = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"game_object_id"
+			"server_controlled_buff_id"
+			"bool"
+		]
+	}
+	rpc_create_bot_nav_transition = {
+		session_bound = true
+		args = [
+			"position"
+			"position"
+			"position"
+			"bool"
+		]
+	}
+	rpc_add_liquid_damage_blob = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"uint_19"
+			"position"
+			"bool"
+		]
+	}
+	rpc_create_thornsister_push_wave = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"position"
+			"small_lookup"
+			"power_level"
+			"position_array"
+			"small_lookup"
+		]
+	}
+	rpc_alert_enemy = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+		]
+	}
+	rpc_delete_pickup = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_client_create_aoe = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"damage_source_id"
+			"lookup"
+			"radius"
+		]
+	}
+	rpc_matchmaking_broadcast_game_server_ip_address = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_set_ward_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_trigger_local_afk_system_message = {
+		session_bound = true
+		args = [
+			"string"
+			"peer_id"
+		]
+	}
+	rpc_sync_anim_state_5 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_request_mission_update = {
+		session_bound = true
+		args = [
+			"lookup"
+			"bool"
+		]
+	}
+	rpc_inn_room_created = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"small_lookup"
+			"profile_index"
+		]
+	}
+	rpc_reduce_activated_ability_cooldown_percent = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position_single"
+			"uint_8"
+			"bool"
+		]
+	}
+	rpc_set_blocking = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_allowed_to_leave_ghost_mode = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"small_lookup_from_zero"
+		]
+	}
+	rpc_update_liquid_damage_blob = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"uint_19"
+			"int_1_4"
+		]
+	}
+	rpc_notify_in_post_game = {
+		session_bound = false
+		args = [
+			"bool"
+		]
+	}
+	rpc_add_damage_network = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"game_object_id"
+			"bool"
+			"game_object_id"
+			"damage"
+			"hit_zone"
+			"damage_type"
+			"position"
+			"direction"
+			"damage_source_id"
+			"hit_react_type"
+			"bool"
+			"bool"
+			"bool"
+			"uint_8"
+			"backstab_multiplier"
+		]
+	}
+	rpc_set_player_name = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_wield_equipment = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+		]
+	}
+	rpc_remove_attachment = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+		]
+	}
+	rpc_client_check_dlc = {
+		session_bound = true
+		args = [
+			"unlocked_dlcs_array"
+		]
+	}
+	rpc_set_party_state = {
+		session_bound = true
+		args = [
+			"party_id"
+			"small_lookup_from_zero"
+		]
+	}
+	rpc_start_game_countdown = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_reserved_slots_count = {
+		session_bound = false
+		args = [
+			"small_lookup_from_zero"
+			"small_lookup_from_zero"
+		]
+	}
+	rpc_player_in_zone_set_active = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_set_corruptor_beam_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"string"
+			"game_object_id"
+		]
+	}
+	rpc_request_insta_kill = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"damage_type"
+		]
+	}
+	rpc_matchmaking_request_join_lobby_reply = {
+		session_bound = false
+		args = [
+			"lookup"
+			"medium_lookup"
+		]
+	}
+	rpc_game_started = {
+		session_bound = true
+		args = [
+			"string"
+		]
+	}
+	rpc_interest_point_chatter_update = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"t_value"
+		]
+	}
+	rpc_server_request_start_vote_deed = {
+		session_bound = true
+		args = [
+			"lookup"
+			"vote_data_deed"
+		]
+	}
+	rpc_shared_state_set_string = {
+		session_bound = false
+		args = [
+			"hash"
+			"peer_id"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"string"
+			"bool"
+		]
+	}
+	rpc_matchmaking_request_selected_level = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_deus_map_final_node_selected = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_delete_limited_owned_pickup_unit = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"game_object_id"
+		]
+	}
+	rpc_teleport_unit_to = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"rotation"
+		]
+	}
+	rpc_ability_activated = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"uint_8"
+		]
+	}
+	rpc_sync_party_state = {
+		session_bound = true
+		args = [
+			"small_lookup_from_zero"
+			"small_lookup_from_zero"
+			"small_lookup_from_zero"
+		]
+	}
+	rpc_status_change_bool = {
+		session_bound = true
+		args = [
+			"player_status"
+			"bool"
+			"game_object_id"
+			"game_object_id"
+		]
+	}
+	rpc_abort_damage_blob = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_set_safe_spot = {
+		session_bound = true
+		args = [
+			"position"
+		]
+	}
+	rpc_breed_freezer_hot_join = {
+		session_bound = true
+		args = [
+			"bool"
+		]
+	}
+	rpc_level_loaded = {
+		session_bound = false
+		args = [
+			"lookup"
+		]
+	}
+	rpc_set_animation_driven_script_movement = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"rotation"
+			"bool"
+		]
+	}
+	rpc_server_audio_unit_param_int_event = {
+		session_bound = true
+		args = [
+			"sound_event"
+			"game_object_id"
+			"unit_node"
+			"int_1_4"
+			"int_1_4"
+		]
+	}
+	rpc_add_damage_blob_fx = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"small_percentage"
+		]
+	}
+	rpc_surface_mtr_fx = {
+		session_bound = true
+		args = [
+			"surface_material_effect"
+			"game_object_id"
+			"position"
+			"rotation"
+			"direction"
+			"rot_int"
+		]
+	}
+	rpc_update_twitch_vote = {
+		session_bound = true
+		args = [
+			"small_lookup"
+			"uint_16"
+			"string"
+			"uint_8"
+			"lookup"
+		]
+	}
+	rpc_server_request_start_vote_lookup = {
+		session_bound = true
+		args = [
+			"lookup"
+			"vote_data_lookup"
+		]
+	}
+	rpc_horde_surge_freeze = {
+		session_bound = true
+		args = [
+			"uint_8"
+		]
+	}
+	rpc_sync_current_max_health = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"health"
+		]
+	}
+	rpc_request_leave_ghost_mode = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+		]
+	}
+	rpc_server_audio_unit_param_string_event = {
+		session_bound = true
+		args = [
+			"sound_event"
+			"game_object_id"
+			"unit_node"
+			"int_1_4"
+			"int_1_4"
+		]
+	}
+	rpc_set_action_data = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
+			"lookup"
+		]
+	}
+	rpc_deus_set_initial_soft_currency = {
+		session_bound = false
+		args = [
+			"uint_32"
+		]
+	}
+	rpc_start_flamethrower = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"vfx"
+		]
+	}
+	rpc_bar_cutoff_reached = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_notify_connected = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_generic_interaction_request = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"bool"
+			"interaction_lookup"
+		]
+	}
+	rpc_follow_result = {
+		session_bound = false
+		args = [
+			"follow_result"
+		]
+	}
+	rpc_deus_save_loadout = {
+		session_bound = false
+		args = [
+			"string"
+			"string"
+		]
+	}
+	rpc_activate_mutator_client = {
+		session_bound = true
+		args = [
+			"mutator_lookup"
+			"bool"
+		]
+	}
+	rpc_set_quick_game = {
+		session_bound = true
+		args = [
+			"bool"
+		]
+	}
+	rpc_add_to_peer_ignore_list = {
+		session_bound = true
+		args = [
+			"bool"
+		]
+	}
+	rpc_client_update_lobby_data = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_shared_state_set_server_string = {
+		session_bound = false
+		args = [
+			"hash"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"string"
+			"bool"
+		]
+	}
+	rpc_stop_weapon_fx = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"weapon_id"
+			"small_lookup"
+		]
+	}
+	rpc_reset_party_data = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_play_particle_effect = {
+		session_bound = true
+		args = [
+			"vfx"
+			"game_object_id"
+			"unit_node"
+			"position"
+			"rotation"
+			"bool"
+		]
+	}
+	rpc_server_reduce_activated_ability_cooldown = {
+		session_bound = true
+		args = [
+			"C6516159"
+			"position_single"
+			"uint_8"
+			"bool"
+		]
+	}
+	rpc_spawn_globadier_globe = {
+		session_bound = false
+		args = [
+			"position"
+			"direction"
+			"projectile_angle"
+			"speed_int"
+			"radius"
+			"radius"
+			"life_time"
+			"game_object_id"
+			"damage_source_id"
+			"damage"
+			"damage"
+			"damage_interval"
+			"bool"
+			"bool"
+		]
+	}
+	rpc_client_add_vote = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"number"
+		]
+	}
+	rpc_teleport_unit_with_yaw_rotation = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position"
+			"enemy_yaw_rotation"
+		]
+	}
+	rpc_set_migration_host_xbox = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"bool"
+			"string"
+			"string"
+		]
+	}
+	rpc_trigger_level_event = {
+		session_bound = true
+		args = [
+			"string"
+		]
+	}
+	rpc_matchmaking_request_profiles_data = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_hot_join_nail_to_wall_fix = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_matchmaking_handshake_reply = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_server_check_dlc_reply = {
+		session_bound = true
+		args = [
+			"bool"
+		]
+	}
+	rpc_pong = {
+		session_bound = false
+		args = [
+			"string"
+			"string"
+		]
+	}
+	rpc_remove_assist_shield = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_matchmaking_request_join_lobby = {
+		session_bound = false
+		args = [
+			"lobby_id"
+			"bool"
+			"unlocked_dlcs_array"
+		]
+	}
+	rpc_surface_mtr_fx_lvl_unit = {
+		session_bound = true
+		args = [
+			"surface_material_effect"
+			"level_unit_index"
+			"position"
+			"rotation"
+			"direction"
+			"rot_int"
+		]
+	}
+	rpc_spawn_explosive_pickup_projectile = {
+		session_bound = true
+		args = [
+			"lookup"
+			"lookup"
+			"int_position"
+			"int_rotation"
+			"int_velocity"
+			"int_velocity"
+			"lookup"
+			"damage"
+			"clock_time"
+			"fuse_time"
+			"game_object_id"
+			"weapon_id"
+			"lookup"
+		]
+	}
+	rpc_sync_anim_state_12 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_add_equipment_buffs = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"num_buffs"
+			"buff_array"
+			"buff_variable_type_array"
+			"buff_variable_data_array"
+		]
+	}
+	rpc_hot_join_sync_health_status = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"wounds"
+			"bool"
+			"game_object_id"
+		]
+	}
+	rpc_breed_freeze_units = {
+		session_bound = true
+		args = [
+			"packed_breed_go_ids"
+		]
+	}
+	rpc_add_external_velocity = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"velocity"
+		]
+	}
+	rpc_previous_round_num_objectives_completed = {
+		session_bound = true
+		args = [
+			"uint_8"
+			"lookup"
+			"int_1_4"
+		]
+	}
+	rpc_ai_weapon_shoot = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_kick_peer = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_signal_end_of_level_done = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"bool"
+		]
+	}
+	rpc_deus_setup_run = {
+		session_bound = false
+		args = [
+			"6B47E54D"
+			"32F03ED4"
+			"difficulty_lookup"
+			"lookup"
+			"lookup"
+			"bool"
+		]
+	}
+	rpc_give_equipment = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"slot_id"
+			"weapon_id"
+			"position"
+		]
+	}
+	rpc_request_revive = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+		]
+	}
+	rpc_prioritize_objective_tooltip = {
+		session_bound = true
+		args = [
+			"int_1_4"
+		]
+	}
+	rpc_skinned_surface_mtr_fx = {
+		session_bound = true
+		args = [
+			"surface_material_effect"
+			"position"
+			"rotation"
+			"direction"
+		]
+	}
+	rpc_matchmaking_request_selected_difficulty = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_shared_state_end_atomic_set_server = {
+		session_bound = false
+		args = [
+			"hash"
+		]
+	}
+	rpc_is_ingame = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_mod_user_data = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"peer_id"
+			"uint_16"
+			"string_array"
+		]
+	}
+	rpc_request_spawn_network_unit = {
+		session_bound = true
+		args = [
+			"request_spawn_template_id"
+			"position"
+			"rotation"
+			"game_object_id"
+			"uint_8"
+			"uint_8"
+		]
+	}
+	rpc_add_equipment_limited_item = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"weapon_id"
+			"level_unit_index"
+			"limited_item_index"
+		]
+	}
+	rpc_add_weave_buffs = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"num_weave_buffs"
+			"weave_buff_lookup_array"
+			"weave_buff_lookup_array"
+			"weave_buff_value_array"
+		]
+	}
+	rpc_force_use_pickup = {
+		session_bound = true
+		args = [
+			"lookup"
+		]
+	}
+	rpc_forced_kill = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"damage_type"
+		]
+	}
+	rpc_status_change_int = {
+		session_bound = true
+		args = [
+			"player_status"
+			"small_lookup"
+			"game_object_id"
+		]
+	}
+	rpc_matchmaking_request_profile = {
+		session_bound = false
+		args = [
+			"number"
+		]
+	}
+	rpc_client_audio_set_global_parameter = {
+		session_bound = true
+		args = [
+			"lookup"
+			"uint_16"
+		]
+	}
+	rpc_bot_create_threat_oobb = {
+		session_bound = true
+		args = [
+			"position"
+			"enemy_rotation"
+			"vector_scale"
+			"taunt_duration"
+		]
+	}
+	rpc_change_tentacle_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"game_object_id"
+			"tentacle_state"
+			"tentacle_reach_distance"
+			"clock_time"
+		]
+	}
+	rpc_sync_player_count = {
+		session_bound = true
+		args = [
+			"weave_num_players"
+		]
+	}
+	rpc_client_leaderboard_register_score = {
+		session_bound = true
+		args = [
+			"lookup"
+			"lookup"
+			"int_32"
+			"uint_32"
+			"profile_index"
+			"uint_32"
+			"profile_index"
+			"uint_32"
+			"profile_index"
+			"uint_32"
+			"profile_index"
+		]
+	}
+	rpc_proc_event = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"lookup"
+		]
+	}
+	rpc_suicide = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_set_animation_translation_scale = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"animation_translation_scale"
+		]
+	}
+	rpc_check_trigger_backstab_sfx = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_interaction_denied = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_set_stormfiend_beam = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"attack_arm"
+			"bool"
+		]
+	}
+	rpc_follow_to_lobby = {
+		session_bound = false
+		args = [
+			"lobby_type"
+			"lobby_to_join"
+		]
+	}
+	rpc_from_server_load_breeds_by_bitmask = {
+		session_bound = false
+		args = [
+			"enemy_package_loader_connection_key"
+			"enemy_package_loader_bitmask_array"
+		]
+	}
+	rpc_sync_loadout_slot = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"slot_id"
+			"lookup"
+			"lookup"
+			"power_level"
+			"30585515"
+			"9891894C"
+			"EF9DD2D8"
+		]
+	}
+	rpc_server_audio_unit_param_float_event = {
+		session_bound = true
+		args = [
+			"sound_event"
+			"game_object_id"
+			"unit_node"
+			"int_1_4"
+			"t_value"
+		]
+	}
+	rpc_increment_stat_group = {
+		session_bound = true
+		args = [
+			"lookup"
+			"lookup"
+		]
+	}
+	rpc_set_unsigned_number_session_stat = {
+		session_bound = true
+		args = [
+			"small_lookup"
+			"uint_8"
+		]
+	}
+	rpc_clients_continuous_shoot_start = {
+		session_bound = false
+		args = [
+			"game_object_id"
+			"bool"
+			"lookup"
+			"lookup"
+			"number"
+			"peer_id"
+		]
+	}
+	rpc_post_game_notified = {
+		session_bound = false
+		args = [
+			"bool"
+		]
+	}
+	rpc_set_active_weave = {
+		session_bound = true
+		args = [
+			"lookup"
+			"int_1_4"
+		]
+	}
+	rpc_play_particle_effect_with_variable = {
+		session_bound = true
+		args = [
+			"vfx"
+			"position"
+			"rotation"
+			"string"
+			"position"
+		]
+	}
+	rpc_sync_objectives = {
+		session_bound = true
+		args = [
+			"uint_8"
+			"uint_8"
+			"uint_8"
+			"uint_8"
+			"uint_8"
+		]
+	}
+	rpc_play_simple_particle_with_vector_variable = {
+		session_bound = true
+		args = [
+			"vfx"
+			"position"
+			"vfx"
+			"position"
+		]
+	}
+	rpc_coop_feedback = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"small_lookup"
+			"peer_id"
+			"local_player_id"
+		]
+	}
+	rpc_objective_unit_set_active = {
+		session_bound = true
+		args = [
+			"level_unit_index"
+			"bool"
+			"bool"
+		]
+	}
+	rpc_remove_peer_from_party = {
+		session_bound = false
+		args = [
+			"peer_id"
+			"local_player_id"
+			"party_id"
+		]
+	}
+	rpc_spawn_pickup_with_physics = {
+		session_bound = true
+		args = [
+			"lookup"
+			"position"
+			"rotation"
+			"lookup"
+		]
+	}
+	rpc_ai_weapon_shoot_start = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"time"
+		]
+	}
+	rpc_sync_anim_state_8 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_add_inventory_slot_item = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"weapon_id"
+			"lookup"
+		]
+	}
+	rpc_reduce_activated_ability_cooldown = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"position_single"
+			"uint_8"
+			"bool"
+		]
+	}
+	rpc_end_flamethrower = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_request_convert_temp = {
+		session_bound = false
+		args = [
+			"game_object_id"
+			"damage"
+		]
+	}
+	rpc_flow_state_bool_changed = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"flow_states"
+			"bool"
+			"bool"
+			"bool"
+		]
+	}
+	rpc_remove_ping = {
+		session_bound = true
+		args = [
+			"game_object_id"
+		]
+	}
+	rpc_add_attachment_buffs = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"slot_id"
+			"num_buffs"
+			"buff_array"
+			"buff_variable_type_array"
+			"buff_variable_data_array"
+		]
+	}
+	rpc_weave_final_objective_completed = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_set_catapulted = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"velocity"
+		]
+	}
+	rpc_assist = {
+		session_bound = true
+		args = [
+			"peer_id"
+			"local_player_id"
+			"peer_id"
+			"local_player_id"
+			"small_lookup"
+			"game_object_id"
+		]
+	}
+	rpc_start_weapon_fx = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"weapon_id"
+			"small_lookup"
+		]
+	}
+	rpc_shared_state_set_server_bool = {
+		session_bound = false
+		args = [
+			"hash"
+			"lookup"
+			"peer_id"
+			"local_player_id"
+			"profile_index"
+			"career_id"
+			"bool"
+		]
+	}
+	rpc_client_start_vote_peer_id = {
+		session_bound = true
+		args = [
+			"lookup"
+			"vote_data_peer_id"
+			"peer_id_table"
+		]
+	}
+	rpc_set_client_game_privacy = {
+		session_bound = true
+		args = [
+			"bool"
+		]
+	}
+	rpc_is_ready_for_transition = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_matchmaking_status_message = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+	rpc_modify_stat = {
+		session_bound = true
+		args = [
+			"lookup"
+			"9BF1C7B0"
+		]
+	}
+	rpc_from_server_unload_breed_package = {
+		session_bound = false
+		args = [
+			"enemy_package_loader_connection_key"
+			"breed"
+		]
+	}
+	rpc_force_start_dedicated_server = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_add_buff_synced_response = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"server_controlled_buff_id"
+			"server_controlled_buff_id"
+		]
+	}
+	rpc_enable_linked_movement = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"level_unit_index"
+			"unit_node"
+			"position"
+		]
+	}
+	rpc_show_badge = {
+		session_bound = true
+		args = [
+			"lookup"
+		]
+	}
+	rpc_sync_interactable_used_state = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"bool"
+		]
+	}
+	rpc_activate_end_zone = {
+		session_bound = true
+		args = [
+			"number"
+			"bool"
+			"uint_8"
+			"string"
+		]
+	}
+	rpc_matchmaking_request_status_message = {
+		session_bound = false
+		args = [
+		]
+	}
+	rpc_voip_room_request = {
+		session_bound = false
+		args = [
+			"bool"
+		]
+	}
+	rpc_terror_event_trigger_flow = {
+		session_bound = true
+		args = [
+			"terror_flow_event"
+		]
+	}
+	rpc_set_local_player_stat = {
+		session_bound = true
+		args = [
+			"lookup"
+			"uint_16"
+		]
+	}
+	rpc_backend_session_join = {
+		session_bound = true
+		args = [
+			"backend_session_id"
+		]
+	}
+	rpc_add_damage = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"bool"
+			"game_object_id"
+			"bool"
+			"game_object_id"
+			"damage"
+			"hit_zone"
+			"damage_type"
+			"position"
+			"direction"
+			"damage_source_id"
+			"ragdoll_actor"
+			"hit_react_type"
+			"bool"
+			"bool"
+			"bool"
+			"bool"
+			"uint_8"
+			"buff_proc_attack_types"
+			"backstab_multiplier"
+		]
+	}
+	rpc_deed_consumed = {
+		session_bound = true
+		args = [
+		]
+	}
+	rpc_set_attribute_int = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"DB0F665E"
+			"EC9DA88C"
+			"uint_16"
+		]
+	}
+	rpc_sync_anim_state_4 = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+			"anim_state"
+		]
+	}
+	rpc_matchmaking_request_selected_difficulty_reply = {
+		session_bound = false
+		args = [
+			"difficulty_lookup"
+		]
+	}
+	rpc_anim_set_variable_float = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"anim_event"
+			"animation_variable_float"
+		]
+	}
+	rpc_voip_room_to_join = {
+		session_bound = false
+		args = [
+			"hash"
+		]
+	}
+	rpc_player_projectile_impact_level = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"level_unit_index"
+			"position"
+			"direction"
+			"direction"
+			"actor_index"
+		]
+	}
+	rpc_notify_selected_level = {
+		session_bound = false
+		args = [
+			"string"
+		]
+	}
+}
