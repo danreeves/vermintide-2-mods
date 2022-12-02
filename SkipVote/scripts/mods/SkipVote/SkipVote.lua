@@ -16,5 +16,5 @@ function mod.cancel_vote()
 end
 
 VoteTemplates.game_settings_vote.initial_vote_func = function()
-			return {}
+	return {}
 end
