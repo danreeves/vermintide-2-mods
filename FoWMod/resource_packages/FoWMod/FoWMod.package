@@ -1,0 +1,11 @@
+mod = [
+	"FoWMod"
+]
+
+package = [
+	"resource_packages/FoWMod/FoWMod"
+]
+
+lua = [
+	"scripts/mods/FoWMod/*"
+]
