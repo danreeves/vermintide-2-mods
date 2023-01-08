@@ -72,7 +72,7 @@ types = {
 	fatigue_points = { type = "int", min = 1, max = 32 }
 	C477B705 = { type = "float", min = 0, max = 7.75, bits = 8 }
 	1E7C6F15 = { type = "float", min = 0, max = 15.75, bits = 6 }
-	flow_states = { type = "int", min = 1, max = 256 }
+	flow_states = { type = "int", min = 1, max = 512 }
 	follow_result = { type = "bool" }
 	fuse_time = { type = "float", min = 0, max = 63.75, bits = 8 }
 	game_mode_state_id = { type = "int", min = 1, max = 8 }
@@ -594,6 +594,7 @@ objects = {
 			{ name = "network_angular_velocity", type = "int_velocity" }
 			{ name = "debug_pos", type = "position" }
 			{ name = "pickup_name", type = "lookup" }
+			{ name = "owner_peer_id", type = "peer_id" }
 			{ name = "has_physics", type = "bool" }
 			{ name = "spawn_type", type = "lookup" }
 			{ name = "spawner_unit", type = "level_unit_index" }
@@ -1789,6 +1790,17 @@ objects = {
 			{ name = "dot_effect_name", type = "lookup" }
 			{ name = "area_damage_template", type = "lookup" }
 			{ name = "damage_source_id", type = "damage_source_id" }
+		]
+	}
+	trail_urn_alignment = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "C5155022", type = "uint_8" }
 		]
 	}
 	ai_unit_ratling_gunner = {
@@ -4407,6 +4419,11 @@ messages = {
 		session_bound = false
 		args = [
 			"hash"
+		]
+	}
+	rpc_apply_environment_variation = {
+		session_bound = true
+		args = [
 		]
 	}
 	rpc_ai_show_single_item = {
