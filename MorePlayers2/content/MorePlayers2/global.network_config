@@ -30,8 +30,8 @@ types = {
 	buff_instances = { type = "int", min = 1, max = 16 }
 	buff_lookup = { type = "int", min = 1, max = 2048 }
 	buff_proc_attack_types = { type = "int", min = 1, max = 16 }
-	C17681CE = { type = "array", max_size = 11, element = "small_lookup" }
-	DB10249A = { type = "array", max_size = 11, element = "game_object_id" }
+	C17681CE = { type = "array", max_size = 16, element = "small_lookup" }
+	DB10249A = { type = "array", max_size = 16, element = "game_object_id" }
 	buff_value = { type = "float", min = 0, max = 1, tolerance = 0.05 }
 	buff_variable_data_array = { type = "array", max_size = 32, element = "buff_value" }
 	buff_variable_type_array = { type = "array", max_size = 32, element = "lookup" }
@@ -58,7 +58,7 @@ types = {
 	difficulty_lookup = { type = "int", min = 1, max = 8 }
 	difficulty_tweak = { type = "int", min = -10, max = 21 }
 	direction = { type = "vector3", min = -1.01, max = 1.01, bits = 20, tolerance = 0.001 }
-	566FD8B7 = { type = "int", min = 1, max = 64 }
+	566FD8B7 = { type = "int", min = 1, max = 128 }
 	dummy_uniform_scale = { type = "float", min = 0.25, max = 16.125 }
 	dummy_yaw_rotation = { type = "float", min = -3.15, max = 3.15, bits = 8 }
 	enemy_package_loader_bitmask_array = { type = "array", max_size = 4, element = "uint_32" }
@@ -88,13 +88,14 @@ types = {
 	hooked_time = { type = "float", min = 0, max = 7 }
 	husk_unit = { type = "int", min = 1, max = 512 }
 	int_1_4 = { type = "int", min = 1, max = 4 }
+	int_1_8 = { type = "int", min = 1, max = 8 }
 	int_32 = { type = "int", min = -2147483648, max = 2147483647 }
 	int_position = { type = "array", max_size = 3, element = "pos_int" }
 	int_rotation = { type = "array", max_size = 4, element = "rot_int" }
 	int_velocity = { type = "array", max_size = 3, element = "speed_int" }
 	interaction_lookup = { type = "int", min = 1, max = 64 }
 	interaction_state_lookup = { type = "int", min = 1, max = 8 }
-	inventory_lookup = { type = "int", min = 1, max = 64 }
+	inventory_lookup = { type = "int", min = 1, max = 128 }
 	A76883F7 = { type = "array", max_size = 80, element = "weapon_id" }
 	item_set_id = { type = "int", min = 0, max = 3 }
 	item_template_name = { type = "int", min = 1, max = 512 }
@@ -160,7 +161,7 @@ types = {
 	position_single = { type = "float", min = -655.35, max = 655.36, bits = 17, tolerance = 0.01 }
 	power_level = { type = "int", min = 0, max = 2047 }
 	proc_function_lookup = { type = "int", min = 1, max = 512 }
-	profile_array = { type = "array", max_size = 32, element = "peer_id" } // MODIFIED
+	profile_array = { type = "array", max_size = 32, element = "peer_id" }
 	profile_index = { type = "int", min = 0, max = 31 }
 	progress = { type = "float", min = 0, max = 1 }
 	projectile_angle = { type = "int", min = -512, max = 1535 }
@@ -229,7 +230,7 @@ types = {
 	uint_32 = { type = "int", min = 0, max = 4294967295 }
 	uint_8 = { type = "int", min = 0, max = 255 }
 	unit_node = { type = "int", min = 0, max = 511 }
-	unlocked_dlcs_array = { type = "array", max_size = 64, element = "566FD8B7" }
+	unlocked_dlcs_array = { type = "array", max_size = 128, element = "566FD8B7" }
 	unsigned_speed = { type = "float", min = 0, max = 250 }
 	vector_scale = { type = "vector3", min = 0, max = 100, bits = 10 }
 	velocity = { type = "vector3", min = -250, max = 250, bits = 19, tolerance = 0.05 }
@@ -1227,6 +1228,18 @@ objects = {
 			{ name = "side_id", type = "side_id" }
 		]
 	}
+	rotating_hazard = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "position", type = "position" }
+			{ name = "rotation", type = "rotation" }
+			{ name = "AC2B1E3C", type = "clock_time" }
+			{ name = "state", type = "int_1_4" }
+		]
+	}
 	ai_true_flight_killable_projectile_unit = {
 		priority = 1
 		update_rate = 1
@@ -1336,6 +1349,15 @@ objects = {
 			{ name = "spawn_type", type = "lookup" }
 			{ name = "position", type = "position" }
 			{ name = "rotation", type = "rotation" }
+		]
+	}
+	dialogue_node = {
+		priority = 1
+		update_rate = 1
+		fields = [
+			{ name = "go_type", type = "game_object_type" }
+			{ name = "husk_unit", type = "husk_unit" }
+			{ name = "890BEC49", type = "lookup" }
 		]
 	}
 	ai_unit_plague_wave_spawner = {
@@ -2075,6 +2097,7 @@ messages = {
 			"game_object_id"
 			"game_object_id"
 			"bool"
+			"bool"
 			"lookup"
 			"lookup"
 		]
@@ -2635,7 +2658,7 @@ messages = {
 			"game_object_id"
 			"lookup"
 			"server_controlled_buff_id"
-			"int_1_4"
+			"int_1_8"
 		]
 	}
 	rpc_sync_performance_titles = {
@@ -2869,6 +2892,17 @@ messages = {
 			"int_32"
 		]
 	}
+	rpc_sync_rotating_hazard = {
+		session_bound = false
+		args = [
+			"game_object_id"
+			"bool"
+			"clock_time"
+			"clock_time"
+			"int_1_4"
+			"level_seed"
+		]
+	}
 	rpc_server_request_emote = {
 		session_bound = true
 		args = [
@@ -2924,6 +2958,13 @@ messages = {
 			"local_player_id"
 			"bool"
 			"ready_request_id"
+		]
+	}
+	rpc_play_hud_sound_event = {
+		session_bound = true
+		args = [
+			"game_object_id"
+			"lookup"
 		]
 	}
 	rpc_status_change_int_and_unit = {
@@ -3226,7 +3267,7 @@ messages = {
 			"game_object_id"
 			"lookup"
 			"server_controlled_buff_id"
-			"int_1_4"
+			"int_1_8"
 		]
 	}
 	rpc_set_player_state = {
@@ -4194,7 +4235,7 @@ messages = {
 			"game_object_id"
 			"lookup"
 			"server_controlled_buff_id"
-			"int_1_4"
+			"int_1_8"
 			"C17681CE"
 			"DB10249A"
 		]
@@ -4298,7 +4339,7 @@ messages = {
 			"game_object_id"
 			"lookup"
 			"server_controlled_buff_id"
-			"int_1_4"
+			"int_1_8"
 			"C17681CE"
 			"DB10249A"
 		]
@@ -5110,6 +5151,15 @@ messages = {
 			"unlocked_dlcs_array"
 		]
 	}
+	rpc_client_disrupt_ritual_update = {
+		session_bound = true
+		args = [
+			"uint_32"
+			"uint_8"
+			"uint_8"
+			"string"
+		]
+	}
 	rpc_surface_mtr_fx_lvl_unit = {
 		session_bound = true
 		args = [
@@ -5356,6 +5406,12 @@ messages = {
 			"enemy_rotation"
 			"vector_scale"
 			"taunt_duration"
+		]
+	}
+	rpc_client_ward_hot_join_sync = {
+		session_bound = true
+		args = [
+			"bool"
 		]
 	}
 	rpc_change_tentacle_state = {
