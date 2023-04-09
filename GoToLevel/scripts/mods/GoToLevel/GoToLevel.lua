@@ -52,12 +52,13 @@ mod:command("load", "Load a level with fuzzy matching", function(input)
 	local names = {}
 	local local_to_key = {}
 	for key, data in pairs(LevelSettings) do
-		if data.mechanism == "adventure" and
-			not data.hub_level and
-			data.game_mode ~= "deus" and
-			not string.starts_with(key, "dlc_scorpion_") and
-			key ~= "prologue" then
-
+		if
+			data.mechanism == "adventure"
+			and not data.hub_level
+			and data.game_mode ~= "deus"
+			and not string.starts_with(key, "dlc_scorpion_")
+			and key ~= "prologue"
+		then
 			local name = Localize(data.display_name):lower()
 			if not string.starts_with(name, "<") then
 				table.insert(names, name)
@@ -106,13 +107,13 @@ end
 -- Fixes
 --
 mod:hook(VolumetricsFlowCallbacks, "register_fog_volume", function(func, params)
-	if (Unit.alive(params.unit)) then
+	if Unit.alive(params.unit) then
 		return func(params)
 	end
 end)
 
 mod:hook(VolumetricsFlowCallbacks, "unregister_fog_volume", function(func, params)
-	if (Unit.alive(params.unit)) then
+	if Unit.alive(params.unit) then
 		return func(params)
 	end
 end)

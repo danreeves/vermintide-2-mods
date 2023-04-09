@@ -1,5 +1,5 @@
 return {
-  mod_description = {
-    en = "enable-imgui description",
-  },
+	mod_description = {
+		en = "enable-imgui description",
+	},
 }

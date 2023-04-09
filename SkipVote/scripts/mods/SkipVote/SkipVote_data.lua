@@ -13,7 +13,7 @@ return {
 				keybind_type = "function_call",
 				keybind_trigger = "pressed",
 				function_name = "skip_vote",
-				default_value = {}
+				default_value = {},
 			},
 
 			{
@@ -23,7 +23,7 @@ return {
 				keybind_type = "function_call",
 				keybind_trigger = "pressed",
 				function_name = "cancel_vote",
-				default_value = {}
+				default_value = {},
 			},
 		},
 	},

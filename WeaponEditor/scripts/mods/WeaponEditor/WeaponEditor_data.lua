@@ -8,13 +8,13 @@ return {
 	options = {
 		widgets = {
 			{
-				setting_id      = "open_window",
-				type            = "keybind",
-				keybind_global  = true,
+				setting_id = "open_window",
+				type = "keybind",
+				keybind_global = true,
 				keybind_trigger = "pressed",
-				keybind_type    = "function_call",
-				function_name   = "toggle_ui",
-				default_value 	= {}
+				keybind_type = "function_call",
+				function_name = "toggle_ui",
+				default_value = {},
 			},
 		},
 	},

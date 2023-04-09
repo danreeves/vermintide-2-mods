@@ -1,5 +1,5 @@
 return {
-  mod_description = {
-    en = "Yoshi Mouse Cursor",
-  },
+	mod_description = {
+		en = "Yoshi Mouse Cursor",
+	},
 }

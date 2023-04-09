@@ -1,14 +1,14 @@
 return {
 	mod_description = {
-		en = "lumberfoots description"
+		en = "lumberfoots description",
 	},
 	example_checkbox_option_name = {
-		en = "Example Checkbox Option"
+		en = "Example Checkbox Option",
 	},
 	example_checkbox_option_tooltip = {
-		en = "Example Checkbox Option description."
+		en = "Example Checkbox Option description.",
 	},
---[[
+	--[[
 	some_other_text_id = {
 		en = "Translation",        -- English
 		fr = "Translation",        -- French

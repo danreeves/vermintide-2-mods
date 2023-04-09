@@ -1,5 +1,5 @@
 local ShadingEnvironment = stingray.ShadingEnvironment
-local BeastIf  = stingray.BeastIf
+local BeastIf = stingray.BeastIf
 local Quaternion = stingray.Quaternion
 
 function export_shading_environment(beast_context, shading_environment, skydome_unit, skylight_intensity)
@@ -12,7 +12,7 @@ function export_shading_environment(beast_context, shading_environment, skydome_
 end
 
 function get_light_falloff()
--- Light falloff is 1 / (1 + d^2)
+	-- Light falloff is 1 / (1 + d^2)
 	return 1, 0, 1
 end
 

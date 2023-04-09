@@ -11,7 +11,7 @@ VortexTemplates.spirit_storm.player_rotation_speed = 0.1
 VortexTemplates.spirit_storm.player_radius_change_speed = 1
 VortexTemplates.spirit_storm.player_ascend_speed = 1.5
 VortexTemplates.spirit_storm.player_in_vortex_max_duration = 8
-VortexTemplates.spirit_storm.player_eject_height = {100, 100}
+VortexTemplates.spirit_storm.player_eject_height = { 100, 100 }
 
 local IS_IN_FUNC = false
 
@@ -19,14 +19,14 @@ mod:hook_safe(ActionCareerTrueFlightAim, "client_owner_start_action", function(s
 	self.prioritized_breeds["hero_we_thornsister"] = 1
 end)
 
-mod:hook(ActionCareerTrueFlightAim, "client_owner_post_update", function (func, self, ...)
+mod:hook(ActionCareerTrueFlightAim, "client_owner_post_update", function(func, self, ...)
 	IS_IN_FUNC = true
 	func(self, ...)
 	IS_IN_FUNC = false
 end)
 
 mod:hook(PhysicsWorld, "immediate_raycast_actors", function(func, ...)
-	local args = {...}
+	local args = { ... }
 	if IS_IN_FUNC then
 		if args[7] == "filter_ray_true_flight_hitbox_only" then
 			args[7] = "filter_player_ray_projectile"
@@ -60,31 +60,37 @@ local VORTEX_ESCAPE_DISTANCE = 10
 local VORTEX_ESCAPE_RE_EVALUATE_DISTANCE_SQ = 1
 local VORTEX_ESCAPE_RE_EVALUATE_REACHED_DISTANCE_SQ = 0.01
 
-mod:hook_origin(PlayerBotBase, "_should_re_evaluate_vortex_escape", function (self, current_position, previous_check_position, navigation_extension, vortex_unit)
-	local re_evaluate_destination = false
-	local escape_completed = nil
+mod:hook_origin(
+	PlayerBotBase,
+	"_should_re_evaluate_vortex_escape",
+	function(self, current_position, previous_check_position, navigation_extension, vortex_unit)
+		local re_evaluate_destination = false
+		local escape_completed = nil
 
-	if ALIVE[vortex_unit] then
-		local vortex_extension = ScriptUnit.extension(vortex_unit, "ai_supplementary_system") or ScriptUnit.extension(vortex_unit, "area_damage_system")
-		if not vortex_extension then
-			mod:dump(ScriptUnit.extensions(vortex_unit), "EXTENSIONS", 1)
-			return true
+		if ALIVE[vortex_unit] then
+			local vortex_extension = ScriptUnit.extension(vortex_unit, "ai_supplementary_system")
+				or ScriptUnit.extension(vortex_unit, "area_damage_system")
+			if not vortex_extension then
+				mod:dump(ScriptUnit.extensions(vortex_unit), "EXTENSIONS", 1)
+				return true
+			end
+			escape_completed = not vortex_extension:is_position_inside(current_position, VORTEX_ESCAPE_DISTANCE)
+		else
+			escape_completed = true
 		end
-		escape_completed = not vortex_extension:is_position_inside(current_position, VORTEX_ESCAPE_DISTANCE)
-	else
-		escape_completed = true
+
+		if not escape_completed then
+			local traversed_distance_sq = Vector3.distance_squared(previous_check_position, current_position)
+			local destination_reached = navigation_extension:destination_reached()
+			re_evaluate_destination = VORTEX_ESCAPE_RE_EVALUATE_DISTANCE_SQ <= traversed_distance_sq
+				or (destination_reached and VORTEX_ESCAPE_RE_EVALUATE_REACHED_DISTANCE_SQ <= traversed_distance_sq)
+		end
+
+		return re_evaluate_destination, escape_completed
 	end
+)
 
-	if not escape_completed then
-		local traversed_distance_sq = Vector3.distance_squared(previous_check_position, current_position)
-		local destination_reached = navigation_extension:destination_reached()
-		re_evaluate_destination = VORTEX_ESCAPE_RE_EVALUATE_DISTANCE_SQ <= traversed_distance_sq or (destination_reached and VORTEX_ESCAPE_RE_EVALUATE_REACHED_DISTANCE_SQ <= traversed_distance_sq)
-	end
-
-	return re_evaluate_destination, escape_completed
-end)
-
-mod:hook(PlayerBotBase, "_update_vortex_escape", function (func, self, ...)
+mod:hook(PlayerBotBase, "_update_vortex_escape", function(func, self, ...)
 	local status_extension = self._status_extension
 	local blackboard = self._blackboard
 	local vortex_unit = status_extension.near_vortex_unit or blackboard.vortex_escape_unit
@@ -99,14 +105,15 @@ mod:hook(PlayerBotBase, "_update_vortex_escape", function (func, self, ...)
 	return func(self, ...)
 end)
 
-mod:hook_origin(PlayerCharacterStateInVortex, "on_enter", function (self, unit, input, dt, context, t, previous_state)
+mod:hook_origin(PlayerCharacterStateInVortex, "on_enter", function(self, unit, input, dt, context, t, previous_state)
 	local game = Managers.state.network:game()
 	self.game = game
 	local unit_storage = self.unit_storage
 	local status_extension = self.status_extension
 	local vortex_unit = status_extension.in_vortex_unit
 	local vortex_go_id = unit_storage:go_id(vortex_unit)
-	local vortex_extension = ScriptUnit.extension(vortex_unit, "ai_supplementary_system") or ScriptUnit.extension(vortex_unit, "area_damage_system")
+	local vortex_extension = ScriptUnit.extension(vortex_unit, "ai_supplementary_system")
+		or ScriptUnit.extension(vortex_unit, "area_damage_system")
 	local vortex_template = vortex_extension.vortex_template
 	self.vortex_unit = vortex_unit
 	self.vortex_unit_go_id = vortex_go_id
@@ -129,7 +136,9 @@ mod:hook_origin(PlayerCharacterStateInVortex, "on_enter", function (self, unit, 
 	locomotion_extension:enable_drag(false)
 
 	local first_person_extension = self.first_person_extension
-	self.screenspace_effect_particle_id = first_person_extension:create_screen_particles("fx/screenspace_inside_plague_vortex")
+	self.screenspace_effect_particle_id = first_person_extension:create_screen_particles(
+		"fx/screenspace_inside_plague_vortex"
+	)
 
 	first_person_extension:play_hud_sound_event("sfx_player_in_vortex_true")
 
@@ -164,19 +173,35 @@ mod:hook_safe(SummonedVortexExtension, "extensions_ready", function(self)
 	self.vortex_data.players_ejected = {}
 end)
 
-mod:hook_safe(SummonedVortexExtension, "attract", function (self, unit, t, dt, vortex_template, vortex_data, center_pos, inner_radius, outer_radius)
-	local minimum_height_diff = -0.5
-	local falloff_radius = outer_radius - inner_radius
-	local max_allowed_inner_radius_dist = vortex_template.max_allowed_inner_radius_dist
-	local allowed_distance = inner_radius + max_allowed_inner_radius_dist
-	local blackboard = {
-		nav_world = self.nav_world,
-		breed = {
-			name = "poop"
+mod:hook_safe(
+	SummonedVortexExtension,
+	"attract",
+	function(self, unit, t, dt, vortex_template, vortex_data, center_pos, inner_radius, outer_radius)
+		local minimum_height_diff = -0.5
+		local falloff_radius = outer_radius - inner_radius
+		local max_allowed_inner_radius_dist = vortex_template.max_allowed_inner_radius_dist
+		local allowed_distance = inner_radius + max_allowed_inner_radius_dist
+		local blackboard = {
+			nav_world = self.nav_world,
+			breed = {
+				name = "poop",
+			},
 		}
-	}
-	self:_update_attract_players(unit, blackboard, vortex_data, vortex_template, t, center_pos, minimum_height_diff, inner_radius, outer_radius, falloff_radius, allowed_distance)
-end)
+		self:_update_attract_players(
+			unit,
+			blackboard,
+			vortex_data,
+			vortex_template,
+			t,
+			center_pos,
+			minimum_height_diff,
+			inner_radius,
+			outer_radius,
+			falloff_radius,
+			allowed_distance
+		)
+	end
+)
 
 mod:hook(SummonedVortexExtension, "destroy", function(func, self)
 	local vortex_data = self.vortex_data
@@ -195,7 +220,20 @@ local position_lookup = POSITION_LOOKUP
 local NUM_SEGMENTS = 4
 local EJECT_SEGMENT_LIST = Script.new_array(NUM_SEGMENTS)
 
-SummonedVortexExtension._update_attract_players = function (self, unit, blackboard, vortex_data, vortex_template, t, center_pos, minimum_height_diff, inner_radius, outer_radius, falloff_radius, allowed_distance)
+SummonedVortexExtension._update_attract_players = function(
+	self,
+	unit,
+	blackboard,
+	vortex_data,
+	vortex_template,
+	t,
+	center_pos,
+	minimum_height_diff,
+	inner_radius,
+	outer_radius,
+	falloff_radius,
+	allowed_distance
+)
 	local nav_world = blackboard.nav_world
 	local physics_world = vortex_data.physics_world
 	local vortex_height = vortex_data.height
@@ -253,7 +291,20 @@ SummonedVortexExtension._update_attract_players = function (self, unit, blackboa
 						local breed_name = blackboard.breed.name
 						local impact_damage = DamageUtils.calculate_damage(vortex_template.damage, player_unit, unit)
 
-						DamageUtils.add_damage_network(player_unit, unit, impact_damage, "torso", "cutting", nil, -player_velocity_normalized, breed_name, nil, nil, nil, vortex_template.hit_react_type)
+						DamageUtils.add_damage_network(
+							player_unit,
+							unit,
+							impact_damage,
+							"torso",
+							"cutting",
+							nil,
+							-player_velocity_normalized,
+							breed_name,
+							nil,
+							nil,
+							nil,
+							vortex_template.hit_react_type
+						)
 					end
 				elseif target_status_extension.smacked_into_wall and target_status_extension.smacked_into_wall < t then
 					target_status_extension.smacked_into_wall = false
@@ -269,10 +320,25 @@ SummonedVortexExtension._update_attract_players = function (self, unit, blackboa
 					mod:echo("Eject time!")
 					local current_velocity = locomotion_extension:current_velocity()
 					local velocity_normalized = Vector3.normalize(current_velocity)
-					local wanted_landing_position = LocomotionUtils.pos_on_mesh(nav_world, player_position + velocity_normalized * eject_distance, land_test_above, land_test_below)
+					local wanted_landing_position = LocomotionUtils.pos_on_mesh(
+						nav_world,
+						player_position + velocity_normalized * eject_distance,
+						land_test_above,
+						land_test_below
+					)
 
 					if wanted_landing_position then
-						local success, velocity = WeaponHelper.test_angled_trajectory(physics_world, player_position, wanted_landing_position + epsilon_up, -player_gravity, player_eject_speed, nil, EJECT_SEGMENT_LIST, NUM_SEGMENTS, player_collision_filter)
+						local success, velocity = WeaponHelper.test_angled_trajectory(
+							physics_world,
+							player_position,
+							wanted_landing_position + epsilon_up,
+							-player_gravity,
+							player_eject_speed,
+							nil,
+							EJECT_SEGMENT_LIST,
+							NUM_SEGMENTS,
+							player_collision_filter
+						)
 
 						if success then
 							StatusUtils.set_in_vortex_network(player_unit, false, nil)
@@ -293,7 +359,10 @@ SummonedVortexExtension._update_attract_players = function (self, unit, blackboa
 						if player_distance < outer_radius then
 							local edge_distance = outer_radius - player_distance
 							local time_multiplier = edge_distance / outer_radius
-							players_ejected[player_unit] = t + 0.5 + vortex_template.player_ejected_bliss_time * 0.5 + vortex_template.player_ejected_bliss_time * time_multiplier * 0.5
+							players_ejected[player_unit] = t
+								+ 0.5
+								+ vortex_template.player_ejected_bliss_time * 0.5
+								+ vortex_template.player_ejected_bliss_time * time_multiplier * 0.5
 						else
 							players_ejected[player_unit] = t + 0.5 + vortex_template.player_ejected_bliss_time
 						end
@@ -301,7 +370,13 @@ SummonedVortexExtension._update_attract_players = function (self, unit, blackboa
 				elseif bliss_time < t then
 					players_ejected[player_unit] = nil
 				end
-			elseif valid_vortex_target and not target_status_extension:is_in_vortex() and player_distance < outer_radius and minimum_height_diff <= height and height < vortex_height then
+			elseif
+				valid_vortex_target
+				and not target_status_extension:is_in_vortex()
+				and player_distance < outer_radius
+				and minimum_height_diff <= height
+				and height < vortex_height
+			then
 				mod:echo("in 4")
 				if inner_radius < player_distance then
 					local distance_to_inner_radius = player_distance - inner_radius
@@ -317,7 +392,7 @@ SummonedVortexExtension._update_attract_players = function (self, unit, blackboa
 					local vortex_eject_height = ConflictUtils.random_interval(vortex_template.player_eject_height)
 					players_inside[player_unit] = {
 						vortex_eject_height = vortex_eject_height,
-						vortex_eject_time = t + vortex_template.player_in_vortex_max_duration
+						vortex_eject_time = t + vortex_template.player_in_vortex_max_duration,
 					}
 					vortex_data.num_players_inside = vortex_data.num_players_inside + 1
 				end

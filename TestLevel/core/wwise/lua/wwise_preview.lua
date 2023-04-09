@@ -13,13 +13,15 @@ WwisePreview.active_banks = WwisePreview.active_banks or {}
 -- Will load the bank if it has not been loaded by WwisePreview yet, then trigger the given event.
 -- If the given event is already playing, it will stop and restart it.
 function WwisePreview.play_event(world, bank_resource_name, event_name)
-	if not Wwise then return end
+	if not Wwise then
+		return
+	end
 
 	-- Get bank info and load bank if not loaded
 	local active_banks = WwisePreview.active_banks
 	local active_bank = active_banks[bank_resource_name]
 	if not active_bank then
-		active_bank = {name = bank_resource_name, active_events = {}}
+		active_bank = { name = bank_resource_name, active_events = {} }
 		active_banks[bank_resource_name] = active_bank
 		Wwise.load_bank(bank_resource_name)
 	end
@@ -42,13 +44,17 @@ end
 -- Should only be called if no events are actively playing, e.g. by calling
 -- WwisePreview.stop_all_events beforehand.
 function WwisePreview.unload_bank(bank_resource_name)
-	if not Wwise then return end
+	if not Wwise then
+		return
+	end
 
 	Wwise.unload_bank(bank_resource_name)
 end
 
 function WwisePreview.stop_event(world, bank_resource_name, event_name)
-	if not Wwise then return end
+	if not Wwise then
+		return
+	end
 
 	local active_bank = WwisePreview.active_banks[bank_resource_name]
 	if active_bank then
@@ -59,23 +65,25 @@ function WwisePreview.stop_event(world, bank_resource_name, event_name)
 			WwiseWorld.stop_event(wwise_world, active_event.playing_id)
 			active_events[event_name] = nil
 		else
-			print ("Warning: WwisePreview.stop_active_event event ", event_name, "is not active.")
+			print("Warning: WwisePreview.stop_active_event event ", event_name, "is not active.")
 		end
 	else
-		print ("Warning: WwisePreview.stop_active_event bank", bank_resource_name, "has no active events to stop.")
+		print("Warning: WwisePreview.stop_active_event bank", bank_resource_name, "has no active events to stop.")
 	end
 end
 
 local function notify_editor_event_finished(bank, event)
-	Application.console_send {
+	Application.console_send({
 		type = "wwise_event_finished",
 		bank_resource_name = bank,
-		event_name = event
-	}
+		event_name = event,
+	})
 end
 
 function WwisePreview.stop_all_events(world, should_notify_editor)
-	if not Wwise then return end
+	if not Wwise then
+		return
+	end
 
 	local wwise_world = Wwise.wwise_world(world)
 	local active_banks = WwisePreview.active_banks
@@ -92,7 +100,9 @@ function WwisePreview.stop_all_events(world, should_notify_editor)
 end
 
 function WwisePreview.update(world)
-	if not Wwise then return end
+	if not Wwise then
+		return
+	end
 
 	-- Go through active sounds and handle if any are finished playing.
 	local wwise_world = Wwise.wwise_world(world)

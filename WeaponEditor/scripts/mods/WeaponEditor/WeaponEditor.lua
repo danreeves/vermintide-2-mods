@@ -40,5 +40,5 @@ mod:hook(CharacterStateHelper, "get_look_input", function(func, input_extension,
 			return Vector3(0, 0, 0)
 		end
 	end
-	return func(input_extension,...)
+	return func(input_extension, ...)
 end)

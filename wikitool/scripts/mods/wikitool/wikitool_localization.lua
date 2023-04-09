@@ -1,5 +1,5 @@
 return {
-  mod_description = {
-    en = "wikitool description",
-  },
+	mod_description = {
+		en = "wikitool description",
+	},
 }

@@ -3,12 +3,12 @@ return {
 		en = "Replace all the fonts in the game with Comic Sans for optimal legibility",
 	},
 	ComicSans = {
-	  en = "Comic Sans",
+		en = "Comic Sans",
 	},
 	Queekish = {
-	  en = "Queekish"
+		en = "Queekish",
 	},
 	font = {
-	  en = "Font"
+		en = "Font",
 	},
 }

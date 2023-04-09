@@ -11,7 +11,7 @@ return {
 				type = "checkbox",
 				default_value = false,
 				tooltip = "go_to_level_enabled_tooltip",
-			}
+			},
 		},
 	},
 }

@@ -12,14 +12,14 @@ Breeds.critter_pig.hit_zones = {
 	full = {
 		prio = 1,
 		actors = {
-			"Badger"
-		}
-	}
+			"Badger",
+		},
+	},
 }
 BreedActions.critter_pig = {
 	idle = {
 		anim_event = "idle",
-	}
+	},
 }
 
 add_to_networklookup("husks", "units/Badger/Badger")

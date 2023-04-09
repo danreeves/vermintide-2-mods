@@ -15,16 +15,20 @@ local function verify_unit_script_data(unit)
 	if event_name == nil or event_name == "" then
 		result = false
 	elseif Wwise.has_event(event_name) == false then
-		print ("Error: WwiseVisualizaton. Wwise banks do not contain event: ", event_name)
+		print("Error: WwiseVisualizaton. Wwise banks do not contain event: ", event_name)
 		result = false
 	end
 	return result
 end
 
 function WwiseVisualization.add_soundscape_unit(unit)
-	if not stingray.Wwise then return end
+	if not stingray.Wwise then
+		return
+	end
 
-	if not verify_unit_script_data(unit) then return end
+	if not verify_unit_script_data(unit) then
+		return
+	end
 
 	soundscape_units[#soundscape_units + 1] = unit
 end
@@ -46,7 +50,7 @@ local function render_soundscape_unit(lines, lines_noz, unit)
 	if shape == "sphere" then
 		scale = Unit.get_data(unit, "Wwise", "sphere_radius") or default_scale
 	elseif shape == "box" then
-		scale = Vector3(0,0,0)
+		scale = Vector3(0, 0, 0)
 		scale.x = Unit.get_data(unit, "Wwise", "box_extents", 0) or default_scale
 		scale.y = Unit.get_data(unit, "Wwise", "box_extents", 1) or default_scale
 		scale.z = Unit.get_data(unit, "Wwise", "box_extents", 2) or default_scale
@@ -60,8 +64,8 @@ local function render_soundscape_unit(lines, lines_noz, unit)
 		range = Wwise.max_attenuation(event_name)
 	end
 
-	local trigger_range_color = Color(0,240,170)
-	local source_shape_color = Color(0,160,225)
+	local trigger_range_color = Color(0, 240, 170)
+	local source_shape_color = Color(0, 160, 225)
 
 	if shape == "point" then
 		LineObject.add_sphere(lines_noz, trigger_range_color, position, range)
@@ -77,12 +81,14 @@ local function render_soundscape_unit(lines, lines_noz, unit)
 		Matrix4x4.set_z(pose, Vector3.normalize(Matrix4x4.z(pose)))
 
 		LineObject.add_box(lines_noz, source_shape_color, pose, scale)
-		LineObject.add_box(lines_noz, trigger_range_color, pose, scale + (Vector3(1,1,1) * range))
+		LineObject.add_box(lines_noz, trigger_range_color, pose, scale + (Vector3(1, 1, 1) * range))
 	end -- don't error on unknown shape type, will error within soundscapes
 end
 
 function WwiseVisualization.render(lines, lines_noz)
-	if not stingray.Wwise then return end
+	if not stingray.Wwise then
+		return
+	end
 
 	local current_selection
 	local last_selected_level_object, last_selected_component_id

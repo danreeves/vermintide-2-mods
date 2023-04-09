@@ -8,10 +8,9 @@ local mod = get_mod("MorePlayers2")
 -- twitch buff or item yet...
 -- It kinda works but is worth fixing!
 
-mod:hook(TwitchVoteUI, "_sorted_player_list", function (func, self)
-  local players = func(self)
-  table.shuffle(players)
-  local sliced_players = table.slice(players, 1, 4)
-  return sliced_players
+mod:hook(TwitchVoteUI, "_sorted_player_list", function(func, self)
+	local players = func(self)
+	table.shuffle(players)
+	local sliced_players = table.slice(players, 1, 4)
+	return sliced_players
 end)
-
