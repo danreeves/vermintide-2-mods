@@ -7,7 +7,7 @@ function mod.on_all_mods_loaded()
 	mod.mmo_names = get_mod("MMONames2")
 end
 
-mod.VERSION = "0.42"
+mod.VERSION = "0.43"
 mod.MOD_NAME = "BTMP"
 mod.MAX_PLAYERS = mod:get("max_players") or 32
 mod.ID = "2113204803" -- Steam Workshop ID
