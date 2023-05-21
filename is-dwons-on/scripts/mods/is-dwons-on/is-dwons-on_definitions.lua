@@ -29,63 +29,43 @@ function create_scenegraph_definition(x, y)
 	return scenegraph_definition
 end
 
-local widget_definition = {
-	scenegraph_id = "pivot",
-	element = {
-		passes = {
-			{
-				pass_type = "text",
-				style_id = "dw_text",
-				text_id = "dw_text",
-				retained_mode = false,
-				content_check_function = function(content)
-					return mod:is_at_inn() and mod:is_host_or_host_synced()
-				end,
-			},
-			{
-				pass_type = "text",
-				style_id = "ons_text",
-				text_id = "ons_text",
-				retained_mode = false,
-				content_check_function = function(content)
-					return mod:is_at_inn() and mod:is_host_or_host_synced()
-				end,
+function create_widget_definition()
+	return {
+		scenegraph_id = "pivot",
+		element = {
+			passes = {
+				{
+					pass_type = "text",
+					style_id = "text",
+					text_id = "text",
+					retained_mode = false,
+					content_check_function = function(content)
+						return mod:is_at_inn() and mod:is_host_or_host_synced()
+					end,
+				},
 			},
 		},
-	},
-	content = {
-		dw_text = "",
-		ons_text = "",
-	},
-	style = {
-		dw_text = {
-			font_type = "hell_shark",
-			font_size = mod:get("font_size"),
-			vertical_alignment = "center",
-			horizontal_alignment = "right",
-			text_color = Colors.get_table("white"),
-			offset = {
-				0,
-				0,
-				0,
+		content = {
+			text = "",
+		},
+		style = {
+			text = {
+				font_type = "hell_shark",
+				font_size = mod:get("font_size"),
+				vertical_alignment = "center",
+				horizontal_alignment = "right",
+				text_color = Colors.get_table("white"),
+				offset = {
+					0,
+					0,
+					0,
+				},
 			},
 		},
-		ons_text = {
-			font_type = "hell_shark",
-			font_size = mod:get("font_size"),
-			vertical_alignment = "center",
-			horizontal_alignment = "left",
-			text_color = Colors.get_table("white"),
-			offset = {
-				0,
-				0,
-				0,
-			},
-		},
-	},
-}
+	}
+end
 
 return {
-	widget_definition = widget_definition,
+	create_widget_definition = create_widget_definition,
 	create_scenegraph_definition = create_scenegraph_definition,
 }

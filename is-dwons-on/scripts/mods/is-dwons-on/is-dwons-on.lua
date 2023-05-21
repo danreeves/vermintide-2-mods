@@ -5,33 +5,96 @@ local definitions = mod:dofile("scripts/mods/is-dwons-on/is-dwons-on_definitions
 local DO_RELOAD = true
 Boot._dwons_booted = false
 
+local mod_names = {
+	{ "Deathwish", "catas", "catas" },
+	{ "Onslaught", "Onslaught", "Onslaught" },
+	{ "Onslaught Plus", "OnslaughtPlus", "OnslaughtPlus" },
+	{ "Onslaught Squared", "OnslaughtPlus", "OnslaughtSquared" },
+	{ "Enhanced Difficulty", "OnslaughtPlus", "EnhancedDifficulty" },
+	{ "More Specials", "OnslaughtPlus", "MoreSpecials" },
+	{ "Beastmen Rework", "OnslaughtPlus", "BeastmenRework" },
+	{ "Spicy Onslaught", "SpicyOnslaught", "SpicyOnslaught" },
+	{ "Dutch Spice", "DutchSpice", "DutchSpice" },
+	{ "Dutch Spice Tourney", "DutchSpiceTourney", "DutchSpiceTourney" },
+}
+
+function mod.register_mutator(label, mod_name, mutator_name)
+	local found = false
+	for _, mutator_info in ipairs(mod_names) do
+		if mutator_info[2] == mod_name and mutator_info[3] == mutator_name then
+			found = true
+			mutator_info = { label, mod_name, mutator_name }
+		end
+	end
+
+	if not found then
+		table.insert(mod_names, { label, mod_name, mutator_name })
+	end
+end
+
 function mod.on_setting_changed()
 	DO_RELOAD = true
 end
 
-function mod.get_status()
-	local deathwish_mod = get_mod("catas")
-	local onslaught_mod = get_mod("Onslaught")
-	local dw_enabled = false
-	local ons_enabled = false
+function mod.is_mod_installed(mod_name)
+	if get_mod(mod_name) then
+		return true
+	end
+	return false
+end
 
+function mod.is_mutator_enabled(mod_name, mutator_name)
 	if not Managers.player.is_server and mod.rpc_state.host_synced then
-		return mod.rpc_state.dw_enabled, mod.rpc_state.ons_enabled
+		return mod.rpc_state[mod_name .. mutator_name]
 	end
 
-	if deathwish_mod then
-		local deathwish = deathwish_mod:persistent_table("catas")
-		dw_enabled = deathwish.active and true or false
+	local mutator_mod = get_mod(mod_name)
+	if not mutator_mod then
+		return false
 	end
-	if onslaught_mod then
-		local onslaught = onslaught_mod:persistent_table("Onslaught")
-		ons_enabled = onslaught.active and true or false
+	local mutator = mutator_mod:persistent_table(mutator_name)
+	if not mutator then
+		return false
 	end
+	return mutator.active and true or false
+end
+
+function mod.enable_mutator(mod_name, mutator_name)
+	local mutator_mod = get_mod(mod_name)
+	if mutator_mod then
+		local mutator = mutator_mod:persistent_table(mutator_name)
+		if mutator then
+			mutator.start()
+		end
+	end
+end
+
+function mod.toggle_mutator(mod_name, mutator_name)
+	local mutator_mod = get_mod(mod_name)
+	if mutator_mod then
+		local mutator = mutator_mod:persistent_table(mutator_name)
+		if mutator then
+			mutator.toggle()
+		end
+	end
+end
+
+function mod.disable_mutator(mod_name, mutator_name)
+	local mutator_mod = get_mod(mod_name)
+	if mutator_mod then
+		local mutator = mutator_mod:persistent_table(mutator_name)
+		if mutator then
+			mutator.stop()
+		end
+	end
+end
+
+function mod.get_status()
+	local dw_enabled = mod.is_mutator_enabled("catas", "catas")
+	local ons_enabled = mod.is_mutator_enabled("Onslaught", "Onslaught")
 	return dw_enabled, ons_enabled
 end
 
--- Are we currently loaded at the inn?
--- from Zaphio
 function mod.is_at_inn()
 	local game_mode = Managers.state.game_mode
 	if not game_mode then
@@ -48,72 +111,117 @@ local IsDwonsOn = mod:persistent_table("IsDwonsOn_class", class())
 
 function IsDwonsOn:init(ingame_ui_context)
 	self.ui_renderer = ingame_ui_context.ui_renderer
-	self.input_manager = ingame_ui_context.input_manager
 	self:create_ui()
 end
 
 function IsDwonsOn:create_ui()
 	local scenegraph_definition = definitions.create_scenegraph_definition(mod:get("x"), mod:get("y"))
 	self.ui_scenegraph = UISceneGraph.init_scenegraph(scenegraph_definition)
-	self.ui_widget = UIWidget.init(definitions.widget_definition)
+	self.ui_widgets = {}
+	for i, _ in ipairs(mod_names) do
+		local widget_definition = definitions.create_widget_definition()
+		self.ui_widgets[i] = UIWidget.init(widget_definition)
+	end
 	self:update_style()
 	DO_RELOAD = false
 end
 
 function IsDwonsOn:update_style()
 	local font_size = mod:get("font_size")
-	self.ui_widget.style.dw_text.font_size = font_size
-	self.ui_widget.style.ons_text.font_size = font_size
+	for _, widget in ipairs(self.ui_widgets) do
+		widget.style.text.font_size = font_size
+	end
 
 	if mod:get("align_vertically") then
 		local horizontal_alignment = mod:get("horizontal_alignment")
-		self.ui_widget.style.dw_text.vertical_alignment = "bottom"
-		self.ui_widget.style.ons_text.vertical_alignment = "top"
-		self.ui_widget.style.dw_text.horizontal_alignment = horizontal_alignment
-		self.ui_widget.style.ons_text.horizontal_alignment = horizontal_alignment
+		local row = 1
+		for i, mutator in ipairs(mod_names) do
+			local is_installed = mod.is_mod_installed(mutator[2])
+			local widget = self.ui_widgets[i]
+			if is_installed then
+				widget.style.text.offset[2] = -(row * font_size)
+				widget.style.text.horizontal_alignment = horizontal_alignment
+				-- widget.style.text.vertical_alignment = "center"
+				row = row + 1
+			end
+		end
 	else
-		self.ui_widget.style.dw_text.offset[1] = -(font_size / 4)
-		self.ui_widget.style.ons_text.offset[1] = font_size / 4
-		self.ui_widget.style.dw_text.vertical_alignment = "center"
-		self.ui_widget.style.ons_text.vertical_alignment = "center"
+		local offset = 0
+		for i, mutator in ipairs(mod_names) do
+			local is_installed = mod.is_mod_installed(mutator[2])
+			local widget = self.ui_widgets[i]
+			if is_installed then
+				local width, height = UIRenderer.text_size(
+					self.ui_renderer,
+					widget.content.text,
+					"materials/fonts/gw_body",
+					font_size
+				)
+				widget.style.text.offset[1] = offset
+				widget.style.text.horizontal_alignment = "left"
+				widget.style.text.vertical_alignment = "center"
+				offset = offset + width + 10
+			end
+		end
 	end
 end
 
 function IsDwonsOn:update()
 	if DO_RELOAD then
 		self:create_ui()
-		self:update_style()
 	end
 
-	local dw_active, ons_active = mod.get_status()
-	self.ui_widget.content.dw_text = string.format("Deathwish: %s", dw_active)
-	self.ui_widget.content.ons_text = string.format("Onslaught: %s", ons_active)
+	self:update_style()
+
+	local widgets = self.ui_widgets
+
+	for i, mutator in ipairs(mod_names) do
+		local widget = widgets[i]
+		local label = mutator[1]
+		local mod_name = mutator[2]
+		local mutator_name = mutator[3]
+		local is_installed = mod.is_mod_installed(mod_name)
+		local is_active = mod.is_mutator_enabled(mod_name, mutator_name)
+
+		if is_installed then
+			widget.content.text = string.format("%s: %s", label, is_active)
+		else
+			widget.content.text = ""
+		end
+	end
 end
 
+local fake_input_service = {
+	get = function()
+		return
+	end,
+	has = function()
+		return
+	end,
+}
 function IsDwonsOn:draw(dt)
 	local ui_renderer = self.ui_renderer
 	local ui_scenegraph = self.ui_scenegraph
-	local input_service = self.input_manager:get_service("ingame_menu")
-	local ui_widget = self.ui_widget
+	local widgets = self.ui_widgets
 
-	UIRenderer.begin_pass(ui_renderer, ui_scenegraph, input_service, dt)
-	UIRenderer.draw_widget(ui_renderer, ui_widget)
+	UIRenderer.begin_pass(ui_renderer, ui_scenegraph, fake_input_service, dt)
+	for _, widget in ipairs(widgets) do
+		UIRenderer.draw_widget(ui_renderer, widget)
+	end
 	UIRenderer.end_pass(ui_renderer)
 end
 
 -- INIT
-mod:hook_safe(IngameHud, "init", function(self, parent, ingame_ui_context)
-	self._mod_ui = IsDwonsOn:new(ingame_ui_context)
-end)
+mod._mod_ui = IsDwonsOn:new(Managers.ui._ingame_ui_context)
 
--- HOOKS
-mod:hook_safe(IngameHud, "update", function(self, dt, t)
-	if not self._mod_ui then
+-- UPDATE
+mod.update = function(dt, _t)
+	if not mod._mod_ui then
 		return
 	end
-	self._mod_ui:update()
-	self._mod_ui:draw(dt)
-end)
+	mod._mod_ui:update()
+	mod._mod_ui:draw(dt)
+end
 
 -- COMMANDS
 mod.dwons_active = false
@@ -148,17 +256,34 @@ function mod.toggle()
 end
 mod:command("dwons", "Toggle Deathwish & Onslaught. Must be host and in the keep.", mod.toggle)
 
+mod:command("turn_all_off", "Turn off all mods DwOns QoL mod knows about", function()
+	for _, mutator_info in ipairs(mod_names) do
+		local mod_name = mutator_info[2]
+		local mutator_name = mutator_info[3]
+		local mutator_mod = get_mod(mod_name)
+		if mutator_mod then
+			local mutator = mutator_mod:persistent_table(mutator_name)
+			if mutator then
+				mutator.stop()
+			end
+		end
+	end
+end)
+
 -- RPC State
 mod.rpc_state = {
-	dw_enabled = false,
-	ons_enabled = false,
 	host_synced = false,
 }
 
-mod:network_register("dwons_state_sync", function(sender, data)
+for _, mutator in ipairs(mod_names) do
+	mod.rpc_state[mutator[2] .. mutator[3]] = false
+end
+
+mod:network_register("dwons_state_sync", function(_sender, data)
 	mod.rpc_state.host_synced = true
-	mod.rpc_state.dw_enabled = data.dw_enabled
-	mod.rpc_state.ons_enabled = data.ons_enabled
+	for key, value in pairs(data) do
+		mod.rpc_state[key] = value
+	end
 end)
 
 function mod.on_user_joined()
@@ -169,10 +294,12 @@ function mod.on_game_state_changed(status, state)
 	if status == "enter" and state == "StateIngame" then
 		if Managers.player.is_server then
 			mod.rpc_state = {
-				ons_enabled = false,
-				dw_enabled = false,
 				host_synced = false,
 			}
+
+			for _, mutator in ipairs(mod_names) do
+				mod.rpc_state[mutator[2] .. mutator[3]] = false
+			end
 
 			if mod:get("enable_on_boot") and not Boot._dwons_booted then
 				mod.toggle()
@@ -186,41 +313,43 @@ function mod.on_game_state_changed(status, state)
 end
 
 function mod.sync_state()
-	local dw_enabled, ons_enabled = mod.get_status()
-	mod:network_send("dwons_state_sync", "others", {
-		dw_enabled = dw_enabled,
-		ons_enabled = ons_enabled,
-	})
+	local data = {}
+	for _, mutator in ipairs(mod_names) do
+		local mod_name = mutator[2]
+		local mutator_name = mutator[3]
+		local is_active = mod.is_mutator_enabled(mod_name, mutator_name)
+		data[mod_name .. mutator_name] = is_active
+	end
+	mod:network_send("dwons_state_sync", "others", data)
 end
 
 local function hook_mods()
-	local deathwish_mod = get_mod("catas")
-	local onslaught_mod = get_mod("Onslaught")
-
-	if deathwish_mod then
-		local deathwish = deathwish_mod:persistent_table("catas")
-		mod:hook_safe(deathwish, "start", mod.sync_state)
-		mod:hook_safe(deathwish, "stop", mod.sync_state)
-	end
-	if onslaught_mod then
-		local onslaught = onslaught_mod:persistent_table("Onslaught")
-		mod:hook_safe(onslaught, "start", mod.sync_state)
-		mod:hook_safe(onslaught, "stop", mod.sync_state)
+	for _, mutator_info in ipairs(mod_names) do
+		local mod_name = mutator_info[2]
+		local mutator_name = mutator_info[3]
+		local mutator_mod = get_mod(mod_name)
+		if mutator_mod then
+			local mutator = mutator_mod:persistent_table(mutator_name)
+			if mutator then
+				mod:hook_safe(mutator, "start", mod.sync_state)
+				mod:hook_safe(mutator, "stop", mod.sync_state)
+			end
+		end
 	end
 end
 
 local function unhook_mods()
-	local deathwish_mod = get_mod("catas")
-	local onslaught_mod = get_mod("Onslaught")
-	if deathwish_mod then
-		local deathwish = deathwish_mod:persistent_table("catas")
-		mod:hook_disable(deathwish, "start")
-		mod:hook_disable(deathwish, "stop")
-	end
-	if onslaught_mod then
-		local onslaught = onslaught_mod:persistent_table("Onslaught")
-		mod:hook_disable(onslaught, "start")
-		mod:hook_disable(onslaught, "stop")
+	for _, mutator_info in ipairs(mod_names) do
+		local mod_name = mutator_info[2]
+		local mutator_name = mutator_info[3]
+		local mutator_mod = get_mod(mod_name)
+		if mutator_mod then
+			local mutator = mutator_mod:persistent_table(mutator_name)
+			if mutator then
+				mod:hook_disable(mutator, "start")
+				mod:hook_disable(mutator, "stop")
+			end
+		end
 	end
 end
 
@@ -255,7 +384,7 @@ function mod.is_spawn_tweaks_customized()
 end
 
 mod:hook_safe(MatchmakingStateHostGame, "on_enter", function()
-	local dw_enabled, ons_enable = mod.get_status()
+	local dw_enabled, ons_enabled = mod.get_status()
 	if dw_enabled or ons_enabled then
 		local spawn_tweaks_settings = mod.is_spawn_tweaks_customized()
 		local spawn_tweaks_customized = table.contains(spawn_tweaks_settings, true)
