@@ -18,6 +18,15 @@ local mod_names = {
 	{ "Dutch Spice Tourney", "DutchSpiceTourney", "DutchSpiceTourney" },
 }
 
+-- RPC State
+mod.rpc_state = {
+	host_synced = false,
+}
+
+for _, mutator in ipairs(mod_names) do
+	mod.rpc_state[mutator[2] .. mutator[3]] = false
+end
+
 function mod.register_mutator(label, mod_name, mutator_name)
 	local found = false
 	for _, mutator_info in ipairs(mod_names) do
@@ -109,8 +118,8 @@ end
 
 local IsDwonsOn = mod:persistent_table("IsDwonsOn_class", class())
 
-function IsDwonsOn:init(ingame_ui_context)
-	self.ui_renderer = ingame_ui_context.ui_renderer
+function IsDwonsOn:init(ui_renderer)
+	self.ui_renderer = ui_renderer
 	self:create_ui()
 end
 
@@ -212,11 +221,18 @@ function IsDwonsOn:draw(dt)
 end
 
 -- INIT
-mod._mod_ui = IsDwonsOn:new(Managers.ui._ingame_ui_context)
 
 -- UPDATE
 mod.update = function(dt, _t)
 	if not mod._mod_ui then
+		if
+			Managers
+			and Managers.ui
+			and Managers.ui._ingame_ui_context
+			and Managers.ui._ingame_ui_context.ui_renderer
+		then
+			mod._mod_ui = IsDwonsOn:new(Managers.ui._ingame_ui_context.ui_renderer)
+		end
 		return
 	end
 	mod._mod_ui:update()
@@ -269,15 +285,6 @@ mod:command("turn_all_off", "Turn off all mods DwOns QoL mod knows about", funct
 		end
 	end
 end)
-
--- RPC State
-mod.rpc_state = {
-	host_synced = false,
-}
-
-for _, mutator in ipairs(mod_names) do
-	mod.rpc_state[mutator[2] .. mutator[3]] = false
-end
 
 mod:network_register("dwons_state_sync", function(_sender, data)
 	mod.rpc_state.host_synced = true
