@@ -303,6 +303,7 @@ objects = {
 			{ name = "removal_proc_function_id", type = "proc_function_lookup" }
 			{ name = "radius", type = "radius" }
 			{ name = "owner_player_id", type = "game_object_id" }
+			{ name = "source_unit_id", type = "game_object_id" }
 		]
 	}
 	ai_unit = {
@@ -2249,6 +2250,9 @@ messages = {
 		args = [
 			"game_object_id"
 			"position"
+			"rotation"
+			"uint_8"
+			"uint_8"
 		]
 	}
 	rpc_sync_talents = {
