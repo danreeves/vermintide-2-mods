@@ -3163,7 +3163,106 @@ local atlas = {
 			0.005859,
 		},
 	},
+	store_tag_icon_bw_necromancer_magic = {
+		size = {
+			56,
+			56
+		},
+		uv00 = {
+			0.66748,
+			0.494141
+		},
+		uv11 = {
+			0.694824,
+			0.521484
+		}
+	},
+	store_tag_icon_bw_necromancer_unique = {
+		size = {
+			56,
+			56
+		},
+		uv00 = {
+			0.520996,
+			0.494141
+		},
+		uv11 = {
+			0.54834,
+			0.521484
+		}
+	},
+	store_tag_icon_bw_necromancer_promo = {
+		size = {
+			56,
+			56
+		},
+		uv00 = {
+			0.491699,
+			0.932617
+		},
+		uv11 = {
+			0.519043,
+			0.959961
+		}
+	},
+	store_tag_icon_bw_necromancer_rare = {
+		size = {
+			56,
+			56
+		},
+		uv00 = {
+			0.491699,
+			0.699219
+		},
+		uv11 = {
+			0.519043,
+			0.726563
+		}
+	},
+	store_tag_icon_bw_necromancer = {
+		size = {
+			56,
+			56
+		},
+		uv00 = {
+			0.931152,
+			0.464844
+		},
+		uv11 = {
+			0.958496,
+			0.492188
+		}
+	},
+	store_tag_icon_bw_necromancer_common = {
+		size = {
+			56,
+			56
+		},
+		uv00 = {
+			0.726074,
+			0.464844
+		},
+		uv11 = {
+			0.753418,
+			0.492188
+		}
+	},
+	store_tag_icon_bw_necromancer_exotic = {
+		size = {
+			56,
+			56
+		},
+		uv00 = {
+			0.491699,
+			0.464844
+		},
+		uv11 = {
+			0.519043,
+			0.492188
+		}
+	},
 }
+
 
 local copy = {}
 
